@@ -1,7 +1,11 @@
 <div class="container">
-    <div class="success-message-panel" *ngIf="message">
-        <div class="success-icon">&#10004;</div>
-        <div class="success-message">{{message}}</div>
+    <div *ngIf="message" class="message-panel"
+        [ngClass]="{'success': !message.startsWith('Registration failed'), 'error': message.startsWith('Registration failed')}">
+        <div class="message-icon" *ngIf="!message.startsWith('Registration failed')"
+            [ngClass]="{'success-icon': !message.startsWith('Registration failed'), 'error-icon': message.startsWith('Registration failed')}">
+            &#10004;
+        </div>
+        <div class="message-content">{{ message }}</div>
     </div>
 
     <h2>Register</h2>

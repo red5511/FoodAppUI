@@ -22,20 +22,24 @@ export class RegisterComponent {
   
   registerUser() {
     this.message = '';
-    this.authService.register(this.registerRequest)
-      .subscribe({
-        next: (response) => {
-          if (response) {
-            this.authResponse = response;
-          } else {
-            // inform the user
-            this.message = 'Account created successfully\nYou will be redirected to the Login page in 3 seconds';
-            setTimeout(() => {
-              this.router.navigate(['login']);
-            }, 3000)
-          }
+    this.authService.register(this.registerRequest).subscribe({
+      next: (response) => {
+        if (response) {
+          this.authResponse = response;
+        } else {
+          this.message = 'Account created successfully';
+          // setTimeout(() => {
+          //   this.router.navigate(['login']);
+          // }, 3000);
         }
-      });
-
+      },
+      error: (err) => {
+        if (err.error && err.error.errorCode === 'User already exists') {
+          this.message = 'Registration failed: Email is already in use.';
+        } else {
+          this.message = 'Registration failed: ' + (err.error.message || 'Unknown error');
+        }
+      }
+    });
   }
 }
