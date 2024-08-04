@@ -1,7 +1,8 @@
+/* tslint:disable */
+/* eslint-disable */
 export interface RegisterRequest {
+  email?: string;
   firstName?: string;
   lastName?: string;
-  email?: string;
   password?: string;
-  role?: string;
 }

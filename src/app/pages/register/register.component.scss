@@ -20,6 +20,12 @@
     margin-bottom: 15px;
   }
   
+  .link {
+    display: block;
+    margin-bottom: 10px; // Adjust the margin as needed
+    text-align: center;
+}
+
   label {
     display: block;
     margin-bottom: 5px;
@@ -103,3 +109,10 @@
     color: #721c24;
   }
   
+  .success-icon {
+    color: #155724;
+  }
+  
+  .error-icon {
+    display: #721c24;  /* No icon for error */
+  }

@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { AuthenticationResponse } from '../../models/authentication-response';
-import { RegisterRequest } from '../../models/register-request';
 import { Router } from '@angular/router';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationControllerService } from '../../services/services';
+import { RegisterRequest } from '../../services/models/register-request';
+import { AuthenticationResponse } from '../../services/models/authentication-response';
 
 @Component({
   selector: 'app-register',
@@ -13,31 +13,27 @@ export class RegisterComponent {
   registerRequest: RegisterRequest = {};
   authResponse: AuthenticationResponse = {};
   message = '';
+  isSuccess: boolean = false;
 
   constructor(
-    private authService: AuthenticationService,
-    private router: Router
+    private authService: AuthenticationControllerService,
   ) {
   }
-  
+
   registerUser() {
     this.message = '';
-    this.authService.register(this.registerRequest).subscribe({
+    this.authService.register({body : this.registerRequest} ).subscribe({
       next: (response) => {
+        this.isSuccess = true;
         if (response) {
           this.authResponse = response;
-        } else {
           this.message = 'Account created successfully';
-          // setTimeout(() => {
-          //   this.router.navigate(['login']);
-          // }, 3000);
         }
       },
       error: (err) => {
-        if (err.error && err.error.errorCode === 'User already exists') {
-          this.message = 'Registration failed: Email is already in use.';
-        } else {
-          this.message = 'Registration failed: ' + (err.error.message || 'Unknown error');
+        this.message = 'Registration failed: ';
+        if (err.error) {
+          this.message = this.message + (err.error.errorCode  || 'Unknown error');
         }
       }
     });

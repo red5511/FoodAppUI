@@ -8,6 +8,7 @@ import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { FormsModule } from '@angular/forms';
+import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 
 
 const routes: Routes = [
@@ -31,7 +32,8 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     RegisterComponent,
-    WelcomeComponent
+    WelcomeComponent,
+    ChangePasswordComponent
   ],
   imports: [
     RouterModule,
