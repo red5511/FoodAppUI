@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { AuthenticationControllerService } from '../../services/services';
+import { AuthenticationService } from '../../services/services';
 import { AuthenticationRequest } from '../../services/models/authentication-request';
 import { AuthenticationResponse } from '../../services/models/authentication-response';
 
@@ -10,20 +10,23 @@ import { AuthenticationResponse } from '../../services/models/authentication-res
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  authenticationRequest: AuthenticationRequest = {};
+  authenticationRequest: AuthenticationRequest = {
+    email: '',
+    password: ''
+  };
   authResponse: AuthenticationResponse = {};
   message = '';
   isSuccess: boolean = false;
 
   constructor(
-    private authService: AuthenticationControllerService,
+    private authService: AuthenticationService,
     private router: Router
   ) {
   }
 
   loginUser() {
     this.message = '';
-    this.authService.authenticate({body : this.authenticationRequest}).subscribe({
+    this.authService.authenticate({ body: this.authenticationRequest }).subscribe({
       next: (response) => {
         if (response) {
           this.isSuccess = true;

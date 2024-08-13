@@ -9,23 +9,23 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { activateUser } from '../fn/authentication-controller/activate-user';
-import { ActivateUser$Params } from '../fn/authentication-controller/activate-user';
-import { authenticate } from '../fn/authentication-controller/authenticate';
-import { Authenticate$Params } from '../fn/authentication-controller/authenticate';
+import { activateUser } from '../fn/authentication/activate-user';
+import { ActivateUser$Params } from '../fn/authentication/activate-user';
+import { authenticate } from '../fn/authentication/authenticate';
+import { Authenticate$Params } from '../fn/authentication/authenticate';
 import { AuthenticationResponse } from '../models/authentication-response';
 import { ChangeInitPasswordResponse } from '../models/change-init-password-response';
-import { changePassword } from '../fn/authentication-controller/change-password';
-import { ChangePassword$Params } from '../fn/authentication-controller/change-password';
-import { changePassword1 } from '../fn/authentication-controller/change-password-1';
-import { ChangePassword1$Params } from '../fn/authentication-controller/change-password-1';
-import { initPasswordChange } from '../fn/authentication-controller/init-password-change';
-import { InitPasswordChange$Params } from '../fn/authentication-controller/init-password-change';
-import { register } from '../fn/authentication-controller/register';
-import { Register$Params } from '../fn/authentication-controller/register';
+import { changePassword } from '../fn/authentication/change-password';
+import { ChangePassword$Params } from '../fn/authentication/change-password';
+import { changePassword1 } from '../fn/authentication/change-password-1';
+import { ChangePassword1$Params } from '../fn/authentication/change-password-1';
+import { initPasswordChange } from '../fn/authentication/init-password-change';
+import { InitPasswordChange$Params } from '../fn/authentication/init-password-change';
+import { register } from '../fn/authentication/register';
+import { Register$Params } from '../fn/authentication/register';
 
 @Injectable({ providedIn: 'root' })
-export class AuthenticationControllerService extends BaseService {
+export class AuthenticationService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }

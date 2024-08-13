@@ -6,21 +6,20 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { ModifyCompanyRequest } from '../../models/modify-company-request';
 
-export interface ChangePassword$Params {
-  token: string;
-  newPassword: string;
+export interface ModifyCompany$Params {
+      body: ModifyCompanyRequest
 }
 
-export function changePassword(http: HttpClient, rootUrl: string, params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, changePassword.PATH, 'put');
+export function modifyCompany(http: HttpClient, rootUrl: string, params: ModifyCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, modifyCompany.PATH, 'put');
   if (params) {
-    rb.query('token', params.token, {});
-    rb.query('newPassword', params.newPassword, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
@@ -29,4 +28,4 @@ export function changePassword(http: HttpClient, rootUrl: string, params: Change
   );
 }
 
-changePassword.PATH = '/api/v1/auth/password/change/confirm';
+modifyCompany.PATH = '/api/v1/company/modify';

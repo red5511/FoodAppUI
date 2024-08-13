@@ -6,19 +6,20 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { DeleteProductRequest } from '../../models/delete-product-request';
 
-export interface ActivateUser$Params {
-  token: string;
+export interface SaveProduct2$Params {
+      body: DeleteProductRequest
 }
 
-export function activateUser(http: HttpClient, rootUrl: string, params: ActivateUser$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, activateUser.PATH, 'get');
+export function saveProduct2(http: HttpClient, rootUrl: string, params: SaveProduct2$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, saveProduct2.PATH, 'delete');
   if (params) {
-    rb.path('token', params.token, {});
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'blob', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
@@ -27,4 +28,4 @@ export function activateUser(http: HttpClient, rootUrl: string, params: Activate
   );
 }
 
-activateUser.PATH = '/api/v1/auth/register/confirm/{token}';
+saveProduct2.PATH = '/api/v1/product/delete';

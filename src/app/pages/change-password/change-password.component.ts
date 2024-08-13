@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AuthenticationControllerService } from '../../services/services';
+import { AuthenticationService } from '../../services/services';
 import { ChangeInitPasswordRequest, ChangeInitPasswordResponse } from '../../services/models';
 
 @Component({
@@ -14,7 +14,7 @@ export class ChangePasswordComponent {
   isSuccess: boolean = false;
 
   constructor(
-    private authService: AuthenticationControllerService,
+    private authService: AuthenticationService,
   ) {
   }
 

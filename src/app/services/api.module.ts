@@ -1,28 +1,27 @@
 /* tslint:disable */
 /* eslint-disable */
 import { NgModule, ModuleWithProviders, SkipSelf, Optional } from '@angular/core';
-import { HttpClient, HttpClientModule } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
-import { ProductControllerService } from './services/product-controller.service';
-import { CompanyControllerService } from './services/company-controller.service';
-import { AuthenticationControllerService } from './services/authentication-controller.service';
+import { ProductService } from './services/product.service';
+import { CompanyService } from './services/company.service';
+import { AuthenticationService } from './services/authentication.service';
 import { DemoControllerService } from './services/demo-controller.service';
 
 /**
  * Module that provides all services and configuration.
  */
 @NgModule({
-  imports: [HttpClientModule],
+  imports: [],
   exports: [],
   declarations: [],
   providers: [
-    ProductControllerService,
-    CompanyControllerService,
-    AuthenticationControllerService,
+    ProductService,
+    CompanyService,
+    AuthenticationService,
     DemoControllerService,
-    ApiConfiguration,
-    HttpClient
+    ApiConfiguration
   ],
 })
 export class ApiModule {

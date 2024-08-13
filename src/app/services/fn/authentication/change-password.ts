@@ -6,16 +6,17 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ModifyCompanyRequest } from '../../models/modify-company-request';
 
-export interface ModifyCompany$Params {
-      body: ModifyCompanyRequest
+export interface ChangePassword$Params {
+  token: string;
+  newPassword: string;
 }
 
-export function modifyCompany(http: HttpClient, rootUrl: string, params: ModifyCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, modifyCompany.PATH, 'put');
+export function changePassword(http: HttpClient, rootUrl: string, params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, changePassword.PATH, 'put');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.query('token', params.token, {});
+    rb.query('newPassword', params.newPassword, {});
   }
 
   return http.request(
@@ -28,4 +29,4 @@ export function modifyCompany(http: HttpClient, rootUrl: string, params: ModifyC
   );
 }
 
-modifyCompany.PATH = '/api/v1/company/modify';
+changePassword.PATH = '/api/v1/auth/password/change/confirm';

@@ -9,15 +9,15 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { deleteCompany } from '../fn/company-controller/delete-company';
-import { DeleteCompany$Params } from '../fn/company-controller/delete-company';
-import { modifyCompany } from '../fn/company-controller/modify-company';
-import { ModifyCompany$Params } from '../fn/company-controller/modify-company';
-import { saveCompany } from '../fn/company-controller/save-company';
-import { SaveCompany$Params } from '../fn/company-controller/save-company';
+import { deleteCompany } from '../fn/company/delete-company';
+import { DeleteCompany$Params } from '../fn/company/delete-company';
+import { modifyCompany } from '../fn/company/modify-company';
+import { ModifyCompany$Params } from '../fn/company/modify-company';
+import { saveCompany } from '../fn/company/save-company';
+import { SaveCompany$Params } from '../fn/company/save-company';
 
 @Injectable({ providedIn: 'root' })
-export class CompanyControllerService extends BaseService {
+export class CompanyService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }

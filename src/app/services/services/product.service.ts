@@ -9,15 +9,15 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
-import { saveProduct } from '../fn/product-controller/save-product';
-import { SaveProduct$Params } from '../fn/product-controller/save-product';
-import { saveProduct1 } from '../fn/product-controller/save-product-1';
-import { SaveProduct1$Params } from '../fn/product-controller/save-product-1';
-import { saveProduct2 } from '../fn/product-controller/save-product-2';
-import { SaveProduct2$Params } from '../fn/product-controller/save-product-2';
+import { saveProduct } from '../fn/product/save-product';
+import { SaveProduct$Params } from '../fn/product/save-product';
+import { saveProduct1 } from '../fn/product/save-product-1';
+import { SaveProduct1$Params } from '../fn/product/save-product-1';
+import { saveProduct2 } from '../fn/product/save-product-2';
+import { SaveProduct2$Params } from '../fn/product/save-product-2';
 
 @Injectable({ providedIn: 'root' })
-export class ProductControllerService extends BaseService {
+export class ProductService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
   }

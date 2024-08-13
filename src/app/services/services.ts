@@ -1,4 +1,4 @@
-export { ProductControllerService } from './services/product-controller.service';
-export { CompanyControllerService } from './services/company-controller.service';
-export { AuthenticationControllerService } from './services/authentication-controller.service';
+export { ProductService } from './services/product.service';
+export { CompanyService } from './services/company.service';
+export { AuthenticationService } from './services/authentication.service';
 export { DemoControllerService } from './services/demo-controller.service';
