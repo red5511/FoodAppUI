@@ -1,1 +1,14 @@
-/* You can add global styles to this file, and also import other style files */
+:root {
+    --primary-color: #000;
+    --secondary-color: #fff;
+    --font-stack: 'Arial', sans-serif;
+  }
+
+html{
+    border: none;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: var(--primary-color) ;
+    overflow-x: hidden;
+}

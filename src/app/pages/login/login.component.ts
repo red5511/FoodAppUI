@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AuthenticationService } from '../../services/services';
 import { AuthenticationRequest } from '../../services/models/authentication-request';
 import { AuthenticationResponse } from '../../services/models/authentication-response';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-login',
@@ -20,7 +21,8 @@ export class LoginComponent {
 
   constructor(
     private authService: AuthenticationService,
-    private router: Router
+    private router: Router,
+    private tokenService: TokenService
   ) {
   }
 
@@ -32,8 +34,9 @@ export class LoginComponent {
           this.isSuccess = true;
           this.authResponse = response;
           this.message = 'Account created successfully';
+          this.tokenService.token = response.token as string;
           setTimeout(() => {
-            this.router.navigate(['welcome']);
+            this.router.navigate(['dashboard']);
           }, 300);
         }
       },

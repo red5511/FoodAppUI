@@ -5,4 +5,5 @@ export interface SaveCompanyRequest {
   address?: string;
   name?: string;
   openHours?: OpenHours;
+  userEmail?: string;
 }

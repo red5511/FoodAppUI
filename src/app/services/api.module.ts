@@ -8,6 +8,7 @@ import { ProductService } from './services/product.service';
 import { CompanyService } from './services/company.service';
 import { AuthenticationService } from './services/authentication.service';
 import { DemoControllerService } from './services/demo-controller.service';
+import { DashboardService } from './services/dashboard.service';
 
 /**
  * Module that provides all services and configuration.
@@ -21,6 +22,7 @@ import { DemoControllerService } from './services/demo-controller.service';
     CompanyService,
     AuthenticationService,
     DemoControllerService,
+    DashboardService,
     ApiConfiguration
   ],
 })

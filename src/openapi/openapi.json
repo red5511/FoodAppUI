@@ -311,6 +311,67 @@
                 ]
             }
         },
+        "/api/v1/dashboard/config/": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "operationId": "getConfig",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardGetInitConfigResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/dashboard/company/{companyId}": {
+            "get": {
+                "tags": [
+                    "Dashboard"
+                ],
+                "operationId": "getCompany",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/DashboardGetCompanyResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/auth/test": {
             "get": {
                 "tags": [
@@ -597,6 +658,9 @@
                     },
                     "openHours": {
                         "$ref": "#/components/schemas/OpenHours"
+                    },
+                    "userEmail": {
+                        "type": "string"
                     }
                 }
             },
@@ -665,6 +729,12 @@
                         "type": "string"
                     }
                 }
+            },
+            "DashboardGetInitConfigResponse": {
+                "type": "object"
+            },
+            "DashboardGetCompanyResponse": {
+                "type": "object"
             },
             "DeleteProductRequest": {
                 "type": "object",
