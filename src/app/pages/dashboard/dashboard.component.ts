@@ -9,24 +9,13 @@ import { DashboardGetInitConfigResponse } from '../../services/models';
   styleUrl: './dashboard.component.scss'
 })
 export class DashboardComponent {
-  response: DashboardGetInitConfigResponse = {};
-
-
-  constructor(
-    private dashboardService: DashboardService,
-    private tokenService: TokenService
-  ) {
+  constructor() {
   }
 
-  ngOnInit(): void {
-    this.dashboardService.getConfig().subscribe(
-      response => {
-        this.response = response;
-        console.log('Data loaded:', this.response);
-      },
-      error => {
-        console.error('Error loading data:', error);
-      }
-    );
-  }
+  getAllOrders() {
+    throw new Error('Method not implemented.');
+    }
+    getActiveOrders() {
+    throw new Error('Method not implemented.');
+    }
 }

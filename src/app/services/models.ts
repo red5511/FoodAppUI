@@ -4,6 +4,7 @@ export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ChangeInitPasswordRequest } from './models/change-init-password-request';
 export { ChangeInitPasswordResponse } from './models/change-init-password-response';
+export { CompanyData } from './models/company-data';
 export { DashboardGetCompanyResponse } from './models/dashboard-get-company-response';
 export { DashboardGetInitConfigResponse } from './models/dashboard-get-init-config-response';
 export { DeleteCompanyRequest } from './models/delete-company-request';

@@ -730,11 +730,48 @@
                     }
                 }
             },
+            "CompanyData": {
+                "type": "object",
+                "properties": {
+                    "companyId": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "companyName": {
+                        "type": "string"
+                    },
+                    "companyAddress": {
+                        "type": "string"
+                    },
+                    "openHours": {
+                        "$ref": "#/components/schemas/OpenHours"
+                    }
+                }
+            },
             "DashboardGetInitConfigResponse": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                    "companyDataList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CompanyData"
+                        }
+                    }
+                }
             },
             "DashboardGetCompanyResponse": {
-                "type": "object"
+                "type": "object",
+                "properties": {
+                    "companyName": {
+                        "type": "string"
+                    },
+                    "companyAddress": {
+                        "type": "string"
+                    },
+                    "openHours": {
+                        "$ref": "#/components/schemas/OpenHours"
+                    }
+                }
             },
             "DeleteProductRequest": {
                 "type": "object",

@@ -1,0 +1,29 @@
+<header>
+    <nav class="navbar">
+        <a routerLink="/welcome" class="logo">
+            <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img">
+        </a>
+        <ul class="nav-links">
+            <li>
+                <label class="switch">
+                    <input type="checkbox">
+                    <span class="slider round"></span>
+                </label>
+            </li>
+            <li>
+                <div class="dropdown" (click)="toggleDropdown()">
+                    <button class="dropdown-toggle">
+                        {{ currentCompanyName }}
+                    </button>
+                    <ul *ngIf="isDropdownOpen" class="dropdown-menu">
+                      <li class="dropdown-item" *ngFor="let option of options" (click)="selectOption(option)">
+                        {{ option }}
+                      </li>
+                    </ul>
+                  </div>
+            </li>
+            <li><a routerLink="/register">Register</a></li>
+            <li><a routerLink="/contact">Contact</a></li>
+        </ul>
+    </nav>
+</header>
