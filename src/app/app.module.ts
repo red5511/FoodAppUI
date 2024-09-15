@@ -23,6 +23,9 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatListModule } from '@angular/material/list';
+import { SwitchComponent } from './components/switch/switch.component';
+import { BodyComponent } from './layout/body/body.component';
+import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interceptor';
 
 @NgModule({
   declarations: [
@@ -38,6 +41,8 @@ import { MatListModule } from '@angular/material/list';
     SidenavComponent,
     Dashboard2Component,
     HeaderLoggedIn2Component,
+    SwitchComponent,
+    BodyComponent,
   ],
   imports: [
     RouterModule,
@@ -55,6 +60,11 @@ import { MatListModule } from '@angular/material/list';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthLogoutInterceptor,  // Handles 401 errors and redirection
       multi: true
     },
     provideAnimationsAsync('noop')

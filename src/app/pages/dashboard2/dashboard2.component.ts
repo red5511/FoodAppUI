@@ -11,13 +11,13 @@ export class Dashboard2Component {
 
   isSidebarVisible = true;
   isSubmenuOpen = false;
-  isDashboardSelected = false;
 
 
   constructor(private sidebarService: SidebarService) {}
 
   ngOnInit() {
     this.sidebarService.sidebarVisibility$.subscribe((isVisible) => {
+      console.log("dashboard2")
       console.log(isVisible)
       this.isSidebarVisible = isVisible;
     });
@@ -31,10 +31,5 @@ export class Dashboard2Component {
 
   toggleSubmenu() {
     this.isSubmenuOpen = !this.isSubmenuOpen;
-  }
-
-
-  selectDashboard() {
-    this.isDashboardSelected = true;
   }
 }

@@ -4,6 +4,7 @@ import { AuthenticationService } from '../../services/services';
 import { AuthenticationRequest } from '../../services/models/authentication-request';
 import { AuthenticationResponse } from '../../services/models/authentication-response';
 import { TokenService } from '../../services/token/token.service';
+import { LoginService } from '../../services/login/login.service';
 
 @Component({
   selector: 'app-login',
@@ -22,7 +23,8 @@ export class LoginComponent {
   constructor(
     private authService: AuthenticationService,
     private router: Router,
-    private tokenService: TokenService
+    private tokenService: TokenService,
+    private loginService: LoginService,
   ) {
   }
 
@@ -35,6 +37,7 @@ export class LoginComponent {
           this.authResponse = response;
           this.message = 'Account created successfully';
           this.tokenService.token = response.token as string;
+          this.loginService.loggedIn()
           setTimeout(() => {
             this.router.navigate(['dashboard']);
           }, 300);

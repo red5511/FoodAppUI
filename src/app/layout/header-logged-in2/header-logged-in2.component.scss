@@ -1,107 +1,204 @@
 .example-spacer {
-    flex: 1 1 auto;
+  flex: 1 1 auto;
+}
+
+/* toolbar.component.css */
+// .custom-toolbar {
+//   background-color: #f0f0f0; /* Background color of the toolbar */
+//   border-radius: 10px; /* Adjust the border-radius for a softer look */
+//   box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow */
+// }
+
+.mat-icon-button {
+  /* Background color of the button */
+  border-radius: 50%;
+  /* Make the button round */
+  width: 40px;
+  /* Adjust the button width as needed */
+  height: 40px;
+  /* Adjust the button height as needed */
+  // box-shadow: 3px 3px 5px #b9b9b9, -3px -3px 5px #ffffff; /* Neumorphism shadow for buttons */
+  // transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
+}
+
+/* toolbar.component.css */
+// .custom-toolbar {
+//   background-color: #f0f0f0; /* Background color of the toolbar */
+//   border-radius: 10px; /* Adjust the border-radius for a softer look */
+//   box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow */
+// }
+.custom-toolbar {
+  background-color: var(--purple-color);
+  background-color: var(--purple-color); /* Your chosen background color */
+  color: #f0f0f0; /* Text color */
+  position: fixed; /* Make the header stick to the top */
+  top: 0; /* Align it to the top of the page */
+  left: 0; /* Align it to the left edge of the page */
+  width: 100%; /* Make it span the full width of the page */
+  z-index: 1000; /* Ensure it appears above other elements */
+}
+
+.mat-toolbar {
+  color: #f0f0f0 !important;
+}
+
+.mat-icon-button {
+  color: #f0f0f0 !important;
+  background-color: #f0f0f0;
+  /* Background color of the button */
+  border-radius: 50%;
+  /* Make the button round */
+  width: 40px;
+  /* Adjust the button width as needed */
+  height: 40px;
+  /* Adjust the button height as needed */
+  // box-shadow: 3px 3px 5px #b9b9b9, -3px -3px 5px #ffffff; /* Neumorphism shadow for buttons */
+  transition: box-shadow 0.3s ease-in-out;
+  /* Add a smooth transition effect */
+}
+
+// .mat-icon-button:hover {
+//   // box-shadow: 6px 6px 10px #b9b9b9, -6px -6px 10px #ffffff;
+//   box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.5);/* Adjust the shadow on hover */
+// }
+
+/* Style the button with the "neumorphic-button" class */
+.neumorphic-button {
+  color: white;
+  /* Background color of the button */
+  border-radius: 10px;
+  /* Adjust the border-radius for a softer look */
+  // box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow for the specific button */
+  // transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
+  transition: transform 0.3s ease-in-out;
+
+  &:hover {
+    // Scale the button slightly on hover
+    transform: scale(1.05);
   }
-  
-  /* toolbar.component.css */
-  // .custom-toolbar {
-  //   background-color: #f0f0f0; /* Background color of the toolbar */
-  //   border-radius: 10px; /* Adjust the border-radius for a softer look */
-  //   box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow */
-  // }
-  
-  .mat-icon-button {
-    /* Background color of the button */
-    border-radius: 50%; /* Make the button round */
-    width: 40px; /* Adjust the button width as needed */
-    height: 40px; /* Adjust the button height as needed */
-    // box-shadow: 3px 3px 5px #b9b9b9, -3px -3px 5px #ffffff; /* Neumorphism shadow for buttons */
-    // transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
-  }
-  
-  /* toolbar.component.css */
-  // .custom-toolbar {
-  //   background-color: #f0f0f0; /* Background color of the toolbar */
-  //   border-radius: 10px; /* Adjust the border-radius for a softer look */
-  //   box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow */
-  // }
-  .custom-toolbar{
-    background-color: #322653;
-  
-  
-  }
-  .mat-toolbar{
-    color: #f0f0f0 !important;
-  }
-  .mat-icon-button {
-    color: #f0f0f0 !important;
-    background-color: #f0f0f0; /* Background color of the button */
-    border-radius: 50%; /* Make the button round */
-    width: 40px; /* Adjust the button width as needed */
-    height: 40px; /* Adjust the button height as needed */
-    // box-shadow: 3px 3px 5px #b9b9b9, -3px -3px 5px #ffffff; /* Neumorphism shadow for buttons */
-    transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
-  }
-  
-  // .mat-icon-button:hover {
-  //   // box-shadow: 6px 6px 10px #b9b9b9, -6px -6px 10px #ffffff;
-  //   box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.5);/* Adjust the shadow on hover */
-  // }
-  
-  /* Style the button with the "neumorphic-button" class */
-  .neumorphic-button {
-    color: white;
-   /* Background color of the button */
-    border-radius: 10px; /* Adjust the border-radius for a softer look */
-    // box-shadow: 5px 5px 10px #b9b9b9, -5px -5px 10px #ffffff; /* Neumorphism shadow for the specific button */
-    // transition: box-shadow 0.3s ease-in-out; /* Add a smooth transition effect */
-    transition: transform 0.3s ease-in-out;
-  
-    &:hover {
-      // Scale the button slightly on hover
-      transform: scale(1.05);
-    }}
-  
-  // .neumorphic-button:hover {
-  //   // box-shadow: 6px 6px 10px #b9b9b9, -6px -6px 10px #ffffff;
-  //   box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.5); /* Adjust the shadow on hover for the specific button */
-  //   // transform: translateY(-2px); /* Add a subtle lift effect on hover */
-  // }
-  
-  /* Adjust the button text color if needed */
-  .neumorphic-button {
-    color: white !important; /* Text color */
-  }
-  
-  
-  
-  /* Add some spacing between the buttons */
-  .custom-toolbar button:not(:last-child) {
-    margin-right: 10px;
-  }
-  
-  
-  .notification-icon {
-    color: #f0f0f0 !important;
-    transition: transform 0.2s ease; /* Add smooth transition effect */
-  
-    &:hover {
-      transform: scale(1.2); /* Scale the icon on hover */
-    }
-  }
-  
-  body {
-  
-    color: white !important;
-  }
-  
-  .mat-mdc-icon-button{
-    color: white !important;
-  }
+}
+
+// .neumorphic-button:hover {
+//   // box-shadow: 6px 6px 10px #b9b9b9, -6px -6px 10px #ffffff;
+//   box-shadow: 0px 0px 20px rgba(0, 0, 255, 0.5); /* Adjust the shadow on hover for the specific button */
+//   // transform: translateY(-2px); /* Add a subtle lift effect on hover */
+// }
+
+/* Adjust the button text color if needed */
+.neumorphic-button {
+  color: white !important;
+  /* Text color */
+}
 
 
-  .logo-img {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    width: 135px;
+
+/* Add some spacing between the buttons */
+.custom-toolbar button:not(:last-child) {
+  margin-right: 10px;
+}
+
+
+.notification-icon {
+  color: #f0f0f0 !important;
+  transition: transform 0.2s ease;
+  /* Add smooth transition effect */
+
+  &:hover {
+    transform: scale(1.2);
+    /* Scale the icon on hover */
   }
+}
+
+body {
+
+  color: white !important;
+}
+
+.mat-mdc-icon-button {
+  color: white !important;
+}
+
+
+.logo-img {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 135px;
+}
+
+
+.dropdown {
+  transition: color 0.3s ease;
+  position: relative;
+  display: inline-block;
+  border: 2px solid var(--secondary-color);
+  width: 160px;
+  text-align: center;
+  height: 35px;
+}
+
+.dropdown-toggle {
+  padding: 10px 20px;
+  color: white;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  background-color: var(--purple-color);
+  transition: color 0.3s ease;
+}
+
+.dropdown-toggle:hover {
+  color: #ccc;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  display: block;
+  width: 100%;
+  background-color: var(--purple-color);
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  justify-content: center;
+  align-items: center;
+  max-height: calc(35px * 5);
+  /* Height for 5 items */
+  overflow-y: auto;
+  /* Enable scrolling if content exceeds max-height */
+  li{
+    font-size: small;
+  }
+}
+
+.dropdown-item {
+  font: var(--font-stack);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  /* Vertically centers the content */
+  justify-content: center;
+  /* Horizontally centers the content */
+  color: var(--secondary-color);
+  text-align: center;
+  background-color: transparent;
+  width: 100%;
+  border-top: 1px solid var(--secondary-color);
+  border-right: 1px solid var(--secondary-color);
+  border-left: 1px solid var(--secondary-color);
+  height: 35px;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+.dropdown-item:last-child {
+  border-bottom: 1px solid var(--secondary-color);
+}
+
+.dropdown-item:hover {
+  background-color: var(--secondary-color);
+  color: var(--purple-color);
+  border: 1px solid var(--purple-color);
+  box-sizing: border-box;
+}

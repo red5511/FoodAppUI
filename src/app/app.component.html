@@ -1,1 +1,2 @@
-<router-outlet></router-outlet>
+<app-sidenav (onToogleSideNav)="onToggleSideNav($event)" [isLoggedIn]="isLoggedIn"></app-sidenav>
+<app-body [isSidebarVisible]="isSidebarVisible" [screenWidth]="screenWidth" [isLoggedIn]="isLoggedIn"></app-body>

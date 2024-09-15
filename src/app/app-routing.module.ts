@@ -6,31 +6,39 @@ import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
+import { noneAuthPathsWhenJwtPresentGuard } from './services/guard/none-auth-paths-when-jwt-present.guard';
+import { authGuard } from './services/guard/auth.guard';
 
 const routes: Routes = [
   {
     path: 'login',
-    component: LoginComponent
+    component: LoginComponent,
+    canActivate: [noneAuthPathsWhenJwtPresentGuard]
   },
   {
     path: 'register',
-    component: RegisterComponent
+    component: RegisterComponent,
+    canActivate: [noneAuthPathsWhenJwtPresentGuard]
   },
   {
     path: 'welcome',
     component: WelcomeComponent,
+    canActivate: [noneAuthPathsWhenJwtPresentGuard]
   },
   {
     path: 'changePassword',
     component: ChangePasswordComponent,
+    canActivate: [noneAuthPathsWhenJwtPresentGuard]
   },
   {
     path: 'dashboard',
     component: DashboardComponent,
+    canActivate: [authGuard]
   },
   {
     path: 'dashboard2',
     component: Dashboard2Component,
+    canActivate: [authGuard]
   }
 ];
 

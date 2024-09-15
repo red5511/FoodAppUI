@@ -20,6 +20,8 @@ header {
       gap: 1.5rem;
 
       li {
+        font-size: small;
+
         a {
           text-decoration: none;
           color: var(--secondary-color);
@@ -121,10 +123,10 @@ input:checked+.slider:before {
   width: 100%;
   background-color: var(--primary-color);
   transition: color 0.3s ease;
-  &:hover {
-    color: #ccc;
-  }
+}
 
+.dropdown-toggle:hover {
+  color: #ccc;
 }
 
 .dropdown-menu {
@@ -135,29 +137,43 @@ input:checked+.slider:before {
   width: 100%;
   background-color: var(--primary-color);
   margin: 0;
-  padding: 0%;
+  padding: 0;
   list-style-type: none;
   justify-content: center;
   align-items: center;
+  max-height: calc(35px * 5);
+  /* Height for 5 items */
+  overflow-y: auto;
+  /* Enable scrolling if content exceeds max-height */
 }
 
 .dropdown-item {
   font: var(--font-stack);
   cursor: pointer;
   display: flex;
-  align-items: center; /* Vertically centers the content */
-  justify-content: center; /* Horizontally centers the content */
+  align-items: center;
+  /* Vertically centers the content */
+  justify-content: center;
+  /* Horizontally centers the content */
   color: var(--secondary-color);
   text-align: center;
   background-color: transparent;
-  border: none;
   width: 100%;
-  border: 1px solid var(--secondary-color);
+  border-top: 1px solid var(--secondary-color);
+  border-right: 1px solid var(--secondary-color);
+  border-left: 1px solid var(--secondary-color);
   height: 35px;
+  box-sizing: border-box;
+  border-collapse: collapse;
+}
+
+.dropdown-item:last-child {
+  border-bottom: 1px solid var(--secondary-color);
 }
 
 .dropdown-item:hover {
   background-color: var(--secondary-color);
   color: var(--primary-color);
   border: 1px solid var(--primary-color);
+  box-sizing: border-box;
 }
