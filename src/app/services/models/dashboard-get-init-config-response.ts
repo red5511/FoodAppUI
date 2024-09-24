@@ -1,6 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-import { CompanyData } from '../models/company-data';
+import { CompanyDto } from '../models/company-dto';
 export interface DashboardGetInitConfigResponse {
-  companyDataList?: Array<CompanyData>;
+  companyDataList?: Array<CompanyDto>;
+  receivingOrdersActive?: boolean;
 }

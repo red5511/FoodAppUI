@@ -1,5 +1,5 @@
 p {
-    color: var(--primary-color);
+    color: var(--my-primary-color);
     font: var(--font-stack);
     transition: color 0.3s ease;
     &:hover {
@@ -26,7 +26,7 @@ p {
     width:20%;
     height: 55%;
     background-color: var(--secondary-color);
-    color: var(--primary-color);
+    color: var(--my-primary-color);
     text-align: center;
     vertical-align: middle;
     line-height: 55%;       /* The same as your div height */

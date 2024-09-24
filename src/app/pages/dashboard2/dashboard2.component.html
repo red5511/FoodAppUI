@@ -1,6 +1,12 @@
 <app-header-logged-in2></app-header-logged-in2>
-<!-- <app-sidenav (onToogleSideNav)="onToogleSideNav($event)"></app-sidenav> -->
-<div class="dashboard-main">
-    <div class="dashboard-order"></div>
-    <div class="dashboard-order-details"></div>
-</div>
+<!-- <app-custom-toast></app-custom-toast> -->
+<app-order-sidebnar></app-order-sidebnar>
+
+<!-- <app-switch [isChecked]="isCompanyReceivingOrdersActive" [isDisabled]="true"></app-switch>
+<app-switch [isChecked]="isUserReceivingOrdersActive" (onToogleCheckbox)="onToogleUserCheckbox($event)"></app-switch> -->
+<app-dashboard-panel 
+[checkedCompany]="isCompanyReceivingOrdersActive" 
+[checkedUser]="isUserReceivingOrdersActive" 
+[companyName]="companyName"
+(onToogleCheckbox)="onToogleUserCheckbox($event)"
+></app-dashboard-panel>

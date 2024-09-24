@@ -1,7 +1,8 @@
 import { Component } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 import { DashboardService } from '../../services/services/dashboard.service';
-import { DashboardGetInitConfigResponse } from '../../services/models';
+import { DashboardGetInitConfigResponse, OrderDto } from '../../services/models';
+import { ContextService } from '../../services/context/context.service';
 
 @Component({
   selector: 'app-header-logged-in2',
@@ -9,49 +10,56 @@ import { DashboardGetInitConfigResponse } from '../../services/models';
   styleUrl: './header-logged-in2.component.scss'
 })
 export class HeaderLoggedIn2Component {
-  constructor(private sidebarService: SidebarService, private dashboardService: DashboardService) {}
+  isChecked = false;
+  isDropdownOpen = false;
+  options: string[] = [];
+  selectedOption: string | null = null;
+  currentCompanyName: string = 'Brak firmy'
+  response: DashboardGetInitConfigResponse = {};
+
+  constructor(private sidebarService: SidebarService,
+    private dashboardService: DashboardService,
+    private contextService: ContextService) { }
 
   toggleSidebar() {
     // Check if the button click event is registered
-      this.sidebarService.toggleSidebar();
-      // Check if the visibility state is changing
-    }
+    this.sidebarService.toggleSidebar();
+    // Check if the visibility state is changing
+  }
 
-    isDropdownOpen = false;
-    options: string[] = [];
-    selectedOption: string | null = null;
-    currentCompanyName: string = 'Brak firmy'
-    response: DashboardGetInitConfigResponse = {};
-    
-    ngOnInit(): void {
-      this.dashboardService.getConfig().subscribe(
-        response => {
-          this.response = response;
-          if (this.response.companyDataList && this.response.companyDataList.length > 0) {
-            this.response.companyDataList.forEach(entry => {
-              this.options.push(entry.companyName as string);
-            })
-            this.currentCompanyName = this.response.companyDataList[0].companyName as string;
-            console.log('Company Data List:', this.response.companyDataList[0]);
-          }
-          console.log('Data loaded:', this.response);
-        },
-        error => {
-          console.error('Error loading data:', error);
+  ngOnInit(): void {
+    console.log('jestm w headderloggedIn');
+    this.dashboardService.getConfig().subscribe(
+      response => {
+        this.response = response;
+        if (this.response.companyDataList && this.response.companyDataList.length > 0) {
+          this.response.companyDataList.forEach(entry => {
+            this.options.push(entry.name as string);
+          })
+          let firstCompany = this.response.companyDataList[0];
+          this.isChecked = firstCompany.receivingOrdersActive as boolean;
+          this.currentCompanyName = firstCompany.name as string;
+          this.contextService.setContext(firstCompany.id as number, this.isChecked, false, firstCompany.name as string);
+          console.log('Company Data List:', firstCompany);
         }
-      );
-    }
-  
-    toggleDropdown(): void {
-      this.isDropdownOpen = !this.isDropdownOpen;
-    }
-  
-    closeDropdown(): void {
-      this.isDropdownOpen = false;
-    }
-  
-    selectOption(option: string): void {
-      this.selectedOption = option;
-      this.closeDropdown();
-    }
+        console.log('Data loaded:', this.response);
+      },
+      error => {
+        console.error('Error loading data:', error);
+      }
+    );
+  }
+
+  toggleDropdown(): void {
+    this.isDropdownOpen = !this.isDropdownOpen;
+  }
+
+  closeDropdown(): void {
+    this.isDropdownOpen = false;
+  }
+
+  selectOption(option: string): void {
+    this.selectedOption = option;
+    this.closeDropdown();
+  }
 }

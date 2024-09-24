@@ -1,0 +1,12 @@
+.toast-buttons-container {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    margin: 0 auto;
+  }
+  
+  .toast-buttons-container button {
+    flex: 1;
+    margin: 0 1rem; /* Adjust the margin as needed */
+  }
+  

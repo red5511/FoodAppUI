@@ -1,8 +1,8 @@
-<div class="sidebar" [ngClass]="{ 'showSidebar': isSidebarVisible, 'hideSidebar': !isSidebarVisible }" [@fadeInOut]
+<div class="sidebar" [ngClass]="{ 'showSidebar': isSidebarVisible, 'hideSidebar': !isSidebarVisible }"
     *ngIf="_isLoggedIn">
     <ul>
         <li>
-            <div class="toogle-menu" [ngClass]="{ 'toogle-menu2': isSidebarVisible, 'toogle-menu3': !isSidebarVisible }" [@fadeInOut]>
+            <div class="toogle-menu" [ngClass]="{ 'toogle-menu2': isSidebarVisible, 'toogle-menu3': !isSidebarVisible }">
                 <button mat-icon-button class="neumorphic-button" class="example-icon" aria-label="Toggle Sidebar"
                     (click)="toggleSidebar()">
                     <mat-icon>menu</mat-icon>

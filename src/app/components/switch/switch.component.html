@@ -1,8 +1,4 @@
 <label class="switch">
-    <input type="checkbox">
+    <input type="checkbox" [checked]="isChecked" [disabled]="isDisabled" (change)="onChange()">
     <span class="slider round"></span>
 </label>
-<div class="xdd"
-(click)="myFunction()">
-    XDDD
-</div>

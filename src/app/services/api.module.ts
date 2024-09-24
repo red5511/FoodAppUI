@@ -7,6 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { ProductService } from './services/product.service';
 import { CompanyService } from './services/company.service';
 import { AuthenticationService } from './services/authentication.service';
+import { OrderService } from './services/order.service';
 import { DemoControllerService } from './services/demo-controller.service';
 import { DashboardService } from './services/dashboard.service';
 
@@ -21,6 +22,7 @@ import { DashboardService } from './services/dashboard.service';
     ProductService,
     CompanyService,
     AuthenticationService,
+    OrderService,
     DemoControllerService,
     DashboardService,
     ApiConfiguration

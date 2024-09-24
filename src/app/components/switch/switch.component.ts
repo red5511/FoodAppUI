@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 
 @Component({
@@ -7,12 +7,16 @@ import { SidebarService } from '../../services/sidebar/sidebar.service';
   styleUrl: './switch.component.scss'
 })
 export class SwitchComponent {
-  constructor(private sidebarService: SidebarService) {
-  }
-  myFunction() {
-    console.log("Witam")
-    this.sidebarService.toggleSidebar(); // Toggle sidebar state
+  @Input() isDisabled = false;
+  @Input({ required: true }) isChecked!: boolean;
+  @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
 
+  constructor() {
+  }
+
+  onChange() {
+    this.isChecked = !this.isChecked
+    this.onToogleCheckbox.emit(this.isChecked)
   }
 
 }

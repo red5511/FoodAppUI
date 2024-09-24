@@ -22,9 +22,9 @@ export class HeaderLoggedInComponent {
         this.response = response;
         if (this.response.companyDataList && this.response.companyDataList.length > 0) {
           this.response.companyDataList.forEach(entry => {
-            this.options.push(entry.companyName as string);
+            this.options.push(entry.name as string);
           })
-          this.currentCompanyName = this.response.companyDataList[0].companyName as string;
+          this.currentCompanyName = this.response.companyDataList[0].name as string;
           console.log('Company Data List:', this.response.companyDataList[0]);
         }
         console.log('Data loaded:', this.response);

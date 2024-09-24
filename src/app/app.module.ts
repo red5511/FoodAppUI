@@ -18,7 +18,7 @@ import { HeaderLoggedInComponent } from './layout/header-logged-in/header-logged
 import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
 import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderLoggedIn2Component } from './layout/header-logged-in2/header-logged-in2.component';
-import { MatToolbarModule  } from '@angular/material/toolbar';
+import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatDividerModule } from '@angular/material/divider';
@@ -26,6 +26,16 @@ import { MatListModule } from '@angular/material/list';
 import { SwitchComponent } from './components/switch/switch.component';
 import { BodyComponent } from './layout/body/body.component';
 import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interceptor';
+import { ToastrModule } from 'ngx-toastr';
+import { CustomToastComponent } from './components/custom-toast/custom-toast.component';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
+import { ButtonModule } from 'primeng/button';
+import { OrderSidebnarComponent } from './components/order-sidebnar/order-sidebnar.component';
+import { SidebarModule } from 'primeng/sidebar';
+import { DashboardPanelComponent } from './components/dashboard-panel/dashboard-panel.component';
+import { InputSwitchModule } from 'primeng/inputswitch';
 
 @NgModule({
   declarations: [
@@ -43,9 +53,14 @@ import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interc
     HeaderLoggedIn2Component,
     SwitchComponent,
     BodyComponent,
+    CustomToastComponent,
+    OrderSidebnarComponent,
+    DashboardPanelComponent,
   ],
   imports: [
     RouterModule,
+    ToastModule, // Add this line
+    ButtonModule, // Needed for PrimeNG button components
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
@@ -55,8 +70,23 @@ import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interc
     MatMenuModule,
     MatDividerModule,
     MatListModule,
+    BrowserAnimationsModule,
+    SidebarModule,
+    InputSwitchModule,
+    ToastrModule.forRoot(
+      {
+        progressBar: true,
+        closeButton: true,
+        newestOnTop: true,
+        tapToDismiss: true,
+        positionClass: 'toast-top-left',
+        timeOut: 0,
+        maxOpened: 7
+      }
+    ),
   ],
   providers: [HttpClient,
+    MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
@@ -66,8 +96,7 @@ import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interc
       provide: HTTP_INTERCEPTORS,
       useClass: AuthLogoutInterceptor,  // Handles 401 errors and redirection
       multi: true
-    },
-    provideAnimationsAsync('noop')
+    }
   ],
   bootstrap: [AppComponent]
 })

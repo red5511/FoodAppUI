@@ -2,11 +2,12 @@
     width: calc(100% - 5rem);
     height: 100%;
     margin-left: 5rem;
+    margin-top: 125px;
     z-index: 0;
     position: relative;
     top: 0;
     transition: all 0.5s ease;
-    background-color: var(--primary-color);
+    background-color: var(--my-primary-color);
     overflow: hidden;
 }
 

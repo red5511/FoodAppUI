@@ -11,6 +11,9 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { DashboardGetCompanyResponse } from '../models/dashboard-get-company-response';
 import { DashboardGetInitConfigResponse } from '../models/dashboard-get-init-config-response';
+import { DashboardGetOrdersResponse } from '../models/dashboard-get-orders-response';
+import { getActiveOrders } from '../fn/dashboard/get-active-orders';
+import { GetActiveOrders$Params } from '../fn/dashboard/get-active-orders';
 import { getCompany } from '../fn/dashboard/get-company';
 import { GetCompany$Params } from '../fn/dashboard/get-company';
 import { getConfig } from '../fn/dashboard/get-config';
@@ -20,6 +23,31 @@ import { GetConfig$Params } from '../fn/dashboard/get-config';
 export class DashboardService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `getActiveOrders()` */
+  static readonly GetActiveOrdersPath = '/api/v1/dashboard/orders/{companyId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getActiveOrders()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getActiveOrders$Response(params: GetActiveOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
+    return getActiveOrders(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getActiveOrders$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getActiveOrders(params: GetActiveOrders$Params, context?: HttpContext): Observable<DashboardGetOrdersResponse> {
+    return this.getActiveOrders$Response(params, context).pipe(
+      map((r: StrictHttpResponse<DashboardGetOrdersResponse>): DashboardGetOrdersResponse => r.body)
+    );
   }
 
   /** Path part for operation `getConfig()` */

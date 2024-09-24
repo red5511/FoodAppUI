@@ -1,9 +1,7 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OpenHours } from '../models/open-hours';
+import { CompanyDto } from '../models/company-dto';
 export interface SaveCompanyRequest {
-  address?: string;
-  name?: string;
-  openHours?: OpenHours;
+  company?: CompanyDto;
   userEmail?: string;
 }

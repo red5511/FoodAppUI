@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
-import { SideNavToggle } from './services/models/side-nav-toggle.interface';
 import { TokenService } from './services/token/token.service';
 import { LoginService } from './services/login/login.service';
+import { SideNavToggle } from './components/side-nav-toggle.interface';
 
 @Component({
   selector: 'app-root',

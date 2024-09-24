@@ -1,8 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { OpenHours } from '../models/open-hours';
+import { CompanyDto } from '../models/company-dto';
 export interface ModifyCompanyRequest {
-  address?: string;
-  name?: string;
-  openHours?: OpenHours;
+  companyDto?: CompanyDto;
 }

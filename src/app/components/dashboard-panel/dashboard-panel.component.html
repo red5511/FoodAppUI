@@ -1,0 +1,13 @@
+<div class="dashboard-panel-container">
+    <label class="dashboard-panel-label">Status zamówień dla firmy <b>{{ companyName }}</b> </label>
+    <div class="dashboard-panel">
+        <div class="dashboard-panel-element">
+            <p><b>Status przyjmowania zamówień firmy</b></p>
+            <p-inputSwitch [(ngModel)]="checkedCompany" />
+        </div>
+        <div class="dashboard-panel-element">
+            <p><b>Status przyjmowania zamówień przez użytkownika</b></p>
+            <p-inputSwitch [(ngModel)]="checkedUser" (onChange)="onChange($event)" />
+        </div>
+    </div>
+</div>

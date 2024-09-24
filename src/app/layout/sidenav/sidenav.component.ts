@@ -1,7 +1,7 @@
 import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 import { LoginService } from '../../services/login/login.service';
-import { SideNavToggle } from '../../services/models/side-nav-toggle.interface';
+import { SideNavToggle } from '../../components/side-nav-toggle.interface';
 
 
 @Component({
@@ -40,7 +40,6 @@ export class SidenavComponent implements OnInit {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    console.log(window.innerWidth);
     this.screenWidth = window.innerWidth;
     this.checkScreenWidth();  // Check if window width is below 500px
     this.onToogleSideNav.emit({ isSidebarVisible: this.isSidebarVisible, screenWidth: this.screenWidth });

@@ -1,5 +1,11 @@
+@import "ngx-toastr/toastr";
+@import "primeng/resources/themes/lara-light-blue/theme.css";
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+
 :root {
-    --primary-color: #000;
+    --my-primary-color: #5be400;
     --secondary-color: #fff;
     --purple-color: #322653;
     --font-stack: 'Arial', sans-serif;
@@ -10,9 +16,11 @@ html{
     height: 100%;
     margin: 0;
     padding: 0;
-    background-color: var(--primary-color) ;
+    background-color: var(--my-primary-color) ;
     overflow-x: hidden;
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+body { margin: 0;
+  font-family: var(--font-family);
+}

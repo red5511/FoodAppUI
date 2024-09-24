@@ -6,10 +6,10 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { SaveProductRequest } from '../../models/save-product-request';
+import { CreateProductRequest } from '../../models/create-product-request';
 
 export interface SaveProduct1$Params {
-      body: SaveProductRequest
+      body: CreateProductRequest
 }
 
 export function saveProduct1(http: HttpClient, rootUrl: string, params: SaveProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
