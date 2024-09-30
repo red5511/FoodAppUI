@@ -9,6 +9,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
+import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
 import { saveOrder } from '../fn/order/save-order';
 import { SaveOrder$Params } from '../fn/order/save-order';
 
@@ -39,6 +41,31 @@ export class OrderService extends BaseService {
    */
   saveOrder(params: SaveOrder$Params, context?: HttpContext): Observable<string> {
     return this.saveOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `approveNewIncomingOrder()` */
+  static readonly ApproveNewIncomingOrderPath = '/api/v1/order/approve';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `approveNewIncomingOrder()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  approveNewIncomingOrder$Response(params: ApproveNewIncomingOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return approveNewIncomingOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `approveNewIncomingOrder$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  approveNewIncomingOrder(params: ApproveNewIncomingOrder$Params, context?: HttpContext): Observable<string> {
+    return this.approveNewIncomingOrder$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );
   }

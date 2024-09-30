@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export { ApproveNewIncomingOrderRequest } from './models/approve-new-incoming-order-request';
 export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ChangeInitPasswordRequest } from './models/change-init-password-request';

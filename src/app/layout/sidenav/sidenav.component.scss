@@ -108,9 +108,24 @@
     }
 }
 
+.sidebar .toogle-menu {
+    transition: all 2s ease;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: transparent;
+}
+.sidebar .toogle-menu3 {
+    transition: all 2s ease;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: start;
+    align-items: start;
+}
 
 // .hideSidebar {
-//     width: 26px;
+//     width: 25px;
 //     li a {
 //         color: #000000;
 //         // box-shadow: 3px 3px 5px #b9b9b9, -3px -3px 5px #ffffff;

@@ -1,6 +1,8 @@
 <div class="order-sidebar-panel" *ngIf="isOrderSidebarVisable">
     <div class="order-sidebar">
-        <div *ngFor="let order of orders" class="order-card">
+        <app-order-sidebar-element [order]="order" *ngFor="let order of orders"></app-order-sidebar-element>
+
+        <!-- <div *ngFor="let order of orders" class="order-card">
             <h3>Order for {{ order.customerName }}</h3>
             <p><strong>Delivery Address:</strong> {{ order.deliveryAddress || 'N/A' }}</p>
             <p><strong>Delivery Time:</strong> {{ order.deliveryTime || 'N/A' }}</p>
@@ -9,6 +11,28 @@
             <p><strong>Order Type:</strong> {{ order.orderType || 'N/A' }}</p>
             <p><strong>Price:</strong> {{ order.price ? order.price + ' PLN' : 'N/A' }}</p>
             <p><strong>Status:</strong> {{ order.status || 'N/A' }}</p>
-          </div>
+          </div> -->
+
+        <!-- <p-orderList [value]="orders" [listStyle]="{ height: '25rem' }" header="List of Orders">
+            <ng-template let-order pTemplate="item">
+                <div class="flex flex-wrap p-2 align-items-center gap-3">
+                    <span class="font-bold text-900">
+                        {{ order.deliveryAddress }}
+                    </span>
+                    <div class="flex-1 flex flex-column gap-2">
+                        <span class="font-bold">{{ order.name }}</span>
+                        <div class="flex align-items-center gap-2">
+                            <i class="pi pi-tag text-sm"></i>
+                            <span>
+                                {{ order.customerName }}
+                            </span>
+                        </div>
+                    </div>
+                    <span class="font-bold text-900">
+                        {{ '$' + order.price }}
+                    </span>
+                </div>
+            </ng-template>
+        </p-orderList> -->
     </div>
 </div>

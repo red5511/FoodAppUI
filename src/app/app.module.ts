@@ -36,6 +36,11 @@ import { OrderSidebnarComponent } from './components/order-sidebnar/order-sidebn
 import { SidebarModule } from 'primeng/sidebar';
 import { DashboardPanelComponent } from './components/dashboard-panel/dashboard-panel.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
+import { OrderListModule } from 'primeng/orderlist';
+import { OrderSidebarElementComponent } from './components/order-sidebar-element/order-sidebar-element.component';
+import { NewOrderPanelComponent } from './layout/new-order-panel/new-order-panel.component';
+import { PricePlnPipe } from './pipes/price-pln.pipe';
+import { FormattedDatePipe } from './pipes/formatted-date.pipe';
 
 @NgModule({
   declarations: [
@@ -56,6 +61,10 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     CustomToastComponent,
     OrderSidebnarComponent,
     DashboardPanelComponent,
+    OrderSidebarElementComponent,
+    NewOrderPanelComponent,
+    PricePlnPipe,
+    FormattedDatePipe,
   ],
   imports: [
     RouterModule,
@@ -73,13 +82,14 @@ import { InputSwitchModule } from 'primeng/inputswitch';
     BrowserAnimationsModule,
     SidebarModule,
     InputSwitchModule,
+    OrderListModule,
     ToastrModule.forRoot(
       {
         progressBar: true,
         closeButton: true,
         newestOnTop: true,
         tapToDismiss: true,
-        positionClass: 'toast-top-left',
+        positionClass: 'toast-top-right',
         timeOut: 0,
         maxOpened: 7
       }

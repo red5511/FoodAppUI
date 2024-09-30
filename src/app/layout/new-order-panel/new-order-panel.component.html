@@ -1,36 +1,49 @@
-<div class="panel">
-    <div class="grid-item grid-item1">{{ order.orderType }}</div>
-    <div class="grid-item grid-item2">
-        <h2><b>{{ order.name }}</b></h2>
-    </div>
-    <div class="grid-item grid-item3"></div>
-    <div class="grid-item grid-item4">
-        <h4>Kwota: <br> {{ order.price | pricePln }}</h4>
-    </div>
-    <div class="grid-item grid-item5">
-        <h4>Czas dostawy: {{ order.deliveryTime | formattedDate }}</h4>
-    </div>
-    <div class="grid-item grid-item6">
-        <h3>Lista produktów:</h3>
-        <ul class="product-list">
-            <li *ngFor="let product of order.products; trackBy: trackById">
-                <h5>{{ product.name }}</h5>
-            </li>
-        </ul>
-    </div>
-    <div class="grid-item grid-item7">
-        <h4>Adres dostawy: {{ order.deliveryAddress }}</h4>
-    </div>
-    <div class="grid-item grid-item8">
-        <button pButton pRipple label="Akceptuj" class="p-button-success" size="large">
-        </button>
-    </div>
-    <div class="grid-item grid-item9">
-        <h4>Opis: {{ order.description }}</h4>
-    </div>
-    <div class="grid-item grid-item10">
-    </div>
-    <div class="grid-item grid-item11">
-        <p-button pRipple label="Odrzuć" severity="danger" size="large" />
+@if (isDisplay) {
+<div class="panel-background ">
+    <div class="panel">
+        <div class="grid-item grid-item1">{{ order.orderType }}</div>
+        <div class="grid-item grid-item2">
+            <h2><b>{{ order.name }}</b></h2>
+        </div>
+        <div class="grid-item grid-item3"></div>
+
+        <div class="grid-item grid-item4">
+            <h4>Kwota: <br> {{ order.price | pricePln }}</h4>
+        </div>
+
+        <div class="grid-item grid-item5">
+            <h4>Czas dostawy: {{ order.deliveryTime | formattedDate }}</h4>
+        </div>
+
+        <div class="grid-item grid-item6">
+            <h3>Lista produktów:</h3>
+            <ul class="product-list">
+                <li *ngFor="let product of order.products; trackBy: trackById">
+                    <h5>{{ product.name }}</h5>
+                </li>
+            </ul>
+        </div>
+
+        <div class="grid-item grid-item7">
+            <h4>Adres dostawy: {{ order.deliveryAddress }}</h4>
+        </div>
+
+        <div class="grid-item grid-item9">
+            <h4>Opis: {{ order.description }}</h4>
+        </div>
+
+        <div class="grid-item grid-item8">
+            <button pButton pRipple label="Akceptuj" class="p-button-success" size="large">
+            </button>
+        </div>
+
+        <div class="grid-item grid-item10">
+            <h4>Czas: {{ timeRemaining }} </h4>
+        </div>
+
+        <div class="grid-item grid-item11">
+            <p-button pRipple label="Odrzuć" severity="danger" size="large" />
+        </div>
     </div>
 </div>
+}
