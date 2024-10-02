@@ -1,6 +1,7 @@
+<button (click)="onClick()">TODO Dorobic disabla na buttonach w pierwszej seklundzie czy cos takiego zeby nie bylo missclickow</button>
 @if (isDisplay) {
-<div class="panel-background ">
-    <div class="panel">
+    <div class="panel-background" [@inOutAnimation]>
+    <div class="panel" [ngClass]="{'visible': isDisplay, 'hidden': !isDisplay}">
         <div class="grid-item grid-item1">{{ order.orderType }}</div>
         <div class="grid-item grid-item2">
             <h2><b>{{ order.name }}</b></h2>
@@ -33,7 +34,7 @@
         </div>
 
         <div class="grid-item grid-item8">
-            <button pButton pRipple label="Akceptuj" class="p-button-success" size="large">
+            <button pButton pRipple label="Akceptuj" class="p-button-success" size="large" (click)="approveOrder()">
             </button>
         </div>
 
@@ -42,7 +43,7 @@
         </div>
 
         <div class="grid-item grid-item11">
-            <p-button pRipple label="Odrzuć" severity="danger" size="large" />
+            <p-button pRipple label="Odrzuć" severity="danger" size="large" (click)="rejectOrder()" />
         </div>
     </div>
 </div>

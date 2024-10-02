@@ -11,6 +11,8 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
 import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
+import { rejectNewIncomingOrder } from '../fn/order/reject-new-incoming-order';
+import { RejectNewIncomingOrder$Params } from '../fn/order/reject-new-incoming-order';
 import { saveOrder } from '../fn/order/save-order';
 import { SaveOrder$Params } from '../fn/order/save-order';
 
@@ -41,6 +43,31 @@ export class OrderService extends BaseService {
    */
   saveOrder(params: SaveOrder$Params, context?: HttpContext): Observable<string> {
     return this.saveOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `rejectNewIncomingOrder()` */
+  static readonly RejectNewIncomingOrderPath = '/api/v1/order/reject';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `rejectNewIncomingOrder()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  rejectNewIncomingOrder$Response(params: RejectNewIncomingOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+    return rejectNewIncomingOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `rejectNewIncomingOrder$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  rejectNewIncomingOrder(params: RejectNewIncomingOrder$Params, context?: HttpContext): Observable<string> {
+    return this.rejectNewIncomingOrder$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
     );
   }

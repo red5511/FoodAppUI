@@ -1,5 +1,5 @@
 export interface Context {
-  comanyId: number;
+  companyId: number;
   companyName: string;
   isCompanyReceivingOrdersActive: boolean;
   isUserReceivingOrdersActive: boolean

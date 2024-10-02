@@ -13,7 +13,7 @@ export class ContextService {
 
   setContext(companyId: number, isCompanyReceivingOrdersActive: boolean, isUserReceivingOrdersActive: boolean, companyName: string) {
     const newContext: Context = {
-      comanyId: companyId,
+      companyId: companyId,
       isCompanyReceivingOrdersActive: isCompanyReceivingOrdersActive,
       isUserReceivingOrdersActive: isUserReceivingOrdersActive,
       companyName: companyName
@@ -33,5 +33,9 @@ export class ContextService {
       };
       this.contextSubject.next(updatedContext);
     }
+  }
+
+  getCompanyId(): number | undefined {
+    return this.contextSubject.getValue()?.companyId
   }
 }

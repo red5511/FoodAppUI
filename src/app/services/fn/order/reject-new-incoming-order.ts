@@ -6,13 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
+import { RejectNewIncomingOrderRequest } from '../../models/reject-new-incoming-order-request';
 
-export interface SayHello2$Params {
+export interface RejectNewIncomingOrder$Params {
+      body: RejectNewIncomingOrderRequest
 }
 
-export function sayHello2(http: HttpClient, rootUrl: string, params?: SayHello2$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, sayHello2.PATH, 'get');
+export function rejectNewIncomingOrder(http: HttpClient, rootUrl: string, params: RejectNewIncomingOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, rejectNewIncomingOrder.PATH, 'post');
   if (params) {
+    rb.body(params.body, 'application/json');
   }
 
   return http.request(
@@ -25,4 +28,4 @@ export function sayHello2(http: HttpClient, rootUrl: string, params?: SayHello2$
   );
 }
 
-sayHello2.PATH = '/api/v1/auth/test';
+rejectNewIncomingOrder.PATH = '/api/v1/order/reject';

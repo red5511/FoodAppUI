@@ -20,4 +20,5 @@ export { OpenHours } from './models/open-hours';
 export { OrderDto } from './models/order-dto';
 export { ProductDto } from './models/product-dto';
 export { RegisterRequest } from './models/register-request';
+export { RejectNewIncomingOrderRequest } from './models/reject-new-incoming-order-request';
 export { SaveCompanyRequest } from './models/save-company-request';

@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { ProductDto } from '../models/product-dto';
 export interface OrderDto {
+  approvalDeadline?: string;
   companyId?: number;
   customerName?: string;
   deliveryAddress?: string;
