@@ -16,6 +16,8 @@
     // transform: translateY(20px);
     // transition: opacity 2.5s ease, transform 2.5s ease, background-color 2.5s ease;
     /* Add background-color to transition */
+    min-width: 350px;
+    max-width: 800px;
     margin-top: -20%;
     display: grid;
     grid-template-columns: repeat(3, 33%);
@@ -50,23 +52,34 @@
     align-items: center;
     padding: 20px;
     font-family: Arial, sans-serif;
+    h4{
+        font-size: clamp(16px, 2.5vw, 32px); /* Minimum 16px, responsive with 2.5vw, maximum 32px */
+    }
 }
 
 .grid-item1 {
     justify-content: center;
     padding: 0;
-    font-size: 12px;
+    font-size: 2vw;
     text-transform: uppercase;
     font-weight: bold;
     letter-spacing: 1px;
 }
 
-.grid-item2 h2 {
-    font-size: 40px;
+.grid-item2 {
+    justify-content: center;
     font-weight: bold;
     text-align: left;
     margin: 0;
+
+    h2 {
+        font-size: clamp(16px, 3.2vw, 40px); /* Minimum 16px, responsive with 2.5vw, maximum 32px */
+        font-weight: bold;
+        text-align: left;
+        margin: 0;
+    }
 }
+
 
 .grid-item4,
 .grid-item5,
@@ -96,7 +109,7 @@
 
 .product-list li {
     padding: 5px 0;
-    font-size: 14px;
+    font-size: 2vw;
 }
 
 .grid-item7,
@@ -123,3 +136,10 @@
     align-items: end;
 
 }
+
+// .responsive-button {
+//     width: 20vw; /* Button width responsive to the viewport */
+//     max-width: 300px;
+//     min-width: 100px;
+//     font-size: 1.5vw !important; /* Text size responsive to the viewport */
+//   }

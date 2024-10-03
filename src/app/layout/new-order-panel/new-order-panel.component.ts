@@ -38,6 +38,7 @@ export class NewOrderPanelComponent {
     this.isDisplay = !this.isDisplay
   }
 
+  areButtonsDisabled = true;
   isDisplay = false;
   timeRemaining = 4;
   timerIntervalId: any
@@ -90,12 +91,13 @@ export class NewOrderPanelComponent {
           this.order = order;
           this.timerIntervalId = setInterval(() => this.handleTimer(), 1000)
           //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
+          this.isDisplay = true;
+          setTimeout(() => this.areButtonsDisabled = false, 1100)
         }
         else {
           this.toastService.info("Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: " + this.calculateTimeLeft(order) + " sekund", order.name)
         }
         this.orders.push(order);
-        this.isDisplay = true;
       }
     });
   }
@@ -134,7 +136,6 @@ export class NewOrderPanelComponent {
     }
     else {
       this.timeRemaining = this.timeRemaining - 1
-      //this.isDisplay = true
     }
   }
 
@@ -182,11 +183,13 @@ export class NewOrderPanelComponent {
   handleProcessOrder() {
     console.log("HANDLE" + this.orders.length)
     this.isDisplay = false
+    this.areButtonsDisabled = true;
     this.orders.shift();
     if (this.orders.length > 0) {
       this.order = this.orders.at(0)!
       this.timeRemaining = this.calculateTimeLeft(this.orders.at(0)!);
       setTimeout(() => this.reOpenPanelForQueuedOrders(), 600)
+      setTimeout(() => this.areButtonsDisabled = false, 1100)
     }
     else {
       clearInterval(this.timerIntervalId);  // Stop the timer

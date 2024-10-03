@@ -1,6 +1,7 @@
-<button (click)="onClick()">TODO Dorobic disabla na buttonach w pierwszej seklundzie czy cos takiego zeby nie bylo missclickow</button>
+<button (click)="onClick()">TODO Dorobic disabla na buttonach w pierwszej seklundzie czy cos takiego zeby nie bylo
+    missclickow</button>
 @if (isDisplay) {
-    <div class="panel-background" [@inOutAnimation]>
+<div class="panel-background" [@inOutAnimation]>
     <div class="panel" [ngClass]="{'visible': isDisplay, 'hidden': !isDisplay}">
         <div class="grid-item grid-item1">{{ order.orderType }}</div>
         <div class="grid-item grid-item2">
@@ -17,10 +18,10 @@
         </div>
 
         <div class="grid-item grid-item6">
-            <h3>Lista produktów:</h3>
+            <h4>Lista produktów:</h4>
             <ul class="product-list">
                 <li *ngFor="let product of order.products; trackBy: trackById">
-                    <h5>{{ product.name }}</h5>
+                    <h4>{{ product.name }}</h4>
                 </li>
             </ul>
         </div>
@@ -34,8 +35,8 @@
         </div>
 
         <div class="grid-item grid-item8">
-            <button pButton pRipple label="Akceptuj" class="p-button-success" size="large" (click)="approveOrder()">
-            </button>
+            <p-button [disabled]="areButtonsDisabled" pRipple label="Akceptuj" severity="success" size="large"
+                (click)="approveOrder()" [style]="{'width': '15vw', 'max-width': '250px', 'min-width': '100px', 'font-size': 'clamp(14px, 2vw, 28px)'}" />
         </div>
 
         <div class="grid-item grid-item10">
@@ -43,7 +44,8 @@
         </div>
 
         <div class="grid-item grid-item11">
-            <p-button pRipple label="Odrzuć" severity="danger" size="large" (click)="rejectOrder()" />
+            <p-button [disabled]="areButtonsDisabled" pRipple label="Odrzuć" severity="danger" size="large"
+                (click)="rejectOrder()" [style]="{'width': '15vw', 'max-width': '250px', 'min-width': '100px', 'font-size': 'clamp(14px, 2vw, 28px)'}" />
         </div>
     </div>
 </div>
