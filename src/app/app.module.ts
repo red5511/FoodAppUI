@@ -90,7 +90,7 @@ import { FormattedDatePipe } from './pipes/formatted-date.pipe';
         newestOnTop: true,
         tapToDismiss: true,
         positionClass: 'toast-top-right',
-        timeOut: 0,
+        timeOut: 9000,
         maxOpened: 7
       }
     ),

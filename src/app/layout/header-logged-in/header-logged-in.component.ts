@@ -25,9 +25,7 @@ export class HeaderLoggedInComponent {
             this.options.push(entry.name as string);
           })
           this.currentCompanyName = this.response.companyDataList[0].name as string;
-          console.log('Company Data List:', this.response.companyDataList[0]);
         }
-        console.log('Data loaded:', this.response);
       },
       error => {
         console.error('Error loading data:', error);

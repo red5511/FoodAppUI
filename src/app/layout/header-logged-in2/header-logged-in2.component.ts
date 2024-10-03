@@ -28,7 +28,6 @@ export class HeaderLoggedIn2Component {
   }
 
   ngOnInit(): void {
-    console.log('jestm w headderloggedIn');
     this.dashboardService.getConfig().subscribe(
       response => {
         this.response = response;
@@ -40,9 +39,7 @@ export class HeaderLoggedIn2Component {
           this.isChecked = firstCompany.receivingOrdersActive as boolean;
           this.currentCompanyName = firstCompany.name as string;
           this.contextService.setContext(firstCompany.id as number, this.isChecked, false, firstCompany.name as string);
-          console.log('Company Data List:', firstCompany);
         }
-        console.log('Data loaded:', this.response);
       },
       error => {
         console.error('Error loading data:', error);

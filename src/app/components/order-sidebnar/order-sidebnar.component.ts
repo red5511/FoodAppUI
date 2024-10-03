@@ -24,9 +24,6 @@ export class OrderSidebnarComponent {
 
   ngOnInit() {
     this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      console.log("Wykrylem context change and trying to websocket stuff")
-      console.log(context)
-
       if (context?.isUserReceivingOrdersActive) {
         this.initWebSocket();
       } else {

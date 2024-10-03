@@ -14,10 +14,7 @@ export class DashboardPanelComponent {
   @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
 
   onChange(event: InputSwitchChangeEvent) {
-    console.log(event)
     this.checkedUser = event.checked
-    console.log('onChAnge')
-    console.log(this.checkedUser)
     this.onToogleCheckbox.emit(this.checkedUser)
   }
 }

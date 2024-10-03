@@ -23,8 +23,6 @@ export class ContextService {
 
   setUserReceivingOrdersActive(isUserReceivingOrdersActive: boolean) {
     const currentContext = this.contextSubject.getValue();
-    console.log("setUserReceivingOrdersActive")
-    console.log(currentContext)
     if (currentContext) {
       // Update only isUserReceivingOrdersActive and keep other properties the same
       const updatedContext: Context = {

@@ -69,15 +69,11 @@ export class RegisterComponent {
         // }
 
 
-
-
-        console.log(err);
         this.message = 'Registration failed: ';
         if (err.error) {
           console.error('Error details:', err.error); // Log the error details
           // Check if errorCode exists in the error object
           const errorCode = err.error.errorCode || err.error['errorCode'];
-          console.log('Extracted errorCode:', errorCode); // Log the extracted errorCode for debugging  
           this.message = this.message + (err.error.errorCode || 'Unknown error');
         }
       }

@@ -19,8 +19,6 @@ export class SidenavComponent implements OnInit {
 
   @Input() set isLoggedIn(value: boolean) {
     this._isLoggedIn = value;
-    console.log("kekkk");
-    console.log(this._isLoggedIn);
   }
 
   constructor(private sidebarService: SidebarService,
@@ -30,9 +28,7 @@ export class SidenavComponent implements OnInit {
   ngOnInit() {
     this.screenWidth = window.innerWidth;
     this.checkScreenWidth(); // Initial check when the component loads
-    console.log("sidenav")
     this.sidebarService.sidebarVisibility$.subscribe((isVisible) => {
-      console.log(isVisible)
       this.isSidebarVisible = isVisible;
       this.onToogleSideNav.emit({ isSidebarVisible: this.isSidebarVisible, screenWidth: this.screenWidth })
     });

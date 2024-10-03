@@ -5,6 +5,7 @@ import { ContextService } from '../../services/context/context.service';
 import { WebSocketService } from '../../services/websocket/web-socket-service';
 import { OrderService } from '../../services/services';
 import { animate, animateChild, group, style, transition, trigger } from '@angular/animations';
+import { TokenService } from '../../services/token/token.service';
 
 @Component({
   selector: 'app-new-order-panel',
@@ -32,22 +33,16 @@ import { animate, animateChild, group, style, transition, trigger } from '@angul
   ]
 })
 export class NewOrderPanelComponent {
-
-  onClick() {
-    console.log()
-    this.isDisplay = !this.isDisplay
-  }
-
   areButtonsDisabled = true;
   isDisplay = false;
   timeRemaining = 4;
   timerIntervalId: any
   soundIntervalId: any
   audioContext!: AudioContext;
-  userEmail: string = 'maciekfranczak@onet.eu';
   socketClient: any = null;
   orders: OrderDto[] = [];
   order!: OrderDto;
+  userEmail: string | undefined;
 
   trackById(index: number, product: ProductDto): number {
     return product.id!; // Unique id for each product
@@ -57,20 +52,22 @@ export class NewOrderPanelComponent {
     private contextService: ContextService,
     private toastService: ToastrService,
     private webSocketService: WebSocketService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private tokenService: TokenService
   ) {
   }
 
   ngOnInit() {
-    this.requestUserInteraction(); // Set up the user interaction for audio
-    this.initWebsocket()
+    this.userEmail = this.tokenService.getEmail()
+    console.log(this.userEmail)
+    if ("EMAIL" + this.userEmail) {
+      this.requestUserInteraction(); // Set up the user interaction for audio
+      this.initWebsocket()
+    }
   }
 
   initWebsocket() {
     this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      console.log("Wykrylem context change and trying to websocket stuff")
-      console.log(context)
-
       if (context?.isUserReceivingOrdersActive) {
         this.connectWebSocket();
       } else {
@@ -83,11 +80,10 @@ export class NewOrderPanelComponent {
     this.webSocketService.connect();
 
     // Subscribe to the WebSocket orders channel
-    this.webSocketService.subscribeToOrders(this.userEmail, (order: OrderDto) => {
+    this.webSocketService.subscribeToOrders(this.userEmail!, (order: OrderDto) => {
       if (order) {
         if (this.orders.length == 0) {
           this.timeRemaining = this.calculateTimeLeft(order);
-          console.log("TimeReaming" + this.timeRemaining)
           this.order = order;
           this.timerIntervalId = setInterval(() => this.handleTimer(), 1000)
           //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
@@ -128,8 +124,6 @@ export class NewOrderPanelComponent {
   }
 
   handleTimer() {
-    console.log(this.timeRemaining)
-
     if (this.timeRemaining <= 0) {
       this.toastService.warning("Zamówienie zostało odrzucone", this.order.name)
       this.handleProcessOrder();
@@ -181,7 +175,6 @@ export class NewOrderPanelComponent {
   }
 
   handleProcessOrder() {
-    console.log("HANDLE" + this.orders.length)
     this.isDisplay = false
     this.areButtonsDisabled = true;
     this.orders.shift();
@@ -205,7 +198,6 @@ export class NewOrderPanelComponent {
     document.addEventListener('click', () => {
       if (!this.audioContext) {
         this.audioContext = new (window.AudioContext || (window as any).webkitAudioContext)();
-        console.log("AudioContext created on mouse move.");
       }
     }, { once: true }); // Listen for a single mouse movement only
   }

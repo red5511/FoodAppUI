@@ -30,12 +30,9 @@ export class Dashboard2Component {
 
   ngOnInit() {
     this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      console.log(context)
       this.isCompanyReceivingOrdersActive = context?.isCompanyReceivingOrdersActive ?? false;
       this.isUserReceivingOrdersActive = context?.isUserReceivingOrdersActive ?? false;
       this.companyName = context?.companyName ?? ''
-      console.log('ngOnInit')
-      console.log(this.isUserReceivingOrdersActive)
 
     });
   }
@@ -46,7 +43,6 @@ export class Dashboard2Component {
   }
 
   onToogleUserCheckbox(isChecked: boolean) {
-    console.log('onToogleUserCheckbox')
     this.contextService.setUserReceivingOrdersActive(isChecked)
   }
 
