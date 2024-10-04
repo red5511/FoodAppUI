@@ -41,6 +41,10 @@ import { OrderSidebarElementComponent } from './components/order-sidebar-element
 import { NewOrderPanelComponent } from './layout/new-order-panel/new-order-panel.component';
 import { PricePlnPipe } from './pipes/price-pln.pipe';
 import { FormattedDatePipe } from './pipes/formatted-date.pipe';
+import { NewOrderTableComponent } from './components/new-order-table/new-order-table.component';
+import { TableModule } from 'primeng/table';
+import { TagModule } from 'primeng/tag';
+import { RatingModule } from 'primeng/rating';
 
 @NgModule({
   declarations: [
@@ -65,6 +69,7 @@ import { FormattedDatePipe } from './pipes/formatted-date.pipe';
     NewOrderPanelComponent,
     PricePlnPipe,
     FormattedDatePipe,
+    NewOrderTableComponent,
   ],
   imports: [
     RouterModule,
@@ -83,6 +88,9 @@ import { FormattedDatePipe } from './pipes/formatted-date.pipe';
     SidebarModule,
     InputSwitchModule,
     OrderListModule,
+    TableModule,
+    TagModule,
+    RatingModule,
     ToastrModule.forRoot(
       {
         progressBar: true,
