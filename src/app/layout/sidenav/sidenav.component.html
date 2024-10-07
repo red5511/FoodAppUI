@@ -1,14 +1,8 @@
-<div class="sidebar" [ngClass]="{ 'showSidebar': isSidebarVisible, 'hideSidebar': !isSidebarVisible }"
-    *ngIf="_isLoggedIn">
+<div class="sidebar" [ngClass]="{ 
+    'showSidebar': isSidebarVisible,
+     'collapsedSidebar': !isSidebarVisible,
+      'hiddenSidebar': isSidebarHidden && isSidebarVisible}" *ngIf="_isLoggedIn">
     <ul>
-        <li>
-            <div class="toogle-menu" [ngClass]="{ 'toogle-menu2': isSidebarVisible, 'toogle-menu3': !isSidebarVisible }">
-                <button mat-icon-button class="neumorphic-button" class="example-icon" aria-label="Toggle Sidebar"
-                    (click)="toggleSidebar()">
-                    <mat-icon>menu</mat-icon>
-                </button>
-            </div>
-        </li>
         <li>
             <a routerLink="/dashboard2" routerLinkActive="active" (click)="toggleSidebarIfClosed()">
                 <span class="menu-icon material-icons">dashboard</span>
@@ -18,7 +12,6 @@
                         'keyboard_arrow_right' }}</mat-icon>
                 </span>
             </a>
-            <!-- Sub-menu for Dashboard with left padding -->
             <ul *ngIf="isSubmenuOpen && isSidebarVisible" class="sub-menu">
                 <li><a routerLink="/dashboard"
                         [ngClass]="{ 'showSidebarElement': isSidebarVisible, 'hideSidebarElement': !isSidebarVisible }"

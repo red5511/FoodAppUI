@@ -11,4 +11,8 @@ export class SidebarService {
   toggleSidebar() {
     this.sidebarVisibilitySubject.next(!this.sidebarVisibilitySubject.value);
   }
+
+  setSidebar(boolVal: boolean) {
+    this.sidebarVisibilitySubject.next(boolVal)
+  }
 }

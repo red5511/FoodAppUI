@@ -45,6 +45,7 @@ import { NewOrderTableComponent } from './components/new-order-table/new-order-t
 import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
+import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { RatingModule } from 'primeng/rating';
     PricePlnPipe,
     FormattedDatePipe,
     NewOrderTableComponent,
+    TruncateOnResizePipe,
   ],
   imports: [
     RouterModule,

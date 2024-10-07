@@ -1,5 +1,9 @@
 import { Component } from '@angular/core';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
+import { DashboardService, OrderService } from '../../services/services';
+import { ContextService } from '../../services/context/context.service';
+import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
+import { DashboardGetOrdersResponse, OrderDto } from '../../services/models';
 
 @Component({
   selector: 'app-new-order-table',
@@ -10,11 +14,31 @@ export class NewOrderTableComponent {
   expandedRows: { [s: string]: boolean } = {};
 
   // Sample data
-  orders = [
-    { id: 1, name: 'Order 1', amount: 100, date: '2024-09-01', description: 'Payment for Service A', status: 'INSTOCK' },
-    { id: 2, name: 'Order 2', amount: 200, date: '2024-09-05', description: 'Payment for Service B', status: 'LOWSTOCK' },
-    { id: 3, name: 'Order 3', amount: 150, date: '2024-09-10', description: 'Payment for Service C', status: 'OUTOFSTOCK' }
-  ];
+  orders: OrderDto[] = []; // Define orders as an array of OrderDto
+
+  constructor(private dashboardService: DashboardService, private contextService: ContextService
+  ) {
+
+  }
+
+  ngOnInit(): void {
+    this.contextService.getCompanyIdAsync().subscribe(companyId => { // Ensure this method returns an observable
+      if (companyId) {
+        const params: GetActiveOrders$Params = { companyId };
+        
+        // Now call getActiveOrders with the companyId
+        this.dashboardService.getActiveOrders(params).subscribe({
+          next: (response: DashboardGetOrdersResponse) => {
+            if (response && response.orderList) {
+              this.orders = response.orderList;
+            }
+          }
+        });
+      } else {
+        console.error('Company ID is undefined');
+      }
+    });
+  }
 
   onRowExpand(event: TableRowExpandEvent) {
     const order = event.data;
@@ -27,7 +51,7 @@ export class NewOrderTableComponent {
   }
 
   expandAll() {
-    this.orders.forEach(order => this.expandedRows[order.id] = true);
+    this.orders.forEach(order => this.expandedRows[order.id!] = true);
   }
 
   collapseAll() {

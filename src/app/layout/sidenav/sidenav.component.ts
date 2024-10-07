@@ -16,13 +16,14 @@ export class SidenavComponent implements OnInit {
   isSubmenuOpen = false;
   screenWidth = 0;
   _isLoggedIn = false;
+  isSidebarHidden = false;
+  tabletWith = 1000;
 
   @Input() set isLoggedIn(value: boolean) {
     this._isLoggedIn = value;
   }
 
   constructor(private sidebarService: SidebarService,
-    private loginService: LoginService
   ) { }
 
   ngOnInit() {
@@ -30,6 +31,10 @@ export class SidenavComponent implements OnInit {
     this.checkScreenWidth(); // Initial check when the component loads
     this.sidebarService.sidebarVisibility$.subscribe((isVisible) => {
       this.isSidebarVisible = isVisible;
+      console.log("www" + this.isSidebarHidden)
+      if (isVisible && this.screenWidth < this.tabletWith) {
+        this.isSidebarHidden = true
+      }
       this.onToogleSideNav.emit({ isSidebarVisible: this.isSidebarVisible, screenWidth: this.screenWidth })
     });
   }
@@ -59,13 +64,18 @@ export class SidenavComponent implements OnInit {
   }
 
   checkScreenWidth() {
-    if (this.screenWidth < 650) {
+    if (this.screenWidth < this.tabletWith) {
+      this.isSidebarHidden = true
+    }
+    else if ((this.screenWidth < 1200 && this.isSidebarVisible) && this.screenWidth > this.tabletWith) {
       this.isSidebarVisible = false;
       this.isSubmenuOpen = false;
-      //this.sidebarService.toggleSidebar(); // Toggle sidebar state
+      this.isSidebarHidden = false
+      this.sidebarService.toggleSidebar(); // Toggle sidebar state
     }
-    if (this.screenWidth > 650 && !this.isSidebarVisible) {
-      this.isSidebarVisible = true;
+    else if (this.screenWidth > 1200 && !this.isSidebarVisible) {
+      this.isSidebarHidden = false
+      this.sidebarService.toggleSidebar(); // Toggle sidebar state
     }
   }
 }

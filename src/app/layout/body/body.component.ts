@@ -32,7 +32,7 @@ export class BodyComponent {
   }
 
   updateBodyClass(): string {
-    if(!this._isLoggedIn){
+    if(!this._isLoggedIn || this._screenWidth <= 1000){
       this.bodyClass = 'body-normal';
     }
     else if (this._isSidebarVisible) {
@@ -41,6 +41,8 @@ export class BodyComponent {
     else {
       this.bodyClass = 'body-md-screen'
     }
+    console.log(this.bodyClass)
+
     // else if (!this._isSidebarVisible && this._screenWidth <= 768 && this._screenWidth > 0) {
     //   this.bodyClass = 'body-md-screen'
     // }

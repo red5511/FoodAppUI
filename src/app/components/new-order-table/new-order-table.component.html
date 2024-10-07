@@ -7,28 +7,43 @@
             <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
         </div>
     </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th style="width: 5rem"></th>
-            <th pSortableColumn="name">Name <p-sortIcon field="name" /></th>
-            <th>Image</th>
-            <th pSortableColumn="price">Price <p-sortIcon field="price" /></th>
-            <th pSortableColumn="date">Date <p-sortIcon field="category" /></th>
-            <th pSortableColumn="description">Descricption <p-sortIcon field="rating" /></th>
-        </tr>
-    </ng-template>
+<ng-template pTemplate="header">
+    <tr>
+        <th class="table-header" style="width: 5px"></th> <!-- For buttons -->
+        <th class="table-header" style="width: 7rem" pSortableColumn="name">
+            <div class="table-header-content">
+                Name / <br> kek <p-sortIcon field="name" />
+            </div>
+        </th>
+        <th class="table-header" style="width: 2rem">Image</th>
+        <th class="table-header" style="width: 2rem" pSortableColumn="price">
+            <div class="table-header-content">
+                Price <p-sortIcon field="price" />
+            </div>
+        </th>
+        <th class="table-header" style="width: 6rem" pSortableColumn="date">
+            <div class="table-header-content">
+                Date <p-sortIcon field="date" />
+            </div>
+        </th>
+        <th class="table-header" style="width: 23em" pSortableColumn="description">
+            <div class="table-header-content">
+                Description <p-sortIcon field="description" />
+            </div>
+        </th>
+    </tr>
+</ng-template>
     <ng-template pTemplate="body" let-order let-expanded="expanded">
         <tr>
             <td>
                 <p-button type="button" pRipple [pRowToggler]="order" [text]="true" [rounded]="true" [plain]="true"
                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
             </td>
-            <td>{{ order.name }}</td>
-            <td><img [src]="'https://primefaces.org/cdn/primeng/images/demo/order/' + order.image" [alt]="order.name"
-                    width="50" class="shadow-4" /></td>
+            <td>{{ order.name }} <br> xddd</td>
+            <td>xd</td>
             <td>{{ order.amount | currency : 'USD' }}</td>
             <td>{{ order.date }}</td>
-            <td> {{order.description}} </td>
+            <td [innerHTML]="order.description | truncateOnResize"></td>
         </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-order>

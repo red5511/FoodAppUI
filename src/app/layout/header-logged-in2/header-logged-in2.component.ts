@@ -16,6 +16,7 @@ export class HeaderLoggedIn2Component {
   selectedOption: string | null = null;
   currentCompanyName: string = 'Brak firmy'
   response: DashboardGetInitConfigResponse = {};
+isSidebarVisible = true;
 
   constructor(private sidebarService: SidebarService,
     private dashboardService: DashboardService,

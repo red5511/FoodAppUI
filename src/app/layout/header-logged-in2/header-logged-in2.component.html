@@ -1,27 +1,33 @@
 <!-- toolbar.component.html -->
 <mat-toolbar class="custom-toolbar">
-    <a routerLink="/welcome" class="logo">
-        <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img">
-    </a>
-     <span class="example-spacer"></span>
-     &nbsp;
-     <app-switch [isChecked]="isChecked"></app-switch>
-     &nbsp;
-     &nbsp;
-     &nbsp;
-     &nbsp;
-     &nbsp;
-     <div class="dropdown" (click)="toggleDropdown()">
-      <button class="dropdown-toggle">
-          {{ currentCompanyName }}
-      </button>
-      <ul *ngIf="isDropdownOpen" class="dropdown-menu">
-        <li class="dropdown-item" *ngFor="let option of options" (click)="selectOption(option)">
-          {{ option }}
-        </li>
-      </ul>
-    </div>   
-    &nbsp;
-    &nbsp;
-    &nbsp;
-   </mat-toolbar>
+  <div class="toogle-menu" [ngClass]="{ 'toogle-menu2': isSidebarVisible, 'toogle-menu3': !isSidebarVisible }">
+    <button mat-icon-button class="neumorphic-button" class="example-icon" aria-label="Toggle Sidebar"
+      (click)="toggleSidebar()">
+      <mat-icon>menu</mat-icon>
+    </button>
+  </div>
+  <a routerLink="/welcome" class="logo">
+    <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img">
+  </a>
+  <span class="example-spacer"></span>
+  &nbsp;
+  <app-switch [isChecked]="isChecked"></app-switch>
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  &nbsp;
+  <div class="dropdown" (click)="toggleDropdown()">
+    <button class="dropdown-toggle">
+      {{ currentCompanyName }}
+    </button>
+    <ul *ngIf="isDropdownOpen" class="dropdown-menu">
+      <li class="dropdown-item" *ngFor="let option of options" (click)="selectOption(option)">
+        {{ option }}
+      </li>
+    </ul>
+  </div>
+  &nbsp;
+  &nbsp;
+  &nbsp;
+</mat-toolbar>
