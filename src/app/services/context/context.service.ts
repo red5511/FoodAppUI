@@ -5,8 +5,8 @@ import { map } from 'rxjs/operators'; // Import map operator for transforming re
 
 export interface Context {
   companyId: number;
-  isCompanyReceivingOrdersActive: boolean;
-  isUserReceivingOrdersActive: boolean;
+  // isCompanyReceivingOrdersActive: boolean;
+  // isUserReceivingOrdersActive: boolean;
   companyName: string;
 }
 
@@ -17,44 +17,40 @@ export class ContextService {
   private contextSubject = new BehaviorSubject<Context | null>(null);
   contextSubjectVisibility$ = this.contextSubject.asObservable();
 
+  private userReceivingOrdersSubject = new BehaviorSubject<boolean>(false);
+  userReceivingOrdersSubjectVisibility$ = this.userReceivingOrdersSubject.asObservable();
+
   constructor(private http: HttpClient) { }
 
-  setContext(companyId: number, isCompanyReceivingOrdersActive: boolean, isUserReceivingOrdersActive: boolean, companyName: string) {
+  // setContext(companyId: number, isCompanyReceivingOrdersActive: boolean, isUserReceivingOrdersActive: boolean, companyName: string) {
+  //   const newContext: Context = {
+  //     companyId,
+  //     isCompanyReceivingOrdersActive,
+  //     isUserReceivingOrdersActive,
+  //     companyName
+  //   };
+  //   this.contextSubject.next(newContext);
+  // }
+  setContext(companyId: number, companyName: string) {
     const newContext: Context = {
       companyId,
-      isCompanyReceivingOrdersActive,
-      isUserReceivingOrdersActive,
       companyName
     };
     this.contextSubject.next(newContext);
   }
 
   setUserReceivingOrdersActive(isUserReceivingOrdersActive: boolean) {
-    const currentContext = this.contextSubject.getValue();
-    if (currentContext) {
-      // Update only isUserReceivingOrdersActive and keep other properties the same
-      const updatedContext: Context = {
-        ...currentContext,
-        isUserReceivingOrdersActive
-      };
-      this.contextSubject.next(updatedContext);
-    }
+    this.userReceivingOrdersSubject.next(isUserReceivingOrdersActive);
   }
 
-  getCompanyId(): Observable<number | undefined> {
+  getCompanyIdObservable(): Observable<number | undefined> {
     return this.contextSubject.pipe(
       map(context => context?.companyId)
     );
   }
 
-  // Method to fetch initial context from an API
-  fetchInitialContext(): Observable<Context> {
-    return this.http.get<Context>('your-api-endpoint/config') // Replace with your actual endpoint
-      .pipe(
-        map(response => {
-          this.setContext(response.companyId, response.isCompanyReceivingOrdersActive, response.isUserReceivingOrdersActive, response.companyName);
-          return response; // Return the response for further chaining if needed
-        })
-      );
+  getCompanyId(): number | undefined {
+    return this.contextSubject.getValue()?.companyId
+
   }
 }

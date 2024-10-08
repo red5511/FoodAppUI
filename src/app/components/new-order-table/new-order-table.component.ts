@@ -4,6 +4,7 @@ import { DashboardService, OrderService } from '../../services/services';
 import { ContextService } from '../../services/context/context.service';
 import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
 import { DashboardGetOrdersResponse, OrderDto } from '../../services/models';
+import { WebSocketService } from '../../services/websocket/web-socket-service';
 
 @Component({
   selector: 'app-new-order-table',
@@ -16,13 +17,13 @@ export class NewOrderTableComponent {
   // Sample data
   orders: OrderDto[] = []; // Define orders as an array of OrderDto
 
-  constructor(private dashboardService: DashboardService, private contextService: ContextService
+  constructor(private dashboardService: DashboardService, private contextService: ContextService, private webSocketService : WebSocketService
   ) {
 
   }
 
   ngOnInit(): void {
-    this.contextService.getCompanyIdAsync().subscribe(companyId => { // Ensure this method returns an observable
+    this.contextService.getCompanyIdObservable().subscribe(companyId => { // Ensure this method returns an observable
       if (companyId) {
         const params: GetActiveOrders$Params = { companyId };
         
@@ -34,10 +35,24 @@ export class NewOrderTableComponent {
             }
           }
         });
-      } else {
-        console.error('Company ID is undefined');
       }
     });
+    
+    this.webSocketService.newOrderApprovedVisibility$.subscribe(val => {
+      let companyId = this.contextService.getCompanyId()
+      if(companyId !== undefined){
+        const params: GetActiveOrders$Params = { companyId };
+        
+        // Now call getActiveOrders with the companyId
+        this.dashboardService.getActiveOrders(params).subscribe({
+          next: (response: DashboardGetOrdersResponse) => {
+            if (response && response.orderList) {
+              this.orders = response.orderList;
+            }
+          }
+        });
+      }
+    })
   }
 
   onRowExpand(event: TableRowExpandEvent) {

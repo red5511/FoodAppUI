@@ -67,8 +67,8 @@ export class NewOrderPanelComponent {
   }
 
   initWebsocket() {
-    this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      if (context?.isUserReceivingOrdersActive) {
+    this.contextService.userReceivingOrdersSubjectVisibility$.subscribe((isReceiving) => {
+      if (isReceiving) {
         this.connectWebSocket();
       } else {
         this.disconnectWebSocket();
@@ -77,25 +77,28 @@ export class NewOrderPanelComponent {
   }
 
   connectWebSocket() {
-    this.webSocketService.connect();
+    let companyId = this.contextService.getCompanyId()
 
-    // Subscribe to the WebSocket orders channel
-    this.webSocketService.subscribeToOrders(this.userEmail!, (order: OrderDto) => {
-      if (order) {
-        if (this.orders.length == 0) {
-          this.timeRemaining = this.calculateTimeLeft(order);
-          this.order = order;
-          this.timerIntervalId = setInterval(() => this.handleTimer(), 1000)
-          //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
-          this.isDisplay = true;
-          setTimeout(() => this.areButtonsDisabled = false, 1100)
+    if (companyId !== undefined) {
+      this.webSocketService.connect();
+      // Subscribe to the WebSocket orders channel
+      this.webSocketService.subscribeToOrders(companyId!.toString(), (order: OrderDto) => {
+        if (order) {
+          if (this.orders.length == 0) {
+            this.timeRemaining = this.calculateTimeLeft(order);
+            this.order = order;
+            this.timerIntervalId = setInterval(() => this.handleTimer(), 1000)
+            //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
+            this.isDisplay = true;
+            setTimeout(() => this.areButtonsDisabled = false, 1100)
+          }
+          else {
+            this.toastService.info("Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: " + this.calculateTimeLeft(order) + " sekund", order.name)
+          }
+          this.orders.push(order);
         }
-        else {
-          this.toastService.info("Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: " + this.calculateTimeLeft(order) + " sekund", order.name)
-        }
-        this.orders.push(order);
-      }
-    });
+      });
+    }
   }
 
   calculateTimeLeft(order: OrderDto): number {
@@ -152,6 +155,7 @@ export class NewOrderPanelComponent {
       this.orderService.approveNewIncomingOrder({ body: approveRequest }).subscribe({
         next: (response) => {
           this.toastService.success("Zamówienie zostało przyjęte", this.order.name)
+          this.webSocketService.fireNewOrderApproved()
           this.handleProcessOrder()
         }
       });

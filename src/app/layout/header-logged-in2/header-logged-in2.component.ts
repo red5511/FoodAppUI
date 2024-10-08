@@ -37,9 +37,9 @@ isSidebarVisible = true;
             this.options.push(entry.name as string);
           })
           let firstCompany = this.response.companyDataList[0];
-          this.isChecked = firstCompany.receivingOrdersActive as boolean;
+          this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
           this.currentCompanyName = firstCompany.name as string;
-          this.contextService.setContext(firstCompany.id as number, this.isChecked, false, firstCompany.name as string);
+          this.contextService.setContext(firstCompany.id as number, firstCompany.name as string);
         }
       },
       error => {

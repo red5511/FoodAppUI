@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import SockJs from 'sockjs-client';
 import * as Stomp from 'stompjs';
 import { TokenService } from '../token/token.service';
+import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
     providedIn: 'root',
@@ -12,6 +13,8 @@ export class WebSocketService {
     private readonly WS_URL = 'http://localhost:8080/api/v1/ws';
     private subscriptionQueue: (() => void)[] = [];  // Queue of pending subscriptions
     private isConnected = false;  // New flag to track connection status
+    private newOrderAprovedSubject = new BehaviorSubject<boolean>(false)
+    newOrderApprovedVisibility$ = this.newOrderAprovedSubject.asObservable()
 
     constructor(private tokenService: TokenService) { }
 
@@ -49,13 +52,13 @@ export class WebSocketService {
     }
 
     // Subscribe to orders, or queue if not yet connected
-    subscribeToOrders(email: string, callback: (message: any) => void) {
+    subscribeToOrders(topicName: string, callback: (message: any) => void) {
         const subscribeFunction = () => {
             this.orderSubscription = this.socketClient.subscribe(
-                `/user/${email}/order`,
+                `/user/${topicName}/order`,
                 (message: any) => callback(JSON.parse(message.body))
             );
-            console.log(`Subscribed to /user/${email}/order`);
+            console.log(`Subscribed to /user/${topicName}/order`);
         };
 
         if (this.isConnected) {
@@ -81,5 +84,9 @@ export class WebSocketService {
             this.orderSubscription.unsubscribe();
             this.orderSubscription = null;
         }
+    }
+
+    fireNewOrderApproved(){
+        this.newOrderAprovedSubject.next(true)
     }
 }

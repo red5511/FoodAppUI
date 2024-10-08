@@ -9,7 +9,7 @@
     padding: 10px;
     border-radius: 10px;
     transition: all 0.3s;
-    height: 30px;
+    height: 45px;
 
     .menu-icon {
         font-size: 24px;
@@ -99,7 +99,9 @@
 
 .collapsedSidebar li a {
     @include menu-item;
-    width: 26px;
+    width: 45px;
+    padding-bottom: 5px;
+    padding-top: 5px;
 
     &:hover {
         box-shadow: 0px 0px 20px rgba(241, 241, 241);

@@ -16,7 +16,7 @@
             </div>
         </th>
         <th class="table-header" style="width: 2rem">Image</th>
-        <th class="table-header" style="width: 2rem" pSortableColumn="price">
+        <th class="table-header" style="width: 6rem" pSortableColumn="price">
             <div class="table-header-content">
                 Price <p-sortIcon field="price" />
             </div>
@@ -41,8 +41,8 @@
             </td>
             <td>{{ order.name }} <br> xddd</td>
             <td>xd</td>
-            <td>{{ order.amount | currency : 'USD' }}</td>
-            <td>{{ order.date }}</td>
+            <td>{{ order.price | currency : 'USD' }}</td>
+            <td>{{ order.deliveryTime | formattedDate}}</td>
             <td [innerHTML]="order.description | truncateOnResize"></td>
         </tr>
     </ng-template>

@@ -30,11 +30,11 @@ export class Dashboard2Component {
 
   ngOnInit() {
     this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      this.isCompanyReceivingOrdersActive = context?.isCompanyReceivingOrdersActive ?? false;
-      this.isUserReceivingOrdersActive = context?.isUserReceivingOrdersActive ?? false;
       this.companyName = context?.companyName ?? ''
-
     });
+    this.contextService.userReceivingOrdersSubjectVisibility$.subscribe((isReceiving) => {
+      this.isUserReceivingOrdersActive = isReceiving
+    })
   }
 
 

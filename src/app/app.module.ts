@@ -16,7 +16,6 @@ import { HttpTokenInterceptor } from './services/interceptor/http-token.intercep
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { HeaderLoggedInComponent } from './layout/header-logged-in/header-logged-in.component';
 import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
-import { provideAnimationsAsync } from '@angular/platform-browser/animations/async';
 import { HeaderLoggedIn2Component } from './layout/header-logged-in2/header-logged-in2.component';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatIconModule } from '@angular/material/icon';
@@ -32,12 +31,10 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
-import { OrderSidebnarComponent } from './components/order-sidebnar/order-sidebnar.component';
 import { SidebarModule } from 'primeng/sidebar';
 import { DashboardPanelComponent } from './components/dashboard-panel/dashboard-panel.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { OrderListModule } from 'primeng/orderlist';
-import { OrderSidebarElementComponent } from './components/order-sidebar-element/order-sidebar-element.component';
 import { NewOrderPanelComponent } from './layout/new-order-panel/new-order-panel.component';
 import { PricePlnPipe } from './pipes/price-pln.pipe';
 import { FormattedDatePipe } from './pipes/formatted-date.pipe';
@@ -64,9 +61,7 @@ import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
     SwitchComponent,
     BodyComponent,
     CustomToastComponent,
-    OrderSidebnarComponent,
     DashboardPanelComponent,
-    OrderSidebarElementComponent,
     NewOrderPanelComponent,
     PricePlnPipe,
     FormattedDatePipe,
