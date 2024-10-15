@@ -7,32 +7,32 @@
             <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
         </div>
     </ng-template>
-<ng-template pTemplate="header">
-    <tr>
-        <th class="table-header" style="width: 5px"></th> <!-- For buttons -->
-        <th class="table-header" style="width: 7rem" pSortableColumn="name">
-            <div class="table-header-content">
-                Name / <br> kek <p-sortIcon field="name" />
-            </div>
-        </th>
-        <th class="table-header" style="width: 2rem">Image</th>
-        <th class="table-header" style="width: 6rem" pSortableColumn="price">
-            <div class="table-header-content">
-                Price <p-sortIcon field="price" />
-            </div>
-        </th>
-        <th class="table-header" style="width: 6rem" pSortableColumn="date">
-            <div class="table-header-content">
-                Date <p-sortIcon field="date" />
-            </div>
-        </th>
-        <th class="table-header" style="width: 23em" pSortableColumn="description">
-            <div class="table-header-content">
-                Description <p-sortIcon field="description" />
-            </div>
-        </th>
-    </tr>
-</ng-template>
+    <ng-template pTemplate="header">
+        <tr>
+            <th class="table-header" style="width: 5px"></th> <!-- For buttons -->
+            <th class="table-header" style="width: 7rem" pSortableColumn="name">
+                <div class="table-header-content">
+                    Nazwa / <br> kek <p-sortIcon field="name" />
+                </div>
+            </th>
+            <th class="table-header" style="width: 2rem">Status</th>
+            <th class="table-header" style="width: 6rem" pSortableColumn="price">
+                <div class="table-header-content">
+                    Kwota <p-sortIcon field="price" />
+                </div>
+            </th>
+            <th class="table-header" style="width: 6rem" pSortableColumn="date">
+                <div class="table-header-content">
+                    Data <p-sortIcon field="date" />
+                </div>
+            </th>
+            <th class="table-header" style="width: 23em" pSortableColumn="description">
+                <div class="table-header-content">
+                    Opis <p-sortIcon field="description" />
+                </div>
+            </th>
+        </tr>
+    </ng-template>
     <ng-template pTemplate="body" let-order let-expanded="expanded">
         <tr>
             <td>
@@ -40,8 +40,8 @@
                     [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
             </td>
             <td>{{ order.name }} <br> xddd</td>
-            <td>xd</td>
-            <td>{{ order.price | currency : 'USD' }}</td>
+            <td> <p-tag [value]="order.status" [severity]="getStatusSeverity(order.status)" /> </td>
+            <td>{{ order.price | currency : 'PLN' }}</td>
             <td>{{ order.deliveryTime | formattedDate}}</td>
             <td [innerHTML]="order.description | truncateOnResize"></td>
         </tr>
@@ -50,27 +50,19 @@
         <tr>
             <td colspan="7">
                 <div class="p-3">
-                    <p-table [value]="order.orders" dataKey="id">
+                    <p-table [value]="order.products" dataKey="id">
                         <ng-template pTemplate="header">
         <tr>
-            <th pSortableColumn="id">Id <p-sortIcon field="price" /></th>
-            <th pSortableColumn="customer">Customer <p-sortIcon field="customer" /></th>
-            <th pSortableColumn="date">Date <p-sortIcon field="date" /></th>
-            <th pSortableColumn="amount">Amount <p-sortIcon field="amount" /></th>
-            <th pSortableColumn="status">Status <p-sortIcon field="status" /></th>
-            <th style="width: 4rem"></th>
+            <th> </th>
+            <th>Nazwa</th>
+            <th>Kwota</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-order>
+    <ng-template pTemplate="body" let-product>
         <tr>
-            <td>{{ order.id }}</td>
-            <td>{{ order.customer }}</td>
-            <td>{{ order.date }}</td>
-            <td>{{ order.amount | currency : 'USD' }}</td>
-            <td>
-                <p-tag [value]="order.status" [severity]="getStatusSeverity(order.status)" />
-            </td>
-            <td><p-button type="button" icon="pi pi-search" /></td>
+            <td><img [src]="product.imgUrl" alt="Product Image" style="width: 100px; height: 75px;" /></td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.price | currency : 'PLN'}}</td>
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">
