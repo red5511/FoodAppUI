@@ -5,11 +5,13 @@ import { HttpClient } from '@angular/common/http';
 import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProductService } from './services/product.service';
-import { CompanyService } from './services/company.service';
 import { AuthenticationService } from './services/authentication.service';
+import { AdministrationService } from './services/administration.service';
+import { CompanyService } from './services/company.service';
 import { OrderService } from './services/order.service';
 import { DemoControllerService } from './services/demo-controller.service';
 import { DashboardService } from './services/dashboard.service';
+import { UserAdministrationService } from './services/user-administration.service';
 
 /**
  * Module that provides all services and configuration.
@@ -20,11 +22,13 @@ import { DashboardService } from './services/dashboard.service';
   declarations: [],
   providers: [
     ProductService,
-    CompanyService,
     AuthenticationService,
+    AdministrationService,
+    CompanyService,
     OrderService,
     DemoControllerService,
     DashboardService,
+    UserAdministrationService,
     ApiConfiguration
   ],
 })

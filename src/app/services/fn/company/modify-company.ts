@@ -28,4 +28,4 @@ export function modifyCompany(http: HttpClient, rootUrl: string, params: ModifyC
   );
 }
 
-modifyCompany.PATH = '/api/v1/company/modify';
+modifyCompany.PATH = '/api/v1/administration/company/modify';

@@ -43,6 +43,9 @@ import { TableModule } from 'primeng/table';
 import { TagModule } from 'primeng/tag';
 import { RatingModule } from 'primeng/rating';
 import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
+import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
+import { AllOrdersTableComponent } from './components/all-orders-table/all-orders-table.component';
+import { MultiSelectModule } from 'primeng/multiselect'; // Add this import
 
 @NgModule({
   declarations: [
@@ -67,6 +70,8 @@ import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
     FormattedDatePipe,
     NewOrderTableComponent,
     TruncateOnResizePipe,
+    AllOrdersComponent,
+    AllOrdersTableComponent,
   ],
   imports: [
     RouterModule,
@@ -88,6 +93,7 @@ import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
     TableModule,
     TagModule,
     RatingModule,
+    MultiSelectModule,
     ToastrModule.forRoot(
       {
         progressBar: true,

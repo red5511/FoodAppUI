@@ -32,6 +32,7 @@ export class NewOrderTableComponent {
           next: (response: DashboardGetOrdersResponse) => {
             if (response && response.orderList) {
               this.orders = response.orderList;
+              this.expandAll()
             }
           }
         });
@@ -48,6 +49,7 @@ export class NewOrderTableComponent {
           next: (response: DashboardGetOrdersResponse) => {
             if (response && response.orderList) {
               this.orders = response.orderList;
+              this.expandAll()
             }
           }
         });
@@ -75,14 +77,16 @@ export class NewOrderTableComponent {
 
   getStatusSeverity(status: string): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
     switch (status) {
-      case 'INSTOCK':
-        return 'success';
-      case 'LOWSTOCK':
+      case 'WAITING_FOR_ACCEPTANCE':
+        return 'info';
+      case 'IN_EXECUTION':
         return 'warning';
-      case 'OUTOFSTOCK':
+      case 'EXECUTED':
+        return 'success';
+      case 'REJECTED':
         return 'danger';
       default:
-        return 'secondary';
+        return 'contrast';
     }
   }
 }

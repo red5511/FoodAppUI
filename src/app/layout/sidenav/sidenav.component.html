@@ -6,7 +6,7 @@
         <li>
             <a routerLink="/dashboard2" routerLinkActive="active" (click)="toggleSidebarIfClosed()">
                 <span class="menu-icon material-icons">dashboard</span>
-                <span *ngIf="isSidebarVisible" class="menu-text">Dashboard</span>
+                <span *ngIf="isSidebarVisible" class="menu-text">Panel Live</span>
                 <span *ngIf="isSidebarVisible" class="sub-menu-icon" [ngClass]="{ 'sub-menu-open': isSubmenuOpen }">
                     <mat-icon (click)="toggleSubmenu()">{{ isSubmenuOpen ? 'keyboard_arrow_down' :
                         'keyboard_arrow_right' }}</mat-icon>
@@ -24,11 +24,11 @@
             </ul>
         </li>
         <li>
-            <a routerLink="/home"
+            <a routerLink="/orders"
                 [ngClass]="{ 'showSidebarElement': isSidebarVisible, 'hideSidebarElement': !isSidebarVisible }"
                 routerLinkActive="active" (click)="toggleSidebarIfClosed()">
-                <span class="menu-icon material-icons">grade</span>
-                <span *ngIf="isSidebarVisible" class="menu-text">Home</span>
+                <span class="menu-icon material-icons">assessment</span>
+                <span *ngIf="isSidebarVisible" class="menu-text">Zamówienia</span>
             </a>
         </li>
         <li>

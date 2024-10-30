@@ -7,42 +7,42 @@
   max-width: 100%; // Prevent overflow beyond the screen
   overflow-x: auto; // Enable horizontal scrolling when content overflows
 }
-.dashboard-main {
-    display: flex;
-    width: 100%;
-    background-color: green($color: #000000);
-    height: 100%;
-    //overflow-y: hidden;
-}
+// .dashboard-main {
+//     display: flex;
+//     width: 100%;
+//     background-color: green($color: #000000);
+//     height: 100%;
+//     //overflow-y: hidden;
+// }
 
-.dashboard-order {
-    display: flex;
-    width: 70%;
-    background-color: red;
-    height: 100%;
-    overflow-y: hidden;
-    border: 1px solid #ccc;
-    padding: 10px;
-    ul {
-      list-style: none;
-      padding: 0;
-      li {
-        padding: 10px;
-        border-bottom: 1px solid #eee;
-        cursor: pointer;
-        &:hover {
-          background-color: #f0f0f0;
-        }
-      }
-    }
-}
+// .dashboard-order {
+//     display: flex;
+//     width: 70%;
+//     background-color: red;
+//     height: 100%;
+//     overflow-y: hidden;
+//     border: 1px solid #ccc;
+//     padding: 10px;
+//     ul {
+//       list-style: none;
+//       padding: 0;
+//       li {
+//         padding: 10px;
+//         border-bottom: 1px solid #eee;
+//         cursor: pointer;
+//         &:hover {
+//           background-color: #f0f0f0;
+//         }
+//       }
+//     }
+// }
 
-.dashboard-order-details {
-    display: flex;
-    width: 30%;
-    background-color: blue;
-    height: 100%;
-    overflow-y: hidden;
-    border: 1px solid #ccc;
-    padding: 10px;
-}
+// .dashboard-order-details {
+//     display: flex;
+//     width: 30%;
+//     background-color: blue;
+//     height: 100%;
+//     overflow-y: hidden;
+//     border: 1px solid #ccc;
+//     padding: 10px;
+// }

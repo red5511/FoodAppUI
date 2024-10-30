@@ -52,41 +52,6 @@
                 ]
             }
         },
-        "/api/v1/company/modify": {
-            "put": {
-                "tags": [
-                    "Company"
-                ],
-                "operationId": "modifyCompany",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/ModifyCompanyRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/auth/password/change/confirm": {
             "put": {
                 "tags": [
@@ -123,6 +88,79 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/administration/company/{companyId}/user/{userId}": {
+            "put": {
+                "tags": [
+                    "Administration"
+                ],
+                "operationId": "addUserToCompany",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    },
+                    {
+                        "name": "userId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/administration/company/modify": {
+            "put": {
+                "tags": [
+                    "Company"
+                ],
+                "operationId": "modifyCompany",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/ModifyCompanyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/v1/product/save": {
@@ -178,14 +216,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
+                        "description": "OK"
                     }
                 },
                 "security": [
@@ -213,11 +244,39 @@
                 },
                 "responses": {
                     "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/order/orders": {
+            "post": {
+                "tags": [
+                    "Order"
+                ],
+                "operationId": "getOrdersForCompany",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetOrdersForCompanyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
                         "description": "OK",
                         "content": {
                             "application/json": {
                                 "schema": {
-                                    "type": "string"
+                                    "$ref": "#/components/schemas/PagedOrdersResponse"
                                 }
                             }
                         }
@@ -248,49 +307,7 @@
                 },
                 "responses": {
                     "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
-        "/api/v1/company/save": {
-            "post": {
-                "tags": [
-                    "Company"
-                ],
-                "operationId": "saveCompany",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/SaveCompanyRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "type": "string"
-                                }
-                            }
-                        }
+                        "description": "OK"
                     }
                 },
                 "security": [
@@ -388,6 +405,41 @@
                         }
                     }
                 }
+            }
+        },
+        "/api/v1/administration/company/save": {
+            "post": {
+                "tags": [
+                    "Company"
+                ],
+                "operationId": "saveCompany",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/SaveCompanyRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/demo": {
@@ -573,6 +625,164 @@
                 }
             }
         },
+        "/api/v1/administration/user/{companyId}/users": {
+            "get": {
+                "tags": [
+                    "UserAdministration"
+                ],
+                "operationId": "getCompanyUsers",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUsersResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/administration/user/{companyId}/users-to-add": {
+            "get": {
+                "tags": [
+                    "UserAdministration"
+                ],
+                "operationId": "getUsersNotBelongToCompany",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUsersResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/administration/user/users": {
+            "get": {
+                "tags": [
+                    "UserAdministration"
+                ],
+                "operationId": "getAllUsers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetUsersResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/administration/company/{companyId}/details": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "operationId": "getCompanyDetails",
+                "parameters": [
+                    {
+                        "name": "companyId",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetCompanyDetailsResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/administration/company/companies": {
+            "get": {
+                "tags": [
+                    "Company"
+                ],
+                "operationId": "getAllCompanies",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetAllCompaniesResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/product/delete": {
             "delete": {
                 "tags": [
@@ -608,7 +818,7 @@
                 ]
             }
         },
-        "/api/v1/company/delete": {
+        "/api/v1/administration/company/delete": {
             "delete": {
                 "tags": [
                     "Company"
@@ -873,6 +1083,111 @@
                     }
                 }
             },
+            "Filter": {
+                "type": "object",
+                "properties": {
+                    "fieldName": {
+                        "type": "string"
+                    },
+                    "values": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        }
+                    },
+                    "mode": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GetOrdersForCompanyRequest": {
+                "type": "object",
+                "properties": {
+                    "filters": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Filter"
+                        }
+                    },
+                    "sorts": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/Sort"
+                        }
+                    },
+                    "page": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "size": {
+                        "type": "integer",
+                        "format": "int32"
+                    },
+                    "companyId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "name": {
+                        "type": "string"
+                    },
+                    "price": {
+                        "type": "number"
+                    },
+                    "orderStatuses": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "WAITING_FOR_ACCEPTANCE",
+                                "IN_EXECUTION",
+                                "EXECUTED",
+                                "REJECTED"
+                            ]
+                        }
+                    },
+                    "description": {
+                        "type": "string"
+                    }
+                }
+            },
+            "Sort": {
+                "type": "object",
+                "properties": {
+                    "field": {
+                        "type": "string"
+                    },
+                    "direction": {
+                        "type": "string",
+                        "enum": [
+                            "ASC",
+                            "DESC"
+                        ]
+                    }
+                }
+            },
+            "OrdersPagedResult": {
+                "type": "object",
+                "properties": {
+                    "orderList": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/OrderDto"
+                        }
+                    },
+                    "totalRecords": {
+                        "type": "integer",
+                        "format": "int64"
+                    }
+                }
+            },
+            "PagedOrdersResponse": {
+                "type": "object",
+                "properties": {
+                    "pagedResult": {
+                        "$ref": "#/components/schemas/OrdersPagedResult"
+                    }
+                }
+            },
             "ApproveNewIncomingOrderRequest": {
                 "type": "object",
                 "properties": {
@@ -883,17 +1198,6 @@
                     "orderId": {
                         "type": "integer",
                         "format": "int64"
-                    }
-                }
-            },
-            "SaveCompanyRequest": {
-                "type": "object",
-                "properties": {
-                    "company": {
-                        "$ref": "#/components/schemas/CompanyDto"
-                    },
-                    "userEmail": {
-                        "type": "string"
                     }
                 }
             },
@@ -963,6 +1267,17 @@
                     }
                 }
             },
+            "SaveCompanyRequest": {
+                "type": "object",
+                "properties": {
+                    "company": {
+                        "$ref": "#/components/schemas/CompanyDto"
+                    },
+                    "userEmail": {
+                        "type": "string"
+                    }
+                }
+            },
             "DashboardGetOrdersResponse": {
                 "type": "object",
                 "properties": {
@@ -999,6 +1314,54 @@
                     },
                     "openHours": {
                         "$ref": "#/components/schemas/OpenHours"
+                    }
+                }
+            },
+            "GetUsersResponse": {
+                "type": "object",
+                "properties": {
+                    "users": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/UserDto"
+                        }
+                    }
+                }
+            },
+            "UserDto": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "firstName": {
+                        "type": "string"
+                    },
+                    "lastName": {
+                        "type": "string"
+                    },
+                    "email": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GetCompanyDetailsResponse": {
+                "type": "object",
+                "properties": {
+                    "company": {
+                        "$ref": "#/components/schemas/CompanyDto"
+                    }
+                }
+            },
+            "GetAllCompaniesResponse": {
+                "type": "object",
+                "properties": {
+                    "companies": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/CompanyDto"
+                        }
                     }
                 }
             },

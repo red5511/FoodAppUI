@@ -11,6 +11,12 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { deleteCompany } from '../fn/company/delete-company';
 import { DeleteCompany$Params } from '../fn/company/delete-company';
+import { getAllCompanies } from '../fn/company/get-all-companies';
+import { GetAllCompanies$Params } from '../fn/company/get-all-companies';
+import { GetAllCompaniesResponse } from '../models/get-all-companies-response';
+import { getCompanyDetails } from '../fn/company/get-company-details';
+import { GetCompanyDetails$Params } from '../fn/company/get-company-details';
+import { GetCompanyDetailsResponse } from '../models/get-company-details-response';
 import { modifyCompany } from '../fn/company/modify-company';
 import { ModifyCompany$Params } from '../fn/company/modify-company';
 import { saveCompany } from '../fn/company/save-company';
@@ -23,7 +29,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `modifyCompany()` */
-  static readonly ModifyCompanyPath = '/api/v1/company/modify';
+  static readonly ModifyCompanyPath = '/api/v1/administration/company/modify';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -48,7 +54,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `saveCompany()` */
-  static readonly SaveCompanyPath = '/api/v1/company/save';
+  static readonly SaveCompanyPath = '/api/v1/administration/company/save';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -72,8 +78,58 @@ export class CompanyService extends BaseService {
     );
   }
 
+  /** Path part for operation `getCompanyDetails()` */
+  static readonly GetCompanyDetailsPath = '/api/v1/administration/company/{companyId}/details';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getCompanyDetails()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getCompanyDetails$Response(params: GetCompanyDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<GetCompanyDetailsResponse>> {
+    return getCompanyDetails(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getCompanyDetails$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getCompanyDetails(params: GetCompanyDetails$Params, context?: HttpContext): Observable<GetCompanyDetailsResponse> {
+    return this.getCompanyDetails$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetCompanyDetailsResponse>): GetCompanyDetailsResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllCompanies()` */
+  static readonly GetAllCompaniesPath = '/api/v1/administration/company/companies';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllCompanies()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllCompanies$Response(params?: GetAllCompanies$Params, context?: HttpContext): Observable<StrictHttpResponse<GetAllCompaniesResponse>> {
+    return getAllCompanies(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllCompanies$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllCompanies(params?: GetAllCompanies$Params, context?: HttpContext): Observable<GetAllCompaniesResponse> {
+    return this.getAllCompanies$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetAllCompaniesResponse>): GetAllCompaniesResponse => r.body)
+    );
+  }
+
   /** Path part for operation `deleteCompany()` */
-  static readonly DeleteCompanyPath = '/api/v1/company/delete';
+  static readonly DeleteCompanyPath = '/api/v1/administration/company/delete';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

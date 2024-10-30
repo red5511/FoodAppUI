@@ -6,16 +6,16 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { SaveCompanyRequest } from '../../models/save-company-request';
+import { GetUsersResponse } from '../../models/get-users-response';
 
-export interface SaveCompany$Params {
-      body: SaveCompanyRequest
+export interface GetCompanyUsers$Params {
+  companyId: number;
 }
 
-export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, saveCompany.PATH, 'post');
+export function getCompanyUsers(http: HttpClient, rootUrl: string, params: GetCompanyUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+  const rb = new RequestBuilder(rootUrl, getCompanyUsers.PATH, 'get');
   if (params) {
-    rb.body(params.body, 'application/json');
+    rb.path('companyId', params.companyId, {});
   }
 
   return http.request(
@@ -23,9 +23,9 @@ export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompa
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return r as StrictHttpResponse<GetUsersResponse>;
     })
   );
 }
 
-saveCompany.PATH = '/api/v1/administration/company/save';
+getCompanyUsers.PATH = '/api/v1/administration/user/{companyId}/users';
