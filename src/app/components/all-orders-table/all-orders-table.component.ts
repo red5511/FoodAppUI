@@ -12,15 +12,24 @@ import { GetOrdersForCompany$Params } from '../../services/fn/order/get-orders-f
   styleUrl: './all-orders-table.component.scss'
 })
 export class AllOrdersTableComponent {
-  filterByDate() {
-    throw new Error('Method not implemented.');
-  }
   expandedRows: { [s: string]: boolean } = {};
   @ViewChild('dt2') dt2!: Table; // Ensure to have a reference to the PrimeNG table component
 
   // Sample data
   orders: OrderDto[] = []; // Define orders as an array of OrderDto
-  statuses: string[] = ['WAITING_FOR_ACCEPTANCE', 'IN_EXECUTION', 'EXECUTED', 'REJECTED'];
+  translations: { [key: string]: string } = {
+    'WAITING_FOR_ACCEPTANCE': 'W trakcie akceptację',
+    'IN_EXECUTION': 'W trakcie realizacji',
+    'EXECUTED': 'Wykonane',
+    'REJECTED': 'Odrzucone'
+  };
+  statuses = [
+    { original: 'WAITING_FOR_ACCEPTANCE', translated: 'W trakcie akceptację' },
+    { original: 'IN_EXECUTION', translated: 'W trakcie realizacji' },
+    { original: 'EXECUTED', translated: 'Wykonane' },
+    { original: 'REJECTED', translated: 'Odrzucone' },
+];
+  //statuses: string[] = ['WAITING_FOR_ACCEPTANCE', 'IN_EXECUTION', 'EXECUTED', 'REJECTED'];
   loading: boolean = false; // Initialize as true when loading data
   companyIdTemp!: number
   totalRecords!: number
@@ -62,7 +71,6 @@ export class AllOrdersTableComponent {
   }
 
   loadOrdersLazy(event: TableLazyLoadEvent) {
-    event.filters
     //this.loading = true;
     let filters = this.createFilters(event.filters)
     this.contextService.getCompanyIdObservable().subscribe(companyId => { // Ensure this method returns an observable
@@ -87,7 +95,12 @@ export class AllOrdersTableComponent {
           const allValues: Array<string> = [];
           filterEntry.value.forEach((val: any) => {
             if (val) {
-              allValues.push(val);
+              if(fieldName === 'status'){
+                allValues.push(val.original);
+              }
+              else{
+                allValues.push(val);
+              }
             }
           });
           resultFilters.push({
@@ -100,7 +113,7 @@ export class AllOrdersTableComponent {
             values: Array.of(filterEntry.value),
           });
         }
-        else if (filterEntry && filterEntry[0] !== null && filterEntry[0] !== undefined) {
+        else if (filterEntry?.[0] != null && filterEntry[0].value != null) {
           const value = filterEntry[0];
           console.log(typeof value.value); // "Object"
           resultFilters.push({
@@ -121,6 +134,13 @@ export class AllOrdersTableComponent {
     const inputElement = event.target as HTMLInputElement;
     this.dt2.filterGlobal(inputElement.value, filterType);
   }
+
+  onInputChange(event: Event) {
+    const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
+    const value = input.value; // Capture full input value
+    this.dt2.filterGlobal(value, 'contains'); // Trigger the filter function
+}
+
 
   onRowExpand(event: TableRowExpandEvent) {
     const order = event.data;
@@ -155,6 +175,7 @@ export class AllOrdersTableComponent {
         return 'contrast';
     }
   }
+
 }
 
 

@@ -46,6 +46,9 @@ import { TruncateOnResizePipe } from './pipes/truncate-on-resize.pipe';
 import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
 import { AllOrdersTableComponent } from './components/all-orders-table/all-orders-table.component';
 import { MultiSelectModule } from 'primeng/multiselect'; // Add this import
+import { IconFieldModule } from 'primeng/iconfield';
+import { InputIconModule } from 'primeng/inputicon';
+import { InputTextModule } from 'primeng/inputtext';
 
 @NgModule({
   declarations: [
@@ -94,6 +97,9 @@ import { MultiSelectModule } from 'primeng/multiselect'; // Add this import
     TagModule,
     RatingModule,
     MultiSelectModule,
+    IconFieldModule,
+    InputIconModule,
+    InputTextModule,
     ToastrModule.forRoot(
       {
         progressBar: true,

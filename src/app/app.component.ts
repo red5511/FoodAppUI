@@ -23,6 +23,7 @@ export class AppComponent {
 
   ngOnInit() {
     this.primengConfig.setTranslation({
+      selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',
       contains: 'Zawiera',
       notContains: 'Nie zawiera',

@@ -6,5 +6,7 @@
     width: 100%; // Take the full width of the parent container
     max-width: 100%; // Prevent overflow beyond the screen
     overflow-x: auto; // Enable horizontal scrolling when content overflows
-    overflow-y:visible; // Enable horizontal scrolling when content overflows
+    height: 100%;
+    padding-bottom: 150px;
+    padding-top: 75px;
   }
