@@ -7,20 +7,19 @@
 
 }
 
-:host ::ng-deep .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {// iacznej tylye childow sie nie odswizaja, to jest ten imput ttext w drop poxie statusow (inaczej wielkosc jest zalezna od wielkosci statusu xd)
+:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
+    padding: 1rem 5px;
+}
+
+:host ::ng-deep .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+    // iacznej tylye childow sie nie odswizaja, to jest ten imput ttext w drop poxie statusow (inaczej wielkosc jest zalezna od wielkosci statusu xd)
     min-width: 175px; // Your desired width
     max-width: 175px; // Your desired width
 }
 
-.table-header {
-    justify-content: space-between; // Space out items evenly
-    padding-bottom: 99px;
-
-}
-
 
 .dropdown-wrapper {
-    position: fixed;
+    position: position;
     max-width: 13rem;
     margin-top: -25px;
     z-index: 9999;
@@ -51,26 +50,36 @@
     /* Aligns items to the right */
 }
 
-.p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext{
-    width: 555px !important; // Use !important as a last resort
-}
-
 .description-container {
-    display: block; /* Treat it as a block element */
-    white-space: nowrap; /* Prevent text from wrapping */
-    overflow: hidden; /* Hide overflowing text */
-    text-overflow: ellipsis; /* Add ellipsis (...) */
-    width: 200px; /* Set your desired width */
-    cursor: pointer; /* Indicate it's hoverable */
+    display: block;
+    /* Treat it as a block element */
+    white-space: nowrap;
+    /* Prevent text from wrapping */
+    overflow: hidden;
+    /* Hide overflowing text */
+    text-overflow: ellipsis;
+    /* Add ellipsis (...) */
+    width: 200px;
+    /* Set your desired width */
+    cursor: pointer;
+    /* Indicate it's hoverable */
 }
 
 .description-container:hover {
-    overflow: visible; /* Show the full text on hover */
-    white-space: normal; /* Allow text to wrap */
-    position: absolute; /* Position it absolutely */
-    z-index: 10; /* Bring it to the front */
-    background: white; /* Optional: background color for better visibility */
-    border: 1px solid #ccc; /* Optional: border for clarity */
-    padding: 5px; /* Optional: padding for better aesthetics */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15); /* Optional: shadow for better visibility */
+    overflow: visible;
+    /* Show the full text on hover */
+    white-space: normal;
+    /* Allow text to wrap */
+    position: absolute;
+    /* Position it absolutely */
+    z-index: 10;
+    /* Bring it to the front */
+    background: white;
+    /* Optional: background color for better visibility */
+    border: 1px solid #ccc;
+    /* Optional: border for clarity */
+    padding: 5px;
+    /* Optional: padding for better aesthetics */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+    /* Optional: shadow for better visibility */
 }

@@ -49,6 +49,8 @@ import { MultiSelectModule } from 'primeng/multiselect'; // Add this import
 import { IconFieldModule } from 'primeng/iconfield';
 import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
+import { DialogModule } from 'primeng/dialog';
+import { StatisticsComponent } from './pages/statistics/statistics.component';
 
 @NgModule({
   declarations: [
@@ -75,6 +77,7 @@ import { InputTextModule } from 'primeng/inputtext';
     TruncateOnResizePipe,
     AllOrdersComponent,
     AllOrdersTableComponent,
+    StatisticsComponent,
   ],
   imports: [
     RouterModule,
@@ -96,6 +99,7 @@ import { InputTextModule } from 'primeng/inputtext';
     TableModule,
     TagModule,
     RatingModule,
+    DialogModule,
     MultiSelectModule,
     IconFieldModule,
     InputIconModule,

@@ -13,11 +13,16 @@ import { WebSocketService } from '../../services/websocket/web-socket-service';
 })
 export class NewOrderTableComponent {
   expandedRows: { [s: string]: boolean } = {};
-
+  translations: { [key: string]: string } = {
+    'WAITING_FOR_ACCEPTANCE': 'W akceptacji',
+    'IN_EXECUTION': 'W realizacji',
+    'EXECUTED': 'Wykonane',
+    'REJECTED': 'Odrzucone'
+  };
   // Sample data
   orders: OrderDto[] = []; // Define orders as an array of OrderDto
 
-  constructor(private dashboardService: DashboardService, private contextService: ContextService, private webSocketService : WebSocketService
+  constructor(private dashboardService: DashboardService, private contextService: ContextService, private webSocketService: WebSocketService
   ) {
 
   }
@@ -26,7 +31,7 @@ export class NewOrderTableComponent {
     this.contextService.getCompanyIdObservable().subscribe(companyId => { // Ensure this method returns an observable
       if (companyId) {
         const params: GetActiveOrders$Params = { companyId };
-        
+
         // Now call getActiveOrders with the companyId
         this.dashboardService.getActiveOrders(params).subscribe({
           next: (response: DashboardGetOrdersResponse) => {
@@ -38,12 +43,12 @@ export class NewOrderTableComponent {
         });
       }
     });
-    
+
     this.webSocketService.newOrderApprovedVisibility$.subscribe(val => {
       let companyId = this.contextService.getCompanyId()
-      if(companyId !== undefined){
+      if (companyId !== undefined) {
         const params: GetActiveOrders$Params = { companyId };
-        
+
         // Now call getActiveOrders with the companyId
         this.dashboardService.getActiveOrders(params).subscribe({
           next: (response: DashboardGetOrdersResponse) => {

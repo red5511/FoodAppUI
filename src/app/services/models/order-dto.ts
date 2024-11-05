@@ -9,9 +9,11 @@ export interface OrderDto {
   deliveryTime?: string;
   description?: string;
   id?: number;
-  name?: string;
   orderType?: 'GLOVO' | 'PYSZNE_PL';
   price?: number;
   products?: Array<ProductDto>;
+  quantityProductsMap?: {
+[key: string]: number;
+};
   status?: 'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED';
 }

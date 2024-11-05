@@ -93,7 +93,7 @@ export class NewOrderPanelComponent {
             setTimeout(() => this.areButtonsDisabled = false, 1100)
           }
           else {
-            this.toastService.info("Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: " + this.calculateTimeLeft(order) + " sekund", order.name)
+            this.toastService.info("Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: " + this.calculateTimeLeft(order) + " sekund", "#" + order.id)
           }
           this.orders.push(order);
         }
@@ -128,7 +128,7 @@ export class NewOrderPanelComponent {
 
   handleTimer() {
     if (this.timeRemaining <= 0) {
-      this.toastService.warning("Zamówienie zostało odrzucone", this.order.name)
+      this.toastService.warning("Zamówienie zostało odrzucone", "#" +  this.order.id)
       this.handleProcessOrder();
     }
     else {
@@ -154,7 +154,7 @@ export class NewOrderPanelComponent {
       }
       this.orderService.approveNewIncomingOrder({ body: approveRequest }).subscribe({
         next: (response) => {
-          this.toastService.success("Zamówienie zostało przyjęte", this.order.name)
+          this.toastService.success("Zamówienie zostało przyjęte", "#" + this.order.id)
           this.webSocketService.fireNewOrderApproved()
           this.handleProcessOrder()
         }
@@ -171,7 +171,7 @@ export class NewOrderPanelComponent {
       }
       this.orderService.rejectNewIncomingOrder({ body: rejectRequest }).subscribe({
         next: (response) => {
-          this.toastService.warning("Zamówienie zostało odrzucone", this.order.name)
+          this.toastService.warning("Zamówienie zostało odrzucone", "#" + this.order.id)
           this.handleProcessOrder()
         }
       });
@@ -205,4 +205,8 @@ export class NewOrderPanelComponent {
       }
     }, { once: true }); // Listen for a single mouse movement only
   }
+
+  getProductFromId(productId: string, order: OrderDto): ProductDto | undefined {
+    return order.products?.find(product => product.id?.toString() === productId);
+}
 }

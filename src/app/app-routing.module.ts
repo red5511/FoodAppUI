@@ -9,6 +9,7 @@ import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
 import { noneAuthPathsWhenJwtPresentGuard } from './services/guard/none-auth-paths-when-jwt-present.guard';
 import { authGuard } from './services/guard/auth.guard';
 import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
+import { StatisticsComponent } from './pages/statistics/statistics.component';
 
 const routes: Routes = [
   {
@@ -44,6 +45,11 @@ const routes: Routes = [
   {
     path: 'orders',
     component: AllOrdersComponent,
+    canActivate: [authGuard]
+  },
+  {
+    path: 'statistics',
+    component: StatisticsComponent,
     canActivate: [authGuard]
   }
 ];

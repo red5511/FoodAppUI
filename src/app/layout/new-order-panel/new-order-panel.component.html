@@ -3,7 +3,7 @@
     <div class="panel" [ngClass]="{'visible': isDisplay, 'hidden': !isDisplay}">
         <div class="grid-item grid-item1">{{ order.orderType }}</div>
         <div class="grid-item grid-item2">
-            <h2><b>{{ order.name }}</b></h2>
+            <h2><b>#{{ order.id }}</b></h2>
         </div>
         <div class="grid-item grid-item3"></div>
 
@@ -18,12 +18,11 @@
         <div class="grid-item grid-item6">
             <h4>Lista produktów:</h4>
             <ul class="product-list">
-                <li *ngFor="let product of order.products; trackBy: trackById">
-                    <h4>{{ product.name }}</h4>
+                <li *ngFor="let entry of order.quantityProductsMap | keyvalue">
+                    <h4>{{ entry.value }}x {{ getProductFromId(entry.key, order)?.name }}</h4>
                 </li>
             </ul>
         </div>
-
         <div class="grid-item grid-item7">
             <h4>Adres dostawy: {{ order.deliveryAddress }}</h4>
         </div>

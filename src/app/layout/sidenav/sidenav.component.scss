@@ -18,10 +18,14 @@
 
 }
 
+.ul{
+    width: 100%;
+}
+
 .sidebar {
     background-color: var(--purple-color);
     width: 200px;
-    padding: 20px;
+    padding: 5px;
     position: fixed;
     height: 100%;
     top: 0;
@@ -71,7 +75,8 @@
 .sidebar .sub-menu {
     //list-style: circle; /* This will add square bullets specifically to sub-menus */
     color: #d4d4d4;
-    margin-left: 20px;
+    margin-left: 10px;
+    margin-top: 5px;
     list-style: none;
     /* Remove default bullets */
 
@@ -91,7 +96,7 @@
             /* Align to the left */
             top: 0.6em;
             /* Adjust this value to move the bullet higher relative to the text */
-            font-size: 1.2em;
+            font-size: 1.1em;
             /* Size of the bullet */
         }
     }
@@ -118,4 +123,8 @@
 
         // border-radius: 5%;
     }
+}
+
+.sidebar-menu-element-icon{
+    padding-top: 3px;
 }
