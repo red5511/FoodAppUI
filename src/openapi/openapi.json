@@ -163,6 +163,76 @@
                 ]
             }
         },
+        "/api/v1/statistics/order-count": {
+            "post": {
+                "tags": [
+                    "Statistics"
+                ],
+                "operationId": "getStatisticsOrderCount",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetStatisticsOrderCountRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetStatisticsOrderCountResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/statistics/config": {
+            "post": {
+                "tags": [
+                    "Statistics"
+                ],
+                "operationId": "getStatisticsConfig",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetStatisticsConfigRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetStatisticsConfigResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
         "/api/v1/product/save": {
             "post": {
                 "tags": [
@@ -995,6 +1065,74 @@
                     }
                 }
             },
+            "GetStatisticsOrderCountRequest": {
+                "type": "object",
+                "properties": {
+                    "dateRange": {
+                        "type": "string",
+                        "enum": [
+                            "LAST_30_DAYS",
+                            "LAST_15_DAYS_",
+                            "LAST_7_DAYS",
+                            "CUSTOM_DATE_RANGE"
+                        ]
+                    }
+                }
+            },
+            "GetStatisticsOrderCountResponse": {
+                "type": "object",
+                "properties": {
+                    "stuff": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GetStatisticsConfigRequest": {
+                "type": "object",
+                "properties": {
+                    "companyIds": {
+                        "type": "array",
+                        "items": {
+                            "type": "integer",
+                            "format": "int64"
+                        }
+                    }
+                }
+            },
+            "GetStatisticsConfigResponse": {
+                "type": "object",
+                "properties": {
+                    "dateRanges": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "LAST_30_DAYS",
+                                "LAST_15_DAYS_",
+                                "LAST_7_DAYS",
+                                "CUSTOM_DATE_RANGE"
+                            ]
+                        }
+                    },
+                    "products": {
+                        "type": "array",
+                        "items": {
+                            "$ref": "#/components/schemas/ProductDto"
+                        }
+                    },
+                    "datePeriods": {
+                        "type": "array",
+                        "items": {
+                            "type": "string",
+                            "enum": [
+                                "DAY",
+                                "WEEK",
+                                "MONTH"
+                            ]
+                        }
+                    }
+                }
+            },
             "CreateProductRequest": {
                 "type": "object",
                 "properties": {
@@ -1130,27 +1268,6 @@
                     "companyId": {
                         "type": "integer",
                         "format": "int64"
-                    },
-                    "name": {
-                        "type": "string"
-                    },
-                    "description": {
-                        "type": "string"
-                    },
-                    "price": {
-                        "type": "number"
-                    },
-                    "orderStatuses": {
-                        "type": "array",
-                        "items": {
-                            "type": "string",
-                            "enum": [
-                                "WAITING_FOR_ACCEPTANCE",
-                                "IN_EXECUTION",
-                                "EXECUTED",
-                                "REJECTED"
-                            ]
-                        }
                     }
                 }
             },

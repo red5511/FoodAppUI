@@ -4,16 +4,34 @@
     align-items: center; // Ensure the container takes the full width
     border: 2px solid black;
     width: 100%; // Take the full width of the parent container
-    max-width: 100%; // Prevent overflow beyond the screen
     overflow-x: auto; // Enable horizontal scrolling when content overflows
     height: 100%;
     padding-bottom: 150px;
     padding-top: 75px;
+    border: 3px solid black;
+}
+
+::ng-deep .p-dialog .p-dialog-content {
+    background-color: transparent; /* Makes the dialog content background transparent */
+  }
+
+  ::ng-deep .p-dialog .p-dialog-header {
+    background-color: transparent; /* Makes the dialog content background transparent */
+  }
+  
+  ::ng-deep .p-dialog {
+    box-shadow: none;
+    border: none;
+  }  
+
+  ::ng-deep .p-dialog .p-dialog-header-close {
+    display: none; /* Hides the close button */
   }
 
 // Styl głównego kontenera z bardziej wyraźnymi obramowaniami i cieniem
 .container {
-    max-width: 900px;
+    max-width: 1100px;
+    width: 80%;
     background-color: #ffffff;
     padding: 30px;
     border-radius: 10px;
@@ -37,30 +55,14 @@
     }
 }
 
-// Ogólne stylizacje dla tabeli wewnątrz kontenera
-.styled-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 1rem;
-    margin-top: 20px;
-
-    th, td {
-        padding: 12px 15px;
-        text-align: left;
-        border-bottom: 1px solid #e0e0e0;
-    }
-
-    thead {
-        tr {
-            background-color: #eceff1;
-            color: #37474f;
-            font-weight: 600;
-        }
-    }
-
-    tbody tr {
-        &:hover {
-            background-color: #f5f5f5;
-        }
-    }
+.filters {
+    border: 4px solid black;
+    padding: 10px;
 }
+
+// .xd{
+//     display: block;
+//     align-items: center;
+//     justify-content: center;
+
+// }

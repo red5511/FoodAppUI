@@ -51,6 +51,10 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
+import { BaseChartDirective, provideCharts, withDefaultRegisterables  } from 'ng2-charts';
+import { DropdownModule } from 'primeng/dropdown';
+import { CalendarModule } from 'primeng/calendar';
+
 
 @NgModule({
   declarations: [
@@ -88,6 +92,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
     HttpClientModule,
     FormsModule,
     MatIconModule,
+    DropdownModule,
     MatToolbarModule,
     MatMenuModule,
     MatDividerModule,
@@ -98,6 +103,8 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
     OrderListModule,
     TableModule,
     TagModule,
+    BaseChartDirective,
+    CalendarModule,
     RatingModule,
     DialogModule,
     MultiSelectModule,
@@ -117,6 +124,7 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
     ),
   ],
   providers: [HttpClient,
+    provideCharts(withDefaultRegisterables()),
     MessageService,
     {
       provide: HTTP_INTERCEPTORS,
