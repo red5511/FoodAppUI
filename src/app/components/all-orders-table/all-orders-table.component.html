@@ -35,10 +35,11 @@
             <th></th>
             <th></th>
             <th>
-                <p-columnFilter field="status" matchMode="in" [showMenu]="false">
+                <p-columnFilter style="width: 5rem;" field="status" matchMode="in" [showMenu]="false">
                     <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-                        <p-multiSelect class="dropdown-wrapper" [ngModel]="value" [options]="statuses"
-                            placeholder="Status" (onChange)="filter($event.value)" optionLabel="translated">
+                        <p-multiSelect [maxSelectedLabels]="1" [ngModel]="value"
+                            [options]="statuses" placeholder="Status" (onChange)="filter($event.value)"
+                            optionLabel="translated">
                             <ng-template let-option pTemplate="statuses">
                                 <div class="custom-option">
                                     <span class="ml-1 mt-1">{{ option.translated }}</span>
