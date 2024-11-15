@@ -206,7 +206,4 @@ export class NewOrderPanelComponent {
     }, { once: true }); // Listen for a single mouse movement only
   }
 
-  getProductFromId(productId: string, order: OrderDto): ProductDto | undefined {
-    return order.products?.find(product => product.id?.toString() === productId);
-}
 }

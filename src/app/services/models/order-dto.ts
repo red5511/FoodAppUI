@@ -1,6 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
-import { ProductDto } from '../models/product-dto';
+import { OrderProductDto } from '../models/order-product-dto';
 export interface OrderDto {
   approvalDeadline?: string;
   companyId?: number;
@@ -9,11 +9,8 @@ export interface OrderDto {
   deliveryTime?: string;
   description?: string;
   id?: number;
+  orderProducts?: Array<OrderProductDto>;
   orderType?: 'GLOVO' | 'PYSZNE_PL';
   price?: number;
-  products?: Array<ProductDto>;
-  quantityProductsMap?: {
-[key: string]: number;
-};
   status?: 'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED';
 }

@@ -29,6 +29,7 @@ export { ModifyCompanyRequest } from './models/modify-company-request';
 export { ModifyProductRequest } from './models/modify-product-request';
 export { OpenHours } from './models/open-hours';
 export { OrderDto } from './models/order-dto';
+export { OrderProductDto } from './models/order-product-dto';
 export { OrdersPagedResult } from './models/orders-paged-result';
 export { PagedOrdersResponse } from './models/paged-orders-response';
 export { ProductDto } from './models/product-dto';

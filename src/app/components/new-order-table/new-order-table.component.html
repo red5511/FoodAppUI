@@ -49,7 +49,7 @@
         <tr class="expanded-row">
             <td colspan="7">
                 <div class="p-3">
-                    <p-table [value]="order.products" dataKey="id">
+                    <p-table [value]="order.orderProducts" dataKey="id">
                         <ng-template pTemplate="header">
         <tr>
             <th> </th>
@@ -58,12 +58,12 @@
             <th>Ilość</th>
         </tr>
     </ng-template>
-    <ng-template pTemplate="body" let-product>
+    <ng-template pTemplate="body" let-orderProduct>
         <tr class="xd">
-            <td style="padding: 5px 11px"><img [src]="product.imgUrl" alt="Product Image" style="width: 100px; height: 75px;" /></td>
-            <td>{{ product.name }}</td>
-            <td>{{ product.price | currency : 'PLN'}}</td>
-            <td>{{ order.quantityProductsMap[product.id] || 0 }}</td> <!-- Accessing quantity from the map -->
+            <td style="padding: 5px 11px"><img [src]="orderProduct.product.imgUrl" alt="Product Image" style="width: 100px; height: 75px;" /></td>
+            <td>{{ orderProduct.product.name }}</td>
+            <td>{{ orderProduct.price | currency : 'PLN'}}</td>
+            <td>{{ orderProduct.quantity }}</td> <!-- Accessing quantity from the map -->
         </tr>
     </ng-template>
     <ng-template pTemplate="emptymessage">

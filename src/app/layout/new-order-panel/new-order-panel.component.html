@@ -18,8 +18,8 @@
         <div class="grid-item grid-item6">
             <h4>Lista produktów:</h4>
             <ul class="product-list">
-                <li *ngFor="let entry of order.quantityProductsMap | keyvalue">
-                    <h4>{{ entry.value }}x {{ getProductFromId(entry.key, order)?.name }}</h4>
+                <li *ngFor="let orderProduct of order.orderProducts">
+                    <h4>{{ orderProduct.quantity }}x {{ orderProduct.product?.name }}</h4>
                 </li>
             </ul>
         </div>

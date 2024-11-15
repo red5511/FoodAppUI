@@ -1,38 +1,75 @@
 <div class="container">
   <div class="header">
-
     <h2>Statystyki zamówień</h2>
   </div>
   <div class="content">
     <div class="filters">
       <span class="p-float-label">
-        <p-dropdown [style]="{ width: '16rem' }" class="dropdown-wrapper" [options]="dateRangeOptions" (onShow)="onShow()" (onHide)="onHide()"
-          [(ngModel)]="selectedDateRangeValue" optionLabel="translatedValue" placeholder="Przedział" (onClick)="onDateRangeOptionClick()">
-        </p-dropdown> <label for="float-label">Przedział</label>
+        <p-dropdown
+          [style]="{ width: '16rem' }"
+          class="dropdown-wrapper"
+          [options]="dateRangeOptions"
+          (onShow)="onShow()"
+          (onHide)="onHide()"
+          [(ngModel)]="selectedDateRangeValue"
+          optionLabel="translatedValue"
+          placeholder="Przedział"
+          (onClick)="onDateRangeOptionClick()"
+        >
+        </p-dropdown>
+        <label for="float-label">Przedział</label>
       </span>
       <span class="p-float-label">
-        <p-dropdown [style]="{ width: '11rem' }" [options]="datePeriodOptions" [(ngModel)]="selectedDatePeriodValue"
-          optionLabel="translatedValue" placeholder="Okres" />
+        <p-dropdown
+          [style]="{ width: '12rem' }"
+          [options]="datePeriodOptions"
+          [(ngModel)]="selectedDatePeriodValue"
+          optionLabel="translatedValue"
+          placeholder="Okres"
+          (onChange)="datePeriodOptionOnChange()"
+        />
         <label for="float-label">Okres</label>
       </span>
 
       <span class="p-float-label">
-        <p-dropdown [style]="{ width: '11rem' }" [options]="productOptions" [(ngModel)]="selectedProductValue"
-          optionLabel="name" placeholder="Produkty" />
+        <p-dropdown
+          [style]="{ width: '16rem' }"
+          [options]="productOptions"
+          [(ngModel)]="selectedProductValue"
+          optionLabel="name"
+          placeholder="Produkty"
+          (onChange)="productOptionOnChange()"
+          showClear="true"
+        />
         <label for="float-label">Produkty</label>
       </span>
     </div>
 
     <div>
-      <canvas baseChart [data]="chartData" [type]="'line'" [options]="chartOptions">
+      <canvas
+        baseChart
+        [data]="chartData"
+        [type]="'line'"
+        [options]="chartOptions"
+      >
       </canvas>
-
     </div>
   </div>
 </div>
 
-<p-dialog [modal]="true" dismissableMask="true" [(visible)]="showCalendar" closable="true" draggable="false"
-  blockScroll="true" [style]="{ width: '29rem', height: '38rem'}">
-    <p-calendar [(ngModel)]="selectedDates" [inline]="true" selectionMode="range"
-      (onSelect)="onCalendarSelect()"></p-calendar>
+<p-dialog
+  [modal]="true"
+  dismissableMask="true"
+  [(visible)]="showCalendar"
+  closable="true"
+  draggable="false"
+  blockScroll="true"
+  [style]="{ width: '29rem', height: '38rem' }"
+>
+  <p-calendar
+    [(ngModel)]="selectedDates"
+    [inline]="true"
+    selectionMode="range"
+    (onSelect)="onCalendarSelect()"
+  ></p-calendar>
 </p-dialog>

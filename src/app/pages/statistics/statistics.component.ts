@@ -2,7 +2,7 @@ import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { ChartData, ChartOptions } from 'chart.js';
 import { Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { DropdownModule } from 'primeng/dropdown';
+import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { ContextService } from '../../services/context/context.service';
 import { DatePeriodModel, DateRangeModel, GetStatisticsChartRequest, GetStatisticsChartResponse, GetStatisticsConfigRequest, GetStatisticsConfigResponse, ProductDto } from '../../services/models';
 import { StatisticsService } from '../../services/services';
@@ -51,7 +51,7 @@ export class StatisticsComponent {
         x: {
           title: {
             display: true,
-            text: 'Dni', // Title for the X-axis
+            text: 'Przedział', // Title for the X-axis
           },
         },
         y: {
@@ -95,7 +95,8 @@ export class StatisticsComponent {
       datePeriod: this.selectedDatePeriodValue.datePeriod,
       dateRange: this.selectedDateRangeValue.dateRange,
       dateFrom: this.selectedDates?.at(0)?.toLocaleDateString(),
-      dateTo: this.selectedDates?.at(1)?.toLocaleDateString()
+      dateTo: this.selectedDates?.at(1)?.toLocaleDateString(),
+      productId: this.selectedProductValue?.id
     };
     this.statisticsService.getStatisticsChart({ body }).subscribe({
       next: (response) => {
@@ -129,24 +130,8 @@ export class StatisticsComponent {
     );
   }
 
-  onDateRangeOptionClick() {
-    if (this.selectedDateRangeValue.dateRange === "CUSTOM_DATE_RANGE" && this.isCalendarClick) {
-      this.showCalendar = true;
-      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
-    }
-    else if (this.lastSelectedDateRangeValue.dateRange !== this.selectedDateRangeValue.dateRange) {
-      console.log("STRZELAM")
-      console.log(this.lastSelectedDateRangeValue.dateRange)
-      console.log(this.selectedDateRangeValue.dateRange)
-      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
-      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
-    }
-  }
-
 
   onCalendarSelect() {
-    console.log("ehhh")
-    console.log(this.selectedDates)
     if (this.selectedDates?.at(1)) {
       this.showCalendar = false
       this.customDateRange += this.selectedDates.at(1)?.toLocaleDateString() || ''
@@ -170,6 +155,24 @@ export class StatisticsComponent {
       return option;
     });
   }
+
+  datePeriodOptionOnChange() {
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
+  }
+
+    onDateRangeOptionClick() {
+      if (this.selectedDateRangeValue.dateRange === "CUSTOM_DATE_RANGE" && this.isCalendarClick) {
+        this.showCalendar = true;
+      }
+      else if (this.lastSelectedDateRangeValue.dateRange !== this.selectedDateRangeValue.dateRange) {
+        this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
+      }
+      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
+    }
+
+    productOptionOnChange(){
+      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
+    }
 
   onHide() {
     this.isCalendarClick = false
