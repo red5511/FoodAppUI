@@ -163,41 +163,6 @@
                 ]
             }
         },
-        "/api/v1/statistics/order-count": {
-            "post": {
-                "tags": [
-                    "Statistics"
-                ],
-                "operationId": "getStatisticsOrderCount",
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "$ref": "#/components/schemas/GetStatisticsOrderCountRequest"
-                            }
-                        }
-                    },
-                    "required": true
-                },
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "content": {
-                            "application/json": {
-                                "schema": {
-                                    "$ref": "#/components/schemas/GetStatisticsOrderCountResponse"
-                                }
-                            }
-                        }
-                    }
-                },
-                "security": [
-                    {
-                        "bearerAuth": []
-                    }
-                ]
-            }
-        },
         "/api/v1/statistics/config": {
             "post": {
                 "tags": [
@@ -221,6 +186,41 @@
                             "application/json": {
                                 "schema": {
                                     "$ref": "#/components/schemas/GetStatisticsConfigResponse"
+                                }
+                            }
+                        }
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/v1/statistics/chart": {
+            "post": {
+                "tags": [
+                    "Statistics"
+                ],
+                "operationId": "getStatisticsChart",
+                "requestBody": {
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "$ref": "#/components/schemas/GetStatisticsChartRequest"
+                            }
+                        }
+                    },
+                    "required": true
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/GetStatisticsChartResponse"
                                 }
                             }
                         }
@@ -1065,28 +1065,6 @@
                     }
                 }
             },
-            "GetStatisticsOrderCountRequest": {
-                "type": "object",
-                "properties": {
-                    "dateRange": {
-                        "type": "string",
-                        "enum": [
-                            "LAST_30_DAYS",
-                            "LAST_15_DAYS_",
-                            "LAST_7_DAYS",
-                            "CUSTOM_DATE_RANGE"
-                        ]
-                    }
-                }
-            },
-            "GetStatisticsOrderCountResponse": {
-                "type": "object",
-                "properties": {
-                    "stuff": {
-                        "type": "string"
-                    }
-                }
-            },
             "GetStatisticsConfigRequest": {
                 "type": "object",
                 "properties": {
@@ -1099,36 +1077,123 @@
                     }
                 }
             },
-            "GetStatisticsConfigResponse": {
+            "DatePeriodModel": {
                 "type": "object",
                 "properties": {
-                    "dateRanges": {
+                    "datePeriod": {
+                        "type": "string",
+                        "enum": [
+                            "DAY",
+                            "WEEK",
+                            "MONTH"
+                        ]
+                    },
+                    "translatedValue": {
+                        "type": "string"
+                    }
+                },
+                "description": "List of date period models"
+            },
+            "DateRangeModel": {
+                "type": "object",
+                "properties": {
+                    "dateRange": {
+                        "type": "string",
+                        "enum": [
+                            "LAST_30_DAYS",
+                            "LAST_15_DAYS",
+                            "LAST_7_DAYS",
+                            "CUSTOM_DATE_RANGE"
+                        ]
+                    },
+                    "translatedValue": {
+                        "type": "string"
+                    }
+                },
+                "description": "List of date range models"
+            },
+            "GetStatisticsConfigResponse": {
+                "required": [
+                    "dataRangeModels",
+                    "datePeriodModels",
+                    "products"
+                ],
+                "type": "object",
+                "properties": {
+                    "dataRangeModels": {
                         "type": "array",
+                        "description": "List of date range models",
                         "items": {
-                            "type": "string",
-                            "enum": [
-                                "LAST_30_DAYS",
-                                "LAST_15_DAYS_",
-                                "LAST_7_DAYS",
-                                "CUSTOM_DATE_RANGE"
-                            ]
+                            "$ref": "#/components/schemas/DateRangeModel"
                         }
                     },
                     "products": {
                         "type": "array",
+                        "description": "List of products",
                         "items": {
                             "$ref": "#/components/schemas/ProductDto"
                         }
                     },
-                    "datePeriods": {
+                    "datePeriodModels": {
+                        "type": "array",
+                        "description": "List of date period models",
+                        "items": {
+                            "$ref": "#/components/schemas/DatePeriodModel"
+                        }
+                    }
+                }
+            },
+            "GetStatisticsChartRequest": {
+                "type": "object",
+                "properties": {
+                    "companyId": {
+                        "type": "integer",
+                        "format": "int64"
+                    },
+                    "dateRange": {
+                        "type": "string",
+                        "enum": [
+                            "LAST_30_DAYS",
+                            "LAST_15_DAYS",
+                            "LAST_7_DAYS",
+                            "CUSTOM_DATE_RANGE"
+                        ]
+                    },
+                    "dateFrom": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "dateTo": {
+                        "type": "string",
+                        "format": "date"
+                    },
+                    "datePeriod": {
+                        "type": "string",
+                        "enum": [
+                            "DAY",
+                            "WEEK",
+                            "MONTH"
+                        ]
+                    },
+                    "productId": {
+                        "type": "string"
+                    }
+                }
+            },
+            "GetStatisticsChartResponse": {
+                "type": "object",
+                "properties": {
+                    "data": {
                         "type": "array",
                         "items": {
-                            "type": "string",
-                            "enum": [
-                                "DAY",
-                                "WEEK",
-                                "MONTH"
-                            ]
+                            "type": "integer",
+                            "format": "int32"
+                        }
+                    },
+                    "labels": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
                         }
                     }
                 }

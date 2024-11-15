@@ -1,7 +1,7 @@
 :host {
     border: 2px solid black;
-    width: 100%; // Take the full width of the parent container
-    max-width: 100%; // Prevent overflow beyond the screen
+    width: 99%; // Take the full width of the parent container
+    max-width: 99%; // Prevent overflow beyond the screen
     max-width: 1100px;
     padding-bottom: 99px;
 
@@ -17,13 +17,6 @@
     max-width: 175px; // Your desired width
 }
 
-
-.dropdown-wrapper {
-    position: position;
-    max-width: 13rem;
-    margin-top: -25px;
-    z-index: 9999;
-}
 
 // Media query for smaller screens
 @media (max-width: 768px) {

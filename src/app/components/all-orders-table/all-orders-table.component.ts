@@ -73,7 +73,7 @@ export class AllOrdersTableComponent {
   }
 
   loadOrdersLazy(event: TableLazyLoadEvent) {
-    //this.loading = true;
+    this.loading = true;
     let filters = this.createFilters(event.filters)
     let sorts = this.createSorts(event.sortField, event.sortOrder)
     this.contextService.getCompanyIdObservable().subscribe(companyId => { // Ensure this method returns an observable

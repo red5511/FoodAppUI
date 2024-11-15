@@ -3,6 +3,10 @@ import { ChartData, ChartOptions } from 'chart.js';
 import { Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { DropdownModule } from 'primeng/dropdown';
+import { ContextService } from '../../services/context/context.service';
+import { DatePeriodModel, DateRangeModel, GetStatisticsChartRequest, GetStatisticsChartResponse, GetStatisticsConfigRequest, GetStatisticsConfigResponse, ProductDto } from '../../services/models';
+import { StatisticsService } from '../../services/services';
+import { filter, map, Observable, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-statistics',
@@ -17,25 +21,30 @@ export class StatisticsComponent {
     datasets: [{
       data: [],
       label: 'Liczba zamówień',
-      fill: true 
+      fill: true
     }]
   };
   chartOptions: any;
   selectedRange = 'day'; // to bedzie do przerobienia
 
   // Filter stuff
-  dateRangeOptions: any;
-  dateRangeValue = 'week';
+  dateRangeOptions!: DateRangeModel[];
+  selectedDateRangeValue: any;
+  lastSelectedDateRangeValue: any;
   customDateRange = ""
 
+  datePeriodOptions!: DatePeriodModel[];
+  selectedDatePeriodValue: any;
+
+  productOptions!: ProductDto[];
+  selectedProductValue: any;
 
   // Calendar stuff
   showCalendar = false;
+  isCalendarClick = false;
   selectedDates?: Date[];    // Only 2 entries
 
-  constructor() {
-    this.updateCustomDatePeriodOption('Własny zakres')
-    // Initialize chart options
+  constructor(private contextService: ContextService, private statisticsService: StatisticsService) {
     this.chartOptions = {
       responsive: true,
       scales: {
@@ -63,73 +72,109 @@ export class StatisticsComponent {
   }
 
   ngOnInit(): void {
-    // Load initial data
-    this.loadOrderData(this.selectedRange);
+    this.contextService.getCompanyIdObservable()
+      .pipe(
+        filter((companyId): companyId is number => companyId !== undefined && companyId !== null),
+        switchMap(companyId =>
+          this.getConfig(companyId).pipe(
+            map(() => companyId)  // Return the companyId for the next switchMap
+          )
+        )
+      )
+      .subscribe({
+        next: (companyId) => this.handleGetStatisticsChart(companyId),  // Fetch chart data and update the chart
+        error: (error) => {
+          console.error('Error fetching companyId:', error);
+        }
+      });
   }
 
-  onDateRangeOptionClick(option: any) {
-    if (option.value === "custom") {
+  private handleGetStatisticsChart(companyId: number): void {
+    const body: GetStatisticsChartRequest = {
+      companyId,
+      datePeriod: this.selectedDatePeriodValue.datePeriod,
+      dateRange: this.selectedDateRangeValue.dateRange,
+      dateFrom: this.selectedDates?.at(0)?.toLocaleDateString(),
+      dateTo: this.selectedDates?.at(1)?.toLocaleDateString()
+    };
+    this.statisticsService.getStatisticsChart({ body }).subscribe({
+      next: (response) => {
+        // Update chart data based on the response
+        this.chartData.datasets[0].data = response.data ?? [];
+        this.chartData.labels = response.labels ?? [];
+        this.chart.update();  // Refresh the chart with new data
+      },
+      error: (error) => {
+        console.error('Error in fetching data:', error);
+      }
+    });
+  }
+
+  getConfig(companyId: number) {
+    const body: GetStatisticsConfigRequest = {
+      companyIds: [companyId]
+    };
+
+    return this.statisticsService.getStatisticsConfig({ body }).pipe(
+      tap((response: GetStatisticsConfigResponse) => {
+        if (response) {
+          this.dateRangeOptions = response.dataRangeModels;
+          this.selectedDateRangeValue = response.dataRangeModels.at(0);
+          this.lastSelectedDateRangeValue = response.dataRangeModels.at(0);
+          this.datePeriodOptions = response.datePeriodModels;
+          this.selectedDatePeriodValue = response.datePeriodModels.at(0);
+          this.productOptions = response.products;
+        }
+      })
+    );
+  }
+
+  onDateRangeOptionClick() {
+    if (this.selectedDateRangeValue.dateRange === "CUSTOM_DATE_RANGE" && this.isCalendarClick) {
       this.showCalendar = true;
+      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
+    }
+    else if (this.lastSelectedDateRangeValue.dateRange !== this.selectedDateRangeValue.dateRange) {
+      console.log("STRZELAM")
+      console.log(this.lastSelectedDateRangeValue.dateRange)
+      console.log(this.selectedDateRangeValue.dateRange)
+      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
+      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
     }
   }
 
-  // Handle date range change
-  onDateRangeChange(event: Event): void {
-    console.log(event)
-    const target = event?.target as HTMLSelectElement; // Type assertion to HTMLSelectElement
-    this.selectedRange = target.value; // Safe to access value
-    console.log(target.value)
-    this.loadOrderData(this.selectedRange);
-  }
-
-  // Load data based on selected range
-  loadOrderData(range: string): void {
-    // Update the data based on the selected range
-    switch (range) {
-      case 'day':
-        this.chartData.datasets[0].data = [4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0, 4, 66, 11, 1, 0, 0, 0]; // Example data for a day
-
-
-        this.chartData.labels = ['11', '12', '13', '14', '15', '16', '17', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', '11', '12', '13', '14', '15', '16', '17', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota', 'Niedziela'];
-        break;
-      case 'week':
-        this.chartData.datasets[0].data = [70, 120, 90, 140, 200, 110, 90]; // Example data for a week
-        this.chartData.labels = ['Tydzień 1', 'Tydzień 2', 'Tydzień 3', 'Tydzień 4'];
-        break;
-      case 'month':
-        console.log('workds!')
-        this.chartData.datasets[0].data = [300, 400, 350]; // Example data for a month
-        this.chartData.labels = ['Styczeń', 'Luty', 'Marzec'];
-        break;
-      case 'year':
-        this.chartData.datasets[0].data = [1200, 1500, 1300, 1400, 1600]; // Example data for a year
-        this.chartData.labels = ['2020', '2021', '2022', '2023'];
-        break;
-    }
-    if (this.chart) {
-      this.chart.update();  // Wywołanie aktualizacji wykresu
-
-    }
-  }
 
   onCalendarSelect() {
+    console.log("ehhh")
+    console.log(this.selectedDates)
     if (this.selectedDates?.at(1)) {
       this.showCalendar = false
       this.customDateRange += this.selectedDates.at(1)?.toLocaleDateString() || ''
       this.updateCustomDatePeriodOption(this.customDateRange);
+      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999)
     }
     else if (this.selectedDates?.at(0) !== undefined) {
       this.customDateRange = this.selectedDates.at(0)?.toLocaleDateString() + " / " || ''
       this.updateCustomDatePeriodOption(this.customDateRange);
     }
+
+
   }
 
-  updateCustomDatePeriodOption(newCustomValue: string) {
-    this.dateRangeOptions = [
-      { label: 'This Week', value: 'week' },
-      { label: 'This Month', value: 'month' },
-      { label: 'This Year', value: 'year' },
-      { label: newCustomValue, value: 'custom' }  // Use custom date
-    ];
+  updateCustomDatePeriodOption(newTranslatedValue: string) {
+    this.dateRangeOptions = this.dateRangeOptions.map(option => {
+      if (option.dateRange === 'CUSTOM_DATE_RANGE') {
+        this.selectedDateRangeValue = { ...option, translatedValue: newTranslatedValue }; // potrzebne bo odswieza mi wybana opcje 
+        return { ...option, translatedValue: newTranslatedValue };
+      }
+      return option;
+    });
+  }
+
+  onHide() {
+    this.isCalendarClick = false
+  }
+  onShow() {
+    this.isCalendarClick = true
   }
 }
