@@ -4,9 +4,20 @@ import { Chart } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { ContextService } from '../../services/context/context.service';
-import { DatePeriodModel, DateRangeModel, GetStatisticsChartRequest, GetStatisticsChartResponse, GetStatisticsConfigRequest, GetStatisticsConfigResponse, ProductDto } from '../../services/models';
+import {
+  DatePeriodModel,
+  DateRangeModel,
+  GetStatisticsChartRequest,
+  GetStatisticsChartResponse,
+  GetStatisticsConfigRequest,
+  GetStatisticsConfigResponse,
+  ProductDto,
+} from '../../services/models';
 import { StatisticsService } from '../../services/services';
 import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
+
 
 @Component({
   selector: 'app-statistics',
@@ -18,20 +29,35 @@ export class StatisticsComponent {
   @ViewChild(BaseChartDirective) chart!: BaseChartDirective;
   chartData: ChartData<'line'> = {
     labels: [],
-    datasets: [{
-      data: [],
-      label: 'Liczba zamówień',
-      fill: true
-    }]
+    datasets: [
+      {
+        data: [],
+        label: 'Liczba zamówień',
+        fill: true,
+        borderColor: 'rgba(255, 165, 0, 1)', // Orange border
+        backgroundColor: 'rgba(255, 165, 0, 0.2)', // Light orange fill
+        tension: 0.4,
+      },
+      {
+        data: [], // Second dataset
+        label: 'Zarobki',
+        fill: false,
+        borderColor: 'rgba(0, 128, 0, 1)', // Green border
+        backgroundColor: 'rgba(0, 128, 0, 0.2)', // Light green fill
+        tension: 0.1,
+      },
+    ],
   };
   chartOptions: any;
   selectedRange = 'day'; // to bedzie do przerobienia
+  earningsTotal = 0;
+  ordersCountTotal = 0;
 
   // Filter stuff
   dateRangeOptions!: DateRangeModel[];
   selectedDateRangeValue: any;
   lastSelectedDateRangeValue: any;
-  customDateRange = ""
+  customDateRange = '';
 
   datePeriodOptions!: DatePeriodModel[];
   selectedDatePeriodValue: any;
@@ -42,9 +68,13 @@ export class StatisticsComponent {
   // Calendar stuff
   showCalendar = false;
   isCalendarClick = false;
-  selectedDates?: Date[];    // Only 2 entries
+  selectedDates?: Date[]; // Only 2 entries
+  showEarnings = false;
 
-  constructor(private contextService: ContextService, private statisticsService: StatisticsService) {
+  constructor(
+    private contextService: ContextService,
+    private statisticsService: StatisticsService
+  ) {
     this.chartOptions = {
       responsive: true,
       scales: {
@@ -72,20 +102,24 @@ export class StatisticsComponent {
   }
 
   ngOnInit(): void {
-    this.contextService.getCompanyIdObservable()
+    this.contextService
+      .getCompanyIdObservable()
       .pipe(
-        filter((companyId): companyId is number => companyId !== undefined && companyId !== null),
-        switchMap(companyId =>
+        filter(
+          (companyId): companyId is number =>
+            companyId !== undefined && companyId !== null
+        ),
+        switchMap((companyId) =>
           this.getConfig(companyId).pipe(
-            map(() => companyId)  // Return the companyId for the next switchMap
+            map(() => companyId) // Return the companyId for the next switchMap
           )
         )
       )
       .subscribe({
-        next: (companyId) => this.handleGetStatisticsChart(companyId),  // Fetch chart data and update the chart
+        next: (companyId) => this.handleGetStatisticsChart(companyId), // Fetch chart data and update the chart
         error: (error) => {
           console.error('Error fetching companyId:', error);
-        }
+        },
       });
   }
 
@@ -96,24 +130,30 @@ export class StatisticsComponent {
       dateRange: this.selectedDateRangeValue.dateRange,
       dateFrom: this.selectedDates?.at(0)?.toLocaleDateString(),
       dateTo: this.selectedDates?.at(1)?.toLocaleDateString(),
-      productId: this.selectedProductValue?.id
+      productId: this.selectedProductValue?.id,
+      showEarnings: this.showEarnings,
     };
     this.statisticsService.getStatisticsChart({ body }).subscribe({
       next: (response) => {
         // Update chart data based on the response
-        this.chartData.datasets[0].data = response.data ?? [];
+        this.ordersCountTotal = response.ordersCountTotal ?? 0;
+        this.earningsTotal = response.earningsTotal ?? 0;
+        this.chartData.datasets[0].data = response.ordersCount ?? [];
         this.chartData.labels = response.labels ?? [];
-        this.chart.update();  // Refresh the chart with new data
+
+        this.chartData.datasets[1].data = response.earnings ?? [];
+
+        this.chart.update(); // Refresh the chart with new data
       },
       error: (error) => {
         console.error('Error in fetching data:', error);
-      }
+      },
     });
   }
 
   getConfig(companyId: number) {
     const body: GetStatisticsConfigRequest = {
-      companyIds: [companyId]
+      companyIds: [companyId],
     };
 
     return this.statisticsService.getStatisticsConfig({ body }).pipe(
@@ -130,26 +170,27 @@ export class StatisticsComponent {
     );
   }
 
-
   onCalendarSelect() {
     if (this.selectedDates?.at(1)) {
-      this.showCalendar = false
-      this.customDateRange += this.selectedDates.at(1)?.toLocaleDateString() || ''
+      this.showCalendar = false;
+      this.customDateRange +=
+        this.selectedDates.at(1)?.toLocaleDateString() || '';
       this.updateCustomDatePeriodOption(this.customDateRange);
-      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999)
-    }
-    else if (this.selectedDates?.at(0) !== undefined) {
-      this.customDateRange = this.selectedDates.at(0)?.toLocaleDateString() + " / " || ''
+      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999);
+    } else if (this.selectedDates?.at(0) !== undefined) {
+      this.customDateRange =
+        this.selectedDates.at(0)?.toLocaleDateString() + ' / ' || '';
       this.updateCustomDatePeriodOption(this.customDateRange);
     }
-
-
   }
 
   updateCustomDatePeriodOption(newTranslatedValue: string) {
-    this.dateRangeOptions = this.dateRangeOptions.map(option => {
+    this.dateRangeOptions = this.dateRangeOptions.map((option) => {
       if (option.dateRange === 'CUSTOM_DATE_RANGE') {
-        this.selectedDateRangeValue = { ...option, translatedValue: newTranslatedValue }; // potrzebne bo odswieza mi wybana opcje 
+        this.selectedDateRangeValue = {
+          ...option,
+          translatedValue: newTranslatedValue,
+        }; // potrzebne bo odswieza mi wybana opcje
         return { ...option, translatedValue: newTranslatedValue };
       }
       return option;
@@ -157,27 +198,36 @@ export class StatisticsComponent {
   }
 
   datePeriodOptionOnChange() {
-    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
   }
 
-    onDateRangeOptionClick() {
-      if (this.selectedDateRangeValue.dateRange === "CUSTOM_DATE_RANGE" && this.isCalendarClick) {
-        this.showCalendar = true;
-      }
-      else if (this.lastSelectedDateRangeValue.dateRange !== this.selectedDateRangeValue.dateRange) {
-        this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
-      }
-      this.lastSelectedDateRangeValue = this.selectedDateRangeValue
+  onDateRangeOptionClick() {
+    if (
+      this.selectedDateRangeValue.dateRange === 'CUSTOM_DATE_RANGE' &&
+      this.isCalendarClick
+    ) {
+      this.showCalendar = true;
+    } else if (
+      this.lastSelectedDateRangeValue.dateRange !==
+      this.selectedDateRangeValue.dateRange
+    ) {
+      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
     }
+    this.lastSelectedDateRangeValue = this.selectedDateRangeValue;
+  }
 
-    productOptionOnChange(){
-      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999) //todo pomysle czy moze jendak tym observablem to lapac
-    }
+  onCheckboxChange() {
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
+  }
+
+  productOptionOnChange() {
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
+  }
 
   onHide() {
-    this.isCalendarClick = false
+    this.isCalendarClick = false;
   }
   onShow() {
-    this.isCalendarClick = true
+    this.isCalendarClick = true;
   }
 }

@@ -797,17 +797,21 @@
           "dateFrom": { "type": "string", "format": "date" },
           "dateTo": { "type": "string", "format": "date" },
           "datePeriod": { "type": "string", "enum": ["DAY", "WEEK", "MONTH"] },
-          "productId": { "type": "integer", "format": "int64" }
+          "productId": { "type": "integer", "format": "int64" },
+          "showEarnings": { "type": "boolean" }
         }
       },
       "GetStatisticsChartResponse": {
         "type": "object",
         "properties": {
-          "data": {
+          "ordersCount": {
             "type": "array",
             "items": { "type": "integer", "format": "int64" }
           },
-          "labels": { "type": "array", "items": { "type": "string" } }
+          "labels": { "type": "array", "items": { "type": "string" } },
+          "earnings": { "type": "array", "items": { "type": "number" } },
+          "ordersCountTotal": { "type": "integer", "format": "int64" },
+          "earningsTotal": { "type": "number" }
         }
       },
       "CreateProductRequest": {

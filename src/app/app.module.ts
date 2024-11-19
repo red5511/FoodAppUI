@@ -54,7 +54,8 @@ import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { BaseChartDirective, provideCharts, withDefaultRegisterables  } from 'ng2-charts';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
-
+import { CheckboxModule } from 'primeng/checkbox';
+import { DividerModule } from 'primeng/divider';
 
 @NgModule({
   declarations: [
@@ -94,6 +95,7 @@ import { CalendarModule } from 'primeng/calendar';
     MatIconModule,
     DropdownModule,
     MatToolbarModule,
+    CheckboxModule,
     MatMenuModule,
     MatDividerModule,
     MatListModule,
@@ -104,6 +106,7 @@ import { CalendarModule } from 'primeng/calendar';
     TableModule,
     TagModule,
     BaseChartDirective,
+    DividerModule,
     CalendarModule,
     RatingModule,
     DialogModule,

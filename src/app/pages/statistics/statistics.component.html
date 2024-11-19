@@ -43,6 +43,16 @@
         />
         <label for="float-label">Produkty</label>
       </span>
+
+      <div class="checkbox">
+        <p-checkbox
+          [(ngModel)]="showEarnings"
+          (onChange)="onCheckboxChange()"
+          [binary]="true"
+          label="Pokaż zarobki"
+          inputId="binary"
+        />
+      </div>
     </div>
 
     <div>
@@ -54,6 +64,11 @@
       >
       </canvas>
     </div>
+    <p-divider />
+
+    <h3>
+      Wszyskich zamówień {{ ordersCountTotal }}<span *ngIf="earningsTotal > 0">, suma zarobków {{ earningsTotal | pricePln}}</span>
+    </h3>
   </div>
 </div>
 

@@ -75,3 +75,16 @@
   max-width: 15rem;
   min-width: 15rem;
 }
+
+.checkbox {
+  display: flex;
+  align-items: center;
+  /* Center horizontally */
+  justify-content: center;
+}
+
+h3 {
+  font: 400 1.25rem / 1.75rem Roboto, sans-serif;
+  letter-spacing: 0.031rem;
+  margin-left: 2rem;
+}
