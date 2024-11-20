@@ -9,8 +9,6 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 @Component({
   selector: 'app-all-orders',
   templateUrl: './all-orders.component.html',
-  styleUrl: './all-orders.component.scss'
+  styleUrl: './all-orders.component.scss',
 })
-export class AllOrdersComponent {
-
-}
+export class AllOrdersComponent {}

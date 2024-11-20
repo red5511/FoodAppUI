@@ -24,7 +24,8 @@ export class UserAdministrationService extends BaseService {
   }
 
   /** Path part for operation `getCompanyUsers()` */
-  static readonly GetCompanyUsersPath = '/api/v1/administration/user/{companyId}/users';
+  static readonly GetCompanyUsersPath =
+    '/api/v1/administration/user/{companyId}/users';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -32,7 +33,10 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompanyUsers$Response(params: GetCompanyUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+  getCompanyUsers$Response(
+    params: GetCompanyUsers$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetUsersResponse>> {
     return getCompanyUsers(this.http, this.rootUrl, params, context);
   }
 
@@ -42,14 +46,20 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompanyUsers(params: GetCompanyUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
+  getCompanyUsers(
+    params: GetCompanyUsers$Params,
+    context?: HttpContext,
+  ): Observable<GetUsersResponse> {
     return this.getCompanyUsers$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+      map(
+        (r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body,
+      ),
     );
   }
 
   /** Path part for operation `getUsersNotBelongToCompany()` */
-  static readonly GetUsersNotBelongToCompanyPath = '/api/v1/administration/user/{companyId}/users-to-add';
+  static readonly GetUsersNotBelongToCompanyPath =
+    '/api/v1/administration/user/{companyId}/users-to-add';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -57,7 +67,10 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUsersNotBelongToCompany$Response(params: GetUsersNotBelongToCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+  getUsersNotBelongToCompany$Response(
+    params: GetUsersNotBelongToCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetUsersResponse>> {
     return getUsersNotBelongToCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -67,9 +80,14 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getUsersNotBelongToCompany(params: GetUsersNotBelongToCompany$Params, context?: HttpContext): Observable<GetUsersResponse> {
+  getUsersNotBelongToCompany(
+    params: GetUsersNotBelongToCompany$Params,
+    context?: HttpContext,
+  ): Observable<GetUsersResponse> {
     return this.getUsersNotBelongToCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+      map(
+        (r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body,
+      ),
     );
   }
 
@@ -82,7 +100,10 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllUsers$Response(params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+  getAllUsers$Response(
+    params?: GetAllUsers$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetUsersResponse>> {
     return getAllUsers(this.http, this.rootUrl, params, context);
   }
 
@@ -92,10 +113,14 @@ export class UserAdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllUsers(params?: GetAllUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
+  getAllUsers(
+    params?: GetAllUsers$Params,
+    context?: HttpContext,
+  ): Observable<GetUsersResponse> {
     return this.getAllUsers$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+      map(
+        (r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body,
+      ),
     );
   }
-
 }

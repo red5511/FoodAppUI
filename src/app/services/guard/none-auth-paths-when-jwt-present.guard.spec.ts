@@ -4,8 +4,10 @@ import { CanActivateFn } from '@angular/router';
 import { noneAuthPathsWhenJwtPresentGuard } from './none-auth-paths-when-jwt-present.guard';
 
 describe('noneAuthPathsWhenJwtPresentGuard', () => {
-  const executeGuard: CanActivateFn = (...guardParameters) => 
-      TestBed.runInInjectionContext(() => noneAuthPathsWhenJwtPresentGuard(...guardParameters));
+  const executeGuard: CanActivateFn = (...guardParameters) =>
+    TestBed.runInInjectionContext(() =>
+      noneAuthPathsWhenJwtPresentGuard(...guardParameters),
+    );
 
   beforeEach(() => {
     TestBed.configureTestingModule({});

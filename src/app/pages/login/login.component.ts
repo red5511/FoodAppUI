@@ -9,12 +9,12 @@ import { LoginService } from '../../services/login/login.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrl: './login.component.scss'
+  styleUrl: './login.component.scss',
 })
 export class LoginComponent {
   authenticationRequest: AuthenticationRequest = {
     email: '',
-    password: ''
+    password: '',
   };
   authResponse: AuthenticationResponse = {};
   message = '';
@@ -25,30 +25,32 @@ export class LoginComponent {
     private router: Router,
     private tokenService: TokenService,
     private loginService: LoginService,
-  ) {
-  }
+  ) {}
 
   loginUser() {
     this.message = '';
-    this.authService.authenticate({ body: this.authenticationRequest }).subscribe({
-      next: (response) => {
-        if (response) {
-          this.isSuccess = true;
-          this.authResponse = response;
-          this.message = 'Account created successfully';
-          this.tokenService.token = response.token as string;
-          this.loginService.loggedIn();
-          setTimeout(() => {
-            this.router.navigate(['dashboard2']);
-          }, 300);
-        }
-      },
-      error: (err) => {
-        this.message = 'Login failed: ';
-        if (err.error) {
-          this.message = this.message + (err.error.errorCode || 'Unknown error');
-        }
-      }
-    });
+    this.authService
+      .authenticate({ body: this.authenticationRequest })
+      .subscribe({
+        next: (response) => {
+          if (response) {
+            this.isSuccess = true;
+            this.authResponse = response;
+            this.message = 'Account created successfully';
+            this.tokenService.token = response.token as string;
+            this.loginService.loggedIn();
+            setTimeout(() => {
+              this.router.navigate(['dashboard2']);
+            }, 300);
+          }
+        },
+        error: (err) => {
+          this.message = 'Login failed: ';
+          if (err.error) {
+            this.message =
+              this.message + (err.error.errorCode || 'Unknown error');
+          }
+        },
+      });
   }
 }

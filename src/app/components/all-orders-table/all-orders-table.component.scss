@@ -1,78 +1,81 @@
 :host {
-    border: 2px solid black;
-    width: 99%; // Take the full width of the parent container
-    max-width: 99%; // Prevent overflow beyond the screen
-    max-width: 1100px;
-    padding-bottom: 99px;
-
+  border: 2px solid black;
+  width: 99%; // Take the full width of the parent container
+  max-width: 99%; // Prevent overflow beyond the screen
+  max-width: 1100px;
+  padding-bottom: 99px;
 }
 
-:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
-    padding: 1rem 5px;
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem 5px;
 }
 
-:host ::ng-deep .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
-    // iacznej tylye childow sie nie odswizaja, to jest ten imput ttext w drop poxie statusow (inaczej wielkosc jest zalezna od wielkosci statusu xd)
-    min-width: 175px; // Your desired width
-    max-width: 175px; // Your desired width
+:host
+  ::ng-deep
+  .p-multiselect-panel
+  .p-multiselect-header
+  .p-multiselect-filter-container
+  .p-inputtext {
+  // iacznej tylye childow sie nie odswizaja, to jest ten imput ttext w drop poxie statusow (inaczej wielkosc jest zalezna od wielkosci statusu xd)
+  min-width: 175px; // Your desired width
+  max-width: 175px; // Your desired width
 }
-
 
 // Media query for smaller screens
 @media (max-width: 768px) {
-    .table-header {
-        margin: 0px; // Reduced margin on smaller screens
-    }
+  .table-header {
+    margin: 0px; // Reduced margin on smaller screens
+  }
 
-    ::host {
-        padding-left: 125px;
-        padding-right: 125px;
-    }
+  ::host {
+    padding-left: 125px;
+    padding-right: 125px;
+  }
 }
 
 @media (max-width: 480px) {
-    .table-header {
-        margin: 0px; // Further reduced margin on mobile screens
-    }
+  .table-header {
+    margin: 0px; // Further reduced margin on mobile screens
+  }
 }
 
 .search-container {
-    display: flex;
-    /* Enables flexbox */
-    justify-content: center;
-    /* Aligns items to the right */
+  display: flex;
+  /* Enables flexbox */
+  justify-content: center;
+  /* Aligns items to the right */
 }
 
 .description-container {
-    display: block;
-    /* Treat it as a block element */
-    white-space: nowrap;
-    /* Prevent text from wrapping */
-    overflow: hidden;
-    /* Hide overflowing text */
-    text-overflow: ellipsis;
-    /* Add ellipsis (...) */
-    width: 200px;
-    /* Set your desired width */
-    cursor: pointer;
-    /* Indicate it's hoverable */
+  display: block;
+  /* Treat it as a block element */
+  white-space: nowrap;
+  /* Prevent text from wrapping */
+  overflow: hidden;
+  /* Hide overflowing text */
+  text-overflow: ellipsis;
+  /* Add ellipsis (...) */
+  width: 200px;
+  /* Set your desired width */
+  cursor: pointer;
+  /* Indicate it's hoverable */
 }
 
 .description-container:hover {
-    overflow: visible;
-    /* Show the full text on hover */
-    white-space: normal;
-    /* Allow text to wrap */
-    position: absolute;
-    /* Position it absolutely */
-    z-index: 10;
-    /* Bring it to the front */
-    background: white;
-    /* Optional: background color for better visibility */
-    border: 1px solid #ccc;
-    /* Optional: border for clarity */
-    padding: 5px;
-    /* Optional: padding for better aesthetics */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    /* Optional: shadow for better visibility */
+  overflow: visible;
+  /* Show the full text on hover */
+  white-space: normal;
+  /* Allow text to wrap */
+  position: absolute;
+  /* Position it absolutely */
+  z-index: 10;
+  /* Bring it to the front */
+  background: white;
+  /* Optional: background color for better visibility */
+  border: 1px solid #ccc;
+  /* Optional: border for clarity */
+  padding: 5px;
+  /* Optional: padding for better aesthetics */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  /* Optional: shadow for better visibility */
 }

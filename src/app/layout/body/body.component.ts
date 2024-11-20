@@ -3,7 +3,7 @@ import { Component, Input } from '@angular/core';
 @Component({
   selector: 'app-body',
   templateUrl: './body.component.html',
-  styleUrl: './body.component.scss'
+  styleUrl: './body.component.scss',
 })
 export class BodyComponent {
   bodyClass = '';
@@ -32,21 +32,18 @@ export class BodyComponent {
   }
 
   updateBodyClass(): string {
-    if(!this._isLoggedIn || this._screenWidth <= 1000){
+    if (!this._isLoggedIn || this._screenWidth <= 1000) {
       this.bodyClass = 'body-normal';
-    }
-    else if (this._isSidebarVisible) {
+    } else if (this._isSidebarVisible) {
       this.bodyClass = 'body-trimmed';
+    } else {
+      this.bodyClass = 'body-md-screen';
     }
-    else {
-      this.bodyClass = 'body-md-screen'
-    }
-    console.log(this.bodyClass)
+    console.log(this.bodyClass);
 
     // else if (!this._isSidebarVisible && this._screenWidth <= 768 && this._screenWidth > 0) {
     //   this.bodyClass = 'body-md-screen'
     // }
     return this.bodyClass;
   }
-
 }

@@ -34,7 +34,10 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getActiveOrders$Response(params: GetActiveOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
+  getActiveOrders$Response(
+    params: GetActiveOrders$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
     return getActiveOrders(this.http, this.rootUrl, params, context);
   }
 
@@ -44,9 +47,16 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getActiveOrders(params: GetActiveOrders$Params, context?: HttpContext): Observable<DashboardGetOrdersResponse> {
+  getActiveOrders(
+    params: GetActiveOrders$Params,
+    context?: HttpContext,
+  ): Observable<DashboardGetOrdersResponse> {
     return this.getActiveOrders$Response(params, context).pipe(
-      map((r: StrictHttpResponse<DashboardGetOrdersResponse>): DashboardGetOrdersResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<DashboardGetOrdersResponse>,
+        ): DashboardGetOrdersResponse => r.body,
+      ),
     );
   }
 
@@ -59,7 +69,10 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getConfig$Response(params?: GetConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetInitConfigResponse>> {
+  getConfig$Response(
+    params?: GetConfig$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<DashboardGetInitConfigResponse>> {
     return getConfig(this.http, this.rootUrl, params, context);
   }
 
@@ -69,9 +82,16 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getConfig(params?: GetConfig$Params, context?: HttpContext): Observable<DashboardGetInitConfigResponse> {
+  getConfig(
+    params?: GetConfig$Params,
+    context?: HttpContext,
+  ): Observable<DashboardGetInitConfigResponse> {
     return this.getConfig$Response(params, context).pipe(
-      map((r: StrictHttpResponse<DashboardGetInitConfigResponse>): DashboardGetInitConfigResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<DashboardGetInitConfigResponse>,
+        ): DashboardGetInitConfigResponse => r.body,
+      ),
     );
   }
 
@@ -84,7 +104,10 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany$Response(params: GetCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetCompanyResponse>> {
+  getCompany$Response(
+    params: GetCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<DashboardGetCompanyResponse>> {
     return getCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -94,10 +117,16 @@ export class DashboardService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompany(params: GetCompany$Params, context?: HttpContext): Observable<DashboardGetCompanyResponse> {
+  getCompany(
+    params: GetCompany$Params,
+    context?: HttpContext,
+  ): Observable<DashboardGetCompanyResponse> {
     return this.getCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<DashboardGetCompanyResponse>): DashboardGetCompanyResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<DashboardGetCompanyResponse>,
+        ): DashboardGetCompanyResponse => r.body,
+      ),
     );
   }
-
 }

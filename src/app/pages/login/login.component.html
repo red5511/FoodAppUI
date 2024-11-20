@@ -1,29 +1,47 @@
 <app-header-guest></app-header-guest>
 
 <div class="container">
-    <div *ngIf="message" class="message-panel"
-        [ngClass]="{'success': !message.startsWith('Login failed'), 'error': message.startsWith('Login failed')}">
-        <div class="message-icon">
-            <span *ngIf="!message.startsWith('Login failed')">&#10004;</span>
-            <span *ngIf="message.startsWith('Login failed')">&#10006;</span>
-        </div>
-        <div class="message-content">{{ message }}</div>
+  <div
+    *ngIf="message"
+    class="message-panel"
+    [ngClass]="{
+      success: !message.startsWith('Login failed'),
+      error: message.startsWith('Login failed'),
+    }"
+  >
+    <div class="message-icon">
+      <span *ngIf="!message.startsWith('Login failed')">&#10004;</span>
+      <span *ngIf="message.startsWith('Login failed')">&#10006;</span>
     </div>
+    <div class="message-content">{{ message }}</div>
+  </div>
 
-    <div *ngIf="!isSuccess">
-        <h2>Login</h2>
-        <form (ngSubmit)="loginUser()">
-            <div class="form-group">
-                <label for="email">Email</label>
-                <input id="email" name="email" required type="text" [(ngModel)]="authenticationRequest.email">
-            </div>
-            <div class="form-group">
-                <label for="password">Password</label>
-                <input id="password" name="password" required type="password" [(ngModel)]="authenticationRequest.password">
-            </div>
-            <button type="submit">Login</button>
-        </form>
-    </div>
-    <a routerLink="/register" class="link">Register</a>
-    <a routerLink="/changePassword" class="link">Forgot password?</a>
+  <div *ngIf="!isSuccess">
+    <h2>Login</h2>
+    <form (ngSubmit)="loginUser()">
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          required
+          type="text"
+          [(ngModel)]="authenticationRequest.email"
+        />
+      </div>
+      <div class="form-group">
+        <label for="password">Password</label>
+        <input
+          id="password"
+          name="password"
+          required
+          type="password"
+          [(ngModel)]="authenticationRequest.password"
+        />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+  <a routerLink="/register" class="link">Register</a>
+  <a routerLink="/changePassword" class="link">Forgot password?</a>
 </div>

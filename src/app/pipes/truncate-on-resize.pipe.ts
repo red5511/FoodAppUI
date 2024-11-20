@@ -1,14 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'truncateOnResize'
+  name: 'truncateOnResize',
 })
 export class TruncateOnResizePipe implements PipeTransform {
-
   transform(value: string, limit: number = 25): string {
     let modifiedString = '';
     let start = 0;
-    
+
     while (start < value.length) {
       // Find the next space after the limit to avoid cutting words
       let end = start + limit;
@@ -25,5 +24,4 @@ export class TruncateOnResizePipe implements PipeTransform {
 
     return modifiedString;
   }
-
 }

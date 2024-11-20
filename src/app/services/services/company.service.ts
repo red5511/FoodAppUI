@@ -37,7 +37,10 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  modifyCompany$Response(params: ModifyCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  modifyCompany$Response(
+    params: ModifyCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return modifyCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -47,9 +50,12 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  modifyCompany(params: ModifyCompany$Params, context?: HttpContext): Observable<string> {
+  modifyCompany(
+    params: ModifyCompany$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.modifyCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
 
@@ -62,7 +68,10 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveCompany$Response(params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  saveCompany$Response(
+    params: SaveCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return saveCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -72,14 +81,18 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveCompany(params: SaveCompany$Params, context?: HttpContext): Observable<string> {
+  saveCompany(
+    params: SaveCompany$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.saveCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
 
   /** Path part for operation `getCompanyDetails()` */
-  static readonly GetCompanyDetailsPath = '/api/v1/administration/company/{companyId}/details';
+  static readonly GetCompanyDetailsPath =
+    '/api/v1/administration/company/{companyId}/details';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -87,7 +100,10 @@ export class CompanyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompanyDetails$Response(params: GetCompanyDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<GetCompanyDetailsResponse>> {
+  getCompanyDetails$Response(
+    params: GetCompanyDetails$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetCompanyDetailsResponse>> {
     return getCompanyDetails(this.http, this.rootUrl, params, context);
   }
 
@@ -97,14 +113,22 @@ export class CompanyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getCompanyDetails(params: GetCompanyDetails$Params, context?: HttpContext): Observable<GetCompanyDetailsResponse> {
+  getCompanyDetails(
+    params: GetCompanyDetails$Params,
+    context?: HttpContext,
+  ): Observable<GetCompanyDetailsResponse> {
     return this.getCompanyDetails$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetCompanyDetailsResponse>): GetCompanyDetailsResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<GetCompanyDetailsResponse>,
+        ): GetCompanyDetailsResponse => r.body,
+      ),
     );
   }
 
   /** Path part for operation `getAllCompanies()` */
-  static readonly GetAllCompaniesPath = '/api/v1/administration/company/companies';
+  static readonly GetAllCompaniesPath =
+    '/api/v1/administration/company/companies';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -112,7 +136,10 @@ export class CompanyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllCompanies$Response(params?: GetAllCompanies$Params, context?: HttpContext): Observable<StrictHttpResponse<GetAllCompaniesResponse>> {
+  getAllCompanies$Response(
+    params?: GetAllCompanies$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetAllCompaniesResponse>> {
     return getAllCompanies(this.http, this.rootUrl, params, context);
   }
 
@@ -122,9 +149,16 @@ export class CompanyService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  getAllCompanies(params?: GetAllCompanies$Params, context?: HttpContext): Observable<GetAllCompaniesResponse> {
+  getAllCompanies(
+    params?: GetAllCompanies$Params,
+    context?: HttpContext,
+  ): Observable<GetAllCompaniesResponse> {
     return this.getAllCompanies$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetAllCompaniesResponse>): GetAllCompaniesResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<GetAllCompaniesResponse>,
+        ): GetAllCompaniesResponse => r.body,
+      ),
     );
   }
 
@@ -137,7 +171,10 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  deleteCompany$Response(params: DeleteCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  deleteCompany$Response(
+    params: DeleteCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return deleteCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -147,10 +184,12 @@ export class CompanyService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  deleteCompany(params: DeleteCompany$Params, context?: HttpContext): Observable<string> {
+  deleteCompany(
+    params: DeleteCompany$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.deleteCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
-
 }

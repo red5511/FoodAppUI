@@ -31,7 +31,10 @@ export class StatisticsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsConfig$Response(params: GetStatisticsConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<GetStatisticsConfigResponse>> {
+  getStatisticsConfig$Response(
+    params: GetStatisticsConfig$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetStatisticsConfigResponse>> {
     return getStatisticsConfig(this.http, this.rootUrl, params, context);
   }
 
@@ -41,9 +44,16 @@ export class StatisticsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsConfig(params: GetStatisticsConfig$Params, context?: HttpContext): Observable<GetStatisticsConfigResponse> {
+  getStatisticsConfig(
+    params: GetStatisticsConfig$Params,
+    context?: HttpContext,
+  ): Observable<GetStatisticsConfigResponse> {
     return this.getStatisticsConfig$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetStatisticsConfigResponse>): GetStatisticsConfigResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<GetStatisticsConfigResponse>,
+        ): GetStatisticsConfigResponse => r.body,
+      ),
     );
   }
 
@@ -56,7 +66,10 @@ export class StatisticsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsChart$Response(params: GetStatisticsChart$Params, context?: HttpContext): Observable<StrictHttpResponse<GetStatisticsChartResponse>> {
+  getStatisticsChart$Response(
+    params: GetStatisticsChart$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<GetStatisticsChartResponse>> {
     return getStatisticsChart(this.http, this.rootUrl, params, context);
   }
 
@@ -66,10 +79,16 @@ export class StatisticsService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsChart(params: GetStatisticsChart$Params, context?: HttpContext): Observable<GetStatisticsChartResponse> {
+  getStatisticsChart(
+    params: GetStatisticsChart$Params,
+    context?: HttpContext,
+  ): Observable<GetStatisticsChartResponse> {
     return this.getStatisticsChart$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetStatisticsChartResponse>): GetStatisticsChartResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<GetStatisticsChartResponse>,
+        ): GetStatisticsChartResponse => r.body,
+      ),
     );
   }
-
 }

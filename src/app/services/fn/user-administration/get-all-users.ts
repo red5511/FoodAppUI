@@ -8,22 +8,28 @@ import { RequestBuilder } from '../../request-builder';
 
 import { GetUsersResponse } from '../../models/get-users-response';
 
-export interface GetAllUsers$Params {
-}
+export interface GetAllUsers$Params {}
 
-export function getAllUsers(http: HttpClient, rootUrl: string, params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+export function getAllUsers(
+  http: HttpClient,
+  rootUrl: string,
+  params?: GetAllUsers$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GetUsersResponse>> {
   const rb = new RequestBuilder(rootUrl, getAllUsers.PATH, 'get');
   if (params) {
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<GetUsersResponse>;
-    })
-  );
+  return http
+    .request(
+      rb.build({ responseType: 'json', accept: 'application/json', context }),
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<GetUsersResponse>;
+      }),
+    );
 }
 
 getAllUsers.PATH = '/api/v1/administration/user/users';

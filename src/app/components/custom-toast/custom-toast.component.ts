@@ -5,14 +5,18 @@ import { MessageService } from 'primeng/api';
   selector: 'app-custom-toast',
   templateUrl: './custom-toast.component.html',
   styleUrls: ['./custom-toast.component.scss'],
-  providers: [MessageService]
+  providers: [MessageService],
 })
 export class CustomToastComponent {
-
-  constructor(private messageService: MessageService) { }
+  constructor(private messageService: MessageService) {}
 
   showConfirm() {
-    this.messageService.add({ severity: 'success', summary: 'Sticky', detail: 'Message Content', sticky: true });
+    this.messageService.add({
+      severity: 'success',
+      summary: 'Sticky',
+      detail: 'Message Content',
+      sticky: true,
+    });
   }
 
   clear() {

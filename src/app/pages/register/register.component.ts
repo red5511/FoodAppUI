@@ -7,23 +7,20 @@ import { AuthenticationResponse } from '../../services/models/authentication-res
 @Component({
   selector: 'app-register',
   templateUrl: './register.component.html',
-  styleUrl: './register.component.scss'
+  styleUrl: './register.component.scss',
 })
 export class RegisterComponent {
   registerRequest: RegisterRequest = {
     email: '',
     firstName: '',
     lastName: '',
-    password: ''
+    password: '',
   };
   authResponse: AuthenticationResponse = {};
   message = '';
   isSuccess: boolean = false;
 
-  constructor(
-    private authService: AuthenticationService,
-  ) {
-  }
+  constructor(private authService: AuthenticationService) {}
 
   registerUser() {
     this.message = '';
@@ -46,7 +43,7 @@ export class RegisterComponent {
         //       console.error('Parsed error JSON:', errorJson); // Log the parsed JSON for debugging
 
         //       // Extract errorCode
-        //       const errorCode = errorJson.errorCode; 
+        //       const errorCode = errorJson.errorCode;
         //       console.log('Extracted errorCode:', errorCode); // Log the extracted errorCode for debugging
 
         //       // Provide specific user-friendly messages based on error code
@@ -68,15 +65,15 @@ export class RegisterComponent {
         //   this.message += 'Unknown error occurred';
         // }
 
-
         this.message = 'Registration failed: ';
         if (err.error) {
           console.error('Error details:', err.error); // Log the error details
           // Check if errorCode exists in the error object
           const errorCode = err.error.errorCode || err.error['errorCode'];
-          this.message = this.message + (err.error.errorCode || 'Unknown error');
+          this.message =
+            this.message + (err.error.errorCode || 'Unknown error');
         }
-      }
+      },
     });
   }
 }

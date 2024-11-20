@@ -18,7 +18,6 @@ import { filter, map, Observable, switchMap, tap } from 'rxjs';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 
-
 @Component({
   selector: 'app-statistics',
   templateUrl: './statistics.component.html',
@@ -73,7 +72,7 @@ export class StatisticsComponent {
 
   constructor(
     private contextService: ContextService,
-    private statisticsService: StatisticsService
+    private statisticsService: StatisticsService,
   ) {
     this.chartOptions = {
       responsive: true,
@@ -107,13 +106,13 @@ export class StatisticsComponent {
       .pipe(
         filter(
           (companyId): companyId is number =>
-            companyId !== undefined && companyId !== null
+            companyId !== undefined && companyId !== null,
         ),
         switchMap((companyId) =>
           this.getConfig(companyId).pipe(
-            map(() => companyId) // Return the companyId for the next switchMap
-          )
-        )
+            map(() => companyId), // Return the companyId for the next switchMap
+          ),
+        ),
       )
       .subscribe({
         next: (companyId) => this.handleGetStatisticsChart(companyId), // Fetch chart data and update the chart
@@ -166,7 +165,7 @@ export class StatisticsComponent {
           this.selectedDatePeriodValue = response.datePeriodModels.at(0);
           this.productOptions = response.products;
         }
-      })
+      }),
     );
   }
 

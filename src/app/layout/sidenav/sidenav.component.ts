@@ -32,7 +32,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private sidebarService: SidebarService,
-    private contextService: ContextService
+    private contextService: ContextService,
   ) {}
 
   ngOnInit() {
@@ -103,7 +103,9 @@ export class SidenavComponent implements OnInit {
     }
   }
 
-  hasPermissionToModule(module: 'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'): boolean {
+  hasPermissionToModule(
+    module: 'LIVE_PANEL' | 'STATISTICS' | 'ORDERS',
+  ): boolean {
     return this.permittedModules.includes(module);
   }
 }

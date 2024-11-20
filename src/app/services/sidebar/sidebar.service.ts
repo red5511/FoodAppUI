@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class SidebarService {
   private sidebarVisibilitySubject = new BehaviorSubject<boolean>(true);
@@ -13,6 +13,6 @@ export class SidebarService {
   }
 
   setSidebar(boolVal: boolean) {
-    this.sidebarVisibilitySubject.next(boolVal)
+    this.sidebarVisibilitySubject.next(boolVal);
   }
 }

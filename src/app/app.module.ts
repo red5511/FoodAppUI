@@ -3,7 +3,11 @@ import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, Routes } from '@angular/router';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClient, HttpClientModule } from '@angular/common/http';
+import {
+  HTTP_INTERCEPTORS,
+  HttpClient,
+  HttpClientModule,
+} from '@angular/common/http';
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
@@ -51,7 +55,11 @@ import { InputIconModule } from 'primeng/inputicon';
 import { InputTextModule } from 'primeng/inputtext';
 import { DialogModule } from 'primeng/dialog';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
-import { BaseChartDirective, provideCharts, withDefaultRegisterables  } from 'ng2-charts';
+import {
+  BaseChartDirective,
+  provideCharts,
+  withDefaultRegisterables,
+} from 'ng2-charts';
 import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
@@ -114,32 +122,31 @@ import { DividerModule } from 'primeng/divider';
     IconFieldModule,
     InputIconModule,
     InputTextModule,
-    ToastrModule.forRoot(
-      {
-        progressBar: true,
-        closeButton: true,
-        newestOnTop: true,
-        tapToDismiss: true,
-        positionClass: 'toast-top-right',
-        timeOut: 9000,
-        maxOpened: 7
-      }
-    ),
+    ToastrModule.forRoot({
+      progressBar: true,
+      closeButton: true,
+      newestOnTop: true,
+      tapToDismiss: true,
+      positionClass: 'toast-top-right',
+      timeOut: 9000,
+      maxOpened: 7,
+    }),
   ],
-  providers: [HttpClient,
+  providers: [
+    HttpClient,
     provideCharts(withDefaultRegisterables()),
     MessageService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,
-      multi: true
+      multi: true,
     },
     {
       provide: HTTP_INTERCEPTORS,
-      useClass: AuthLogoutInterceptor,  // Handles 401 errors and redirection
-      multi: true
-    }
+      useClass: AuthLogoutInterceptor, // Handles 401 errors and redirection
+      multi: true,
+    },
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent],
 })
-export class AppModule { }
+export class AppModule {}

@@ -19,7 +19,8 @@ export class AdministrationService extends BaseService {
   }
 
   /** Path part for operation `addUserToCompany()` */
-  static readonly AddUserToCompanyPath = '/api/v1/administration/company/{companyId}/user/{userId}';
+  static readonly AddUserToCompanyPath =
+    '/api/v1/administration/company/{companyId}/user/{userId}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -27,7 +28,10 @@ export class AdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  addUserToCompany$Response(params: AddUserToCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  addUserToCompany$Response(
+    params: AddUserToCompany$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<void>> {
     return addUserToCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -37,10 +41,12 @@ export class AdministrationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  addUserToCompany(params: AddUserToCompany$Params, context?: HttpContext): Observable<void> {
+  addUserToCompany(
+    params: AddUserToCompany$Params,
+    context?: HttpContext,
+  ): Observable<void> {
     return this.addUserToCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<void>): void => r.body),
     );
   }
-
 }

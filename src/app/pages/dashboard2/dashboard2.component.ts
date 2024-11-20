@@ -23,7 +23,7 @@ export class Dashboard2Component {
     this.contextService.userReceivingOrdersSubjectVisibility$.subscribe(
       (isReceiving) => {
         this.isUserReceivingOrdersActive = isReceiving;
-      }
+      },
     );
   }
 

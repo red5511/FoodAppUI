@@ -1,79 +1,115 @@
 <p-toast />
-<p-table [value]="orders" dataKey="id" [tableStyle]="{ 'min-width': '60rem' }" [expandedRowKeys]="expandedRows"
-    (onRowExpand)="onRowExpand($event)" (onRowCollapse)="onRowCollapse($event)" [tableStyle]="{ 'min-width': '20rem' }"> 
-    <ng-template pTemplate="caption">
-        <div class="flex flex-wrap justify-content-end gap-2">
-            <p-button label="Expand All" icon="pi pi-plus" text (onClick)="expandAll()" />
-            <p-button label="Collapse All" icon="pi pi-minus" text (onClick)="collapseAll()" />
+<p-table
+  [value]="orders"
+  dataKey="id"
+  [tableStyle]="{ 'min-width': '60rem' }"
+  [expandedRowKeys]="expandedRows"
+  (onRowExpand)="onRowExpand($event)"
+  (onRowCollapse)="onRowCollapse($event)"
+  [tableStyle]="{ 'min-width': '20rem' }"
+>
+  <ng-template pTemplate="caption">
+    <div class="flex flex-wrap justify-content-end gap-2">
+      <p-button
+        label="Expand All"
+        icon="pi pi-plus"
+        text
+        (onClick)="expandAll()"
+      />
+      <p-button
+        label="Collapse All"
+        icon="pi pi-minus"
+        text
+        (onClick)="collapseAll()"
+      />
+    </div>
+  </ng-template>
+  <ng-template pTemplate="header">
+    <tr>
+      <th></th>
+      <!-- For buttons -->
+      <th></th>
+      <th style="padding-right: 55px">Status</th>
+      <th style="width: 25%" pSortableColumn="price">
+        <div class="table-header-content">
+          Kwota <p-sortIcon field="price" />
         </div>
-    </ng-template>
-    <ng-template pTemplate="header">
-        <tr>
-            <th></th> <!-- For buttons -->
-            <th></th>
-            <th style="padding-right: 55px;">Status</th>
-            <th style="width:25%" pSortableColumn="price">
-                <div class="table-header-content">
-                    Kwota <p-sortIcon field="price" />
-                </div>
-            </th>
-            <th cstyle="width:25%" pSortableColumn="date">
-                <div class="table-header-content">
-                    Data <p-sortIcon field="date" />
-                </div>
-            </th>
-            <th style="width:25%" pSortableColumn="description">
-                <div class="table-header-content">
-                    Opis <p-sortIcon field="description" />
-                </div>
-            </th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-order let-expanded="expanded">
-        <tr>
-            <td class="orders-row-body-first-td">
-                <p-button type="button" pRipple [pRowToggler]="order" [text]="true" [rounded]="true" [plain]="true"
-                    [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'" />
-            </td>
-            <td>#{{ order.id }}</td>
-            <td><p-tag [value]="translations[order.status]" [severity]="getStatusSeverity(order.status)" /></td>
-            <td>{{ order.price | currency : 'PLN' }}</td>
-            <td>{{ order.deliveryTime | formattedDate}}</td>
-            <td>
-                <div class="description-container" title="{{ order.description }}">
-                    {{ order.description }}
-                </div>
-            </td>        </tr>
-    </ng-template>
-    <ng-template pTemplate="rowexpansion" let-order>
-        <tr class="expanded-row">
-            <td colspan="7">
-                <div class="p-3">
-                    <p-table [value]="order.orderProducts" dataKey="id">
-                        <ng-template pTemplate="header">
-        <tr>
-            <th> </th>
-            <th>Nazwa</th>
-            <th>Kwota</th>
-            <th>Ilość</th>
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="body" let-orderProduct>
-        <tr class="xd">
-            <td style="padding: 5px 11px"><img [src]="orderProduct.product.imgUrl" alt="Product Image" style="width: 100px; height: 75px;" /></td>
-            <td>{{ orderProduct.product.name }}</td>
-            <td>{{ orderProduct.price | currency : 'PLN'}}</td>
-            <td>{{ orderProduct.quantity }}</td> <!-- Accessing quantity from the map -->
-        </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-        <tr>
-            <td colspan="6">There are no order for this order yet.</td>
-        </tr>
-    </ng-template>
-</p-table>
-</div>
-</td>
-</tr>
-</ng-template>
+      </th>
+      <th cstyle="width:25%" pSortableColumn="date">
+        <div class="table-header-content">Data <p-sortIcon field="date" /></div>
+      </th>
+      <th style="width: 25%" pSortableColumn="description">
+        <div class="table-header-content">
+          Opis <p-sortIcon field="description" />
+        </div>
+      </th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-order let-expanded="expanded">
+    <tr>
+      <td class="orders-row-body-first-td">
+        <p-button
+          type="button"
+          pRipple
+          [pRowToggler]="order"
+          [text]="true"
+          [rounded]="true"
+          [plain]="true"
+          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+        />
+      </td>
+      <td>#{{ order.id }}</td>
+      <td>
+        <p-tag
+          [value]="translations[order.status]"
+          [severity]="getStatusSeverity(order.status)"
+        />
+      </td>
+      <td>{{ order.price | currency: "PLN" }}</td>
+      <td>{{ order.deliveryTime | formattedDate }}</td>
+      <td>
+        <div class="description-container" title="{{ order.description }}">
+          {{ order.description }}
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-order>
+    <tr class="expanded-row">
+      <td colspan="7">
+        <div class="p-3">
+          <p-table [value]="order.orderProducts" dataKey="id">
+            <ng-template pTemplate="header">
+              <tr>
+                <th></th>
+                <th>Nazwa</th>
+                <th>Kwota</th>
+                <th>Ilość</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-orderProduct>
+              <tr class="xd">
+                <td style="padding: 5px 11px">
+                  <img
+                    [src]="orderProduct.product.imgUrl"
+                    alt="Product Image"
+                    style="width: 100px; height: 75px"
+                  />
+                </td>
+                <td>{{ orderProduct.product.name }}</td>
+                <td>{{ orderProduct.price | currency: "PLN" }}</td>
+                <td>{{ orderProduct.quantity }}</td>
+                <!-- Accessing quantity from the map -->
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="6">There are no order for this order yet.</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
 </p-table>

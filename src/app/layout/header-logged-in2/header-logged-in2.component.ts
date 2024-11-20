@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 import { DashboardService } from '../../services/services/dashboard.service';
 import {
@@ -13,6 +13,8 @@ import { ContextService } from '../../services/context/context.service';
   styleUrl: './header-logged-in2.component.scss',
 })
 export class HeaderLoggedIn2Component {
+  @Input()
+  isLoggedIn: boolean = false;
   isChecked = false;
   isDropdownOpen = false;
   options: string[] = [];
@@ -24,7 +26,7 @@ export class HeaderLoggedIn2Component {
   constructor(
     private sidebarService: SidebarService,
     private dashboardService: DashboardService,
-    private contextService: ContextService
+    private contextService: ContextService,
   ) {}
 
   ngOnInit(): void {
@@ -44,13 +46,13 @@ export class HeaderLoggedIn2Component {
           this.contextService.setContext(
             firstCompany.id as number,
             firstCompany.name as string,
-            response.permittedModules ?? []
+            response.permittedModules ?? [],
           );
         }
       },
       (error) => {
         console.error('Error loading data:', error);
-      }
+      },
     );
   }
 

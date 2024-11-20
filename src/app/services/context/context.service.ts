@@ -24,11 +24,15 @@ export class ContextService {
 
   constructor() {}
 
-  setContext(companyId: number, companyName: string, permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>) {
+  setContext(
+    companyId: number,
+    companyName: string,
+    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
+  ) {
     const newContext: Context = {
       companyId,
       companyName,
-      permittedModules
+      permittedModules,
     };
     this.contextSubject.next(newContext);
   }

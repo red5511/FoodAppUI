@@ -5,31 +5,35 @@ import { DashboardService } from '../../services/services';
 @Component({
   selector: 'app-header-logged-in',
   templateUrl: './header-logged-in.component.html',
-  styleUrl: './header-logged-in.component.scss'
+  styleUrl: './header-logged-in.component.scss',
 })
 export class HeaderLoggedInComponent {
   isDropdownOpen = false;
   options: string[] = [];
   selectedOption: string | null = null;
-  currentCompanyName: string = 'Brak firmy'
+  currentCompanyName: string = 'Brak firmy';
   response: DashboardGetInitConfigResponse = {};
 
-  constructor(private dashboardService: DashboardService) { }
+  constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.dashboardService.getConfig().subscribe(
-      response => {
+      (response) => {
         this.response = response;
-        if (this.response.companyDataList && this.response.companyDataList.length > 0) {
-          this.response.companyDataList.forEach(entry => {
+        if (
+          this.response.companyDataList &&
+          this.response.companyDataList.length > 0
+        ) {
+          this.response.companyDataList.forEach((entry) => {
             this.options.push(entry.name as string);
-          })
-          this.currentCompanyName = this.response.companyDataList[0].name as string;
+          });
+          this.currentCompanyName = this.response.companyDataList[0]
+            .name as string;
         }
       },
-      error => {
+      (error) => {
         console.error('Error loading data:', error);
-      }
+      },
     );
   }
 
@@ -45,5 +49,4 @@ export class HeaderLoggedInComponent {
     this.selectedOption = option;
     this.closeDropdown();
   }
-
 }

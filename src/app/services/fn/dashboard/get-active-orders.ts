@@ -12,20 +12,27 @@ export interface GetActiveOrders$Params {
   companyId: number;
 }
 
-export function getActiveOrders(http: HttpClient, rootUrl: string, params: GetActiveOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
+export function getActiveOrders(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetActiveOrders$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
   const rb = new RequestBuilder(rootUrl, getActiveOrders.PATH, 'get');
   if (params) {
     rb.path('companyId', params.companyId, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<DashboardGetOrdersResponse>;
-    })
-  );
+  return http
+    .request(
+      rb.build({ responseType: 'json', accept: 'application/json', context }),
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<DashboardGetOrdersResponse>;
+      }),
+    );
 }
 
 getActiveOrders.PATH = '/api/v1/dashboard/orders/{companyId}';

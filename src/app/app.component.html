@@ -1,3 +1,15 @@
-<app-header-logged-in2></app-header-logged-in2>
-<app-sidenav (onToogleSideNav)="onToggleSideNav($event)" [isLoggedIn]="isLoggedIn"></app-sidenav>
-<app-body [isSidebarVisible]="isSidebarVisible" [screenWidth]="screenWidth" [isLoggedIn]="isLoggedIn"></app-body>
+<app-header-guest *ngIf="!isLoggedIn"></app-header-guest>
+<app-header-logged-in2
+  [isLoggedIn]="isLoggedIn"
+  *ngIf="isLoggedIn"
+></app-header-logged-in2>
+
+<app-sidenav
+  (onToogleSideNav)="onToggleSideNav($event)"
+  [isLoggedIn]="isLoggedIn"
+></app-sidenav>
+<app-body
+  [isSidebarVisible]="isSidebarVisible"
+  [screenWidth]="screenWidth"
+  [isLoggedIn]="isLoggedIn"
+></app-body>

@@ -39,7 +39,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  changePassword$Response(params: ChangePassword$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  changePassword$Response(
+    params: ChangePassword$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return changePassword(this.http, this.rootUrl, params, context);
   }
 
@@ -49,9 +52,12 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  changePassword(params: ChangePassword$Params, context?: HttpContext): Observable<string> {
+  changePassword(
+    params: ChangePassword$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.changePassword$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
 
@@ -64,7 +70,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  register$Response(params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
+  register$Response(
+    params: Register$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<AuthenticationResponse>> {
     return register(this.http, this.rootUrl, params, context);
   }
 
@@ -74,9 +83,16 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  register(params: Register$Params, context?: HttpContext): Observable<AuthenticationResponse> {
+  register(
+    params: Register$Params,
+    context?: HttpContext,
+  ): Observable<AuthenticationResponse> {
     return this.register$Response(params, context).pipe(
-      map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<AuthenticationResponse>,
+        ): AuthenticationResponse => r.body,
+      ),
     );
   }
 
@@ -89,7 +105,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  initPasswordChange$Response(params: InitPasswordChange$Params, context?: HttpContext): Observable<StrictHttpResponse<ChangeInitPasswordResponse>> {
+  initPasswordChange$Response(
+    params: InitPasswordChange$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<ChangeInitPasswordResponse>> {
     return initPasswordChange(this.http, this.rootUrl, params, context);
   }
 
@@ -99,9 +118,16 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  initPasswordChange(params: InitPasswordChange$Params, context?: HttpContext): Observable<ChangeInitPasswordResponse> {
+  initPasswordChange(
+    params: InitPasswordChange$Params,
+    context?: HttpContext,
+  ): Observable<ChangeInitPasswordResponse> {
     return this.initPasswordChange$Response(params, context).pipe(
-      map((r: StrictHttpResponse<ChangeInitPasswordResponse>): ChangeInitPasswordResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<ChangeInitPasswordResponse>,
+        ): ChangeInitPasswordResponse => r.body,
+      ),
     );
   }
 
@@ -114,7 +140,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticate$Response(params: Authenticate$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
+  authenticate$Response(
+    params: Authenticate$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<AuthenticationResponse>> {
     return authenticate(this.http, this.rootUrl, params, context);
   }
 
@@ -124,9 +153,16 @@ export class AuthenticationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthenticationResponse> {
+  authenticate(
+    params: Authenticate$Params,
+    context?: HttpContext,
+  ): Observable<AuthenticationResponse> {
     return this.authenticate$Response(params, context).pipe(
-      map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
+      map(
+        (
+          r: StrictHttpResponse<AuthenticationResponse>,
+        ): AuthenticationResponse => r.body,
+      ),
     );
   }
 
@@ -139,7 +175,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  activateUser$Response(params: ActivateUser$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  activateUser$Response(
+    params: ActivateUser$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return activateUser(this.http, this.rootUrl, params, context);
   }
 
@@ -149,14 +188,18 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  activateUser(params: ActivateUser$Params, context?: HttpContext): Observable<string> {
+  activateUser(
+    params: ActivateUser$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.activateUser$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
 
   /** Path part for operation `changePassword1()` */
-  static readonly ChangePassword1Path = '/api/v1/auth/password/change/confirm/{token}';
+  static readonly ChangePassword1Path =
+    '/api/v1/auth/password/change/confirm/{token}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -164,7 +207,10 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  changePassword1$Response(params: ChangePassword1$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  changePassword1$Response(
+    params: ChangePassword1$Params,
+    context?: HttpContext,
+  ): Observable<StrictHttpResponse<string>> {
     return changePassword1(this.http, this.rootUrl, params, context);
   }
 
@@ -174,10 +220,12 @@ export class AuthenticationService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  changePassword1(params: ChangePassword1$Params, context?: HttpContext): Observable<string> {
+  changePassword1(
+    params: ChangePassword1$Params,
+    context?: HttpContext,
+  ): Observable<string> {
     return this.changePassword1$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<string>): string => r.body),
     );
   }
-
 }

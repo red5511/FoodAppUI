@@ -1,13 +1,18 @@
-<header>
-    <nav class="navbar">
-        <a routerLink="/welcome" class="logo">
-            <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img">
-        </a>
-            <ul class="nav-links">
-            <li><a routerLink="/welcome">Strona Główna</a></li>
-            <li><a routerLink="/login">Login</a></li>
-            <li><a routerLink="/register">Register</a></li>
-            <li><a routerLink="/contact">Contact</a></li>
-        </ul>
-    </nav>
-</header>
+<mat-toolbar class="custom-toolbar">
+  <a routerLink="/welcome" class="logo">
+    <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img" />
+  </a>
+  <span class="example-spacer"></span>
+  <nav class="navbar">
+    <ul class="nav-links">
+      <li>
+        <a routerLink="/welcome" routerLinkActive="active">Strona Główna</a>
+      </li>
+      <li><a routerLink="/login" routerLinkActive="active">Zaloguj</a></li>
+      <li>
+        <a routerLink="/register" routerLinkActive="active">Rejestracja</a>
+      </li>
+      <li><a routerLink="/contact" routerLinkActive="active">Kontakt</a></li>
+    </ul>
+  </nav>
+</mat-toolbar>

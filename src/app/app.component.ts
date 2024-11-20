@@ -7,7 +7,7 @@ import { FilterService, PrimeNGConfig } from 'primeng/api';
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
 export class AppComponent {
   title = 'angular-foodapp';
@@ -15,11 +15,11 @@ export class AppComponent {
   screenWidth = 0;
   isLoggedIn = false;
 
-  constructor(private loginService: LoginService,
+  constructor(
+    private loginService: LoginService,
     private primengConfig: PrimeNGConfig,
-    private filterService: FilterService
-  ) {
-  }
+    private filterService: FilterService,
+  ) {}
 
   ngOnInit() {
     this.primengConfig.setTranslation({
@@ -35,16 +35,50 @@ export class AppComponent {
       lte: 'Mniejszy lub równy',
       gt: 'Większy niż',
       gte: 'Większy lub równy',
-      matchAll: "Dopasuj wszystkie",
-      dateIs: "Data to",
+      matchAll: 'Dopasuj wszystkie',
+      dateIs: 'Data to',
       dateIsNot: 'Data to nie',
       dateAfter: 'Data po',
       dateBefore: 'Data przed',
-      dayNames: ['Niedziela', 'Poniedziałek', 'Wtorek', 'Środa', 'Czwartek', 'Piątek', 'Sobota'],
+      dayNames: [
+        'Niedziela',
+        'Poniedziałek',
+        'Wtorek',
+        'Środa',
+        'Czwartek',
+        'Piątek',
+        'Sobota',
+      ],
       dayNamesShort: ['Niedz', 'Pon', 'Wto', 'Śro', 'Czw', 'Pia', 'Sob'],
       dayNamesMin: ['N', 'P', 'W', 'Ś', 'C', 'P', 'S'],
-      monthNames: ['Styczeń', 'Luty', 'Marzec', 'Kwiecień', 'Maj', 'Czerwiec', 'Lipiec', 'Sierpień', 'Wrzesień', 'Październik', 'Listopad', 'Grudzień'],
-      monthNamesShort: ['Sty', 'Lut', 'Mar', 'Kwi', 'Maj', 'Cze', 'Lip', 'Sie', 'Wrz', 'Paź', 'Lis', 'Gru'],
+      monthNames: [
+        'Styczeń',
+        'Luty',
+        'Marzec',
+        'Kwiecień',
+        'Maj',
+        'Czerwiec',
+        'Lipiec',
+        'Sierpień',
+        'Wrzesień',
+        'Październik',
+        'Listopad',
+        'Grudzień',
+      ],
+      monthNamesShort: [
+        'Sty',
+        'Lut',
+        'Mar',
+        'Kwi',
+        'Maj',
+        'Cze',
+        'Lip',
+        'Sie',
+        'Wrz',
+        'Paź',
+        'Lis',
+        'Gru',
+      ],
       today: 'Dziś',
       clear: 'Wyczyść',
       apply: 'Zastosuj',
@@ -55,12 +89,16 @@ export class AppComponent {
     });
     this.loginService.isLoggedInVisibility$.subscribe((isLogged) => {
       this.isLoggedIn = isLogged;
+      console.log('isLoggedIn');
+      console.log(this.isLoggedIn);
     });
+    console.log('isLoggedIn');
+
+    console.log(this.isLoggedIn);
   }
 
   onToggleSideNav(event: SideNavToggle) {
     this.isSidebarVisible = event.isSidebarVisible;
     this.screenWidth = event.screenWidth;
   }
-
 }

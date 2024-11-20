@@ -15,22 +15,22 @@ const routes: Routes = [
   {
     path: 'login',
     component: LoginComponent,
-    canActivate: [noneAuthPathsWhenJwtPresentGuard]
+    canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
   {
     path: 'register',
     component: RegisterComponent,
-    canActivate: [noneAuthPathsWhenJwtPresentGuard]
+    canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
   {
     path: 'welcome',
     component: WelcomeComponent,
-    canActivate: [noneAuthPathsWhenJwtPresentGuard]
+    canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
   {
     path: 'changePassword',
     component: ChangePasswordComponent,
-    canActivate: [noneAuthPathsWhenJwtPresentGuard]
+    canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
   // {
   //   path: 'dashboard',
@@ -40,23 +40,22 @@ const routes: Routes = [
   {
     path: 'dashboard2',
     component: Dashboard2Component,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'orders',
     component: AllOrdersComponent,
-    canActivate: [authGuard]
+    canActivate: [authGuard],
   },
   {
     path: 'statistics',
     component: StatisticsComponent,
-    canActivate: [authGuard]
-  }
+    canActivate: [authGuard],
+  },
 ];
-
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

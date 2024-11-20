@@ -12,20 +12,27 @@ export interface GetCompanyDetails$Params {
   companyId: number;
 }
 
-export function getCompanyDetails(http: HttpClient, rootUrl: string, params: GetCompanyDetails$Params, context?: HttpContext): Observable<StrictHttpResponse<GetCompanyDetailsResponse>> {
+export function getCompanyDetails(
+  http: HttpClient,
+  rootUrl: string,
+  params: GetCompanyDetails$Params,
+  context?: HttpContext,
+): Observable<StrictHttpResponse<GetCompanyDetailsResponse>> {
   const rb = new RequestBuilder(rootUrl, getCompanyDetails.PATH, 'get');
   if (params) {
     rb.path('companyId', params.companyId, {});
   }
 
-  return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
-  ).pipe(
-    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-    map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<GetCompanyDetailsResponse>;
-    })
-  );
+  return http
+    .request(
+      rb.build({ responseType: 'json', accept: 'application/json', context }),
+    )
+    .pipe(
+      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+      map((r: HttpResponse<any>) => {
+        return r as StrictHttpResponse<GetCompanyDetailsResponse>;
+      }),
+    );
 }
 
 getCompanyDetails.PATH = '/api/v1/administration/company/{companyId}/details';
