@@ -5,45 +5,29 @@ import { ActiveToast, IndividualConfig, ToastrService } from 'ngx-toastr';
 import { CustomToastComponent } from '../../components/custom-toast/custom-toast.component';
 import { ContextService } from '../../services/context/context.service';
 
-
 @Component({
   selector: 'app-dashboard2',
   templateUrl: './dashboard2.component.html',
-  styleUrl: './dashboard2.component.scss'
+  styleUrl: './dashboard2.component.scss',
 })
 export class Dashboard2Component {
-  selectedOrder: any = null;
-  orders = [
-    { id: 1, amount: 100, date: '2024-09-01', description: 'Payment for Service A' },
-    { id: 2, amount: 200, date: '2024-09-05', description: 'Payment for Service B' },
-    { id: 3, amount: 150, date: '2024-09-10', description: 'Payment for Service C' }
-  ];
-  toastrMessage: ActiveToast<any> | undefined;
   isCompanyReceivingOrdersActive = false;
   isUserReceivingOrdersActive = false;
   companyName = '';
 
-  constructor(private sidebarService: SidebarService,
-    private dashboardService: DashboardService,
-    private toastService: ToastrService,
-    private contextService: ContextService) { }
-
+  constructor(private contextService: ContextService) {}
   ngOnInit() {
     this.contextService.contextSubjectVisibility$.subscribe((context) => {
-      this.companyName = context?.companyName ?? ''
+      this.companyName = context?.companyName ?? '';
     });
-    this.contextService.userReceivingOrdersSubjectVisibility$.subscribe((isReceiving) => {
-      this.isUserReceivingOrdersActive = isReceiving
-    })
-  }
-
-
-  selectOrder(_t8: any) {
-    throw new Error('Method not implemented.');
+    this.contextService.userReceivingOrdersSubjectVisibility$.subscribe(
+      (isReceiving) => {
+        this.isUserReceivingOrdersActive = isReceiving;
+      }
+    );
   }
 
   onToogleUserCheckbox(isChecked: boolean) {
-    this.contextService.setUserReceivingOrdersActive(isChecked)
+    this.contextService.setUserReceivingOrdersActive(isChecked);
   }
-
 }

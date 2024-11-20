@@ -984,6 +984,14 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/CompanyDto" }
           },
+          "permittedModules": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["LIVE_PANEL", "STATISTICS", "ORDERS"]
+            }
+          },
           "receivingOrdersActive": { "type": "boolean" }
         }
       },

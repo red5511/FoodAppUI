@@ -39,7 +39,7 @@ export class LoginComponent {
           this.tokenService.token = response.token as string;
           this.loginService.loggedIn();
           setTimeout(() => {
-            this.router.navigate(['dashboard']);
+            this.router.navigate(['dashboard2']);
           }, 300);
         }
       },

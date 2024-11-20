@@ -8,33 +8,27 @@ export interface Context {
   // isCompanyReceivingOrdersActive: boolean;
   // isUserReceivingOrdersActive: boolean;
   companyName: string;
+  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
 }
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class ContextService {
   private contextSubject = new BehaviorSubject<Context | null>(null);
   contextSubjectVisibility$ = this.contextSubject.asObservable();
 
   private userReceivingOrdersSubject = new BehaviorSubject<boolean>(false);
-  userReceivingOrdersSubjectVisibility$ = this.userReceivingOrdersSubject.asObservable();
+  userReceivingOrdersSubjectVisibility$ =
+    this.userReceivingOrdersSubject.asObservable();
 
-  constructor(private http: HttpClient) { }
+  constructor() {}
 
-  // setContext(companyId: number, isCompanyReceivingOrdersActive: boolean, isUserReceivingOrdersActive: boolean, companyName: string) {
-  //   const newContext: Context = {
-  //     companyId,
-  //     isCompanyReceivingOrdersActive,
-  //     isUserReceivingOrdersActive,
-  //     companyName
-  //   };
-  //   this.contextSubject.next(newContext);
-  // }
-  setContext(companyId: number, companyName: string) {
+  setContext(companyId: number, companyName: string, permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>) {
     const newContext: Context = {
       companyId,
-      companyName
+      companyName,
+      permittedModules
     };
     this.contextSubject.next(newContext);
   }
@@ -44,13 +38,10 @@ export class ContextService {
   }
 
   getCompanyIdObservable(): Observable<number | undefined> {
-    return this.contextSubject.pipe(
-      map(context => context?.companyId)
-    );
+    return this.contextSubject.pipe(map((context) => context?.companyId));
   }
 
   getCompanyId(): number | undefined {
-    return this.contextSubject.getValue()?.companyId
-
+    return this.contextSubject.getValue()?.companyId;
   }
 }

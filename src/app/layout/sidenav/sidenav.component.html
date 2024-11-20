@@ -3,13 +3,13 @@
      'collapsedSidebar': !isSidebarVisible,
       'hiddenSidebar': isSidebarHidden && isSidebarVisible}" *ngIf="_isLoggedIn">
     <ul>
-        <li>
+        <li *ngIf="hasPermissionToModule('LIVE_PANEL')">
             <a routerLink="/dashboard2" routerLinkActive="active" (click)="toggleSidebarIfClosed()">
                 <span class="menu-icon material-icons">dashboard</span>
                 <span *ngIf="isSidebarVisible" class="menu-text">Panel Live</span>
             </a>
         </li>
-        <li>
+        <li *ngIf="hasPermissionToModule('STATISTICS')">
             <a routerLink="/statistics"
                 [ngClass]="{ 'showSidebarElement': isSidebarVisible, 'hideSidebarElement': !isSidebarVisible }"
                 routerLinkActive="active" (click)="toggleSidebarIfClosed()">
@@ -32,7 +32,7 @@
                 </li>
             </ul>
         </li>
-        <li>
+        <li *ngIf="hasPermissionToModule('ORDERS')">
             <a routerLink="/orders"
                 [ngClass]="{ 'showSidebarElement': isSidebarVisible, 'hideSidebarElement': !isSidebarVisible }"
                 routerLinkActive="active" (click)="toggleSidebarIfClosed()">
