@@ -25,11 +25,12 @@
   <app-switch [isChecked]="isChecked"></app-switch>
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
 
-  <p-dropdown 
-  [options]="companies" 
-  [(ngModel)]="selectedCompany"
-  (onChange)="companyOnChange()"
-  optionLabel="name"
-  class="custom-dropdown"></p-dropdown>
+  <p-dropdown
+    [options]="companies"
+    [(ngModel)]="selectedCompany"
+    (onChange)="companyOnChange()"
+    optionLabel="name"
+    class="custom-dropdown"
+  ></p-dropdown>
   &nbsp; &nbsp; &nbsp;
 </mat-toolbar>

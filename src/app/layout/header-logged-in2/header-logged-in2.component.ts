@@ -42,12 +42,7 @@ export class HeaderLoggedIn2Component {
           if (!!firstCompany) {
             this.selectedCompany = firstCompany;
             this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
-            this.updateContext();
-            this.contextService.setContext(
-              firstCompany.id as number,
-              firstCompany.name as string,
-              response.permittedModules ?? []
-            );
+            this.updateContext(response.permittedModules);
           }
         }
       },
@@ -67,10 +62,14 @@ export class HeaderLoggedIn2Component {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
-  updateContext() {
+  updateContext(
+    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'> | undefined
+  ) {
     if (this.selectedCompany !== null) {
-      let permittedModules =
-        this.contextService.getContext()?.permittedModules ?? [];
+      if (!permittedModules) {
+        permittedModules =
+          this.contextService.getContext()?.permittedModules ?? [];
+      }
 
       this.contextService.setContext(
         this.selectedCompany.id as number,
@@ -84,5 +83,7 @@ export class HeaderLoggedIn2Component {
     this.isDropdownOpen = false;
   }
 
-  companyOnChange() {}
+  companyOnChange() {
+    this.updateContext(undefined);
+  }
 }

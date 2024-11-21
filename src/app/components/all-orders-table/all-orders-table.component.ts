@@ -18,6 +18,7 @@ import {
 import { DashboardService, OrderService } from '../../services/services';
 import { GetOrdersForCompany$Params } from '../../services/fn/order/get-orders-for-company';
 import { DialogModule } from 'primeng/dialog';
+import { filter, Subject, takeUntil, tap } from 'rxjs';
 
 @Component({
   selector: 'app-all-orders-table',
@@ -42,7 +43,6 @@ export class AllOrdersTableComponent {
     { original: 'EXECUTED', translated: 'Wykonane' },
     { original: 'REJECTED', translated: 'Odrzucone' },
   ];
-  //statuses: string[] = ['WAITING_FOR_ACCEPTANCE', 'IN_EXECUTION', 'EXECUTED', 'REJECTED'];
   loading: boolean = false; // Initialize as true when loading data
   companyIdTemp!: number;
   totalRecords!: number;
@@ -50,20 +50,12 @@ export class AllOrdersTableComponent {
   rangeDates: any;
   selectedDate: any;
   visible = true;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private orderService: OrderService,
     private contextService: ContextService,
   ) {}
-
-  ngOnInit(): void {
-    // this.contextService.getCompanyIdObservable().subscribe(companyId => { // Ensure this method returns an observable
-    //   if (companyId) {
-    //     this.companyIdTemp = companyId
-    //     this.loadOrders(companyId, 1, 10, undefined, undefined)
-    //   }
-    // });
-  }
 
   loadOrders(
     companyId: number,
@@ -95,15 +87,28 @@ export class AllOrdersTableComponent {
     this.loading = true;
     let filters = this.createFilters(event.filters);
     let sorts = this.createSorts(event.sortField, event.sortOrder);
-    this.contextService.getCompanyIdObservable().subscribe((companyId) => {
-      // Ensure this method returns an observable
-      if (companyId) {
-        this.companyIdTemp = companyId;
+    this.contextService
+    .getCompanyIdObservable()
+    .pipe(
+      filter((companyId): companyId is number => !!companyId), // Ensure companyId is valid
+      tap((companyId) => (this.companyIdTemp = companyId)), // Store companyId in a temporary variable
+      takeUntil(this.destroy$) // Automatically clean up on component destruction
+    )
+    .subscribe({
+      next: () => {
         const page = Math.floor(event.first! / event.rows!); // Ensure page is calculated correctly
         this.loadOrders(this.companyIdTemp, page, event.rows!, filters, sorts);
-      }
+      },
+      error: (error) => {
+        console.error('Error fetching companyId:', error);
+      },
     });
-    // this.loadOrders(this.companyIdTemp, event.first / event.rows, event.rows, event.sortField, event.filters)
+  }
+
+  ngOnDestroy(): void {
+    // Signal to complete the observable pipeline
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   createFilters(filters: any): Array<Filter> | undefined {

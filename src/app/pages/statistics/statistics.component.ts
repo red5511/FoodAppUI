@@ -14,7 +14,7 @@ import {
   ProductDto,
 } from '../../services/models';
 import { StatisticsService } from '../../services/services';
-import { filter, map, Observable, switchMap, tap } from 'rxjs';
+import { filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
 
@@ -69,6 +69,8 @@ export class StatisticsComponent {
   isCalendarClick = false;
   selectedDates?: Date[]; // Only 2 entries
   showEarnings = false;
+  private destroy$ = new Subject<void>();
+
 
   constructor(
     private contextService: ContextService,
@@ -113,6 +115,7 @@ export class StatisticsComponent {
             map(() => companyId), // Return the companyId for the next switchMap
           ),
         ),
+        takeUntil(this.destroy$) // Use destroy$ for cleanup
       )
       .subscribe({
         next: (companyId) => this.handleGetStatisticsChart(companyId), // Fetch chart data and update the chart
@@ -120,6 +123,11 @@ export class StatisticsComponent {
           console.error('Error fetching companyId:', error);
         },
       });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   private handleGetStatisticsChart(companyId: number): void {
@@ -164,6 +172,7 @@ export class StatisticsComponent {
           this.datePeriodOptions = response.datePeriodModels;
           this.selectedDatePeriodValue = response.datePeriodModels.at(0);
           this.productOptions = response.products;
+          this.selectedProductValue = null
         }
       }),
     );

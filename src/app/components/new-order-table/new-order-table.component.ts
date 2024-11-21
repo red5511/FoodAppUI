@@ -5,6 +5,7 @@ import { ContextService } from '../../services/context/context.service';
 import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
 import { DashboardGetOrdersResponse, OrderDto } from '../../services/models';
 import { WebSocketService } from '../../services/websocket/web-socket-service';
+import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-new-order-table',
@@ -20,7 +21,9 @@ export class NewOrderTableComponent {
     REJECTED: 'Odrzucone',
   };
   // Sample data
-  orders: OrderDto[] = []; // Define orders as an array of OrderDto
+  orders: OrderDto[] = [];
+  private destroy$ = new Subject<void>();
+
 
   constructor(
     private dashboardService: DashboardService,
@@ -29,31 +32,38 @@ export class NewOrderTableComponent {
   ) {}
 
   ngOnInit(): void {
-    this.contextService.getCompanyIdObservable().subscribe((companyId) => {
-      // Ensure this method returns an observable
-      if (companyId) {
+    this.contextService.getCompanyIdObservable()
+    .pipe(
+      filter((companyId): companyId is number => !!companyId),
+      switchMap((companyId) => {
         const params: GetActiveOrders$Params = { companyId };
-
-        // Now call getActiveOrders with the companyId
-        this.dashboardService.getActiveOrders(params).subscribe({
-          next: (response: DashboardGetOrdersResponse) => {
-            if (response && response.orderList) {
-              this.orders = response.orderList;
-              this.expandAll();
-            }
-          },
-        });
-      }
-    });
+        return this.dashboardService.getActiveOrders(params);
+      }),
+      filter((response): response is DashboardGetOrdersResponse => !!response?.orderList),
+      takeUntil(this.destroy$)
+    )
+  .subscribe({
+    next: (response) => {
+      console.log("na inicie pobranie")
+      this.orders = response.orderList ?? []
+      this.expandAll();
+    },
+    error: (error) => {
+      console.error('Error loading orders:', error);
+    },
+  });
 
     this.webSocketService.newOrderApprovedVisibility$.subscribe((val) => {
+      console.log('kek w websockecie')
+      console.log(val)
       let companyId = this.contextService.getCompanyId();
       if (companyId !== undefined) {
         const params: GetActiveOrders$Params = { companyId };
-
+        console.log("w subsciption socketa")
         // Now call getActiveOrders with the companyId
         this.dashboardService.getActiveOrders(params).subscribe({
           next: (response: DashboardGetOrdersResponse) => {
+            console.log("w subsciption socketa ale call po ordery")
             if (response && response.orderList) {
               this.orders = response.orderList;
               this.expandAll();
@@ -62,6 +72,11 @@ export class NewOrderTableComponent {
         });
       }
     });
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   onRowExpand(event: TableRowExpandEvent) {
