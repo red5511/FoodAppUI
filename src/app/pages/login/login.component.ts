@@ -38,8 +38,8 @@ export class LoginComponent {
             this.authResponse = response;
             this.message = 'Account created successfully';
             this.tokenService.token = response.token as string;
-            this.loginService.loggedIn();
             setTimeout(() => {
+              this.loginService.loggedIn();
               this.router.navigate(['dashboard2']);
             }, 300);
           }

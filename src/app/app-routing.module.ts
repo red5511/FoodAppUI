@@ -12,6 +12,7 @@ import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 
 const routes: Routes = [
+  { path: '', redirectTo: 'welcome', pathMatch: 'full' },
   {
     path: 'login',
     component: LoginComponent,

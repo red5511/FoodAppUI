@@ -48,4 +48,8 @@ export class ContextService {
   getCompanyId(): number | undefined {
     return this.contextSubject.getValue()?.companyId;
   }
+
+  getContext(): Context | null {
+    return this.contextSubject.getValue()
+  }
 }

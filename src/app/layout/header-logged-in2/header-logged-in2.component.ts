@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 import { DashboardService } from '../../services/services/dashboard.service';
 import {
+  CompanyDto,
   DashboardGetInitConfigResponse,
   OrderDto,
 } from '../../services/models';
@@ -17,16 +18,15 @@ export class HeaderLoggedIn2Component {
   isLoggedIn: boolean = false;
   isChecked = false;
   isDropdownOpen = false;
-  options: string[] = [];
-  selectedOption: string | null = null;
-  currentCompanyName: string = 'Brak firmy';
+  companies: CompanyDto[] | undefined;
+  selectedCompany: CompanyDto | null = null;
   response: DashboardGetInitConfigResponse = {};
   isSidebarVisible = true;
 
   constructor(
     private sidebarService: SidebarService,
     private dashboardService: DashboardService,
-    private contextService: ContextService,
+    private contextService: ContextService
   ) {}
 
   ngOnInit(): void {
@@ -37,22 +37,23 @@ export class HeaderLoggedIn2Component {
           this.response.companyDataList &&
           this.response.companyDataList.length > 0
         ) {
-          this.response.companyDataList.forEach((entry) => {
-            this.options.push(entry.name as string);
-          });
+          this.companies = this.response.companyDataList;
           let firstCompany = this.response.companyDataList[0];
-          this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
-          this.currentCompanyName = firstCompany.name as string;
-          this.contextService.setContext(
-            firstCompany.id as number,
-            firstCompany.name as string,
-            response.permittedModules ?? [],
-          );
+          if (!!firstCompany) {
+            this.selectedCompany = firstCompany;
+            this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
+            this.updateContext();
+            this.contextService.setContext(
+              firstCompany.id as number,
+              firstCompany.name as string,
+              response.permittedModules ?? []
+            );
+          }
         }
       },
       (error) => {
         console.error('Error loading data:', error);
-      },
+      }
     );
   }
 
@@ -66,12 +67,22 @@ export class HeaderLoggedIn2Component {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
+  updateContext() {
+    if (this.selectedCompany !== null) {
+      let permittedModules =
+        this.contextService.getContext()?.permittedModules ?? [];
+
+      this.contextService.setContext(
+        this.selectedCompany.id as number,
+        this.selectedCompany.name as string,
+        permittedModules
+      );
+    }
+  }
+
   closeDropdown(): void {
     this.isDropdownOpen = false;
   }
 
-  selectOption(option: string): void {
-    this.selectedOption = option;
-    this.closeDropdown();
-  }
+  companyOnChange() {}
 }

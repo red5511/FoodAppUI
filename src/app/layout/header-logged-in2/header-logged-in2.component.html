@@ -24,19 +24,12 @@
   &nbsp;
   <app-switch [isChecked]="isChecked"></app-switch>
   &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-  <div class="dropdown" (click)="toggleDropdown()">
-    <button class="dropdown-toggle">
-      {{ currentCompanyName }}
-    </button>
-    <ul *ngIf="isDropdownOpen" class="dropdown-menu">
-      <li
-        class="dropdown-item"
-        *ngFor="let option of options"
-        (click)="selectOption(option)"
-      >
-        {{ option }}
-      </li>
-    </ul>
-  </div>
+
+  <p-dropdown 
+  [options]="companies" 
+  [(ngModel)]="selectedCompany"
+  (onChange)="companyOnChange()"
+  optionLabel="name"
+  class="custom-dropdown"></p-dropdown>
   &nbsp; &nbsp; &nbsp;
 </mat-toolbar>

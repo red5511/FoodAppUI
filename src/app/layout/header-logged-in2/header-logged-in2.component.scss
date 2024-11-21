@@ -149,3 +149,72 @@ body {
   border: 1px solid var(--purple-color);
   box-sizing: border-box;
 }
+
+
+::ng-deep .custom-dropdown .p-dropdown.p-focus {
+  // border-color: red !important; /* Change border color on focus/hover */
+  // outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 0px  var(--secondary-color) !important; /* Add custom focus effect with red color */
+}
+
+::ng-deep .custom-dropdown .p-dropdown {
+  // border-color: red !important; /* Change border color on focus/hover */
+  // outline: none; /* Remove default focus outline */
+  box-shadow: 0 0 0 0px   var(--secondary-color) !important; /* Add custom focus effect with red color */
+  min-width: 225px !important;
+  max-width: 335px !important;
+  text-align: end !important;  /* Centers the text horizontally */
+  line-height: normal !important; /* Optional: Adjust line-height for vertical centering */
+}
+
+::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled).p-focus {
+  border-color: white;
+}
+
+::ng-deep .custom-dropdown .p-dropdown:hover {
+  border-color:  var(--secondary-color) !important; /* Change border color on hover */
+}
+
+::ng-deep .custom-dropdown .p-dropdown .p-dropdown-label {
+  background-color: var(--purple-color) !important; /* Replace 'lightblue' with your desired color */
+  color:  var(--secondary-color) !important;   
+  border-radius: none;            /* Adjust text color for better readability */
+}
+
+::ng-deep .custom-dropdown .p-dropdown-panel{
+  background-color: var(--purple-color) !important;
+
+}
+
+::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item.p-highlight {
+  background-color: var(--secondary-color) !important; /* Background color for the selected option */
+  color: black !important;               /* Text color for the selected option */
+}
+
+::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item {
+  background-color:  var(--purple-color) !important; /* Background color for the selected option */
+  color: var(--secondary-color) !important;          
+  border-radius: 10px;
+  margin: 1px;
+  transition: all 0.3s !important;
+  text-align: center !important;  /* Centers the text horizontally */
+  line-height: normal !important; /* Optional: Adjust line-height for vertical centering */
+  /* Text color for the selected option */
+}
+
+::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item:hover {
+  background-color:  var(--secondary-color) !important; /* Background color for the selected option */
+  color: black !important;      
+  transition: all 0.3s !important;    
+}
+
+
+::ng-deep .custom-dropdown .p-dropdown-trigger{
+  background-color: var(--purple-color) !important;
+}
+
+::ng-deep .p-inputtext{
+  border-radius: 0 !important;
+  border-bottom-left-radius: 6px !important;
+  border-top-left-radius: 6px !important;
+}
