@@ -248,6 +248,35 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/order/config": {
+      "post": {
+        "tags": ["Order"],
+        "operationId": "getStatisticsConfig_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetOrdersConfigRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetOrdersConfigResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/order/approve": {
       "post": {
         "tags": ["Order"],
@@ -915,6 +944,37 @@
         "properties": {
           "pagedResult": { "$ref": "#/components/schemas/OrdersPagedResult" }
         }
+      },
+      "GetOrdersConfigRequest": {
+        "type": "object",
+        "properties": { "companyId": { "type": "string" } }
+      },
+      "GetOrdersConfigResponse": {
+        "required": ["orderStatusModels"],
+        "type": "object",
+        "properties": {
+          "orderStatusModels": {
+            "type": "array",
+            "description": "List of status models",
+            "items": { "$ref": "#/components/schemas/OrderStatusModel" }
+          }
+        }
+      },
+      "OrderStatusModel": {
+        "type": "object",
+        "properties": {
+          "orderStatus": {
+            "type": "string",
+            "enum": [
+              "WAITING_FOR_ACCEPTANCE",
+              "IN_EXECUTION",
+              "EXECUTED",
+              "REJECTED"
+            ]
+          },
+          "translatedValue": { "type": "string" }
+        },
+        "description": "List of status models"
       },
       "ApproveNewIncomingOrderRequest": {
         "type": "object",

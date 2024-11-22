@@ -10,30 +10,23 @@ import { AuthenticationResponse } from '../../models/authentication-response';
 import { RegisterRequest } from '../../models/register-request';
 
 export interface Register$Params {
-  body: RegisterRequest;
+      body: RegisterRequest
 }
 
-export function register(
-  http: HttpClient,
-  rootUrl: string,
-  params: Register$Params,
-  context?: HttpContext,
-): Observable<StrictHttpResponse<AuthenticationResponse>> {
+export function register(http: HttpClient, rootUrl: string, params: Register$Params, context?: HttpContext): Observable<StrictHttpResponse<AuthenticationResponse>> {
   const rb = new RequestBuilder(rootUrl, register.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http
-    .request(
-      rb.build({ responseType: 'json', accept: 'application/json', context }),
-    )
-    .pipe(
-      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<AuthenticationResponse>;
-      }),
-    );
+  return http.request(
+    rb.build({ responseType: 'json', accept: 'application/json', context })
+  ).pipe(
+    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+    map((r: HttpResponse<any>) => {
+      return r as StrictHttpResponse<AuthenticationResponse>;
+    })
+  );
 }
 
 register.PATH = '/api/v1/auth/register/init';

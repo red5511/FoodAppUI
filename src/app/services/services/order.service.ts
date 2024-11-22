@@ -11,8 +11,11 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
 import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
+import { GetOrdersConfigResponse } from '../models/get-orders-config-response';
 import { getOrdersForCompany } from '../fn/order/get-orders-for-company';
 import { GetOrdersForCompany$Params } from '../fn/order/get-orders-for-company';
+import { getStatisticsConfig1 } from '../fn/order/get-statistics-config-1';
+import { GetStatisticsConfig1$Params } from '../fn/order/get-statistics-config-1';
 import { PagedOrdersResponse } from '../models/paged-orders-response';
 import { rejectNewIncomingOrder } from '../fn/order/reject-new-incoming-order';
 import { RejectNewIncomingOrder$Params } from '../fn/order/reject-new-incoming-order';
@@ -34,10 +37,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveOrder$Response(
-    params: SaveOrder$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<void>> {
+  saveOrder$Response(params: SaveOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return saveOrder(this.http, this.rootUrl, params, context);
   }
 
@@ -49,7 +49,7 @@ export class OrderService extends BaseService {
    */
   saveOrder(params: SaveOrder$Params, context?: HttpContext): Observable<void> {
     return this.saveOrder$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body),
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
@@ -62,10 +62,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  rejectNewIncomingOrder$Response(
-    params: RejectNewIncomingOrder$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<void>> {
+  rejectNewIncomingOrder$Response(params: RejectNewIncomingOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return rejectNewIncomingOrder(this.http, this.rootUrl, params, context);
   }
 
@@ -75,12 +72,9 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  rejectNewIncomingOrder(
-    params: RejectNewIncomingOrder$Params,
-    context?: HttpContext,
-  ): Observable<void> {
+  rejectNewIncomingOrder(params: RejectNewIncomingOrder$Params, context?: HttpContext): Observable<void> {
     return this.rejectNewIncomingOrder$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body),
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
@@ -93,10 +87,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getOrdersForCompany$Response(
-    params: GetOrdersForCompany$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<PagedOrdersResponse>> {
+  getOrdersForCompany$Response(params: GetOrdersForCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<PagedOrdersResponse>> {
     return getOrdersForCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -106,15 +97,34 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getOrdersForCompany(
-    params: GetOrdersForCompany$Params,
-    context?: HttpContext,
-  ): Observable<PagedOrdersResponse> {
+  getOrdersForCompany(params: GetOrdersForCompany$Params, context?: HttpContext): Observable<PagedOrdersResponse> {
     return this.getOrdersForCompany$Response(params, context).pipe(
-      map(
-        (r: StrictHttpResponse<PagedOrdersResponse>): PagedOrdersResponse =>
-          r.body,
-      ),
+      map((r: StrictHttpResponse<PagedOrdersResponse>): PagedOrdersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getStatisticsConfig1()` */
+  static readonly GetStatisticsConfig1Path = '/api/v1/order/config';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getStatisticsConfig1()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getStatisticsConfig1$Response(params: GetStatisticsConfig1$Params, context?: HttpContext): Observable<StrictHttpResponse<GetOrdersConfigResponse>> {
+    return getStatisticsConfig1(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getStatisticsConfig1$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getStatisticsConfig1(params: GetStatisticsConfig1$Params, context?: HttpContext): Observable<GetOrdersConfigResponse> {
+    return this.getStatisticsConfig1$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetOrdersConfigResponse>): GetOrdersConfigResponse => r.body)
     );
   }
 
@@ -127,10 +137,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  approveNewIncomingOrder$Response(
-    params: ApproveNewIncomingOrder$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<void>> {
+  approveNewIncomingOrder$Response(params: ApproveNewIncomingOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return approveNewIncomingOrder(this.http, this.rootUrl, params, context);
   }
 
@@ -140,12 +147,10 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  approveNewIncomingOrder(
-    params: ApproveNewIncomingOrder$Params,
-    context?: HttpContext,
-  ): Observable<void> {
+  approveNewIncomingOrder(params: ApproveNewIncomingOrder$Params, context?: HttpContext): Observable<void> {
     return this.approveNewIncomingOrder$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body),
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
+
 }

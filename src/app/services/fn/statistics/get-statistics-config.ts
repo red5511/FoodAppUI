@@ -10,30 +10,23 @@ import { GetStatisticsConfigRequest } from '../../models/get-statistics-config-r
 import { GetStatisticsConfigResponse } from '../../models/get-statistics-config-response';
 
 export interface GetStatisticsConfig$Params {
-  body: GetStatisticsConfigRequest;
+      body: GetStatisticsConfigRequest
 }
 
-export function getStatisticsConfig(
-  http: HttpClient,
-  rootUrl: string,
-  params: GetStatisticsConfig$Params,
-  context?: HttpContext,
-): Observable<StrictHttpResponse<GetStatisticsConfigResponse>> {
+export function getStatisticsConfig(http: HttpClient, rootUrl: string, params: GetStatisticsConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<GetStatisticsConfigResponse>> {
   const rb = new RequestBuilder(rootUrl, getStatisticsConfig.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
-  return http
-    .request(
-      rb.build({ responseType: 'json', accept: 'application/json', context }),
-    )
-    .pipe(
-      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<GetStatisticsConfigResponse>;
-      }),
-    );
+  return http.request(
+    rb.build({ responseType: 'json', accept: 'application/json', context })
+  ).pipe(
+    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+    map((r: HttpResponse<any>) => {
+      return r as StrictHttpResponse<GetStatisticsConfigResponse>;
+    })
+  );
 }
 
 getStatisticsConfig.PATH = '/api/v1/statistics/config';

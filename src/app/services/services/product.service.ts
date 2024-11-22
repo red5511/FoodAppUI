@@ -31,10 +31,7 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct$Response(
-    params: SaveProduct$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<string>> {
+  saveProduct$Response(params: SaveProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return saveProduct(this.http, this.rootUrl, params, context);
   }
 
@@ -44,12 +41,9 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct(
-    params: SaveProduct$Params,
-    context?: HttpContext,
-  ): Observable<string> {
+  saveProduct(params: SaveProduct$Params, context?: HttpContext): Observable<string> {
     return this.saveProduct$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body),
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 
@@ -62,10 +56,7 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct1$Response(
-    params: SaveProduct1$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<string>> {
+  saveProduct1$Response(params: SaveProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return saveProduct1(this.http, this.rootUrl, params, context);
   }
 
@@ -75,12 +66,9 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct1(
-    params: SaveProduct1$Params,
-    context?: HttpContext,
-  ): Observable<string> {
+  saveProduct1(params: SaveProduct1$Params, context?: HttpContext): Observable<string> {
     return this.saveProduct1$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body),
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
 
@@ -93,10 +81,7 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct2$Response(
-    params: SaveProduct2$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<string>> {
+  saveProduct2$Response(params: SaveProduct2$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return saveProduct2(this.http, this.rootUrl, params, context);
   }
 
@@ -106,12 +91,10 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct2(
-    params: SaveProduct2$Params,
-    context?: HttpContext,
-  ): Observable<string> {
+  saveProduct2(params: SaveProduct2$Params, context?: HttpContext): Observable<string> {
     return this.saveProduct2$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body),
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
+
 }

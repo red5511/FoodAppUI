@@ -4,6 +4,7 @@ import { DatePeriodModel } from '../models/date-period-model';
 import { DateRangeModel } from '../models/date-range-model';
 import { ProductDto } from '../models/product-dto';
 export interface GetStatisticsConfigResponse {
+
   /**
    * List of date range models
    */

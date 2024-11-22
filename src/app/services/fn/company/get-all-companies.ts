@@ -8,28 +8,22 @@ import { RequestBuilder } from '../../request-builder';
 
 import { GetAllCompaniesResponse } from '../../models/get-all-companies-response';
 
-export interface GetAllCompanies$Params {}
+export interface GetAllCompanies$Params {
+}
 
-export function getAllCompanies(
-  http: HttpClient,
-  rootUrl: string,
-  params?: GetAllCompanies$Params,
-  context?: HttpContext,
-): Observable<StrictHttpResponse<GetAllCompaniesResponse>> {
+export function getAllCompanies(http: HttpClient, rootUrl: string, params?: GetAllCompanies$Params, context?: HttpContext): Observable<StrictHttpResponse<GetAllCompaniesResponse>> {
   const rb = new RequestBuilder(rootUrl, getAllCompanies.PATH, 'get');
   if (params) {
   }
 
-  return http
-    .request(
-      rb.build({ responseType: 'json', accept: 'application/json', context }),
-    )
-    .pipe(
-      filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
-      map((r: HttpResponse<any>) => {
-        return r as StrictHttpResponse<GetAllCompaniesResponse>;
-      }),
-    );
+  return http.request(
+    rb.build({ responseType: 'json', accept: 'application/json', context })
+  ).pipe(
+    filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
+    map((r: HttpResponse<any>) => {
+      return r as StrictHttpResponse<GetAllCompaniesResponse>;
+    })
+  );
 }
 
 getAllCompanies.PATH = '/api/v1/administration/company/companies';

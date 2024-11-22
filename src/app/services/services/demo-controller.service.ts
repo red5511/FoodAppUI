@@ -31,10 +31,7 @@ export class DemoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sayHello$Response(
-    params?: SayHello$Params,
-    context?: HttpContext,
-  ): Observable<StrictHttpResponse<string>> {
+  sayHello$Response(params?: SayHello$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
     return sayHello(this.http, this.rootUrl, params, context);
   }
 
@@ -48,12 +45,10 @@ export class DemoControllerService extends BaseService {
    *
    * This method doesn't expect any request body.
    */
-  sayHello(
-    params?: SayHello$Params,
-    context?: HttpContext,
-  ): Observable<string> {
+  sayHello(params?: SayHello$Params, context?: HttpContext): Observable<string> {
     return this.sayHello$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body),
+      map((r: StrictHttpResponse<string>): string => r.body)
     );
   }
+
 }

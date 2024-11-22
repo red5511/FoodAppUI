@@ -16,7 +16,7 @@ export function getCompany(
   http: HttpClient,
   rootUrl: string,
   params: GetCompany$Params,
-  context?: HttpContext,
+  context?: HttpContext
 ): Observable<StrictHttpResponse<DashboardGetCompanyResponse>> {
   const rb = new RequestBuilder(rootUrl, getCompany.PATH, 'get');
   if (params) {
@@ -25,13 +25,13 @@ export function getCompany(
 
   return http
     .request(
-      rb.build({ responseType: 'json', accept: 'application/json', context }),
+      rb.build({ responseType: 'json', accept: 'application/json', context })
     )
     .pipe(
       filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
       map((r: HttpResponse<any>) => {
         return r as StrictHttpResponse<DashboardGetCompanyResponse>;
-      }),
+      })
     );
 }
 
