@@ -67,11 +67,11 @@
               [options]="statuses"
               placeholder="Status"
               (onChange)="filter($event.value)"
-              optionLabel="translated"
+              optionLabel="translatedValue"
             >
               <ng-template let-option pTemplate="statuses">
                 <div class="custom-option">
-                  <span class="ml-1 mt-1">{{ option.translated }}</span>
+                  <span class="ml-1 mt-1">{{ option.translatedValue }}</span>
                 </div>
               </ng-template>
             </p-multiSelect>
@@ -129,11 +129,11 @@
       <td>#{{ order.id }}</td>
       <td>
         <p-tag
-          [value]="translations[order.status]"
+          [value]="statusesTranslations[order.status]"
           [severity]="getStatusSeverity(order.status)"
         />
       </td>
-      <td>{{ order.price | currency: "PLN" }}</td>
+      <td>{{ order.price | currency : "PLN" }}</td>
       <td>{{ order.deliveryTime | formattedDate }}</td>
       <td>
         <div class="description-container" title="{{ order.description }}">
@@ -165,7 +165,7 @@
                   />
                 </td>
                 <td>{{ orderProduct.product.name }}</td>
-                <td>{{ orderProduct.price | currency: "PLN" }}</td>
+                <td>{{ orderProduct.price | currency : "PLN" }}</td>
                 <td>{{ orderProduct.quantity }}</td>
                 <!-- Accessing quantity from the map -->
               </tr>

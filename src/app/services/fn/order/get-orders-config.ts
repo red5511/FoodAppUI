@@ -9,12 +9,12 @@ import { RequestBuilder } from '../../request-builder';
 import { GetOrdersConfigRequest } from '../../models/get-orders-config-request';
 import { GetOrdersConfigResponse } from '../../models/get-orders-config-response';
 
-export interface GetStatisticsConfig1$Params {
+export interface GetOrdersConfig$Params {
       body: GetOrdersConfigRequest
 }
 
-export function getStatisticsConfig1(http: HttpClient, rootUrl: string, params: GetStatisticsConfig1$Params, context?: HttpContext): Observable<StrictHttpResponse<GetOrdersConfigResponse>> {
-  const rb = new RequestBuilder(rootUrl, getStatisticsConfig1.PATH, 'post');
+export function getOrdersConfig(http: HttpClient, rootUrl: string, params: GetOrdersConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<GetOrdersConfigResponse>> {
+  const rb = new RequestBuilder(rootUrl, getOrdersConfig.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -29,4 +29,4 @@ export function getStatisticsConfig1(http: HttpClient, rootUrl: string, params: 
   );
 }
 
-getStatisticsConfig1.PATH = '/api/v1/order/config';
+getOrdersConfig.PATH = '/api/v1/order/config';

@@ -251,7 +251,7 @@
     "/api/v1/order/config": {
       "post": {
         "tags": ["Order"],
-        "operationId": "getStatisticsConfig_1",
+        "operationId": "getOrdersConfig",
         "requestBody": {
           "content": {
             "application/json": {
@@ -947,20 +947,30 @@
       },
       "GetOrdersConfigRequest": {
         "type": "object",
-        "properties": { "companyId": { "type": "string" } }
+        "properties": { "companyId": { "type": "integer", "format": "int64" } }
       },
       "GetOrdersConfigResponse": {
-        "required": ["orderStatusModels"],
+        "required": ["orderStatusModels", "statusSeverityMap"],
         "type": "object",
         "properties": {
           "orderStatusModels": {
             "type": "array",
             "description": "List of status models",
             "items": { "$ref": "#/components/schemas/OrderStatusModel" }
+          },
+          "statusSeverityMap": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string",
+              "description": "Map of severity",
+              "enum": ["info", "warning", "success", "danger", "contrast"]
+            },
+            "description": "Map of severity"
           }
         }
       },
       "OrderStatusModel": {
+        "required": ["orderStatus", "translatedValue"],
         "type": "object",
         "properties": {
           "orderStatus": {

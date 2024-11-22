@@ -11,11 +11,11 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
 import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
+import { getOrdersConfig } from '../fn/order/get-orders-config';
+import { GetOrdersConfig$Params } from '../fn/order/get-orders-config';
 import { GetOrdersConfigResponse } from '../models/get-orders-config-response';
 import { getOrdersForCompany } from '../fn/order/get-orders-for-company';
 import { GetOrdersForCompany$Params } from '../fn/order/get-orders-for-company';
-import { getStatisticsConfig1 } from '../fn/order/get-statistics-config-1';
-import { GetStatisticsConfig1$Params } from '../fn/order/get-statistics-config-1';
 import { PagedOrdersResponse } from '../models/paged-orders-response';
 import { rejectNewIncomingOrder } from '../fn/order/reject-new-incoming-order';
 import { RejectNewIncomingOrder$Params } from '../fn/order/reject-new-incoming-order';
@@ -103,27 +103,27 @@ export class OrderService extends BaseService {
     );
   }
 
-  /** Path part for operation `getStatisticsConfig1()` */
-  static readonly GetStatisticsConfig1Path = '/api/v1/order/config';
+  /** Path part for operation `getOrdersConfig()` */
+  static readonly GetOrdersConfigPath = '/api/v1/order/config';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getStatisticsConfig1()` instead.
+   * To access only the response body, use `getOrdersConfig()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsConfig1$Response(params: GetStatisticsConfig1$Params, context?: HttpContext): Observable<StrictHttpResponse<GetOrdersConfigResponse>> {
-    return getStatisticsConfig1(this.http, this.rootUrl, params, context);
+  getOrdersConfig$Response(params: GetOrdersConfig$Params, context?: HttpContext): Observable<StrictHttpResponse<GetOrdersConfigResponse>> {
+    return getOrdersConfig(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getStatisticsConfig1$Response()` instead.
+   * To access the full response (for headers, for example), `getOrdersConfig$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  getStatisticsConfig1(params: GetStatisticsConfig1$Params, context?: HttpContext): Observable<GetOrdersConfigResponse> {
-    return this.getStatisticsConfig1$Response(params, context).pipe(
+  getOrdersConfig(params: GetOrdersConfig$Params, context?: HttpContext): Observable<GetOrdersConfigResponse> {
+    return this.getOrdersConfig$Response(params, context).pipe(
       map((r: StrictHttpResponse<GetOrdersConfigResponse>): GetOrdersConfigResponse => r.body)
     );
   }

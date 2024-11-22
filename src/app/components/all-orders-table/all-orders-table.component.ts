@@ -14,11 +14,24 @@ import {
   GetOrdersForCompanyRequest,
   Sort,
   Filter,
+  GetOrdersConfigRequest,
+  GetOrdersConfigResponse,
+  OrderStatusModel,
 } from '../../services/models';
 import { DashboardService, OrderService } from '../../services/services';
 import { GetOrdersForCompany$Params } from '../../services/fn/order/get-orders-for-company';
 import { DialogModule } from 'primeng/dialog';
-import { filter, Subject, takeUntil, tap } from 'rxjs';
+import {
+  filter,
+  from,
+  map,
+  Observable,
+  shareReplay,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 
 @Component({
   selector: 'app-all-orders-table',
@@ -31,30 +44,24 @@ export class AllOrdersTableComponent {
 
   // Sample data
   orders: OrderDto[] = []; // Define orders as an array of OrderDto
-  translations: { [key: string]: string } = {
-    WAITING_FOR_ACCEPTANCE: 'W akceptacji',
-    IN_EXECUTION: 'W realizacji',
-    EXECUTED: 'Wykonane',
-    REJECTED: 'Odrzucone',
-  };
-  statuses = [
-    { original: 'WAITING_FOR_ACCEPTANCE', translated: 'W akceptacji' },
-    { original: 'IN_EXECUTION', translated: 'W realizacji' },
-    { original: 'EXECUTED', translated: 'Wykonane' },
-    { original: 'REJECTED', translated: 'Odrzucone' },
-  ];
+  statusesTranslations!: { [key: string]: string };
+  statuses: OrderStatusModel[] = [];
   loading: boolean = false; // Initialize as true when loading data
-  companyIdTemp!: number;
+  companyIdTemp: number | undefined;
   totalRecords!: number;
   selectedCustomers: boolean[] = [];
   rangeDates: any;
   selectedDate: any;
   visible = true;
   private destroy$ = new Subject<void>();
+  statusSeverityMap!: {
+    [key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast';
+  };
+  private configPromise: Promise<void> | null = null;
 
   constructor(
     private orderService: OrderService,
-    private contextService: ContextService,
+    private contextService: ContextService
   ) {}
 
   loadOrders(
@@ -62,7 +69,7 @@ export class AllOrdersTableComponent {
     page: number,
     size: number,
     filters: Array<Filter> | undefined,
-    sorts: Array<Sort> | undefined,
+    sorts: Array<Sort> | undefined
   ) {
     let body: GetOrdersForCompanyRequest = {
       companyId: companyId,
@@ -88,21 +95,63 @@ export class AllOrdersTableComponent {
     let filters = this.createFilters(event.filters);
     let sorts = this.createSorts(event.sortField, event.sortOrder);
     this.contextService
-    .getCompanyIdObservable()
-    .pipe(
-      filter((companyId): companyId is number => !!companyId), // Ensure companyId is valid
-      tap((companyId) => (this.companyIdTemp = companyId)), // Store companyId in a temporary variable
-      takeUntil(this.destroy$) // Automatically clean up on component destruction
-    )
-    .subscribe({
-      next: () => {
-        const page = Math.floor(event.first! / event.rows!); // Ensure page is calculated correctly
-        this.loadOrders(this.companyIdTemp, page, event.rows!, filters, sorts);
-      },
-      error: (error) => {
-        console.error('Error fetching companyId:', error);
-      },
-    });
+      .getCompanyIdObservable()
+      .pipe(
+        filter((companyId): companyId is number => !!companyId),
+        tap((companyId) => {
+          this.companyIdTemp = companyId
+        }),
+        switchMap((companyId) => {
+          return from(this.getConfig(companyId)).pipe(map(() => companyId));
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: () => {
+          const page = Math.floor(event.first! / event.rows!);
+          this.loadOrders(
+            this.companyIdTemp!,
+            page,
+            event.rows!,
+            filters,
+            sorts
+          );
+        },
+        error: (error) => {
+          console.error('Error fetching companyId:', error);
+        },
+      });
+  }
+
+  getConfig(companyId: number): Promise<void> {
+    if (!this.configPromise) {
+      this.configPromise = new Promise((resolve, reject) => {
+        const body: GetOrdersConfigRequest = { companyId };
+  
+        this.orderService.getOrdersConfig({ body }).subscribe({
+          next: (response: GetOrdersConfigResponse) => {
+            this.statuses = response.orderStatusModels;
+            this.statusSeverityMap = response.statusSeverityMap;
+            console.log(this.statuses)
+            this.statusesTranslations = response.orderStatusModels.reduce(
+              (acc: { [key: string]: string }, model) => {
+                acc[model.orderStatus] = model.translatedValue;
+                return acc;
+              },
+              {}
+            );
+  
+            resolve(); // Mark the promise as resolved
+          },
+          error: (error) => {
+            console.error('Error fetching config:', error);
+            reject(error); // Mark the promise as rejected
+          },
+        });
+      });
+    }
+  
+    return this.configPromise; // Always return the same promise
   }
 
   ngOnDestroy(): void {
@@ -124,7 +173,7 @@ export class AllOrdersTableComponent {
           filterEntry.value.forEach((val: any) => {
             if (val) {
               if (fieldName === 'status') {
-                allValues.push(val.original);
+                allValues.push(val.orderStatus);
               } else {
                 allValues.push(val);
               }
@@ -151,7 +200,7 @@ export class AllOrdersTableComponent {
             values: Array.of(
               value.value instanceof Date
                 ? value.value.toISOString()
-                : 'undefined',
+                : 'undefined'
             ),
             mode: value.matchMode, // Convert to ISO if it's a Date
           });
@@ -166,7 +215,7 @@ export class AllOrdersTableComponent {
 
   createSorts(
     sortField?: any,
-    sortOrder?: number | null | undefined,
+    sortOrder?: number | null | undefined
   ): Array<Sort> | undefined {
     if (sortField && sortOrder) {
       const resultSorts: Array<Sort> = [];
@@ -220,30 +269,8 @@ export class AllOrdersTableComponent {
   }
 
   getStatusSeverity(
-    status: string,
+    status: string
   ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
-    switch (status) {
-      case 'WAITING_FOR_ACCEPTANCE':
-        return 'info';
-      case 'IN_EXECUTION':
-        return 'warning';
-      case 'EXECUTED':
-        return 'success';
-      case 'REJECTED':
-        return 'danger';
-      default:
-        return 'contrast';
-    }
+    return this.statusSeverityMap?.[status];
   }
-}
-
-// Helper function to check if a string is in ISO date format
-function isIsoDateString(value: string): boolean {
-  return /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z$/.test(value);
-}
-
-// Helper function to convert ISO string to LocalDate string (YYYY-MM-DD)
-function convertToLocalDateString(isoDateString: string): string {
-  const date = new Date(isoDateString);
-  return date.toISOString().split('T')[0]; // Returns only the date portion in YYYY-MM-DD format
 }
