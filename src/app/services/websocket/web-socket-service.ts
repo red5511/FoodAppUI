@@ -55,7 +55,7 @@ export class WebSocketService {
   subscribeToOrders(topicName: string, callback: (message: any) => void) {
     const subscribeFunction = () => {
       this.orderSubscription = this.socketClient.subscribe(
-        `/user/${topicName}/order`,
+        `/user/${topicName}/main`,
         (message: any) => callback(JSON.parse(message.body)),
       );
       console.log(`Subscribed to /user/${topicName}/order`);

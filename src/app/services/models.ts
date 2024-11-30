@@ -26,9 +26,11 @@ export { GetStatisticsChartResponse } from './models/get-statistics-chart-respon
 export { GetStatisticsConfigRequest } from './models/get-statistics-config-request';
 export { GetStatisticsConfigResponse } from './models/get-statistics-config-response';
 export { GetUsersResponse } from './models/get-users-response';
+export { InitOrderWebSocketTopicRequest } from './models/init-order-web-socket-topic-request';
 export { LocalTime } from './models/local-time';
 export { ModifyCompanyRequest } from './models/modify-company-request';
 export { ModifyProductRequest } from './models/modify-product-request';
+export { NewOrderWebSocketEvent } from './models/new-order-web-socket-event';
 export { OpenHours } from './models/open-hours';
 export { OrderDto } from './models/order-dto';
 export { OrderProductDto } from './models/order-product-dto';
@@ -41,3 +43,4 @@ export { RejectNewIncomingOrderRequest } from './models/reject-new-incoming-orde
 export { SaveCompanyRequest } from './models/save-company-request';
 export { Sort } from './models/sort';
 export { UserDto } from './models/user-dto';
+export { WebSocketEvent } from './models/web-socket-event';

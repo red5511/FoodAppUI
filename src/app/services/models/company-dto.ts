@@ -8,4 +8,5 @@ export interface CompanyDto {
   name?: string;
   openHours?: OpenHours;
   receivingOrdersActive?: boolean;
+  webSocketTopicName?: string;
 }

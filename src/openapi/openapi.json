@@ -106,6 +106,56 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/websocket/test": {
+      "post": {
+        "tags": ["WebSocket"],
+        "operationId": "initOrderWebSocketTopic",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/NewOrderWebSocketEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/websocket/init-main-topic": {
+      "post": {
+        "tags": ["WebSocket"],
+        "operationId": "initOrderWebSocketTopic_1",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/InitOrderWebSocketTopicRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/statistics/config": {
       "post": {
         "tags": ["Statistics"],
@@ -293,6 +343,32 @@
         },
         "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/development/forGeneratingApi": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "initOrderWebSocketTopic_2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/NewOrderWebSocketEvent"
+                }
+              }
+            }
+          }
+        }
       }
     },
     "/api/v1/auth/register/init": {
@@ -719,6 +795,7 @@
           "address": { "type": "string" },
           "openHours": { "$ref": "#/components/schemas/OpenHours" },
           "companyType": { "type": "string", "enum": ["FOOD"] },
+          "webSocketTopicName": { "type": "string" },
           "receivingOrdersActive": { "type": "boolean" }
         }
       },
@@ -754,6 +831,63 @@
           "saturdayEnd": { "$ref": "#/components/schemas/LocalTime" },
           "sundayStart": { "$ref": "#/components/schemas/LocalTime" },
           "sundayEnd": { "$ref": "#/components/schemas/LocalTime" }
+        }
+      },
+      "NewOrderWebSocketEvent": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": ["NEW_ORDER", "HEARTBEAT"]
+          },
+          "order": { "$ref": "#/components/schemas/OrderDto" }
+        },
+        "description": "Event for a new order created via WebSocket"
+      },
+      "OrderDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "price": { "type": "number" },
+          "description": { "type": "string" },
+          "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
+          "status": {
+            "type": "string",
+            "enum": [
+              "WAITING_FOR_ACCEPTANCE",
+              "IN_EXECUTION",
+              "EXECUTED",
+              "REJECTED"
+            ]
+          },
+          "deliveryAddress": { "type": "string" },
+          "customerName": { "type": "string" },
+          "deliveryTime": { "type": "string", "format": "date-time" },
+          "orderProducts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderProductDto" }
+          },
+          "approvalDeadline": { "type": "string", "format": "date-time" }
+        }
+      },
+      "OrderProductDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "product": { "$ref": "#/components/schemas/ProductDto" },
+          "quantity": { "type": "integer", "format": "int32" },
+          "price": { "type": "number" }
+        }
+      },
+      "InitOrderWebSocketTopicRequest": {
+        "type": "object",
+        "properties": {
+          "companyId": { "type": "integer", "format": "int64" },
+          "webSocketTopicName": { "type": "string" }
         }
       },
       "GetStatisticsConfigRequest": {
@@ -852,44 +986,6 @@
       "CreateOrderRequest": {
         "type": "object",
         "properties": { "order": { "$ref": "#/components/schemas/OrderDto" } }
-      },
-      "OrderDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "companyId": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "description": { "type": "string" },
-          "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
-          "status": {
-            "type": "string",
-            "enum": [
-              "WAITING_FOR_ACCEPTANCE",
-              "IN_EXECUTION",
-              "EXECUTED",
-              "REJECTED"
-            ]
-          },
-          "deliveryAddress": { "type": "string" },
-          "customerName": { "type": "string" },
-          "deliveryTime": { "type": "string", "format": "date-time" },
-          "orderProducts": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/OrderProductDto" }
-          },
-          "approvalDeadline": { "type": "string", "format": "date-time" }
-        }
-      },
-      "OrderProductDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "order": { "$ref": "#/components/schemas/OrderDto" },
-          "product": { "$ref": "#/components/schemas/ProductDto" },
-          "quantity": { "type": "integer", "format": "int32" },
-          "price": { "type": "number" }
-        }
       },
       "RejectNewIncomingOrderRequest": {
         "type": "object",
@@ -992,6 +1088,17 @@
           "companyId": { "type": "integer", "format": "int64" },
           "orderId": { "type": "integer", "format": "int64" }
         }
+      },
+      "WebSocketEvent": {
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": ["NEW_ORDER", "HEARTBEAT"]
+          }
+        },
+        "description": "Base class for WebSocket events"
       },
       "RegisterRequest": {
         "required": ["email", "firstName", "lastName", "password"],
