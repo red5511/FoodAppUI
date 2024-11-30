@@ -22,7 +22,10 @@
   </a>
   <span class="example-spacer"></span>
   &nbsp;
-  <app-switch-with-dialog [isChecked]="isChecked"></app-switch-with-dialog>
+  <app-switch-with-dialog
+    [webSocketTopicName]="selectedCompany?.webSocketTopicName!"
+    [isChecked]="isChecked"
+  ></app-switch-with-dialog>
   &nbsp; &nbsp;
   <p-dropdown
     [options]="companies"

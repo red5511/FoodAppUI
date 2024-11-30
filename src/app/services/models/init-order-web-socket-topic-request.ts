@@ -1,6 +1,14 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface InitOrderWebSocketTopicRequest {
-  companyId?: number;
-  webSocketTopicName?: string;
+
+  /**
+   * company id
+   */
+  companyId: number;
+
+  /**
+   * websocket topic name
+   */
+  webSocketTopicName: string;
 }

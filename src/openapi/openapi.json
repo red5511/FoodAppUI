@@ -106,35 +106,10 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
-    "/api/v1/websocket/test": {
-      "post": {
-        "tags": ["WebSocket"],
-        "operationId": "initOrderWebSocketTopic",
-        "requestBody": {
-          "content": {
-            "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/NewOrderWebSocketEvent"
-              }
-            }
-          },
-          "required": true
-        },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      }
-    },
     "/api/v1/websocket/init-main-topic": {
       "post": {
         "tags": ["WebSocket"],
-        "operationId": "initOrderWebSocketTopic_1",
+        "operationId": "initOrderWebSocketTopic",
         "requestBody": {
           "content": {
             "application/json": {
@@ -145,14 +120,7 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -348,7 +316,7 @@
     "/api/v1/development/forGeneratingApi": {
       "post": {
         "tags": ["Development"],
-        "operationId": "initOrderWebSocketTopic_2",
+        "operationId": "initOrderWebSocketTopic_1",
         "requestBody": {
           "content": {
             "application/json": {
@@ -833,61 +801,19 @@
           "sundayEnd": { "$ref": "#/components/schemas/LocalTime" }
         }
       },
-      "NewOrderWebSocketEvent": {
-        "type": "object",
-        "properties": {
-          "eventType": {
-            "type": "string",
-            "description": "Event types for WebSocket events",
-            "enum": ["NEW_ORDER", "HEARTBEAT"]
-          },
-          "order": { "$ref": "#/components/schemas/OrderDto" }
-        },
-        "description": "Event for a new order created via WebSocket"
-      },
-      "OrderDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "companyId": { "type": "integer", "format": "int64" },
-          "price": { "type": "number" },
-          "description": { "type": "string" },
-          "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
-          "status": {
-            "type": "string",
-            "enum": [
-              "WAITING_FOR_ACCEPTANCE",
-              "IN_EXECUTION",
-              "EXECUTED",
-              "REJECTED"
-            ]
-          },
-          "deliveryAddress": { "type": "string" },
-          "customerName": { "type": "string" },
-          "deliveryTime": { "type": "string", "format": "date-time" },
-          "orderProducts": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/OrderProductDto" }
-          },
-          "approvalDeadline": { "type": "string", "format": "date-time" }
-        }
-      },
-      "OrderProductDto": {
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "order": { "$ref": "#/components/schemas/OrderDto" },
-          "product": { "$ref": "#/components/schemas/ProductDto" },
-          "quantity": { "type": "integer", "format": "int32" },
-          "price": { "type": "number" }
-        }
-      },
       "InitOrderWebSocketTopicRequest": {
+        "required": ["companyId", "webSocketTopicName"],
         "type": "object",
         "properties": {
-          "companyId": { "type": "integer", "format": "int64" },
-          "webSocketTopicName": { "type": "string" }
+          "companyId": {
+            "type": "integer",
+            "description": "company id",
+            "format": "int64"
+          },
+          "webSocketTopicName": {
+            "type": "string",
+            "description": "websocket topic name"
+          }
         }
       },
       "GetStatisticsConfigRequest": {
@@ -986,6 +912,44 @@
       "CreateOrderRequest": {
         "type": "object",
         "properties": { "order": { "$ref": "#/components/schemas/OrderDto" } }
+      },
+      "OrderDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "price": { "type": "number" },
+          "description": { "type": "string" },
+          "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
+          "status": {
+            "type": "string",
+            "enum": [
+              "WAITING_FOR_ACCEPTANCE",
+              "IN_EXECUTION",
+              "EXECUTED",
+              "REJECTED"
+            ]
+          },
+          "deliveryAddress": { "type": "string" },
+          "customerName": { "type": "string" },
+          "deliveryTime": { "type": "string", "format": "date-time" },
+          "orderProducts": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderProductDto" }
+          },
+          "approvalDeadline": { "type": "string", "format": "date-time" }
+        }
+      },
+      "OrderProductDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "product": { "$ref": "#/components/schemas/ProductDto" },
+          "quantity": { "type": "integer", "format": "int32" },
+          "price": { "type": "number" }
+        }
       },
       "RejectNewIncomingOrderRequest": {
         "type": "object",
@@ -1090,6 +1054,7 @@
         }
       },
       "WebSocketEvent": {
+        "required": ["eventType"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -1099,6 +1064,19 @@
           }
         },
         "description": "Base class for WebSocket events"
+      },
+      "NewOrderWebSocketEvent": {
+        "required": ["eventType", "order"],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": ["NEW_ORDER", "HEARTBEAT"]
+          },
+          "order": { "$ref": "#/components/schemas/OrderDto" }
+        },
+        "description": "Event for a new order created via WebSocket"
       },
       "RegisterRequest": {
         "required": ["email", "firstName", "lastName", "password"],

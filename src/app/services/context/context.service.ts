@@ -8,6 +8,7 @@ export interface Context {
   // isCompanyReceivingOrdersActive: boolean;
   // isUserReceivingOrdersActive: boolean;
   companyName: string;
+  newOrderWebSocketTopicName: string
   permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
 }
 
@@ -27,12 +28,14 @@ export class ContextService {
   setContext(
     companyId: number,
     companyName: string,
+    newOrderWebSocketTopicName: string,
     permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
   ) {
     const newContext: Context = {
       companyId,
       companyName,
       permittedModules,
+      newOrderWebSocketTopicName
     };
     this.contextSubject.next(newContext);
   }
@@ -47,6 +50,10 @@ export class ContextService {
 
   getCompanyId(): number | undefined {
     return this.contextSubject.getValue()?.companyId;
+  }
+
+  getNewOrderWebSocketTopicName(): string | undefined {
+    return this.contextSubject.getValue()?.newOrderWebSocketTopicName;
   }
 
   getContext(): Context | null {

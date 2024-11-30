@@ -9,5 +9,5 @@ export interface WebSocketEvent {
   /**
    * Event types for WebSocket events
    */
-  eventType?: 'NEW_ORDER' | 'HEARTBEAT';
+  eventType: 'NEW_ORDER' | 'HEARTBEAT';
 }

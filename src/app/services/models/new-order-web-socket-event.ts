@@ -10,6 +10,6 @@ export interface NewOrderWebSocketEvent {
   /**
    * Event types for WebSocket events
    */
-  eventType?: 'NEW_ORDER' | 'HEARTBEAT';
-  order?: OrderDto;
+  eventType: 'NEW_ORDER' | 'HEARTBEAT';
+  order: OrderDto;
 }

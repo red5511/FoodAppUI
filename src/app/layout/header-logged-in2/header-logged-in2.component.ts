@@ -21,7 +21,10 @@ export class HeaderLoggedIn2Component {
   selectedCompany: CompanyDto | null = null;
   response: DashboardGetInitConfigResponse = {};
   isSidebarVisible = true;
-  stateOptions: any[] = [{ label: 'One-Way', value: 'one-way' },{ label: 'Return', value: 'return' }];
+  stateOptions: any[] = [
+    { label: 'One-Way', value: 'one-way' },
+    { label: 'Return', value: 'return' },
+  ];
 
   value: string = 'one-way';
   constructor(
@@ -75,6 +78,7 @@ export class HeaderLoggedIn2Component {
       this.contextService.setContext(
         this.selectedCompany.id as number,
         this.selectedCompany.name as string,
+        this.selectedCompany.webSocketTopicName as string,
         permittedModules
       );
     }

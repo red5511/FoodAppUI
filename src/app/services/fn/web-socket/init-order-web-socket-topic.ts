@@ -6,26 +6,26 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { NewOrderWebSocketEvent } from '../../models/new-order-web-socket-event';
+import { InitOrderWebSocketTopicRequest } from '../../models/init-order-web-socket-topic-request';
 
 export interface InitOrderWebSocketTopic$Params {
-      body: NewOrderWebSocketEvent
+      body: InitOrderWebSocketTopicRequest
 }
 
-export function initOrderWebSocketTopic(http: HttpClient, rootUrl: string, params: InitOrderWebSocketTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function initOrderWebSocketTopic(http: HttpClient, rootUrl: string, params: InitOrderWebSocketTopic$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, initOrderWebSocketTopic.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }
 
-initOrderWebSocketTopic.PATH = '/api/v1/websocket/test';
+initOrderWebSocketTopic.PATH = '/api/v1/websocket/init-main-topic';

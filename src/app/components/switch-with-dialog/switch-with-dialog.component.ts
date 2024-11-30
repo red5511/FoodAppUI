@@ -1,5 +1,7 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ContextService } from '../../services/context/context.service';
+import { WebSocketService } from '../../services/services';
+import { InitOrderWebSocketTopicRequest } from '../../services/models';
 
 @Component({
   selector: 'app-switch-with-dialog',
@@ -7,11 +9,15 @@ import { ContextService } from '../../services/context/context.service';
   styleUrl: './switch-with-dialog.component.scss',
 })
 export class SwitchWithDialogComponent {
+  @Input() webSocketTopicName!: string;
   @Input() isDisabled = false;
   @Input({ required: true }) isChecked!: boolean;
   @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
   dialogVisible = false; // Visibility of the confirmation dialog
-  constructor(private contextService: ContextService) {}
+  constructor(
+    private contextService: ContextService,
+    private webSocketService: WebSocketService
+  ) {}
   config = {
     name: '',
     disabled: false,
@@ -44,14 +50,32 @@ export class SwitchWithDialogComponent {
   }
 
   onConfirm(): void {
-    this.isChecked = !this.isChecked;
     this.dialogVisible = false; // Close the dialog
-    this.contextService.setUserReceivingOrdersActive(this.isChecked);
+    if (!this.isChecked) {
+      this.requestInitOrderWebSocketTopic();
+    }
+    else{
+      this.isChecked = !this.isChecked;
+      this.contextService.setUserReceivingOrdersActive(this.isChecked);
+    }
   }
   preventToggle(event: Event): void {
     // Prevent the toggle from toggling on click
     event.preventDefault();
     event.stopPropagation();
     this.dialogVisible = true; // Open the confirmation dialog
+  }
+
+  requestInitOrderWebSocketTopic() {
+    const body: InitOrderWebSocketTopicRequest = {
+      companyId: this.contextService.getCompanyId() ?? -999,
+      webSocketTopicName: this.webSocketTopicName,
+    };
+    this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
+      next: () => {
+        this.isChecked = !this.isChecked;
+        this.contextService.setUserReceivingOrdersActive(this.isChecked);
+      },
+    });
   }
 }

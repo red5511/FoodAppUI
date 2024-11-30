@@ -104,13 +104,13 @@ export class NewOrderPanelComponent {
   }
 
   connectWebSocket() {
-    let companyId = this.contextService.getCompanyId();
+    let topicName = this.contextService.getNewOrderWebSocketTopicName();
 
-    if (companyId !== undefined) {
+    if (topicName !== undefined) {
       this.webSocketService.connect();
       // Subscribe to the WebSocket orders channel
       this.webSocketService.subscribeToOrders(
-        companyId!.toString(),
+        topicName!.toString(),
         (order: OrderDto) => {
           if (order) {
             if (this.orders.length == 0) {
