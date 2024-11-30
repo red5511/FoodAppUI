@@ -1,0 +1,24 @@
+.custom-ng-toggle {
+  font-family: var(--font-family);
+  font-feature-settings: var(--font-feature-settings, normal);
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: space-between; /* Space between items */
+}
+
+.custom-cancel-button {
+  color: var(--purple-color);
+  border: 1px solid var(--purple-color);
+}
+
+.custom-confirm-button {
+  background: var(--purple-color);
+  border: 1px solid var(--purple-color);
+}
+
+.custom-cancel-button:focus {
+    outline: none; /* Ensures no outline on focus */
+    box-shadow: 0 0 0 2px rgba(128, 0, 128, 0.4); /* Optional: Custom focus style */
+  }

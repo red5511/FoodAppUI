@@ -4,7 +4,6 @@ import { DashboardService } from '../../services/services/dashboard.service';
 import {
   CompanyDto,
   DashboardGetInitConfigResponse,
-  OrderDto,
 } from '../../services/models';
 import { ContextService } from '../../services/context/context.service';
 
@@ -22,7 +21,9 @@ export class HeaderLoggedIn2Component {
   selectedCompany: CompanyDto | null = null;
   response: DashboardGetInitConfigResponse = {};
   isSidebarVisible = true;
+  stateOptions: any[] = [{ label: 'One-Way', value: 'one-way' },{ label: 'Return', value: 'return' }];
 
+  value: string = 'one-way';
   constructor(
     private sidebarService: SidebarService,
     private dashboardService: DashboardService,

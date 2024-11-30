@@ -32,7 +32,7 @@ import { AuthLogoutInterceptor } from './services/interceptor/auth-logout.interc
 import { ToastrModule } from 'ngx-toastr';
 import { CustomToastComponent } from './components/custom-toast/custom-toast.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { MessageService } from 'primeng/api';
+import { ConfirmationService, MessageService } from 'primeng/api';
 import { ToastModule } from 'primeng/toast';
 import { ButtonModule } from 'primeng/button';
 import { SidebarModule } from 'primeng/sidebar';
@@ -64,6 +64,12 @@ import { DropdownModule } from 'primeng/dropdown';
 import { CalendarModule } from 'primeng/calendar';
 import { CheckboxModule } from 'primeng/checkbox';
 import { DividerModule } from 'primeng/divider';
+import { ToggleButtonModule } from 'primeng/togglebutton';
+import { SelectButtonModule } from 'primeng/selectbutton';
+import { ConfirmDialogModule } from 'primeng/confirmdialog';
+import { NgToggleModule } from 'ng-toggle-button';
+import { SwitchWithDialogComponent } from './components/switch-with-dialog/switch-with-dialog.component';
+
 
 @NgModule({
   declarations: [
@@ -91,6 +97,7 @@ import { DividerModule } from 'primeng/divider';
     AllOrdersComponent,
     AllOrdersTableComponent,
     StatisticsComponent,
+    SwitchWithDialogComponent,
   ],
   imports: [
     RouterModule,
@@ -105,6 +112,9 @@ import { DividerModule } from 'primeng/divider';
     MatToolbarModule,
     CheckboxModule,
     MatMenuModule,
+    SelectButtonModule,
+    ToggleButtonModule,
+    ConfirmDialogModule,
     MatDividerModule,
     MatListModule,
     BrowserAnimationsModule,
@@ -122,6 +132,7 @@ import { DividerModule } from 'primeng/divider';
     IconFieldModule,
     InputIconModule,
     InputTextModule,
+    NgToggleModule.forRoot(),
     ToastrModule.forRoot({
       progressBar: true,
       closeButton: true,
@@ -136,6 +147,7 @@ import { DividerModule } from 'primeng/divider';
     HttpClient,
     provideCharts(withDefaultRegisterables()),
     MessageService,
+    ConfirmationService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: HttpTokenInterceptor,

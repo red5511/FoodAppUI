@@ -25,6 +25,7 @@
     "jwt-decode": "^4.0.0",
     "net": "^1.0.2",
     "ng-openapi-gen": "^0.51.0",
+    "ng-toggle-button": "^1.5.3",
     "ng2-charts": "^6.0.1",
     "ngx-toastr": "^19.0.0",
     "primeicons": "^7.0.0",

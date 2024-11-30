@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component } from '@angular/core';
 import {
   ApproveNewIncomingOrderRequest,
   OrderDto,
@@ -70,7 +70,7 @@ export class NewOrderPanelComponent {
   order!: OrderDto;
   userEmail: string | undefined;
 
-  trackById(index: number, product: ProductDto): number {
+  trackById(product: ProductDto): number {
     return product.id!; // Unique id for each product
   }
 

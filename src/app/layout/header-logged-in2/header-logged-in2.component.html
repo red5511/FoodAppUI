@@ -22,9 +22,8 @@
   </a>
   <span class="example-spacer"></span>
   &nbsp;
-  <app-switch [isChecked]="isChecked"></app-switch>
-  &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
-
+  <app-switch-with-dialog [isChecked]="isChecked"></app-switch-with-dialog>
+  &nbsp; &nbsp;
   <p-dropdown
     [options]="companies"
     [(ngModel)]="selectedCompany"
@@ -32,5 +31,4 @@
     optionLabel="name"
     class="custom-dropdown"
   ></p-dropdown>
-  &nbsp; &nbsp; &nbsp;
 </mat-toolbar>

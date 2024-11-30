@@ -1,0 +1,43 @@
+<ng-toggle class="custom-ng-toggle"
+  [(ngModel)]="isChecked"
+  [disabled]="config.disabled"
+  [width]="config.width"
+  [height]="config.height"
+  [margin]="config.margin"
+  [labels]="config.labels"
+  [color]="config.color"
+  [switchColor]="config.switchColor"
+  [fontColor]="config.fontColor"
+  [fontSize]="config.fontSize"
+  [textAlign]="config.textAlign"
+  (click)="preventToggle($event)"
+  required
+></ng-toggle>
+
+<p-dialog
+  [(visible)]="dialogVisible"
+  [header]="'Confirmation'"
+  [closable]="false"
+  [dismissableMask]="false"
+  [modal]="true"
+>
+  <p>{{ isChecked ? "Czy chcesz zatrzymać odbieranie zamówień" : "Czy chcesz rozpocząć odbieranie zamówień"}}</p>
+  <div class="dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Nie"
+      icon="pi pi-times"
+      class="p-button-text custom-cancel-button"
+      (click)="onCancel()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Tak"
+      icon="pi pi-check"
+      (click)="onConfirm()"
+      class="custom-confirm-button"
+    ></button>
+  </div>
+</p-dialog>

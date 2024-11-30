@@ -11,9 +11,14 @@ export class DashboardPanelComponent {
   @Input({ required: true }) checkedCompany!: boolean;
   @Input({ required: true }) checkedUser!: boolean;
   @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
+  isChecked = false;
+  tempCheckedCompany: boolean = this.checkedCompany;
+
+  constructor() {}
 
   onChange(event: InputSwitchChangeEvent) {
     this.checkedUser = event.checked;
     this.onToogleCheckbox.emit(this.checkedUser);
   }
+
 }
