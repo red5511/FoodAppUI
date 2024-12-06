@@ -339,6 +339,118 @@
         }
       }
     },
+    "/api/v1/development/forGeneratingApi6": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "ehh3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovedOrderWebSocketEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/development/forGeneratingApi5": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "ehh2",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RejectedOrderWebSocketEvent"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/development/forGeneratingApi4": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "ehh",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ServerSideDisconnectionWebSocketEvent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/development/forGeneratingApi3": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "disconnectionWebSocketEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DisconnectionWebSocketEvent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/development/forGeneratingApi2": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "heartbeatWebSocketEvent",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/HeartbeatWebSocketEvent"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/api/v1/auth/register/init": {
       "post": {
         "tags": ["Authentication"],
@@ -952,10 +1064,12 @@
         }
       },
       "RejectNewIncomingOrderRequest": {
+        "required": ["companyId", "orderId", "orderReceivingTopicName"],
         "type": "object",
         "properties": {
           "companyId": { "type": "integer", "format": "int64" },
-          "orderId": { "type": "integer", "format": "int64" }
+          "orderId": { "type": "integer", "format": "int64" },
+          "orderReceivingTopicName": { "type": "string" }
         }
       },
       "Filter": {
@@ -1047,10 +1161,12 @@
         "description": "List of status models"
       },
       "ApproveNewIncomingOrderRequest": {
+        "required": ["companyId", "orderId", "orderReceivingTopicName"],
         "type": "object",
         "properties": {
           "companyId": { "type": "integer", "format": "int64" },
-          "orderId": { "type": "integer", "format": "int64" }
+          "orderId": { "type": "integer", "format": "int64" },
+          "orderReceivingTopicName": { "type": "string" }
         }
       },
       "WebSocketEvent": {
@@ -1060,7 +1176,14 @@
           "eventType": {
             "type": "string",
             "description": "Event types for WebSocket events",
-            "enum": ["NEW_ORDER", "HEARTBEAT"]
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
           }
         },
         "description": "Base class for WebSocket events"
@@ -1072,11 +1195,123 @@
           "eventType": {
             "type": "string",
             "description": "Event types for WebSocket events",
-            "enum": ["NEW_ORDER", "HEARTBEAT"]
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
           },
           "order": { "$ref": "#/components/schemas/OrderDto" }
         },
         "description": "Event for a new order created via WebSocket"
+      },
+      "ApprovedOrderWebSocketEvent": {
+        "required": ["eventType", "orderId"],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
+          },
+          "orderId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "RejectedOrderWebSocketEvent": {
+        "required": ["eventType", "orderId"],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
+          },
+          "orderId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ServerSideDisconnectionWebSocketEvent": {
+        "required": ["eventType", "userId"],
+        "type": "object",
+        "properties": {
+          "userId": { "type": "integer", "format": "int64" },
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
+          }
+        }
+      },
+      "DisconnectionWebSocketEvent": {
+        "required": [
+          "companyId",
+          "eventType",
+          "orderReceivingTopicName",
+          "userId"
+        ],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
+          },
+          "userId": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "orderReceivingTopicName": { "type": "string" }
+        },
+        "description": "Disconnection event via WebSocket"
+      },
+      "HeartbeatWebSocketEvent": {
+        "required": ["companyId", "eventType", "userId"],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER"
+            ]
+          },
+          "userId": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" }
+        },
+        "description": "Heartbeat event via WebSocket"
       },
       "RegisterRequest": {
         "required": ["email", "firstName", "lastName", "password"],
@@ -1133,6 +1368,7 @@
         }
       },
       "DashboardGetInitConfigResponse": {
+        "required": ["companyDataList", "permittedModules", "userId"],
         "type": "object",
         "properties": {
           "companyDataList": {
@@ -1147,6 +1383,7 @@
               "enum": ["LIVE_PANEL", "STATISTICS", "ORDERS"]
             }
           },
+          "userId": { "type": "integer", "format": "int64" },
           "receivingOrdersActive": { "type": "boolean" }
         }
       },

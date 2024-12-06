@@ -19,14 +19,13 @@ export class HeaderLoggedIn2Component {
   isDropdownOpen = false;
   companies: CompanyDto[] | undefined;
   selectedCompany: CompanyDto | null = null;
-  response: DashboardGetInitConfigResponse = {};
   isSidebarVisible = true;
   stateOptions: any[] = [
     { label: 'One-Way', value: 'one-way' },
     { label: 'Return', value: 'return' },
   ];
-
   value: string = 'one-way';
+  userId!: number;
   constructor(
     private sidebarService: SidebarService,
     private dashboardService: DashboardService,
@@ -36,16 +35,13 @@ export class HeaderLoggedIn2Component {
   ngOnInit(): void {
     this.dashboardService.getConfig().subscribe(
       (response) => {
-        this.response = response;
-        if (
-          this.response.companyDataList &&
-          this.response.companyDataList.length > 0
-        ) {
-          this.companies = this.response.companyDataList;
-          let firstCompany = this.response.companyDataList[0];
+        if (response.companyDataList && response.companyDataList.length > 0) {
+          this.companies = response.companyDataList;
+          let firstCompany = response.companyDataList[0];
           if (!!firstCompany) {
             this.selectedCompany = firstCompany;
             this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
+            this.userId = response.userId;
             this.updateContext(response.permittedModules);
           }
         }
@@ -79,7 +75,8 @@ export class HeaderLoggedIn2Component {
         this.selectedCompany.id as number,
         this.selectedCompany.name as string,
         this.selectedCompany.webSocketTopicName as string,
-        permittedModules
+        permittedModules,
+        this.userId
       );
     }
   }

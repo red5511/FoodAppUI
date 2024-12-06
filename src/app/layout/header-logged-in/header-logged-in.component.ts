@@ -12,28 +12,22 @@ export class HeaderLoggedInComponent {
   options: string[] = [];
   selectedOption: string | null = null;
   currentCompanyName: string = 'Brak firmy';
-  response: DashboardGetInitConfigResponse = {};
 
   constructor(private dashboardService: DashboardService) {}
 
   ngOnInit(): void {
     this.dashboardService.getConfig().subscribe(
       (response) => {
-        this.response = response;
-        if (
-          this.response.companyDataList &&
-          this.response.companyDataList.length > 0
-        ) {
-          this.response.companyDataList.forEach((entry) => {
+        if (response.companyDataList && response.companyDataList.length > 0) {
+          response.companyDataList.forEach((entry) => {
             this.options.push(entry.name as string);
           });
-          this.currentCompanyName = this.response.companyDataList[0]
-            .name as string;
+          this.currentCompanyName = response.companyDataList[0].name as string;
         }
       },
       (error) => {
         console.error('Error loading data:', error);
-      },
+      }
     );
   }
 

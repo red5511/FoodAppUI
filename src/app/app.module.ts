@@ -69,6 +69,7 @@ import { SelectButtonModule } from 'primeng/selectbutton';
 import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgToggleModule } from 'ng-toggle-button';
 import { SwitchWithDialogComponent } from './components/switch-with-dialog/switch-with-dialog.component';
+import { SocketService } from './services/websocket/socket-service';
 
 
 @NgModule({
@@ -144,6 +145,7 @@ import { SwitchWithDialogComponent } from './components/switch-with-dialog/switc
     }),
   ],
   providers: [
+    SocketService,
     HttpClient,
     provideCharts(withDefaultRegisterables()),
     MessageService,

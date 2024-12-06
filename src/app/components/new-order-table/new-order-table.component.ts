@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
-import { DashboardService, OrderService } from '../../services/services';
+import { DashboardService } from '../../services/services';
 import { ContextService } from '../../services/context/context.service';
 import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
 import { DashboardGetOrdersResponse, OrderDto } from '../../services/models';
-import { WebSocketService } from '../../services/websocket/web-socket-service';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
+import { WebSocketEventHandler } from '../../services/websocket/web-socket-event-handler';
 
 @Component({
   selector: 'app-new-order-table',
@@ -24,53 +24,49 @@ export class NewOrderTableComponent {
   orders: OrderDto[] = [];
   private destroy$ = new Subject<void>();
 
-
   constructor(
     private dashboardService: DashboardService,
     private contextService: ContextService,
-    private webSocketService: WebSocketService,
+    private webSocketEventHandler: WebSocketEventHandler
   ) {}
 
   ngOnInit(): void {
-    this.contextService.getCompanyIdObservable()
-    .pipe(
-      filter((companyId): companyId is number => !!companyId),
-      switchMap((companyId) => {
-        const params: GetActiveOrders$Params = { companyId };
-        return this.dashboardService.getActiveOrders(params);
-      }),
-      filter((response): response is DashboardGetOrdersResponse => !!response?.orderList),
-      takeUntil(this.destroy$)
-    )
-  .subscribe({
-    next: (response) => {
-      console.log("na inicie pobranie")
-      this.orders = response.orderList ?? []
-      this.expandAll();
-    },
-    error: (error) => {
-      console.error('Error loading orders:', error);
-    },
-  });
+    this.contextService
+      .getCompanyIdObservable()
+      .pipe(
+        filter((companyId): companyId is number => !!companyId),
+        switchMap((companyId) => {
+          const params: GetActiveOrders$Params = { companyId };
+          return this.dashboardService.getActiveOrders(params);
+        }),
+        filter(
+          (response): response is DashboardGetOrdersResponse =>
+            !!response?.orderList
+        ),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (response) => {
+          console.log('na inicie pobranie');
+          this.orders = response.orderList ?? [];
+          this.expandAll();
+        },
+        error: (error) => {
+          console.error('Error loading orders:', error);
+        },
+      });
 
-    this.webSocketService.newOrderApprovedVisibility$.subscribe((val) => {
-      console.log('kek w websockecie')
-      console.log(val)
+    this.webSocketEventHandler.newOrderApprovedVisibility$.subscribe((val) => {
       let companyId = this.contextService.getCompanyId();
-      if (companyId !== undefined) {
-        const params: GetActiveOrders$Params = { companyId };
-        console.log("w subsciption socketa")
-        // Now call getActiveOrders with the companyId
+        const params: GetActiveOrders$Params = { companyId: companyId ?? -999 };
         this.dashboardService.getActiveOrders(params).subscribe({
           next: (response: DashboardGetOrdersResponse) => {
-            console.log("w subsciption socketa ale call po ordery")
             if (response && response.orderList) {
               this.orders = response.orderList;
               this.expandAll();
             }
           },
         });
-      }
     });
   }
 
@@ -98,7 +94,7 @@ export class NewOrderTableComponent {
   }
 
   getStatusSeverity(
-    status: string,
+    status: string
   ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
     switch (status) {
       case 'WAITING_FOR_ACCEPTANCE':

@@ -2,6 +2,7 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ContextService } from '../../services/context/context.service';
 import { WebSocketService } from '../../services/services';
 import { InitOrderWebSocketTopicRequest } from '../../services/models';
+import { SocketService } from '../../services/websocket/socket-service';
 
 @Component({
   selector: 'app-switch-with-dialog',
@@ -13,11 +14,17 @@ export class SwitchWithDialogComponent {
   @Input() isDisabled = false;
   @Input({ required: true }) isChecked!: boolean;
   @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
+  
   dialogVisible = false; // Visibility of the confirmation dialog
   constructor(
     private contextService: ContextService,
-    private webSocketService: WebSocketService
-  ) {}
+    private webSocketService: WebSocketService,
+    private socketService: SocketService
+  ) { 
+    socketService.forcedConnectionChangeSubjectVisiblity$.subscribe((value) => {
+        this.isChecked = value
+    })
+  }
   config = {
     name: '',
     disabled: false,

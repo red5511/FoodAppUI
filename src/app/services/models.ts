@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export { ApprovedOrderWebSocketEvent } from './models/approved-order-web-socket-event';
 export { ApproveNewIncomingOrderRequest } from './models/approve-new-incoming-order-request';
 export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
@@ -15,6 +16,7 @@ export { DatePeriodModel } from './models/date-period-model';
 export { DateRangeModel } from './models/date-range-model';
 export { DeleteCompanyRequest } from './models/delete-company-request';
 export { DeleteProductRequest } from './models/delete-product-request';
+export { DisconnectionWebSocketEvent } from './models/disconnection-web-socket-event';
 export { Filter } from './models/filter';
 export { GetAllCompaniesResponse } from './models/get-all-companies-response';
 export { GetCompanyDetailsResponse } from './models/get-company-details-response';
@@ -26,6 +28,7 @@ export { GetStatisticsChartResponse } from './models/get-statistics-chart-respon
 export { GetStatisticsConfigRequest } from './models/get-statistics-config-request';
 export { GetStatisticsConfigResponse } from './models/get-statistics-config-response';
 export { GetUsersResponse } from './models/get-users-response';
+export { HeartbeatWebSocketEvent } from './models/heartbeat-web-socket-event';
 export { InitOrderWebSocketTopicRequest } from './models/init-order-web-socket-topic-request';
 export { LocalTime } from './models/local-time';
 export { ModifyCompanyRequest } from './models/modify-company-request';
@@ -39,8 +42,10 @@ export { OrderStatusModel } from './models/order-status-model';
 export { PagedOrdersResponse } from './models/paged-orders-response';
 export { ProductDto } from './models/product-dto';
 export { RegisterRequest } from './models/register-request';
+export { RejectedOrderWebSocketEvent } from './models/rejected-order-web-socket-event';
 export { RejectNewIncomingOrderRequest } from './models/reject-new-incoming-order-request';
 export { SaveCompanyRequest } from './models/save-company-request';
+export { ServerSideDisconnectionWebSocketEvent } from './models/server-side-disconnection-web-socket-event';
 export { Sort } from './models/sort';
 export { UserDto } from './models/user-dto';
 export { WebSocketEvent } from './models/web-socket-event';

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, Subject } from 'rxjs';
 import { HttpClient } from '@angular/common/http'; // Import HttpClient to make HTTP requests
 import { map } from 'rxjs/operators'; // Import map operator for transforming responses
 
@@ -8,8 +8,9 @@ export interface Context {
   // isCompanyReceivingOrdersActive: boolean;
   // isUserReceivingOrdersActive: boolean;
   companyName: string;
-  newOrderWebSocketTopicName: string
+  mainWebSocketTopicName: string;
   permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
+  userId: number;
 }
 
 @Injectable({
@@ -19,8 +20,9 @@ export class ContextService {
   private contextSubject = new BehaviorSubject<Context | null>(null);
   contextSubjectVisibility$ = this.contextSubject.asObservable();
 
-  private userReceivingOrdersSubject = new BehaviorSubject<boolean>(false);
+  private userReceivingOrdersSubject = new Subject<boolean>();
   userReceivingOrdersSubjectVisibility$ =
+  
     this.userReceivingOrdersSubject.asObservable();
 
   constructor() {}
@@ -28,14 +30,16 @@ export class ContextService {
   setContext(
     companyId: number,
     companyName: string,
-    newOrderWebSocketTopicName: string,
+    mainWebSocketTopicName: string,
     permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
+    userId: number
   ) {
     const newContext: Context = {
       companyId,
       companyName,
       permittedModules,
-      newOrderWebSocketTopicName
+      mainWebSocketTopicName,
+      userId,
     };
     this.contextSubject.next(newContext);
   }
@@ -52,11 +56,15 @@ export class ContextService {
     return this.contextSubject.getValue()?.companyId;
   }
 
-  getNewOrderWebSocketTopicName(): string | undefined {
-    return this.contextSubject.getValue()?.newOrderWebSocketTopicName;
+  getMainWebSocketTopicName(): string | undefined {
+    return this.contextSubject.getValue()?.mainWebSocketTopicName;
   }
 
   getContext(): Context | null {
-    return this.contextSubject.getValue()
+    return this.contextSubject.getValue();
+  }
+
+  getUserId(): number | undefined {
+    return this.contextSubject.getValue()?.userId;
   }
 }

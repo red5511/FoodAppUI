@@ -7,7 +7,7 @@ import {
 } from '../../services/models';
 import { ToastrService } from 'ngx-toastr';
 import { ContextService } from '../../services/context/context.service';
-import { WebSocketService } from '../../services/websocket/web-socket-service';
+import {} from '../../services/websocket/socket-service';
 import { OrderService } from '../../services/services';
 import {
   animate,
@@ -17,7 +17,10 @@ import {
   transition,
   trigger,
 } from '@angular/animations';
-import { TokenService } from '../../services/token/token.service';
+import {
+  OrderHandledInfo,
+  WebSocketEventHandler,
+} from '../../services/websocket/web-socket-event-handler';
 
 @Component({
   selector: 'app-new-order-panel',
@@ -29,13 +32,13 @@ import { TokenService } from '../../services/token/token.service';
         style({ opacity: 0, transform: 'translateY(-75px)' }),
         animate(
           '300ms ease-out',
-          style({ opacity: 1, transform: 'translateY(0px)' }),
+          style({ opacity: 1, transform: 'translateY(0px)' })
         ),
       ]),
       transition(':leave', [
         animate(
           '300ms ease-out',
-          style({ opacity: 0, transform: 'translateY(-75px)' }),
+          style({ opacity: 0, transform: 'translateY(-75px)' })
         ),
       ]),
     ]),
@@ -51,9 +54,9 @@ import { TokenService } from '../../services/token/token.service';
           animateChild(), // Ensure child animation plays
           animate(
             '300ms ease-out',
-            style({ opacity: 0, transform: 'translateY(10px)' }),
+            style({ opacity: 0, transform: 'translateY(10px)' })
           ),
-        ]),
+        ])
       ),
     ]),
   ],
@@ -69,6 +72,8 @@ export class NewOrderPanelComponent {
   orders: OrderDto[] = [];
   order!: OrderDto;
   userEmail: string | undefined;
+  alreadyProcessed: boolean = false;
+  // socket odbiera eventa ze ze zamowienie zostalo obsluzone, potrzebne przy multilogowaniu
 
   trackById(product: ProductDto): number {
     return product.id!; // Unique id for each product
@@ -77,65 +82,49 @@ export class NewOrderPanelComponent {
   constructor(
     private contextService: ContextService,
     private toastService: ToastrService,
-    private webSocketService: WebSocketService,
-    private orderService: OrderService,
-    private tokenService: TokenService,
+    private webSocketEventHandler: WebSocketEventHandler,
+    private orderService: OrderService
   ) {}
 
   ngOnInit() {
-    this.userEmail = this.tokenService.getEmail();
-    console.log(this.userEmail);
-    if ('EMAIL' + this.userEmail) {
-      this.requestUserInteraction(); // Set up the user interaction for audio
-      this.initWebsocket();
-    }
-  }
-
-  initWebsocket() {
-    this.contextService.userReceivingOrdersSubjectVisibility$.subscribe(
-      (isReceiving) => {
-        if (isReceiving) {
-          this.connectWebSocket();
-        } else {
-          this.disconnectWebSocket();
+    this.requestUserInteraction(); // Set up the user interaction for audio
+    this.webSocketEventHandler.newOrderSubjectVisibility$.subscribe(
+      (newOrder: OrderDto) => {
+        this.handleNewOrder(newOrder);
+      }
+    );
+    this.webSocketEventHandler.newOrderHandledByOtherUserVisibility$.subscribe(
+      (result: OrderHandledInfo) => {
+        if (this.order?.id == result.orderId) {
+          if (result.gotAccepted) {
+            this.onApprovedOrder();
+          } else {
+            this.onRejectedOrder();
+          }
+          this.alreadyProcessed = true
         }
-      },
+      }
     );
   }
 
-  connectWebSocket() {
-    let topicName = this.contextService.getNewOrderWebSocketTopicName();
-
-    if (topicName !== undefined) {
-      this.webSocketService.connect();
-      // Subscribe to the WebSocket orders channel
-      this.webSocketService.subscribeToOrders(
-        topicName!.toString(),
-        (order: OrderDto) => {
-          if (order) {
-            if (this.orders.length == 0) {
-              this.timeRemaining = this.calculateTimeLeft(order);
-              this.order = order;
-              this.timerIntervalId = setInterval(
-                () => this.handleTimer(),
-                1000,
-              );
-              //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
-              this.isDisplay = true;
-              setTimeout(() => (this.areButtonsDisabled = false), 1100);
-            } else {
-              this.toastService.info(
-                'Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: ' +
-                  this.calculateTimeLeft(order) +
-                  ' sekund',
-                '#' + order.id,
-              );
-            }
-            this.orders.push(order);
-          }
-        },
+  handleNewOrder(newOrder: OrderDto) {
+    this.alreadyProcessed = false;
+    if (this.orders.length == 0) {
+      this.timeRemaining = this.calculateTimeLeft(newOrder);
+      this.order = newOrder;
+      this.timerIntervalId = setInterval(() => this.handleTimer(), 1000);
+      //this.soundIntervalId = setInterval(() => this.playSound(), 2000)
+      this.isDisplay = true;
+      setTimeout(() => (this.areButtonsDisabled = false), 1100);
+    } else {
+      this.toastService.info(
+        'Otrzymałeś nowe zamówienie podczas akceptacji obecnego. Czas na jego akceptacje: ' +
+          this.calculateTimeLeft(newOrder) +
+          ' sekund',
+        '#' + newOrder.id
       );
     }
+    this.orders.push(newOrder);
   }
 
   calculateTimeLeft(order: OrderDto): number {
@@ -155,7 +144,7 @@ export class NewOrderPanelComponent {
       day,
       hours,
       minutes,
-      seconds,
+      seconds
     ).getTime();
     const timeDifference = deadline - now; // Difference in milliseconds
 
@@ -166,15 +155,11 @@ export class NewOrderPanelComponent {
     }
   }
 
-  disconnectWebSocket() {
-    this.webSocketService.disconnect();
-  }
-
   handleTimer() {
     if (this.timeRemaining <= 0) {
       this.toastService.warning(
         'Zamówienie zostało odrzucone',
-        '#' + this.order.id,
+        '#' + this.order.id
       );
       this.handleProcessOrder();
     } else {
@@ -193,45 +178,60 @@ export class NewOrderPanelComponent {
 
   approveOrder() {
     let companyId = this.contextService.getCompanyId();
-    if (companyId !== undefined) {
-      let approveRequest: ApproveNewIncomingOrderRequest = {
-        companyId: companyId,
-        orderId: this.order.id,
-      };
-      this.orderService
-        .approveNewIncomingOrder({ body: approveRequest })
-        .subscribe({
-          next: (response) => {
-            this.toastService.success(
-              'Zamówienie zostało przyjęte',
-              '#' + this.order.id,
-            );
-            this.webSocketService.fireNewOrderApproved();
-            this.handleProcessOrder();
-          },
-        });
+    let topicName = this.contextService.getMainWebSocketTopicName();
+    let approveRequest: ApproveNewIncomingOrderRequest = {
+      companyId: companyId ?? -999,
+      orderId: this.order.id ?? -999,
+      orderReceivingTopicName: topicName ?? '-999',
+    };
+    this.orderService
+      .approveNewIncomingOrder({ body: approveRequest })
+      .subscribe({
+        next: (response) => {
+          console.log('PRZEZ HTTP SE LECE');
+          this.onApprovedOrder();
+          this.alreadyProcessed = true
+        },
+      });
+  }
+  onApprovedOrder() {
+    if (this.alreadyProcessed) {
+      return;
     }
+    this.handleProcessOrder();
+    this.toastService.success(
+      'Zamówienie zostało przyjęte',
+      '#' + this.order.id
+    );
+    this.webSocketEventHandler.fireNewOrderApproved();
+  }
+  onRejectedOrder() {
+    if (this.alreadyProcessed) {
+      return;
+    }
+    this.handleProcessOrder();
+    this.toastService.warning(
+      'Zamówienie zostało odrzucone',
+      '#' + this.order.id
+    );
   }
 
   rejectOrder() {
     let companyId = this.contextService.getCompanyId();
-    if (companyId !== undefined) {
-      let rejectRequest: RejectNewIncomingOrderRequest = {
-        companyId: companyId,
-        orderId: this.order.id,
-      };
-      this.orderService
-        .rejectNewIncomingOrder({ body: rejectRequest })
-        .subscribe({
-          next: (response) => {
-            this.toastService.warning(
-              'Zamówienie zostało odrzucone',
-              '#' + this.order.id,
-            );
-            this.handleProcessOrder();
-          },
-        });
-    }
+    let topicName = this.contextService.getMainWebSocketTopicName();
+    let rejectRequest: RejectNewIncomingOrderRequest = {
+      companyId: companyId ?? -999,
+      orderId: this.order.id ?? -999,
+      orderReceivingTopicName: topicName ?? '-999',
+    };
+    this.orderService
+      .rejectNewIncomingOrder({ body: rejectRequest })
+      .subscribe({
+        next: (response) => {
+          this.onRejectedOrder();
+          this.alreadyProcessed = true;
+        },
+      });
   }
 
   handleProcessOrder() {
@@ -262,7 +262,7 @@ export class NewOrderPanelComponent {
             (window as any).webkitAudioContext)();
         }
       },
-      { once: true },
+      { once: true }
     ); // Listen for a single mouse movement only
   }
 }

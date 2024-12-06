@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { TokenService } from './services/token/token.service';
 import { LoginService } from './services/login/login.service';
 import { SideNavToggle } from './components/side-nav-toggle.interface';
 import { FilterService, PrimeNGConfig } from 'primeng/api';
+import { SocketService } from './services/websocket/socket-service';
 
 @Component({
   selector: 'app-root',
@@ -19,9 +19,12 @@ export class AppComponent {
     private loginService: LoginService,
     private primengConfig: PrimeNGConfig,
     private filterService: FilterService,
+    private webSocketService: SocketService //dzieki temu mamy dostepny ten socket od razu na starcie apkli
   ) {}
 
   ngOnInit() {
+    window.addEventListener('beforeunload', this.handleWindowClose);
+
     this.primengConfig.setTranslation({
       selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',
@@ -97,8 +100,27 @@ export class AppComponent {
     console.log(this.isLoggedIn);
   }
 
+  ngOnDestroy() {
+    // Usuń nasłuchiwacza, aby uniknąć wycieków pamięci
+    window.removeEventListener('beforeunload', this.handleWindowClose);
+  }
+
+  private handleWindowClose = () => {
+    const windowCount = Number(localStorage.getItem('activeSocketWindowCount') || 0);
+    if (windowCount === 1) {
+      this.webSocketService.onClosedWindow();
+    }else{
+      if(this.webSocketService.isConnected){
+        const windowCount = Number(localStorage.getItem('activeSocketWindowCount') || 0);
+        const updatedCount = Math.max(windowCount - 1, 0);
+        localStorage.setItem('activeSocketWindowCount', updatedCount.toString());
+      }
+    }
+  };
+
   onToggleSideNav(event: SideNavToggle) {
     this.isSidebarVisible = event.isSidebarVisible;
     this.screenWidth = event.screenWidth;
+    console.log(1234)
   }
 }
