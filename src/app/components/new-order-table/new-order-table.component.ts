@@ -3,7 +3,12 @@ import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { DashboardService } from '../../services/services';
 import { ContextService } from '../../services/context/context.service';
 import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
-import { DashboardGetOrdersResponse, OrderDto } from '../../services/models';
+import {
+  DashboardGetOrdersResponse,
+  GetActiveOrdersRequest,
+  OrderDto,
+  Sort,
+} from '../../services/models';
 import { filter, Subject, switchMap, takeUntil } from 'rxjs';
 import { WebSocketEventHandler } from '../../services/websocket/web-socket-event-handler';
 
@@ -23,6 +28,7 @@ export class NewOrderTableComponent {
   // Sample data
   orders: OrderDto[] = [];
   private destroy$ = new Subject<void>();
+  sorts: Sort[] | undefined;
 
   constructor(
     private dashboardService: DashboardService,
@@ -36,7 +42,10 @@ export class NewOrderTableComponent {
       .pipe(
         filter((companyId): companyId is number => !!companyId),
         switchMap((companyId) => {
-          const params: GetActiveOrders$Params = { companyId };
+          const body: GetActiveOrdersRequest = {
+            sorts: this.sorts,
+          };
+          const params: GetActiveOrders$Params = { companyId, body };
           return this.dashboardService.getActiveOrders(params);
         }),
         filter(
@@ -56,18 +65,34 @@ export class NewOrderTableComponent {
         },
       });
 
-    this.webSocketEventHandler.newOrderApprovedVisibility$.subscribe((val) => {
-      let companyId = this.contextService.getCompanyId();
-        const params: GetActiveOrders$Params = { companyId: companyId ?? -999 };
-        this.dashboardService.getActiveOrders(params).subscribe({
-          next: (response: DashboardGetOrdersResponse) => {
-            if (response && response.orderList) {
-              this.orders = response.orderList;
-              this.expandAll();
-            }
-          },
-        });
-    });
+    this.webSocketEventHandler.newOrderApprovedVisibility$
+      .pipe(
+        switchMap(() => {
+          let companyId = this.contextService.getCompanyId();
+          const body: GetActiveOrdersRequest = {
+            sorts: this.sorts,
+          };
+          const params: GetActiveOrders$Params = {
+            companyId: companyId ?? -999,
+            body,
+          };
+
+          console.log('lolol');
+          return this.dashboardService.getActiveOrders(params);
+        }),
+        takeUntil(this.destroy$)
+      )
+      .subscribe({
+        next: (response: DashboardGetOrdersResponse) => {
+          if (response && response.orderList) {
+            this.orders = response.orderList;
+            this.expandAll();
+          }
+        },
+        error: (err) => {
+          console.error('Error fetching active orders:', err);
+        },
+      });
   }
 
   ngOnDestroy(): void {

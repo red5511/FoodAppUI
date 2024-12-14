@@ -12,8 +12,8 @@ import { WebSocketService } from './services/web-socket.service';
 import { StatisticsService } from './services/statistics.service';
 import { OrderService } from './services/order.service';
 import { DevelopmentService } from './services/development.service';
-import { DemoControllerService } from './services/demo-controller.service';
 import { DashboardService } from './services/dashboard.service';
+import { DemoControllerService } from './services/demo-controller.service';
 import { UserAdministrationService } from './services/user-administration.service';
 
 /**
@@ -32,8 +32,8 @@ import { UserAdministrationService } from './services/user-administration.servic
     StatisticsService,
     OrderService,
     DevelopmentService,
-    DemoControllerService,
     DashboardService,
+    DemoControllerService,
     UserAdministrationService,
     ApiConfiguration
   ],

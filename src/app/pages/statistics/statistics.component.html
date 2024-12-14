@@ -4,21 +4,26 @@
   </div>
   <div class="content">
     <div class="filters">
-      <span class="p-float-label">
-        <p-dropdown
+      <p-floatLabel *ngIf="isHolding">
+        <p-multiSelect
           [style]="{ width: '16rem' }"
-          class="dropdown-wrapper"
-          [options]="dateRangeOptions"
-          (onShow)="onShow()"
-          (onHide)="onHide()"
-          [(ngModel)]="selectedDateRangeValue"
-          optionLabel="translatedValue"
-          placeholder="Przedział"
-          (onClick)="onDateRangeOptionClick()"
-        >
-        </p-dropdown>
-        <label for="float-label">Przedział</label>
-      </span>
+          [maxSelectedLabels]="1"
+          [(ngModel)]="selectedCompanyValues"
+          [options]="companyOptions"
+          placeholder="Firma"
+          (onChange)="onCompanyOptionChange()"
+          optionLabel="name"
+        />
+        <label for="over_label">Firmy</label>
+      </p-floatLabel>
+
+      <app-calendar-with-dialog
+        [dateRangeOptions]="dateRangeOptions"
+        [selectedDateRangeValue]="selectedDateRangeValue"
+        [lastSelectedDateRangeValue]="selectedDateRangeValue"
+        (onDateChange)="onDateChange($event)"
+      ></app-calendar-with-dialog>
+
       <span class="p-float-label">
         <p-dropdown
           [style]="{ width: '12rem' }"
@@ -74,20 +79,3 @@
     </h3>
   </div>
 </div>
-
-<p-dialog
-  [modal]="true"
-  dismissableMask="true"
-  [(visible)]="showCalendar"
-  closable="true"
-  draggable="false"
-  blockScroll="true"
-  [style]="{ width: '29rem', height: '38rem' }"
->
-  <p-calendar
-    [(ngModel)]="selectedDates"
-    [inline]="true"
-    selectionMode="range"
-    (onSelect)="onCalendarSelect()"
-  ></p-calendar>
-</p-dialog>

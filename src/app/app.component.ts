@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { LoginService } from './services/login/login.service';
 import { SideNavToggle } from './components/side-nav-toggle.interface';
 import { FilterService, PrimeNGConfig } from 'primeng/api';
 import { SocketService } from './services/websocket/socket-service';
+import { ContextService } from './services/context/context.service';
 
 @Component({
   selector: 'app-root',
@@ -19,12 +20,12 @@ export class AppComponent {
     private loginService: LoginService,
     private primengConfig: PrimeNGConfig,
     private filterService: FilterService,
-    private webSocketService: SocketService //dzieki temu mamy dostepny ten socket od razu na starcie apkli
+    private webSocketService: SocketService,
+    private contextService: ContextService
   ) {}
 
   ngOnInit() {
     window.addEventListener('beforeunload', this.handleWindowClose);
-
     this.primengConfig.setTranslation({
       selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',
@@ -101,19 +102,39 @@ export class AppComponent {
   }
 
   ngOnDestroy() {
-    // Usuń nasłuchiwacza, aby uniknąć wycieków pamięci
     window.removeEventListener('beforeunload', this.handleWindowClose);
   }
 
   private handleWindowClose = () => {
-    const windowCount = Number(localStorage.getItem('activeSocketWindowCount') || 0);
+    if (this.webSocketService.isConnected) {
+      const currentDate = new Date();
+      const dateTimeToTurnOnRecivingOrders = new Date(
+        currentDate.getTime() + 5 * 60000
+      ).toISOString();
+      localStorage.setItem(
+        'dateTimeToTurnOnRecivingOrders',
+        dateTimeToTurnOnRecivingOrders
+      );
+      localStorage.setItem(
+        'lastRecivingOrdersComanyId',
+        this.contextService.getCompanyId()?.toString() ?? '-99999'
+      );
+    }
+    const windowCount = Number(
+      localStorage.getItem('activeSocketWindowCount') || 0
+    );
     if (windowCount === 1) {
-      this.webSocketService.onClosedWindow();
-    }else{
-      if(this.webSocketService.isConnected){
-        const windowCount = Number(localStorage.getItem('activeSocketWindowCount') || 0);
+      this.webSocketService.processDisconnection();
+    } else {
+      if (this.webSocketService.isConnected) {
+        const windowCount = Number(
+          localStorage.getItem('activeSocketWindowCount') || 0
+        );
         const updatedCount = Math.max(windowCount - 1, 0);
-        localStorage.setItem('activeSocketWindowCount', updatedCount.toString());
+        localStorage.setItem(
+          'activeSocketWindowCount',
+          updatedCount.toString()
+        );
       }
     }
   };
@@ -121,6 +142,5 @@ export class AppComponent {
   onToggleSideNav(event: SideNavToggle) {
     this.isSidebarVisible = event.isSidebarVisible;
     this.screenWidth = event.screenWidth;
-    console.log(1234)
   }
 }

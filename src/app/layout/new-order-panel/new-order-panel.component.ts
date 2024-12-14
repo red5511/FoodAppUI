@@ -72,7 +72,7 @@ export class NewOrderPanelComponent {
   orders: OrderDto[] = [];
   order!: OrderDto;
   userEmail: string | undefined;
-  alreadyProcessed: boolean = false;
+  performedByMe: boolean = false;
   // socket odbiera eventa ze ze zamowienie zostalo obsluzone, potrzebne przy multilogowaniu
 
   trackById(product: ProductDto): number {
@@ -101,14 +101,12 @@ export class NewOrderPanelComponent {
           } else {
             this.onRejectedOrder();
           }
-          this.alreadyProcessed = true
         }
       }
     );
   }
 
   handleNewOrder(newOrder: OrderDto) {
-    this.alreadyProcessed = false;
     if (this.orders.length == 0) {
       this.timeRemaining = this.calculateTimeLeft(newOrder);
       this.order = newOrder;
@@ -188,32 +186,23 @@ export class NewOrderPanelComponent {
       .approveNewIncomingOrder({ body: approveRequest })
       .subscribe({
         next: (response) => {
-          console.log('PRZEZ HTTP SE LECE');
-          this.onApprovedOrder();
-          this.alreadyProcessed = true
         },
       });
   }
   onApprovedOrder() {
-    if (this.alreadyProcessed) {
-      return;
-    }
-    this.handleProcessOrder();
     this.toastService.success(
       'Zamówienie zostało przyjęte',
       '#' + this.order.id
     );
+    this.handleProcessOrder();
     this.webSocketEventHandler.fireNewOrderApproved();
   }
   onRejectedOrder() {
-    if (this.alreadyProcessed) {
-      return;
-    }
-    this.handleProcessOrder();
     this.toastService.warning(
       'Zamówienie zostało odrzucone',
       '#' + this.order.id
     );
+    this.handleProcessOrder();
   }
 
   rejectOrder() {
@@ -228,8 +217,6 @@ export class NewOrderPanelComponent {
       .rejectNewIncomingOrder({ body: rejectRequest })
       .subscribe({
         next: (response) => {
-          this.onRejectedOrder();
-          this.alreadyProcessed = true;
         },
       });
   }

@@ -29,7 +29,7 @@
     "ng2-charts": "^6.0.1",
     "ngx-toastr": "^19.0.0",
     "primeicons": "^7.0.0",
-    "primeng": "^17.18.10",
+    "primeng": "^17.18.13",
     "quill": "^2.0.2",
     "rxjs": "~7.8.0",
     "sockjs-client": "^1.6.1",

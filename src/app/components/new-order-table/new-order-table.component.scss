@@ -6,28 +6,17 @@
     max-width: 99%; // Prevent overflow beyond the screen
     overflow-x: auto; // Enable horizontal scrolling when content overflows
     max-width: 1100px;
-    max-height: 1000px;
     margin-bottom: 50px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-
-
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
-:host ::ng-deep .p-datatable .p-datatable-tbody>tr>td {
-    padding: 1rem 11px;
-}
-
-// .table-header {
-//     justify-content: space-between; // Space out items evenly
-//     //padding: 1rem 2px;                // Default margin
-// }
-
-// .table-header-content{
-//     margin: 1px;       
-//     padding: 1px;         // Default margin
-
-// }
-
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 5px;
+  }
+  
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    padding: 1rem 5px;
+  }
 
 // Media query for smaller screens
 @media (max-width: 768px) {
@@ -44,17 +33,12 @@
 
 
 .expanded-row td {
-    //border-left: 2px solid #007ad9;
-    // background-color: #e1e4de;
-    //background-color: #eff1ec;
-    //background-color: #e7e4c6;
     background-color: #f8f2a9;
-    // border-bottom: 2px solid black;
     padding: 44px;
 
 }
 
-.xd td {
+.custom-tr td {
     border-top: 1px dotted black;
     border-bottom: none;
     padding: 5px;
@@ -67,34 +51,20 @@
 
 .description-container {
     display: block;
-    /* Treat it as a block element */
     white-space: nowrap;
-    /* Prevent text from wrapping */
     overflow: hidden;
-    /* Hide overflowing text */
     text-overflow: ellipsis;
-    /* Add ellipsis (...) */
     width: 260px;
-    /* Set your desired width */
     cursor: pointer;
-    /* Indicate it's hoverable */
 }
 
 .description-container:hover {
     overflow: visible;
-    /* Show the full text on hover */
     white-space: normal;
-    /* Allow text to wrap */
     position: absolute;
-    /* Position it absolutely */
     z-index: 10;
-    /* Bring it to the front */
     background: white;
-    /* Optional: background color for better visibility */
     border: 1px solid #ccc;
-    /* Optional: border for clarity */
     padding: 5px;
-    /* Optional: padding for better aesthetics */
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-    /* Optional: shadow for better visibility */
 }

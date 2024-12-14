@@ -451,6 +451,43 @@
         }
       }
     },
+    "/api/v1/dashboard/orders/{companyId}": {
+      "post": {
+        "tags": ["Dashboard"],
+        "operationId": "getActiveOrders",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetActiveOrdersRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardGetOrdersResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/auth/register/init": {
       "post": {
         "tags": ["Authentication"],
@@ -564,33 +601,6 @@
             "description": "User has been created",
             "content": {
               "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      }
-    },
-    "/api/v1/dashboard/orders/{companyId}": {
-      "get": {
-        "tags": ["Dashboard"],
-        "operationId": "getActiveOrders",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/DashboardGetOrdersResponse"
-                }
-              }
             }
           }
         },
@@ -868,6 +878,7 @@
         }
       },
       "CompanyDto": {
+        "required": ["address", "id", "name", "webSocketTopicName"],
         "type": "object",
         "properties": {
           "id": { "type": "integer", "format": "int64" },
@@ -930,12 +941,7 @@
       },
       "GetStatisticsConfigRequest": {
         "type": "object",
-        "properties": {
-          "companyIds": {
-            "type": "array",
-            "items": { "type": "integer", "format": "int64" }
-          }
-        }
+        "properties": { "companyId": { "type": "integer", "format": "int64" } }
       },
       "DatePeriodModel": {
         "type": "object",
@@ -985,7 +991,10 @@
       "GetStatisticsChartRequest": {
         "type": "object",
         "properties": {
-          "companyId": { "type": "integer", "format": "int64" },
+          "companyIds": {
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          },
           "dateRange": {
             "type": "string",
             "enum": [
@@ -1030,6 +1039,7 @@
         "properties": {
           "id": { "type": "integer", "format": "int64" },
           "companyId": { "type": "integer", "format": "int64" },
+          "companyName": { "type": "string" },
           "price": { "type": "number" },
           "description": { "type": "string" },
           "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
@@ -1072,28 +1082,45 @@
           "orderReceivingTopicName": { "type": "string" }
         }
       },
-      "Filter": {
-        "type": "object",
-        "properties": {
-          "fieldName": { "type": "string" },
-          "values": { "type": "array", "items": { "type": "string" } },
-          "mode": { "type": "string" }
-        }
-      },
       "GetOrdersForCompanyRequest": {
         "type": "object",
         "properties": {
-          "filters": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/Filter" }
-          },
+          "validatableCompanyId": { "type": "integer", "format": "int64" },
           "sorts": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Sort" }
           },
           "page": { "type": "integer", "format": "int32" },
           "size": { "type": "integer", "format": "int32" },
-          "companyId": { "type": "integer", "format": "int64" }
+          "companyIds": {
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          },
+          "statuses": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "WAITING_FOR_ACCEPTANCE",
+                "IN_EXECUTION",
+                "EXECUTED",
+                "REJECTED"
+              ]
+            }
+          },
+          "price": { "type": "number" },
+          "dateRange": {
+            "type": "string",
+            "enum": [
+              "LAST_30_DAYS",
+              "LAST_15_DAYS",
+              "LAST_7_DAYS",
+              "CUSTOM_DATE_RANGE"
+            ]
+          },
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
+          "globalSearch": { "type": "string" }
         }
       },
       "Sort": {
@@ -1124,7 +1151,11 @@
         "properties": { "companyId": { "type": "integer", "format": "int64" } }
       },
       "GetOrdersConfigResponse": {
-        "required": ["orderStatusModels", "statusSeverityMap"],
+        "required": [
+          "dataRangeModels",
+          "orderStatusModels",
+          "statusSeverityMap"
+        ],
         "type": "object",
         "properties": {
           "orderStatusModels": {
@@ -1140,6 +1171,11 @@
               "enum": ["info", "warning", "success", "danger", "contrast"]
             },
             "description": "Map of severity"
+          },
+          "dataRangeModels": {
+            "type": "array",
+            "description": "List of date range models",
+            "items": { "$ref": "#/components/schemas/DateRangeModel" }
           }
         }
       },
@@ -1313,6 +1349,24 @@
         },
         "description": "Heartbeat event via WebSocket"
       },
+      "GetActiveOrdersRequest": {
+        "type": "object",
+        "properties": {
+          "sorts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Sort" }
+          }
+        }
+      },
+      "DashboardGetOrdersResponse": {
+        "type": "object",
+        "properties": {
+          "orderList": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/OrderDto" }
+          }
+        }
+      },
       "RegisterRequest": {
         "required": ["email", "firstName", "lastName", "password"],
         "type": "object",
@@ -1356,15 +1410,6 @@
         "properties": {
           "company": { "$ref": "#/components/schemas/CompanyDto" },
           "userEmail": { "type": "string" }
-        }
-      },
-      "DashboardGetOrdersResponse": {
-        "type": "object",
-        "properties": {
-          "orderList": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/OrderDto" }
-          }
         }
       },
       "DashboardGetInitConfigResponse": {

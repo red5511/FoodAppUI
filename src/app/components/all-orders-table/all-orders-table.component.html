@@ -18,97 +18,85 @@
   (onRowCollapse)="onRowCollapse($event)"
 >
   <ng-template pTemplate="caption">
-    <div class="search-container">
-      <p-iconField iconPosition="left" class="ml-auto">
-        <p-inputIcon>
-          <i class="pi pi-search"></i>
-        </p-inputIcon>
+    <div class="filters">
+      <span class="p-float-label">
+        <p-multiSelect
+          [style]="{ width: '9rem' }"
+          [maxSelectedLabels]="1"
+          [(ngModel)]="selectedStatusOptions"
+          [options]="statusOptions"
+          (onChange)="onFilterChange()"
+          optionLabel="translatedValue"
+        />
+        <label for="over_label">Statusy</label>
+      </span>
+
+      <p-floatLabel>
+        <p-inputNumber
+          [style]="{ width: '8rem', height: '50px' }"
+          [inputStyle]="{ 'min-width': '5rem' }"
+          inputId="integeronly"
+          [(ngModel)]="price"
+          mode="currency"
+          currency="PLN"
+          min="0"
+          max="999999"
+          (onChange)="onFilterChange()"
+        />
+        <label for="over_label">Kwota</label>
+      </p-floatLabel>
+
+      <app-calendar-with-dialog
+        [dateRangeOptions]="dateRangeOptions"
+        [selectedDateRangeValue]="selectedDateRangeValue"
+        [lastSelectedDateRangeValue]="selectedDateRangeValue"
+        (onDateChange)="onDateChange($event)"
+      ></app-calendar-with-dialog>
+
+      <p-floatLabel>
         <input
           pInputText
-          type="text"
-          (input)="onInputChange($event)"
-          placeholder="Wyszukiwanie globalne"
+          [style]="{ width: '14rem', height: '50px' }"
+          id="over_label"
+          [(ngModel)]="globalSearch"
+          autocomplete="off"
+          (onChange)="onFilterChange()"
         />
-      </p-iconField>
+        <label for="over_label">Wyszkuwianie globalne</label>
+      </p-floatLabel>
+
+      <p-floatLabel *ngIf="isHolding">
+        <p-multiSelect
+          [style]="{ width: '18rem' }"
+          [maxSelectedLabels]="1"
+          [(ngModel)]="selectedCompanyOptions"
+          [options]="companyOptions"
+          (onChange)="onFilterChange()"
+          optionLabel="name"
+        />
+        <label for="over_label">Firmy</label>
+      </p-floatLabel>
     </div>
   </ng-template>
 
   <ng-template pTemplate="header">
     <tr>
-      <th style="margin-left: -22px"></th>
-      <th></th>
+      <th style="margin-left: -22px; width: 1%"></th>
+      <th style="width: 1%"></th>
       <th pSortableColumn="status" style="width: 15%">
         Status <p-sortIcon field="status" />
       </th>
-      <th pSortableColumn="price" style="width: 25%">
+      <th pSortableColumn="price" style="width: 15%">
         Kwota <p-sortIcon field="price" />
       </th>
-      <th pSortableColumn="deliveryTime" style="width: 25%">
-        Zamówienie <p-sortIcon field="deliveryTime" />
+      <th pSortableColumn="deliveryTime" style="width: 15%">
+        Data <p-sortIcon field="deliveryTime" />
       </th>
-      <th pSortableColumn="description" style="width: 25%">
+      <th *ngIf="isHolding" pSortableColumn="company" style="width: 15%">
+        Firma <p-sortIcon field="company" />
+      </th>
+      <th pSortableColumn="description">
         Opis <p-sortIcon field="description" />
-      </th>
-    </tr>
-    <tr>
-      <th></th>
-      <th></th>
-      <th>
-        <p-columnFilter
-          style="width: 5rem"
-          field="status"
-          matchMode="in"
-          [showMenu]="false"
-        >
-          <ng-template pTemplate="filter" let-value let-filter="filterCallback">
-            <p-multiSelect
-              [maxSelectedLabels]="1"
-              [ngModel]="value"
-              [options]="statuses"
-              placeholder="Status"
-              (onChange)="filter($event.value)"
-              optionLabel="translatedValue"
-            >
-              <ng-template let-option pTemplate="statuses">
-                <div class="custom-option">
-                  <span class="ml-1 mt-1">{{ option.translatedValue }}</span>
-                </div>
-              </ng-template>
-            </p-multiSelect>
-          </ng-template>
-        </p-columnFilter>
-      </th>
-      <th>
-        <p-columnFilter
-          [showMenu]="false"
-          type="numeric"
-          field="price"
-          placeholder="Kwota"
-          [minFractionDigits]="2"
-          [maxFractionDigits]="2"
-          ariaLabel="Filter Country"
-        />
-      </th>
-      <th>
-        <div class="flex align-items-center">
-          Zamówienie
-          <p-columnFilter
-            [showAddButton]="false"
-            [showOperator]="false"
-            type="date"
-            field="deliveryTime"
-            display="menu"
-          />
-        </div>
-      </th>
-      <th>
-        <p-columnFilter
-          [showMenu]="false"
-          type="text"
-          field="description"
-          placeholder="Opis"
-          ariaLabel="Filter Country"
-        />
       </th>
     </tr>
   </ng-template>
@@ -135,6 +123,7 @@
       </td>
       <td>{{ order.price | currency : "PLN" }}</td>
       <td>{{ order.deliveryTime | formattedDate }}</td>
+      <td *ngIf="isHolding" >{{ order.companyName }}</td>
       <td>
         <div class="description-container" title="{{ order.description }}">
           {{ order.description }}

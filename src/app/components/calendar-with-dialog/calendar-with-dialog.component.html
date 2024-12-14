@@ -1,0 +1,33 @@
+<span class="p-float-label">
+  <p-dropdown
+    [className]="'my-custom-dropdown'"
+    [style]="{ width: '14rem' }"
+    class="dropdown-wrapper"
+    [options]="dateRangeOptions"
+    (onShow)="onShow()"
+    (onHide)="onHide()"
+    [(ngModel)]="selectedDateRangeValue"
+    optionLabel="translatedValue"
+    placeholder="Przedział"
+    (onClick)="onDateRangeOptionClick()"
+  >
+  </p-dropdown>
+  <label for="float-label">Przedział</label>
+
+  <p-dialog
+    [modal]="true"
+    dismissableMask="true"
+    [(visible)]="showCalendar"
+    closable="true"
+    draggable="false"
+    blockScroll="true"
+    [style]="{ width: '29rem', height: '38rem' }"
+  >
+    <p-calendar
+      [(ngModel)]="selectedDates"
+      [inline]="true"
+      selectionMode="range"
+      (onSelect)="onCalendarSelect()"
+    ></p-calendar>
+  </p-dialog>
+</span>

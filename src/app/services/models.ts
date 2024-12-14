@@ -17,7 +17,7 @@ export { DateRangeModel } from './models/date-range-model';
 export { DeleteCompanyRequest } from './models/delete-company-request';
 export { DeleteProductRequest } from './models/delete-product-request';
 export { DisconnectionWebSocketEvent } from './models/disconnection-web-socket-event';
-export { Filter } from './models/filter';
+export { GetActiveOrdersRequest } from './models/get-active-orders-request';
 export { GetAllCompaniesResponse } from './models/get-all-companies-response';
 export { GetCompanyDetailsResponse } from './models/get-company-details-response';
 export { GetOrdersConfigRequest } from './models/get-orders-config-request';

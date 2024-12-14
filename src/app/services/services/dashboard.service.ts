@@ -32,7 +32,7 @@ export class DashboardService extends BaseService {
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
    * To access only the response body, use `getActiveOrders()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   getActiveOrders$Response(params: GetActiveOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
     return getActiveOrders(this.http, this.rootUrl, params, context);
@@ -42,7 +42,7 @@ export class DashboardService extends BaseService {
    * This method provides access only to the response body.
    * To access the full response (for headers, for example), `getActiveOrders$Response()` instead.
    *
-   * This method doesn't expect any request body.
+   * This method sends `application/json` and handles request body of type `application/json`.
    */
   getActiveOrders(params: GetActiveOrders$Params, context?: HttpContext): Observable<DashboardGetOrdersResponse> {
     return this.getActiveOrders$Response(params, context).pipe(

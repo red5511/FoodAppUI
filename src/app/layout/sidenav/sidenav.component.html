@@ -30,7 +30,7 @@
       >
         <span class="menu-icon material-icons">assessment</span>
         <span *ngIf="isSidebarVisible" class="menu-text">Statystyki</span>
-        <span
+        <!-- <span
           *ngIf="isSidebarVisible"
           class="sub-menu-icon"
           [ngClass]="{ 'sub-menu-open': isSubmenuOpen }"
@@ -42,7 +42,7 @@
               isSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
             }}</mat-icon
           >
-        </span>
+        </span> -->
       </a>
       <ul *ngIf="isSubmenuOpen && isSidebarVisible" class="sub-menu">
         <li>

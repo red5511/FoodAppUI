@@ -1,22 +1,20 @@
-import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
-import { ChartData, ChartOptions } from 'chart.js';
-import { Chart } from 'chart.js';
+import { Component, ViewChild } from '@angular/core';
+import { ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
-import { DropdownChangeEvent, DropdownModule } from 'primeng/dropdown';
 import { ContextService } from '../../services/context/context.service';
+import { FloatLabel } from 'primeng/floatlabel';
 import {
+  CompanyDto,
   DatePeriodModel,
   DateRangeModel,
   GetStatisticsChartRequest,
-  GetStatisticsChartResponse,
   GetStatisticsConfigRequest,
   GetStatisticsConfigResponse,
   ProductDto,
 } from '../../services/models';
 import { StatisticsService } from '../../services/services';
-import { filter, map, Observable, Subject, switchMap, takeUntil, tap } from 'rxjs';
-import { CheckboxChangeEvent, CheckboxModule } from 'primeng/checkbox';
-import { DividerModule } from 'primeng/divider';
+import { filter, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { DateResult } from '../../components/calendar-with-dialog/calendar-with-dialog.component';
 
 @Component({
   selector: 'app-statistics',
@@ -56,7 +54,6 @@ export class StatisticsComponent {
   dateRangeOptions!: DateRangeModel[];
   selectedDateRangeValue: any;
   lastSelectedDateRangeValue: any;
-  customDateRange = '';
 
   datePeriodOptions!: DatePeriodModel[];
   selectedDatePeriodValue: any;
@@ -64,17 +61,20 @@ export class StatisticsComponent {
   productOptions!: ProductDto[];
   selectedProductValue: any;
 
+  companyOptions!: CompanyDto[];
+  selectedCompanyValues!: CompanyDto[];
+
   // Calendar stuff
-  showCalendar = false;
-  isCalendarClick = false;
   selectedDates?: Date[]; // Only 2 entries
   showEarnings = false;
+
   private destroy$ = new Subject<void>();
 
+  isHolding!: boolean;
 
   constructor(
     private contextService: ContextService,
-    private statisticsService: StatisticsService,
+    private statisticsService: StatisticsService
   ) {
     this.chartOptions = {
       responsive: true,
@@ -108,12 +108,16 @@ export class StatisticsComponent {
       .pipe(
         filter(
           (companyId): companyId is number =>
-            companyId !== undefined && companyId !== null,
+            companyId !== undefined && companyId !== null
         ),
+        tap((companyId) => {
+          this.isHolding = this.contextService.isHolding();
+          this.companyOptions = this.contextService.getCompanies() ?? [];
+        }),
         switchMap((companyId) =>
           this.getConfig(companyId).pipe(
-            map(() => companyId), // Return the companyId for the next switchMap
-          ),
+            map(() => companyId) // Return the companyId for the next switchMap
+          )
         ),
         takeUntil(this.destroy$) // Use destroy$ for cleanup
       )
@@ -131,8 +135,13 @@ export class StatisticsComponent {
   }
 
   private handleGetStatisticsChart(companyId: number): void {
+    let companyIds: number[] =
+      this.selectedCompanyValues !== undefined &&
+      this.selectedCompanyValues.length > 0
+        ? this.selectedCompanyValues.map((company) => company.id)
+        : [companyId];
     const body: GetStatisticsChartRequest = {
-      companyId,
+      companyIds,
       datePeriod: this.selectedDatePeriodValue.datePeriod,
       dateRange: this.selectedDateRangeValue.dateRange,
       dateFrom: this.selectedDates?.at(0)?.toLocaleDateString(),
@@ -160,68 +169,25 @@ export class StatisticsComponent {
 
   getConfig(companyId: number) {
     const body: GetStatisticsConfigRequest = {
-      companyIds: [companyId],
+      companyId: companyId,
     };
 
     return this.statisticsService.getStatisticsConfig({ body }).pipe(
       tap((response: GetStatisticsConfigResponse) => {
         if (response) {
           this.dateRangeOptions = response.dataRangeModels;
-          this.selectedDateRangeValue = response.dataRangeModels.at(0);
-          this.lastSelectedDateRangeValue = response.dataRangeModels.at(0);
+          this.selectedDateRangeValue = structuredClone(response.dataRangeModels.at(0));
           this.datePeriodOptions = response.datePeriodModels;
           this.selectedDatePeriodValue = response.datePeriodModels.at(0);
           this.productOptions = response.products;
-          this.selectedProductValue = null
+          this.selectedProductValue = null;
         }
-      }),
+      })
     );
-  }
-
-  onCalendarSelect() {
-    if (this.selectedDates?.at(1)) {
-      this.showCalendar = false;
-      this.customDateRange +=
-        this.selectedDates.at(1)?.toLocaleDateString() || '';
-      this.updateCustomDatePeriodOption(this.customDateRange);
-      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999);
-    } else if (this.selectedDates?.at(0) !== undefined) {
-      this.customDateRange =
-        this.selectedDates.at(0)?.toLocaleDateString() + ' / ' || '';
-      this.updateCustomDatePeriodOption(this.customDateRange);
-    }
-  }
-
-  updateCustomDatePeriodOption(newTranslatedValue: string) {
-    this.dateRangeOptions = this.dateRangeOptions.map((option) => {
-      if (option.dateRange === 'CUSTOM_DATE_RANGE') {
-        this.selectedDateRangeValue = {
-          ...option,
-          translatedValue: newTranslatedValue,
-        }; // potrzebne bo odswieza mi wybana opcje
-        return { ...option, translatedValue: newTranslatedValue };
-      }
-      return option;
-    });
   }
 
   datePeriodOptionOnChange() {
     this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
-  }
-
-  onDateRangeOptionClick() {
-    if (
-      this.selectedDateRangeValue.dateRange === 'CUSTOM_DATE_RANGE' &&
-      this.isCalendarClick
-    ) {
-      this.showCalendar = true;
-    } else if (
-      this.lastSelectedDateRangeValue.dateRange !==
-      this.selectedDateRangeValue.dateRange
-    ) {
-      this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
-    }
-    this.lastSelectedDateRangeValue = this.selectedDateRangeValue;
   }
 
   onCheckboxChange() {
@@ -232,10 +198,15 @@ export class StatisticsComponent {
     this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
   }
 
-  onHide() {
-    this.isCalendarClick = false;
+  onCompanyOptionChange() {
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999); //todo pomysle czy moze jendak tym observablem to lapac
   }
-  onShow() {
-    this.isCalendarClick = true;
+
+  onDateChange(event: DateResult) {
+    this.selectedDateRangeValue.dateRange = event.dateRange
+    if(event.dateFrom !== undefined && event.dateTo !== undefined){
+      this.selectedDates = [event.dateFrom, event.dateTo]
+    }
+    this.handleGetStatisticsChart(this.contextService.getCompanyId() ?? -999)
   }
 }

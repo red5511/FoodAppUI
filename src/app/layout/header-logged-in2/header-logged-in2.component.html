@@ -22,7 +22,7 @@
   </a>
   <span class="example-spacer"></span>
   &nbsp;
-  <app-switch-with-dialog
+  <app-switch-with-dialog *ngIf="!isHolding"
     [webSocketTopicName]="selectedCompany?.webSocketTopicName!"
     [isChecked]="isChecked"
   ></app-switch-with-dialog>

@@ -70,6 +70,11 @@ import { ConfirmDialogModule } from 'primeng/confirmdialog';
 import { NgToggleModule } from 'ng-toggle-button';
 import { SwitchWithDialogComponent } from './components/switch-with-dialog/switch-with-dialog.component';
 import { SocketService } from './services/websocket/socket-service';
+import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel'; // Add this!
+import { InputNumberModule } from 'primeng/inputnumber';
+import { CalendarWithDialogComponent } from './components/calendar-with-dialog/calendar-with-dialog.component';
+import { FormattedDateTimePipe } from './pipes/formatted-date-time.pipe';
+import { CardModule, } from 'primeng/card'; 
 
 
 @NgModule({
@@ -99,6 +104,8 @@ import { SocketService } from './services/websocket/socket-service';
     AllOrdersTableComponent,
     StatisticsComponent,
     SwitchWithDialogComponent,
+    CalendarWithDialogComponent,
+    FormattedDateTimePipe,
   ],
   imports: [
     RouterModule,
@@ -107,8 +114,11 @@ import { SocketService } from './services/websocket/socket-service';
     BrowserModule,
     AppRoutingModule,
     HttpClientModule,
+    CardModule,
     FormsModule,
     MatIconModule,
+    FloatLabelModule,
+    InputNumberModule,
     DropdownModule,
     MatToolbarModule,
     CheckboxModule,

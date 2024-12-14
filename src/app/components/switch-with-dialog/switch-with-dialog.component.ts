@@ -14,16 +14,16 @@ export class SwitchWithDialogComponent {
   @Input() isDisabled = false;
   @Input({ required: true }) isChecked!: boolean;
   @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
-  
+
   dialogVisible = false; // Visibility of the confirmation dialog
   constructor(
     private contextService: ContextService,
     private webSocketService: WebSocketService,
     private socketService: SocketService
-  ) { 
+  ) {
     socketService.forcedConnectionChangeSubjectVisiblity$.subscribe((value) => {
-        this.isChecked = value
-    })
+      this.isChecked = value;
+    });
   }
   config = {
     name: '',
@@ -52,6 +52,13 @@ export class SwitchWithDialogComponent {
     textAlign: 'center',
   };
 
+  ngOnChanges() {
+    console.log(this.isChecked)
+    console.log("isChecked")
+    if (this.isChecked) {
+      this.requestInitOrderWebSocketTopic();
+    }
+  }
   onCancel(): void {
     this.dialogVisible = false; // Close the dialog without toggling
   }
@@ -60,8 +67,9 @@ export class SwitchWithDialogComponent {
     this.dialogVisible = false; // Close the dialog
     if (!this.isChecked) {
       this.requestInitOrderWebSocketTopic();
-    }
-    else{
+    } else {
+      localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
+      localStorage.removeItem('lastRecivingOrdersComanyId');
       this.isChecked = !this.isChecked;
       this.contextService.setUserReceivingOrdersActive(this.isChecked);
     }
@@ -80,7 +88,7 @@ export class SwitchWithDialogComponent {
     };
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
-        this.isChecked = !this.isChecked;
+        this.isChecked = true;
         this.contextService.setUserReceivingOrdersActive(this.isChecked);
       },
     });

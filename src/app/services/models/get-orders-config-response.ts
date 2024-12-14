@@ -1,7 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
+import { DateRangeModel } from '../models/date-range-model';
 import { OrderStatusModel } from '../models/order-status-model';
 export interface GetOrdersConfigResponse {
+
+  /**
+   * List of date range models
+   */
+  dataRangeModels: Array<DateRangeModel>;
 
   /**
    * List of status models

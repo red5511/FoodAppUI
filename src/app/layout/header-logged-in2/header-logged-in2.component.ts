@@ -1,11 +1,9 @@
 import { Component, Input } from '@angular/core';
 import { SidebarService } from '../../services/sidebar/sidebar.service';
 import { DashboardService } from '../../services/services/dashboard.service';
-import {
-  CompanyDto,
-  DashboardGetInitConfigResponse,
-} from '../../services/models';
+import { CompanyDto } from '../../services/models';
 import { ContextService } from '../../services/context/context.service';
+import { SocketService } from '../../services/websocket/socket-service';
 
 @Component({
   selector: 'app-header-logged-in2',
@@ -17,7 +15,7 @@ export class HeaderLoggedIn2Component {
   isLoggedIn: boolean = false;
   isChecked = false;
   isDropdownOpen = false;
-  companies: CompanyDto[] | undefined;
+  companies!: CompanyDto[];
   selectedCompany: CompanyDto | null = null;
   isSidebarVisible = true;
   stateOptions: any[] = [
@@ -26,10 +24,12 @@ export class HeaderLoggedIn2Component {
   ];
   value: string = 'one-way';
   userId!: number;
+  isHolding!: boolean;
   constructor(
     private sidebarService: SidebarService,
     private dashboardService: DashboardService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private webSocketService: SocketService
   ) {}
 
   ngOnInit(): void {
@@ -43,6 +43,8 @@ export class HeaderLoggedIn2Component {
             this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
             this.userId = response.userId;
             this.updateContext(response.permittedModules);
+            this.checkIfRecivingOrdersShouldBeTurnOn();
+            this.isHolding = this.contextService.isHolding() 
           }
         }
       },
@@ -50,6 +52,27 @@ export class HeaderLoggedIn2Component {
         console.error('Error loading data:', error);
       }
     );
+  }
+
+  checkIfRecivingOrdersShouldBeTurnOn() {
+    const storedDateTime = localStorage.getItem(
+      'dateTimeToTurnOnRecivingOrders'
+    );
+    const lastRecivingOrdersComanyId = Number(
+      localStorage.getItem('lastRecivingOrdersComanyId') || -2222
+    );
+
+    if (
+      storedDateTime &&
+      this.contextService.getCompanyId() === lastRecivingOrdersComanyId
+    ) {
+      const storedDate = new Date(storedDateTime);
+      const currentDate = new Date();
+      console.log(currentDate < storedDate);
+      if (currentDate < storedDate) {
+        this.isChecked = true;
+      }
+    }
   }
 
   toggleSidebar() {
@@ -70,13 +93,17 @@ export class HeaderLoggedIn2Component {
         permittedModules =
           this.contextService.getContext()?.permittedModules ?? [];
       }
-
+      let companies =
+        this.companies.length > 1 && this.companies.at(-1)?.id === -888
+          ? this.companies.slice(0, -1)
+          : this.companies;
       this.contextService.setContext(
         this.selectedCompany.id as number,
         this.selectedCompany.name as string,
         this.selectedCompany.webSocketTopicName as string,
         permittedModules,
-        this.userId
+        this.userId,
+        companies
       );
     }
   }
@@ -86,6 +113,10 @@ export class HeaderLoggedIn2Component {
   }
 
   companyOnChange() {
+    localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
+    localStorage.removeItem('lastRecivingOrdersComanyId');
+    this.webSocketService.processDisconnection();
     this.updateContext(undefined);
+    this.isHolding = this.contextService.isHolding()
   }
 }

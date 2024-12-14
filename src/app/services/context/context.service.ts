@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { HttpClient } from '@angular/common/http'; // Import HttpClient to make HTTP requests
 import { map } from 'rxjs/operators'; // Import map operator for transforming responses
+import { CompanyDto } from '../models';
 
 export interface Context {
   companyId: number;
@@ -11,6 +11,7 @@ export interface Context {
   mainWebSocketTopicName: string;
   permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
   userId: number;
+  companies: CompanyDto[];
 }
 
 @Injectable({
@@ -28,11 +29,12 @@ export class ContextService {
   constructor() {}
 
   setContext(
-    companyId: number,
-    companyName: string,
+    companyId: number,//active
+    companyName: string,//active
     mainWebSocketTopicName: string,
     permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
-    userId: number
+    userId: number,
+    companies: CompanyDto[]
   ) {
     const newContext: Context = {
       companyId,
@@ -40,6 +42,7 @@ export class ContextService {
       permittedModules,
       mainWebSocketTopicName,
       userId,
+      companies
     };
     this.contextSubject.next(newContext);
   }
@@ -66,5 +69,13 @@ export class ContextService {
 
   getUserId(): number | undefined {
     return this.contextSubject.getValue()?.userId;
+  }
+
+  getCompanies(): CompanyDto[] | undefined {
+    return this.contextSubject.getValue()?.companies;
+  }
+
+  isHolding(): boolean{
+    return this.contextSubject.getValue()?.companyId === -888;
   }
 }

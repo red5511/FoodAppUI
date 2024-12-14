@@ -10,6 +10,10 @@
   padding: 1rem 5px;
 }
 
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  padding: 1rem 5px;
+}
+
 :host
   ::ng-deep
   .p-multiselect-panel
@@ -37,6 +41,17 @@
   .table-header {
     margin: 0px; // Further reduced margin on mobile screens
   }
+}
+
+:host ::ng-deep .p-multiselect .p-multiselect-trigger {
+  width: 25px;
+}
+
+:host ::ng-deep .p-multiselect .p-multiselect-label {
+  padding: 0.75rem 0.05rem 0.75rem 0.25rem;
+}
+:host ::ng-deep .p-datatable .p-datatable-header {
+  font-weight: normal;
 }
 
 .search-container {
@@ -78,4 +93,27 @@
   /* Optional: padding for better aesthetics */
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
   /* Optional: shadow for better visibility */
+}
+
+.filters {
+  padding: 10px;
+  display: flex;
+  gap: 25px 15px;
+  flex-wrap: wrap;
+  justify-content: left;
+  width: 100%;
+}
+
+h3 {
+  font: 400 1.25rem / 1.75rem Roboto, sans-serif;
+  letter-spacing: 0.031rem;
+  margin-left: 2rem;
+}
+h2 {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: #37474f;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 1.2px;
 }

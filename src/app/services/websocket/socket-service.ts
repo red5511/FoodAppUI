@@ -33,8 +33,7 @@ export class SocketService {
           this.connect();
           this.connectToMainTopic();
         } else {
-          this.eventHandler.sendDisconnectionEvent(this.socketClient);
-          this.disconnect();
+          this.processDisconnection()
         }
       }
     );
@@ -135,7 +134,7 @@ export class SocketService {
     }
   }
 
-  onClosedWindow() {
+  processDisconnection() {
     if (this.isConnected) {
       this.eventHandler.sendDisconnectionEvent(this.socketClient);
       this.disconnect();

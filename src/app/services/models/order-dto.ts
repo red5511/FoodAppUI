@@ -4,6 +4,7 @@ import { OrderProductDto } from '../models/order-product-dto';
 export interface OrderDto {
   approvalDeadline?: string;
   companyId?: number;
+  companyName?: string;
   customerName?: string;
   deliveryAddress?: string;
   deliveryTime?: string;

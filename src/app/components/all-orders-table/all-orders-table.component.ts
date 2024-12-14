@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, forwardRef, ViewChild } from '@angular/core';
 import {
   Table,
   TableLazyLoadEvent,
@@ -6,32 +6,20 @@ import {
   TableRowExpandEvent,
 } from 'primeng/table';
 import { ContextService } from '../../services/context/context.service';
-import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
 import {
   OrderDto,
-  DashboardGetOrdersResponse,
   PagedOrdersResponse,
   GetOrdersForCompanyRequest,
   Sort,
-  Filter,
   GetOrdersConfigRequest,
   GetOrdersConfigResponse,
   OrderStatusModel,
+  CompanyDto,
+  DateRangeModel,
 } from '../../services/models';
-import { DashboardService, OrderService } from '../../services/services';
-import { GetOrdersForCompany$Params } from '../../services/fn/order/get-orders-for-company';
-import { DialogModule } from 'primeng/dialog';
-import {
-  filter,
-  from,
-  map,
-  Observable,
-  shareReplay,
-  Subject,
-  switchMap,
-  takeUntil,
-  tap,
-} from 'rxjs';
+import { OrderService } from '../../services/services';
+import { filter, from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { DateResult } from '../calendar-with-dialog/calendar-with-dialog.component';
 
 @Component({
   selector: 'app-all-orders-table',
@@ -39,6 +27,20 @@ import {
   styleUrl: './all-orders-table.component.scss',
 })
 export class AllOrdersTableComponent {
+  price: number | undefined;
+  dateRangeOptions!: DateRangeModel[];
+  selectedDateRangeValue: any;
+  selectedDates: Date[] = []; // Only 2 entries
+
+  isHolding!: boolean;
+  companyOptions!: CompanyDto[];
+  selectedCompanyOptions: CompanyDto[] = [];
+
+  statusOptions!: OrderStatusModel[];
+  selectedStatusOptions: OrderStatusModel[] = [];
+
+  globalSearch: string | undefined;
+
   expandedRows: { [s: string]: boolean } = {};
   @ViewChild('dt2') dt2!: Table; // Ensure to have a reference to the PrimeNG table component
 
@@ -57,6 +59,10 @@ export class AllOrdersTableComponent {
   statusSeverityMap!: {
     [key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast';
   };
+
+  page: number = 1;
+  size: number = 10;
+  sorts: Array<Sort> | undefined;
   private configPromise: Promise<void> | null = null;
 
   constructor(
@@ -64,19 +70,22 @@ export class AllOrdersTableComponent {
     private contextService: ContextService
   ) {}
 
-  loadOrders(
-    companyId: number,
-    page: number,
-    size: number,
-    filters: Array<Filter> | undefined,
-    sorts: Array<Sort> | undefined
-  ) {
+  loadOrders() {
+    let selectedCompanyIds = this.selectedCompanyOptions.map(
+      (company) => company.id
+    );
     let body: GetOrdersForCompanyRequest = {
-      companyId: companyId,
-      filters: filters,
-      page: page,
-      size: size,
-      sorts: sorts,
+      validatableCompanyId: this.companyIdTemp,
+      companyIds: this.isHolding ? selectedCompanyIds : [this.companyIdTemp!],
+      page: this.page,
+      size: this.size,
+      sorts: this.sorts,
+      statuses: this.selectedStatusOptions.map((option) => option.orderStatus),
+      price: this.price,
+      dateFrom: this.selectedDates?.at(0)?.toLocaleDateString(),
+      dateTo: this.selectedDates?.at(1)?.toLocaleDateString(),
+      globalSearch: this.globalSearch,
+      dateRange: this.selectedDateRangeValue?.dateRange,
     };
 
     this.orderService.getOrdersForCompany({ body }).subscribe({
@@ -92,14 +101,16 @@ export class AllOrdersTableComponent {
 
   loadOrdersLazy(event: TableLazyLoadEvent) {
     this.loading = true;
-    let filters = this.createFilters(event.filters);
+    //let filters = this.createFilters(event.filters);
     let sorts = this.createSorts(event.sortField, event.sortOrder);
     this.contextService
       .getCompanyIdObservable()
       .pipe(
         filter((companyId): companyId is number => !!companyId),
         tap((companyId) => {
-          this.companyIdTemp = companyId
+          this.companyIdTemp = companyId;
+          this.isHolding = this.contextService.isHolding();
+          this.companyOptions = this.contextService.getCompanies() ?? [];
         }),
         switchMap((companyId) => {
           return from(this.getConfig(companyId)).pipe(map(() => companyId));
@@ -108,14 +119,10 @@ export class AllOrdersTableComponent {
       )
       .subscribe({
         next: () => {
-          const page = Math.floor(event.first! / event.rows!);
-          this.loadOrders(
-            this.companyIdTemp!,
-            page,
-            event.rows!,
-            filters,
-            sorts
-          );
+          this.page = Math.floor(event.first! / event.rows!);
+          this.size = event.rows!;
+          this.sorts = sorts;
+          this.loadOrders();
         },
         error: (error) => {
           console.error('Error fetching companyId:', error);
@@ -127,12 +134,13 @@ export class AllOrdersTableComponent {
     if (!this.configPromise) {
       this.configPromise = new Promise((resolve, reject) => {
         const body: GetOrdersConfigRequest = { companyId };
-  
+
         this.orderService.getOrdersConfig({ body }).subscribe({
           next: (response: GetOrdersConfigResponse) => {
-            this.statuses = response.orderStatusModels;
+            this.statusOptions = response.orderStatusModels;
             this.statusSeverityMap = response.statusSeverityMap;
-            console.log(this.statuses)
+            this.dateRangeOptions = response.dataRangeModels;
+            this.selectedDateRangeValue = structuredClone(response.dataRangeModels.at(0));
             this.statusesTranslations = response.orderStatusModels.reduce(
               (acc: { [key: string]: string }, model) => {
                 acc[model.orderStatus] = model.translatedValue;
@@ -140,7 +148,7 @@ export class AllOrdersTableComponent {
               },
               {}
             );
-  
+
             resolve(); // Mark the promise as resolved
           },
           error: (error) => {
@@ -150,7 +158,7 @@ export class AllOrdersTableComponent {
         });
       });
     }
-  
+
     return this.configPromise; // Always return the same promise
   }
 
@@ -160,58 +168,58 @@ export class AllOrdersTableComponent {
     this.destroy$.complete();
   }
 
-  createFilters(filters: any): Array<Filter> | undefined {
-    if (filters) {
-      const resultFilters: Array<Filter> = [];
+  // createFilters(filters: any): Array<Filter> | undefined {
+  //   if (filters) {
+  //     const resultFilters: Array<Filter> = [];
 
-      Object.keys(filters).forEach((fieldName) => {
-        const filterEntry = filters[fieldName];
+  //     Object.keys(filters).forEach((fieldName) => {
+  //       const filterEntry = filters[fieldName];
 
-        // Check if the filterValue is an array (handle multiple filters per field)
-        if (Array.isArray(filterEntry.value)) {
-          const allValues: Array<string> = [];
-          filterEntry.value.forEach((val: any) => {
-            if (val) {
-              if (fieldName === 'status') {
-                allValues.push(val.orderStatus);
-              } else {
-                allValues.push(val);
-              }
-            }
-          });
-          resultFilters.push({
-            fieldName: fieldName,
-            values: allValues,
-          });
-        } else if (
-          filterEntry &&
-          filterEntry.value !== null &&
-          filterEntry.value !== undefined
-        ) {
-          resultFilters.push({
-            fieldName: fieldName,
-            values: Array.of(filterEntry.value),
-          });
-        } else if (filterEntry?.[0] != null && filterEntry[0].value != null) {
-          const value = filterEntry[0];
-          console.log(typeof value.value); // "Object"
-          resultFilters.push({
-            fieldName: fieldName,
-            values: Array.of(
-              value.value instanceof Date
-                ? value.value.toISOString()
-                : 'undefined'
-            ),
-            mode: value.matchMode, // Convert to ISO if it's a Date
-          });
-        }
-      });
+  //       // Check if the filterValue is an array (handle multiple filters per field)
+  //       if (Array.isArray(filterEntry.value)) {
+  //         const allValues: Array<string> = [];
+  //         filterEntry.value.forEach((val: any) => {
+  //           if (val) {
+  //             if (fieldName === 'status') {
+  //               allValues.push(val.orderStatus);
+  //             } else {
+  //               allValues.push(val);
+  //             }
+  //           }
+  //         });
+  //         resultFilters.push({
+  //           fieldName: fieldName,
+  //           values: allValues,
+  //         });
+  //       } else if (
+  //         filterEntry &&
+  //         filterEntry.value !== null &&
+  //         filterEntry.value !== undefined
+  //       ) {
+  //         resultFilters.push({
+  //           fieldName: fieldName,
+  //           values: Array.of(filterEntry.value),
+  //         });
+  //       } else if (filterEntry?.[0] != null && filterEntry[0].value != null) {
+  //         const value = filterEntry[0];
+  //         console.log(typeof value.value); // "Object"
+  //         resultFilters.push({
+  //           fieldName: fieldName,
+  //           values: Array.of(
+  //             value.value instanceof Date
+  //               ? value.value.toISOString()
+  //               : 'undefined'
+  //           ),
+  //           mode: value.matchMode, // Convert to ISO if it's a Date
+  //         });
+  //       }
+  //     });
 
-      return resultFilters.length > 0 ? resultFilters : undefined;
-    }
+  //     return resultFilters.length > 0 ? resultFilters : undefined;
+  //   }
 
-    return undefined;
-  }
+  //   return undefined;
+  // }
 
   createSorts(
     sortField?: any,
@@ -272,5 +280,19 @@ export class AllOrdersTableComponent {
     status: string
   ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
     return this.statusSeverityMap?.[status];
+  }
+
+  onCompanyOptionChange() {}
+
+  onDateChange(event: DateResult) {
+    this.selectedDateRangeValue.dateRange = event.dateRange;
+    if (event.dateFrom !== undefined && event.dateTo !== undefined) {
+      this.selectedDates = [event.dateFrom, event.dateTo];
+    }
+    this.onFilterChange();
+  }
+
+  onFilterChange() {
+    this.loadOrders();
   }
 }

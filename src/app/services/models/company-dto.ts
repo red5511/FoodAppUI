@@ -2,11 +2,11 @@
 /* eslint-disable */
 import { OpenHours } from '../models/open-hours';
 export interface CompanyDto {
-  address?: string;
+  address: string;
   companyType?: 'FOOD';
-  id?: number;
-  name?: string;
+  id: number;
+  name: string;
   openHours?: OpenHours;
   receivingOrdersActive?: boolean;
-  webSocketTopicName?: string;
+  webSocketTopicName: string;
 }

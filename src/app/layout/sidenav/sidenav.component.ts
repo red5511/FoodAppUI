@@ -40,7 +40,6 @@ export class SidenavComponent implements OnInit {
     this.checkScreenWidth(); // Initial check when the component loads
     this.sidebarService.sidebarVisibility$.subscribe((isVisible) => {
       this.isSidebarVisible = isVisible;
-      console.log('www' + this.isSidebarHidden);
       if (isVisible && this.screenWidth < this.tabletWith) {
         this.isSidebarHidden = true;
       }
