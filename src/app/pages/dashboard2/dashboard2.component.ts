@@ -1,5 +1,4 @@
 import { Component } from '@angular/core';
-import { ContextService } from '../../services/context/context.service';
 
 @Component({
   selector: 'app-dashboard2',

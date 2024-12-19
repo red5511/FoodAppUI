@@ -1,31 +1,33 @@
 .body {
-    width: calc(100% - 5rem);
-    height: 100%;
+    width: 100%;
+    height: 100vh;
     z-index: 0;
     position: relative;
     top: 0;
     transition: all 0.7s ease;
     background-color: var(--my-primary-color);
-    padding-top: 100px;
+    padding-top: 64px;
+    overflow-y: auto; /* Allows vertical scrolling if content overflows */
+
 }
 
-.body-trimmed {
+.bodyTrimmed {
     width: calc(100% - 200px);
     margin-left: 200px;
 }
 
-.body-md-screen {
+.bodyCollapsedSideNav {
     width: calc(100% - 5rem);
     margin-left: 5rem;
 }
 
-.body-normal{
+.bodyNormal{
     width: 100%;
     margin-left: 0;
 }
 
 @media (max-width: 975px) {
-    .body-normal{
+    .bodyNormal{
         width: 100%;
         margin-left: 0;
     }

@@ -1,9 +1,10 @@
 <p-toast />
 
-<p-card header="Simple Card" footer="Footer Content">
+<p-card footer="Footer Content">
   <p-table
   [value]="orders"
   dataKey="id"
+  [rowHover]="true"
   [expandedRowKeys]="expandedRows"
   (onRowExpand)="onRowExpand($event)"
   (onRowCollapse)="onRowCollapse($event)"

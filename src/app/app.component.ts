@@ -4,6 +4,7 @@ import { SideNavToggle } from './components/side-nav-toggle.interface';
 import { FilterService, PrimeNGConfig } from 'primeng/api';
 import { SocketService } from './services/websocket/socket-service';
 import { ContextService } from './services/context/context.service';
+import { isCaptureEventType } from '@angular/core/primitives/event-dispatch';
 
 @Component({
   selector: 'app-root',
@@ -12,9 +13,13 @@ import { ContextService } from './services/context/context.service';
 })
 export class AppComponent {
   title = 'angular-foodapp';
-  isSidebarVisible = true;
+  isSideNavVisible: boolean;
   screenWidth = 0;
   isLoggedIn = false;
+  isSideNavCollapsed: boolean;
+  isTabletView: boolean;
+  tabletMinWith: number = 1000;
+  tabletMaxWith: number = 1200;
 
   constructor(
     private loginService: LoginService,
@@ -22,10 +27,25 @@ export class AppComponent {
     private filterService: FilterService,
     private webSocketService: SocketService,
     private contextService: ContextService
-  ) {}
+  ) {
+    this.screenWidth = window.innerWidth;
+    this.isSideNavVisible =
+      this.screenWidth > this.tabletMinWith ? true : false;
+    this.isSideNavCollapsed =
+      this.screenWidth < this.tabletMaxWith &&
+      this.screenWidth > this.tabletMinWith
+        ? true
+        : false;
+    this.isTabletView = this.screenWidth < this.tabletMinWith;
+    console.log('xd');
+    console.log(this.screenWidth);
+    console.log(this.isSideNavVisible);
+    console.log(this.isSideNavCollapsed);
+  }
 
   ngOnInit() {
     window.addEventListener('beforeunload', this.handleWindowClose);
+
     this.primengConfig.setTranslation({
       selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',
@@ -93,16 +113,58 @@ export class AppComponent {
     });
     this.loginService.isLoggedInVisibility$.subscribe((isLogged) => {
       this.isLoggedIn = isLogged;
-      console.log('isLoggedIn');
-      console.log(this.isLoggedIn);
     });
-    console.log('isLoggedIn');
-
-    console.log(this.isLoggedIn);
   }
 
   ngOnDestroy() {
     window.removeEventListener('beforeunload', this.handleWindowClose);
+  }
+
+  @HostListener('window:resize', ['$event'])
+  onResize(event: Event) {
+    console.log('resize');
+    this.screenWidth = window.innerWidth;
+    this.isTabletView = this.screenWidth < this.tabletMinWith;
+    if (this.screenWidth < this.tabletMinWith) {
+      this.isSideNavVisible = false;
+    } else if (
+      this.screenWidth < this.tabletMaxWith &&
+      this.screenWidth > this.tabletMinWith
+    ) {
+      this.isSideNavCollapsed = true;
+      this.isSideNavVisible = true;
+    } else if (this.screenWidth > 1200) {
+      this.isSideNavCollapsed = false;
+      this.isSideNavVisible = true;
+    }
+  }
+
+  onToggleSidnav() {
+    // if(!this.isSideNavCollapsed){
+    //   this.isSideNavVisible = !this.isSideNavVisible
+    // }
+
+    if (this.screenWidth < this.tabletMinWith) {
+      this.isSideNavVisible = !this.isSideNavVisible;
+      this.isSideNavCollapsed = false;
+    } else if (
+      this.screenWidth < this.tabletMaxWith &&
+      this.screenWidth > this.tabletMinWith
+    ) {
+      this.isSideNavCollapsed = !this.isSideNavCollapsed;
+      this.isSideNavVisible = true;
+    } else {
+      this.isSideNavCollapsed = !this.isSideNavCollapsed;
+      this.isSideNavVisible = true;
+    }
+
+    // if (
+    //   this.screenWidth < this.tabletMaxWith &&
+    //   this.isSideNavVisible &&
+    //   this.screenWidth > this.tabletMinWith
+    // ) {
+    //   this.isSideNavCollapsed = !this.isSideNavCollapsed;
+    // }
   }
 
   private handleWindowClose = () => {
@@ -139,8 +201,28 @@ export class AppComponent {
     }
   };
 
-  onToggleSideNav(event: SideNavToggle) {
-    this.isSidebarVisible = event.isSidebarVisible;
-    this.screenWidth = event.screenWidth;
+  // toggleSideNav() {
+  //   this.isSideNavVisible = event.isSidebarVisible;
+  //   this.screenWidth = event.screenWidth;
+  // }
+
+  onOpenCollapsedSideNavToggle() {
+    this.isSideNavVisible = true;
+    this.isSideNavCollapsed = false;
   }
+
+  // handleWindow() {
+  //   if (this.screenWidth < this.tabletMinWith) {
+  //     this.isSideNavVisible = false;
+  //   } else if (
+  //     this.screenWidth < this.tabletMaxWith &&
+  //     this.isSideNavVisible &&
+  //     this.screenWidth > this.tabletMinWith
+  //   ) {
+  //     this.isSideNavVisible = true;
+  //     this.isSideNavCollapsed = true;
+  //   } else if (this.screenWidth > 1200 && !this.isSideNavVisible) {
+  //     this.isSideNavCollapsed = false;
+  //   }
+  // }
 }

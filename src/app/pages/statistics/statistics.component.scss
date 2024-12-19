@@ -2,34 +2,32 @@
   display: flex;
   flex-direction: column;
   align-items: center; // Ensure the container takes the full width
-  border: 2px solid black;
   width: 100%; // Take the full width of the parent container
   overflow-x: auto; // Enable horizontal scrolling when content overflows
   height: 100%;
   padding-bottom: 150px;
-  padding-top: 75px;
-  border: 3px solid black;
+  padding-top: 30px;
 }
 
-::ng-deep .p-dialog .p-dialog-content {
-  background-color: transparent;
-  /* Makes the dialog content background transparent */
-}
+// ::ng-deep .p-dialog .p-dialog-content {
+//   background-color: transparent;
+//   /* Makes the dialog content background transparent */
+// }
 
-::ng-deep .p-dialog .p-dialog-header {
-  background-color: transparent;
-  /* Makes the dialog content background transparent */
-}
+// ::ng-deep .p-dialog .p-dialog-header {
+//   background-color: transparent;
+//   /* Makes the dialog content background transparent */
+// }
 
-::ng-deep .p-dialog {
-  box-shadow: none;
-  border: none;
-}
+// ::ng-deep .p-dialog {
+//   box-shadow: none;
+//   border: none;
+// }
 
-::ng-deep .p-dialog .p-dialog-header-close {
-  display: none;
-  /* Hides the close button */
-}
+// ::ng-deep .p-dialog .p-dialog-header-close {
+//   display: none;
+//   /* Hides the close button */
+// }
 
 // Styl głównego kontenera z bardziej wyraźnymi obramowaniami i cieniem
 .container {
@@ -37,10 +35,8 @@
   width: 99%;
   background-color: #ffffff;
   padding: 8px;
-  border-radius: 10px;
-  border: 2px solid #e0e0e0; // Dodany wyraźny border
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.18); // Mocniejszy cień przy najechaniu
-  border-color: #b0bec5; // Lekko ciemniejszy border na hover
+  border-radius: 6px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
 }
 
 // Styl nagłówka z subtelnie większym fontem i pogrubieniem

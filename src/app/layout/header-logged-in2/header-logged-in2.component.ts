@@ -1,5 +1,4 @@
-import { Component, Input } from '@angular/core';
-import { SidebarService } from '../../services/sidebar/sidebar.service';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { DashboardService } from '../../services/services/dashboard.service';
 import { CompanyDto } from '../../services/models';
 import { ContextService } from '../../services/context/context.service';
@@ -11,8 +10,8 @@ import { SocketService } from '../../services/websocket/socket-service';
   styleUrl: './header-logged-in2.component.scss',
 })
 export class HeaderLoggedIn2Component {
-  @Input()
-  isLoggedIn: boolean = false;
+  @Output()
+  onToggleSidnav: EventEmitter<any> = new EventEmitter<any>();
   isChecked = false;
   isDropdownOpen = false;
   companies!: CompanyDto[];
@@ -26,7 +25,6 @@ export class HeaderLoggedIn2Component {
   userId!: number;
   isHolding!: boolean;
   constructor(
-    private sidebarService: SidebarService,
     private dashboardService: DashboardService,
     private contextService: ContextService,
     private webSocketService: SocketService
@@ -44,7 +42,7 @@ export class HeaderLoggedIn2Component {
             this.userId = response.userId;
             this.updateContext(response.permittedModules);
             this.checkIfRecivingOrdersShouldBeTurnOn();
-            this.isHolding = this.contextService.isHolding() 
+            this.isHolding = this.contextService.isHolding();
           }
         }
       },
@@ -75,11 +73,6 @@ export class HeaderLoggedIn2Component {
     }
   }
 
-  toggleSidebar() {
-    // Check if the button click event is registered
-    this.sidebarService.toggleSidebar();
-    // Check if the visibility state is changing
-  }
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -117,6 +110,6 @@ export class HeaderLoggedIn2Component {
     localStorage.removeItem('lastRecivingOrdersComanyId');
     this.webSocketService.processDisconnection();
     this.updateContext(undefined);
-    this.isHolding = this.contextService.isHolding()
+    this.isHolding = this.contextService.isHolding();
   }
 }

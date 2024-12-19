@@ -1,3 +1,10 @@
-<div class="body" [ngClass]="bodyClass">
+<div
+  class="body"
+  [ngClass]="{
+  bodyTrimmed: isSideNavVisible && !isSideNavCollapsed && !isTabletView,
+  bodyCollapsedSideNav: isSideNavVisible && isSideNavCollapsed,
+  bodyNormal: !isSideNavVisible,
+}"
+>
   <router-outlet></router-outlet>
 </div>

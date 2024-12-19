@@ -1,5 +1,4 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { SidebarService } from '../../services/sidebar/sidebar.service';
 
 @Component({
   selector: 'app-switch',

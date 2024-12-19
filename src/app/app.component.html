@@ -1,16 +1,21 @@
 <app-header-guest *ngIf="!isLoggedIn"></app-header-guest>
 <app-header-logged-in2
-  [isLoggedIn]="isLoggedIn"
   *ngIf="isLoggedIn"
+  (onToggleSidnav)="onToggleSidnav()"
 ></app-header-logged-in2>
 
 <app-sidenav
-  (onToogleSideNav)="onToggleSideNav($event)"
-  [isLoggedIn]="isLoggedIn"
+  *ngIf="isLoggedIn"
+  [isSideNavVisible]="isSideNavVisible"
+  [isSideNavCollapsed]="isSideNavCollapsed"
+  [isTabletView]="isTabletView"
+  (onOpenCollapsedSideNavToggle)="onOpenCollapsedSideNavToggle()"
 ></app-sidenav>
+
 <app-body
-  [isSidebarVisible]="isSidebarVisible"
-  [screenWidth]="screenWidth"
+  [isSideNavVisible]="isSideNavVisible"
+  [isSideNavCollapsed]="isSideNavCollapsed"
+  [isTabletView]="isTabletView"
   [isLoggedIn]="isLoggedIn"
 ></app-body>
 <app-new-order-panel *ngIf="isLoggedIn"></app-new-order-panel>
