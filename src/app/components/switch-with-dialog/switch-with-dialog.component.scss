@@ -8,17 +8,49 @@
   justify-content: space-between; /* Space between items */
 }
 
-.custom-cancel-button {
-  color: var(--purple-color);
-  border: 1px solid var(--purple-color);
-}
+// .custom-cancel-button {
+//   color: var(--primary-color1);
+//   border: 1px solid var(--primary-color1);
+// }
 
-.custom-confirm-button {
-  background: var(--purple-color);
-  border: 1px solid var(--purple-color);
-}
+// .custom-confirm-button {
+//   background: var(--primary-color1);
+//   border: 1px solid var(--primary-color1);
+// }
 
-.custom-cancel-button:focus {
-    outline: none; /* Ensures no outline on focus */
-    box-shadow: 0 0 0 2px rgba(128, 0, 128, 0.4); /* Optional: Custom focus style */
-  }
+// .custom-cancel-button:focus {
+//     outline: none; /* Ensures no outline on focus */
+//     // box-shadow: 0 0 0 2px rgba(128, 0, 128, 0.4); /* Optional: Custom focus style */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }
+
+// .custom-cancel-button:active  {
+//     outline: none; /* Ensures no outline on focus */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//     background-color: transparent; /* Customize active state background */
+//   }
+// .custom-confirm-button:active  {
+//     outline: none; /* Ensures no outline on focus */
+//     background-color: var(--primary-color1); /* Customize active state background */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }
+// .custom-cancel-button:hover  {
+//     outline: none; /* Ensures no outline on focus */
+//     background-color: transparent; /* Customize active state background */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }
+// .custom-confirm-button:hover  {
+//     outline: none; /* Ensures no outline on focus */
+//     background-color: var(--primary-color1); /* Customize active state background */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }
+// .custom-cancel-button:focus  {
+//     outline: none; /* Ensures no outline on focus */
+//     background-color: transparent; /* Customize active state background */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }
+// .custom-confirm-button:focus  {
+//     outline: none; /* Ensures no outline on focus */
+//     background-color: var(--primary-color1); /* Customize active state background */
+//     box-shadow: 0 0 0 2px var(--primary-color1-transparent); /* Optional: Custom focus style */
+//   }

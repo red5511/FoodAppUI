@@ -33,11 +33,6 @@ const routes: Routes = [
     component: ChangePasswordComponent,
     canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
-  // {
-  //   path: 'dashboard',
-  //   component: DashboardComponent,
-  //   canActivate: [authGuard]
-  // },
   {
     path: 'dashboard2',
     component: Dashboard2Component,

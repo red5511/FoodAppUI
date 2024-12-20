@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { ChartData } from 'chart.js';
 import { BaseChartDirective } from 'ng2-charts';
 import { ContextService } from '../../services/context/context.service';
-import { FloatLabel } from 'primeng/floatlabel';
 import {
   CompanyDto,
   DatePeriodModel,

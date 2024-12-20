@@ -12,7 +12,7 @@
 >
   <ng-template pTemplate="caption">
     <div class="flex flex-wrap justify-content-end gap-2">
-      <p-button
+      <p-button class="custom-button"
         label="Rozwiń wszystkie"
         icon="pi pi-plus"
         text
@@ -47,7 +47,7 @@
   </ng-template>
   <ng-template pTemplate="body" let-order let-expanded="expanded">
     <tr>
-      <td class="orders-row-body-first-td">
+      <td class="custom-td">
         <p-button
           type="button"
           pRipple
@@ -58,19 +58,19 @@
           [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
         />
       </td>
-      <td>#{{ order.id }}</td>
-      <td>
+      <td class="custom-td">#{{ order.id }}</td>
+      <td class="custom-td">
         <p-tag
           [value]="translations[order.status]"
           [severity]="getStatusSeverity(order.status)"
         />
       </td>
-      <td>{{ order.price | currency : "PLN" }}</td>
-      <td>
+      <td class="custom-td">{{ order.price | currency : "PLN" }}</td>
+      <td class="custom-td">
         <div>{{ order.deliveryTime | formattedDateTime }}</div>
         <div>{{ order.deliveryAddress }}</div>
       </td>
-      <td>
+      <td class="custom-td">
         <div class="description-container" title="{{ order.description }}">
           {{ order.description }}
         </div>

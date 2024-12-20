@@ -6,30 +6,8 @@
   overflow-x: auto; // Enable horizontal scrolling when content overflows
   height: 100%;
   padding-bottom: 150px;
-  padding-top: 30px;
 }
 
-// ::ng-deep .p-dialog .p-dialog-content {
-//   background-color: transparent;
-//   /* Makes the dialog content background transparent */
-// }
-
-// ::ng-deep .p-dialog .p-dialog-header {
-//   background-color: transparent;
-//   /* Makes the dialog content background transparent */
-// }
-
-// ::ng-deep .p-dialog {
-//   box-shadow: none;
-//   border: none;
-// }
-
-// ::ng-deep .p-dialog .p-dialog-header-close {
-//   display: none;
-//   /* Hides the close button */
-// }
-
-// Styl głównego kontenera z bardziej wyraźnymi obramowaniami i cieniem
 .container {
   max-width: 1100px;
   width: 99%;

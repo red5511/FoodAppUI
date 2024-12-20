@@ -18,6 +18,10 @@
   padding: 1rem 5px;
 }
 
+:host ::ng-deep .p-button.p-button-text {
+  color: var(--primary-color1);
+}
+
 // Media query for smaller screens
 @media (max-width: 768px) {
   .table-header {
@@ -32,18 +36,20 @@
 }
 
 .expanded-row td {
-  //background-color: #f8f2a95e;
+  // background-color: #f8f2a95e;
   padding: 44px;
+  border-bottom: 5px solid var(--primary-color1-transparent);
 }
 
 .custom-tr td {
-  border-top: 1px dotted black;
+  border-top: 1px solid rgba(0, 0, 0, 0.315);
   border-bottom: none;
   padding: 5px;
 }
 
-.orders-row-body-first-td {
-  border-left: 5px solid orange;
+.custom-td {
+  // border-top: 5px solid rgba(150, 72, 0, 0.562);
+  // border-top: 3px groove var(--primary-color1-transparent);
 }
 
 .description-container {

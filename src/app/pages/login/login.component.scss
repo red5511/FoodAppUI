@@ -1,8 +1,8 @@
 .container {
-    background-color: #ffffff;
+    background-color: #fff;
     padding: 20px;
     border-radius: 8px;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
     width: 500px;
     margin: 0 auto;  /* Center the container */
   }
@@ -41,35 +41,19 @@
     border: 1px solid #cccccc;
     border-radius: 4px;
   }
-  
-  .qr-code {
-    text-align: center;
-    margin-bottom: 15px;
-  }
-  
-  .qr-code img {
-    max-width: 100%;
-    border: solid 1px;
-  }
-  
+
   button {
     cursor: pointer;
     padding: 10px;
     padding: 0.75rem 2rem;
-    background-color: var(--my-primary-color);
-    color: var(--secondary-color);
+    background-color: var(--primary-color1);
+    color: var(--primary-color2);
     text-decoration: none;
     font-size: 16px;
-    border: 2px solid var(--secondary-color);
+    border: 2px solid var(--primary-color2);
     border-radius: 5px;
     transition: all 0.3s ease;
     width: 100%;
-  
-    &:hover {
-      background-color: transparent;
-      color: var(--my-primary-color);
-      border: 2px solid var(--my-primary-color);
-    }
   }
   
   a {

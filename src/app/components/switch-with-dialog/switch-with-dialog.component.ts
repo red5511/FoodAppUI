@@ -34,27 +34,44 @@ export class SwitchWithDialogComponent {
     fontSize: 16,
     speed: 300,
     color: {
-      checked: '#4caf50',
-      unchecked: '#fff',
+      checked: '',
+      unchecked: '',
     },
     switchColor: {
-      checked: '#fff',
-      unchecked: '#322653',
+      checked: '',
+      unchecked: '',
     },
     labels: {
       unchecked: 'Nie odbieram',
       checked: 'Odbieram',
     },
     fontColor: {
-      checked: '#fff',
+      checked: 'black',
       unchecked: 'black',
     },
     textAlign: 'center',
   };
 
+  ngOnInit() {
+    const rootStyles = getComputedStyle(document.documentElement);
+    const primaryColor1 = rootStyles
+      .getPropertyValue('--primary-color1')
+      .trim();
+    const primaryWhite = rootStyles
+      .getPropertyValue('--primary-white')
+      .trim();
+    const green = rootStyles
+      .getPropertyValue('--primary-green')
+      .trim();
+    this.config.color.unchecked = primaryWhite;
+    this.config.color.checked = green;
+    this.config.switchColor.unchecked = primaryColor1;
+    this.config.switchColor.checked = primaryColor1;
+  }
+
   ngOnChanges() {
-    console.log(this.isChecked)
-    console.log("isChecked")
+    console.log(this.isChecked);
+    console.log('isChecked');
     if (this.isChecked) {
       this.requestInitOrderWebSocketTopic();
     }

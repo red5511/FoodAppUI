@@ -9,8 +9,8 @@
 }
 
 .custom-toolbar {
-  background-color: var(--purple-color);
-  background-color: var(--purple-color);
+  background-color: var(--primary-color1);
+  background-color: var(--primary-color1);
   color: #f0f0f0;
   position: fixed;
   top: 0;
@@ -78,7 +78,7 @@ body {
   transition: color 0.3s ease;
   position: relative;
   display: inline-block;
-  border: 2px solid var(--secondary-color);
+  border: 2px solid var(--primary-color2);
   width: 160px;
   text-align: center;
   height: 35px;
@@ -90,7 +90,7 @@ body {
   border: none;
   cursor: pointer;
   width: 100%;
-  background-color: var(--purple-color);
+  background-color: var(--primary-color1);
   transition: color 0.3s ease;
 }
 
@@ -104,7 +104,7 @@ body {
   left: 0;
   display: block;
   width: 100%;
-  background-color: var(--purple-color);
+  background-color: var(--primary-color1);
   margin: 0;
   padding: 0;
   list-style-type: none;
@@ -127,26 +127,26 @@ body {
   /* Vertically centers the content */
   justify-content: center;
   /* Horizontally centers the content */
-  color: var(--secondary-color);
+  color: var(--primary-color2);
   text-align: center;
   background-color: transparent;
   width: 100%;
-  border-top: 1px solid var(--secondary-color);
-  border-right: 1px solid var(--secondary-color);
-  border-left: 1px solid var(--secondary-color);
+  border-top: 1px solid var(--primary-color2);
+  border-right: 1px solid var(--primary-color2);
+  border-left: 1px solid var(--primary-color2);
   height: 35px;
   box-sizing: border-box;
   border-collapse: collapse;
 }
 
 .dropdown-item:last-child {
-  border-bottom: 1px solid var(--secondary-color);
+  border-bottom: 1px solid var(--primary-color2);
 }
 
 .dropdown-item:hover {
-  background-color: var(--secondary-color);
-  color: var(--purple-color);
-  border: 1px solid var(--purple-color);
+  background-color: var(--primary-color2);
+  color: var(--primary-color1);
+  border: 1px solid var(--primary-color1);
   box-sizing: border-box;
 }
 
@@ -154,13 +154,13 @@ body {
 ::ng-deep .custom-dropdown .p-dropdown.p-focus {
   // border-color: red !important; /* Change border color on focus/hover */
   // outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 0px  var(--secondary-color) !important; /* Add custom focus effect with red color */
+  box-shadow: 0 0 0 0px  var(--primary-color2) !important; /* Add custom focus effect with red color */
 }
 
 ::ng-deep .custom-dropdown .p-dropdown {
   // border-color: red !important; /* Change border color on focus/hover */
   // outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 0px   var(--secondary-color) !important; /* Add custom focus effect with red color */
+  box-shadow: 0 0 0 0px   var(--primary-color2) !important; /* Add custom focus effect with red color */
   min-width: 225px !important;
   max-width: 335px !important;
   text-align: end !important;  /* Centers the text horizontally */
@@ -172,28 +172,28 @@ body {
 }
 
 ::ng-deep .custom-dropdown .p-dropdown:hover {
-  border-color:  var(--secondary-color) !important; /* Change border color on hover */
+  border-color:  var(--primary-white) !important; /* Change border color on hover */
 }
 
 ::ng-deep .custom-dropdown .p-dropdown .p-dropdown-label {
-  background-color: var(--purple-color) !important; /* Replace 'lightblue' with your desired color */
-  color:  var(--secondary-color) !important;   
+  background-color: var(--primary-color1) !important; /* Replace 'lightblue' with your desired color */
+  color:  var(--primary-white) !important;   
   border-radius: none;            /* Adjust text color for better readability */
 }
 
 ::ng-deep .custom-dropdown .p-dropdown-panel{
-  background-color: var(--purple-color) !important;
+  background-color: var(--primary-color1) !important;
 
 }
 
 ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item.p-highlight {
-  background-color: var(--secondary-color) !important; /* Background color for the selected option */
+  background-color: var(--primary-white) !important; /* Background color for the selected option */
   color: black !important;               /* Text color for the selected option */
 }
 
 ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item {
-  background-color:  var(--purple-color) !important; /* Background color for the selected option */
-  color: var(--secondary-color) !important;          
+  background-color:  var(--primary-color1) !important; /* Background color for the selected option */
+  color: var(--primary-white) !important;          
   border-radius: 10px;
   margin: 1px;
   transition: all 0.3s !important;
@@ -203,14 +203,14 @@ body {
 }
 
 ::ng-deep .custom-dropdown .p-dropdown-panel .p-dropdown-item:hover {
-  background-color:  var(--secondary-color) !important; /* Background color for the selected option */
+  background-color:  var(--primary-white) !important; /* Background color for the selected option */
   color: black !important;      
   transition: all 0.3s !important;    
 }
 
 
 ::ng-deep .custom-dropdown .p-dropdown-trigger{
-  background-color: var(--purple-color) !important;
+  background-color: var(--primary-color1) !important;
 }
 
 ::ng-deep .p-inputtext{

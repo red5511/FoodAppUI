@@ -3,7 +3,7 @@
   [ngClass]="{
   bodyTrimmed: isSideNavVisible && !isSideNavCollapsed && !isTabletView,
   bodyCollapsedSideNav: isSideNavVisible && isSideNavCollapsed,
-  bodyNormal: !isSideNavVisible,
+  bodyNormal: !isSideNavVisible || !isLoggedIn,
 }"
 >
   <router-outlet></router-outlet>

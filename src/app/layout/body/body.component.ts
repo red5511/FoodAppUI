@@ -17,11 +17,4 @@ export class BodyComponent {
 
   @Input()
   isLoggedIn!: boolean;
-
-  ngOnChanges(): void {
-    console.log('Body onChange');
-    console.log(this.isSideNavVisible);
-    console.log(this.isSideNavCollapsed);
-    console.log(this.isTabletView);
-  }
 }

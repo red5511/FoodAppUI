@@ -1,27 +1,64 @@
 @import "ngx-toastr/toastr";
-@import "primeng/resources/themes/lara-light-blue/theme.css";
-@import "primeng/resources/primeng.css";
+// @import "primeng/resources/themes/lara-light-blue/theme.css";
+// @import "src/assets/mytheme/theme.scss";
+@import "assets/theme.css";
+// @import "primeng/resources/primeng.css";
 @import "primeicons/primeicons.css";
 
-
 :root {
-    --my-primary-color: #fcecd5;
-    --secondary-color: #fff;
-    --purple-color: #322653;
-    --font-stack: 'Arial', sans-serif;
-    //lightgreen pownien byc moze w konwersacji?
-  }
+  // --primary-color1: #322653;
+  // --primary-color1-transparent: rgba(128, 0, 128, 0.4);
+  // --primary-color2: #FFFDF2;
+  // --primary-green: #7dd683de; chujowo wyglada ten ziolony przy tym
 
-html{
-    border: none;
-    height: 100%;
-    margin: 0;
-    padding: 0;
-    background-color: var(--my-primary-color) ;
-    overflow-x: hidden;
+  // --primary-color1: #1c1435;
+  // --primary-color2: #FFFDF2;
+  // --primary-color1-transparent: #322653c7;
+  // --primary-green: #7dd683de;
+
+  // --primary-color1: #101820;
+  // --primary-color2: #fff;
+  // --primary-color1-transparent: #101820b7;
+  // --primary-green: #7dd683de;
+
+  // --primary-color1: #04173d; //FFFDF2
+  // --primary-color2: #FFFDF2;
+  // --primary-color1-transparent: #04173dd0;
+  // --primary-green: #5fcf8e;
+
+
+  // --primary-color1: #0a2913;
+  // --primary-color2: #FFFDF2;
+  // --primary-color1-transparent: #061d0cd2;
+  // --primary-green: #eef081;
+
+  --primary-color1: #141414;
+  --primary-color2: #fff;
+  --primary-color1-transparent: #141414cc;
+  --primary-green: #e0fcca;
+
+
+  // --primary-green: #59c500;???
+  
+  --primary-white: #fff;
+  --font-stack: "Arial", sans-serif;
+  //lightgreen pownien byc moze w konwersacji?
 }
 
-html, body { height: 100%; }
-body { margin: 0;
+html {
+  border: none;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background-color: var(--primary-color2);
+  overflow-x: hidden;
+}
+
+html,
+body {
+  height: 100%;
+}
+body {
+  margin: 0;
   font-family: var(--font-family);
 }
