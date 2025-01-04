@@ -1,16 +1,15 @@
-import { Component } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
-import { DashboardService } from '../../services/services';
-import { ContextService } from '../../services/context/context.service';
-import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
 import {
   DashboardGetOrdersResponse,
-  GetActiveOrdersRequest,
   OrderDto,
   Sort,
 } from '../../services/models';
-import { filter, Subject, switchMap, takeUntil } from 'rxjs';
-import { WebSocketEventHandler } from '../../services/websocket/web-socket-event-handler';
+import {
+  calculateMinutesDifferenceCeil,
+  calculateSecondsDifferenceFloor,
+} from '../../common/dateUtils';
+import clone from 'lodash/clone';
 
 @Component({
   selector: 'app-new-order-table',
@@ -18,6 +17,8 @@ import { WebSocketEventHandler } from '../../services/websocket/web-socket-event
   styleUrls: ['./new-order-table.component.scss'], // Fix typo, should be "styleUrls"
 })
 export class NewOrderTableComponent {
+  @Input()
+  orders: OrderDto[] = [];
   expandedRows: { [s: string]: boolean } = {};
   translations: { [key: string]: string } = {
     WAITING_FOR_ACCEPTANCE: 'W akceptacji',
@@ -25,83 +26,46 @@ export class NewOrderTableComponent {
     EXECUTED: 'Wykonane',
     REJECTED: 'Odrzucone',
   };
-  // Sample data
-  orders: OrderDto[] = [];
-  private destroy$ = new Subject<void>();
   sorts: Sort[] | undefined;
+  private intervalId: any;
 
-  constructor(
-    private dashboardService: DashboardService,
-    private contextService: ContextService,
-    private webSocketEventHandler: WebSocketEventHandler
-  ) {}
+  constructor(private cdr: ChangeDetectorRef) {}
 
   ngOnInit(): void {
-    this.contextService
-      .getCompanyIdObservable()
-      .pipe(
-        filter((companyId): companyId is number => !!companyId),
-        switchMap((companyId) => {
-          const body: GetActiveOrdersRequest = {
-            sorts: this.sorts,
-          };
-          const params: GetActiveOrders$Params = { companyId, body };
-          return this.dashboardService.getActiveOrders(params);
-        }),
-        filter(
-          (response): response is DashboardGetOrdersResponse =>
-            !!response?.orderList
-        ),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        next: (response) => {
-          console.log('na inicie pobranie');
-          this.orders = response.orderList ?? [];
-          this.expandAll();
-        },
-        error: (error) => {
-          console.error('Error loading orders:', error);
-        },
-      });
-
-    this.webSocketEventHandler.newOrderApprovedVisibility$
-      .pipe(
-        switchMap(() => {
-          let companyId = this.contextService.getCompanyId();
-          const body: GetActiveOrdersRequest = {
-            sorts: this.sorts,
-          };
-          const params: GetActiveOrders$Params = {
-            companyId: companyId ?? -999,
-            body,
-          };
-
-          console.log('lolol');
-          return this.dashboardService.getActiveOrders(params);
-        }),
-        takeUntil(this.destroy$)
-      )
-      .subscribe({
-        next: (response: DashboardGetOrdersResponse) => {
-          if (response && response.orderList) {
-            this.orders = response.orderList;
-            this.expandAll();
-          }
-        },
-        error: (err) => {
-          console.error('Error fetching active orders:', err);
-        },
-      });
+    this.refreshAtStartOfMinute();
   }
 
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
+  ngOnDestroy() {
+    if (this.intervalId) {
+      clearInterval(this.intervalId);
+    }
+  }
+
+  refreshAtStartOfMinute() {
+    const now = new Date();
+    const millisecondsUntilNextMinute =
+      60000 - (now.getSeconds() * 1000 + now.getMilliseconds());
+
+    setTimeout(() => {
+      this.refreshOrders();
+      this.intervalId = setInterval(() => {
+        this.refreshOrders();
+      }, 60000);
+    }, millisecondsUntilNextMinute);
+  }
+
+  refreshOrders() {
+    this.cdr.detectChanges();
+  }
+
+  handleOrdersResponse(response: DashboardGetOrdersResponse) {
+    this.orders = response.orderList ?? [];
+    this.expandFirst();
   }
 
   onRowExpand(event: TableRowExpandEvent) {
     const order = event.data;
+    this.collapseAll();
     this.expandedRows[order.id] = true;
   }
 
@@ -114,22 +78,46 @@ export class NewOrderTableComponent {
     this.orders.forEach((order) => (this.expandedRows[order.id!] = true));
   }
 
+  expandFirst() {
+    if (this.orders.length > 0) {
+      const firstOrder = this.orders[0];
+      this.expandedRows[firstOrder.id!] = true;
+    }
+  }
+
   collapseAll() {
     this.expandedRows = {};
   }
 
+  calcTimeDifference(dateTime: string) {
+    return calculateMinutesDifferenceCeil(dateTime);
+  }
+
+  approvalTimeLeft(approvalDeadline: string) {
+    return calculateSecondsDifferenceFloor(approvalDeadline!) < 1;
+  }
+
   getStatusSeverity(
     status: string
-  ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
+  ):
+    | 'success'
+    | 'secondary'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'contrast'
+    | 'yellow' {
     switch (status) {
       case 'WAITING_FOR_ACCEPTANCE':
-        return 'info';
+        return 'yellow';
       case 'IN_EXECUTION':
         return 'warning';
       case 'EXECUTED':
         return 'success';
       case 'REJECTED':
         return 'danger';
+      case 'READY_FOR_PICK_UP':
+        return 'info';
       default:
         return 'contrast';
     }

@@ -1,1 +1,15 @@
-<app-new-order-table></app-new-order-table>
+<p-toast />
+<p-card footer="Footer Content">
+  <div class="centred-div">
+    <p-selectButton
+      #selectButton
+      [options]="stateOptions"
+      [(ngModel)]="stateOptionsValue"
+      (onChange)="onSelectButtonChange()"
+      unselectable="true"
+      optionLabel="label"
+      optionValue="value"
+    />
+  </div>
+  <app-new-order-table [orders]="orders"></app-new-order-table>
+</p-card>

@@ -1,4 +1,4 @@
-import { Component, forwardRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import {
   Table,
   TableLazyLoadEvent,
@@ -57,14 +57,13 @@ export class AllOrdersTableComponent {
   visible = true;
   private destroy$ = new Subject<void>();
   statusSeverityMap!: {
-    [key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast';
+    [key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast' | 'yellow';
   };
 
   page: number = 1;
   size: number = 10;
   sorts: Array<Sort> | undefined;
   private configPromise: Promise<void> | null = null;
-
   constructor(
     private orderService: OrderService,
     private contextService: ContextService
@@ -106,7 +105,6 @@ export class AllOrdersTableComponent {
     this.contextService
       .getCompanyIdObservable()
       .pipe(
-        filter((companyId): companyId is number => !!companyId),
         tap((companyId) => {
           this.companyIdTemp = companyId;
           this.isHolding = this.contextService.isHolding();
@@ -278,7 +276,7 @@ export class AllOrdersTableComponent {
 
   getStatusSeverity(
     status: string
-  ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
+  ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | 'yellow' {
     return this.statusSeverityMap?.[status];
   }
 

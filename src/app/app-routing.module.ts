@@ -4,7 +4,6 @@ import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { Dashboard2Component } from './pages/dashboard2/dashboard2.component';
 import { noneAuthPathsWhenJwtPresentGuard } from './services/guard/none-auth-paths-when-jwt-present.guard';
 import { authGuard } from './services/guard/auth.guard';

@@ -1,0 +1,45 @@
+<p-dialog
+  [(visible)]="setTimeDialogvisible"
+  (onHide)="closeDialog()"
+  header=""
+  [modal]="true"
+  [style]="{ width: '30rem', height:  userDeliveryIsBiggerThat1Hour ? '670px' : '600'}"
+>
+  <p-messages *ngIf="userDeliveryIsBiggerThat1Hour" [(value)]="messages" [enableService]="false" [closable]="false" />
+
+  <div class="container">
+    <h5>Wybierz czas</h5>
+    <div class="time-options">
+      <button
+        *ngFor="let time of predefinedTimes"
+        pButton
+        type="button"
+        [label]="time.label"
+        class="p-button-outlined"
+        (click)="selectTime(time.value)"
+      ></button>
+    </div>
+    <h5>lub</h5>
+    <div class="calendar-wrapper">
+      <p-floatLabel>
+        <p-calendar
+          inputId="calendar-timeonly"
+          [(ngModel)]="selectedTime"
+          [timeOnly]="true"
+        ></p-calendar>
+        <label class="custom-float-label" for="calendar-timeonly"
+          >Podaj godzinę</label
+        >
+      </p-floatLabel>
+      <button
+        *ngIf="selectedTime != undefined"
+        style="margin-top: 145px"
+        pButton
+        type="button"
+        class="p-button-primary"
+        (click)="approveSelectedCalendarTime()"
+        label="Zatwierdz"
+      ></button>
+    </div>
+  </div>
+</p-dialog>

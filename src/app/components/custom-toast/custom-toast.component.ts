@@ -1,25 +1,36 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { MessageService } from 'primeng/api';
 
 @Component({
   selector: 'app-custom-toast',
-  templateUrl: './custom-toast.component.html',
-  styleUrls: ['./custom-toast.component.scss'],
-  providers: [MessageService],
+  template: `
+    <div>
+      Otrzymałeś nowe zamówienie #{{ orderId }}.
+      <button class="btn btn-primary" (click)="onViewOrder()">Zobacz zamówienie</button>
+    </div>
+  `,
+  styles: [
+    `
+      .btn {
+        margin-top: 10px;
+        color: #fff;
+        background-color: #007bff;
+        border: none;
+        cursor: pointer;
+      }
+
+      .btn:hover {
+        background-color: #0056b3;
+      }
+    `,
+  ],
 })
 export class CustomToastComponent {
-  constructor(private messageService: MessageService) {}
+  orderId!: number;
+  constructor(private router: Router) {}
 
-  showConfirm() {
-    this.messageService.add({
-      severity: 'success',
-      summary: 'Sticky',
-      detail: 'Message Content',
-      sticky: true,
-    });
-  }
-
-  clear() {
-    this.messageService.clear();
+  onViewOrder() {
+    this.router.navigate(['/orders']);
   }
 }

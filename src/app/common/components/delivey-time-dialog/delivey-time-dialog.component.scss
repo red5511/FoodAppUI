@@ -1,0 +1,32 @@
+
+  
+  ::ng-deep .p-dialog-draggable .p-dialog-header{
+    padding-bottom: 0;
+  }
+  
+  .p-calendar {
+    margin-top: 1.2rem; // Add some spacing if needed
+  }
+  
+  .time-options {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1rem; // Adjust spacing between buttons
+    justify-content: center; // Center the buttons
+  }
+
+  .custom-float-label{
+    display: flex;
+  }
+
+  .calendar-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+
+  h5{
+    margin-top: 0.5rem; // Add some spacing if needed
+  }
+  

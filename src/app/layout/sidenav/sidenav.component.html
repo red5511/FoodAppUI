@@ -9,7 +9,7 @@
   <ul>
     <li *ngIf="hasPermissionToModule('LIVE_PANEL')">
       <a
-        routerLink="/dashboard2"
+        [routerLink]="!isSideNavCollapsed ? '/dashboard2' : null"
         routerLinkActive="active"
         (click)="openCollapsedSideNavToggle()"
       >
@@ -19,7 +19,7 @@
     </li>
     <li *ngIf="hasPermissionToModule('STATISTICS')">
       <a
-        routerLink="/statistics"
+        [routerLink]="!isSideNavCollapsed ? '/statistics' : null"
         routerLinkActive="active"
         (click)="openCollapsedSideNavToggle()"
       >
@@ -41,9 +41,7 @@
       </a>
       <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
         <li>
-          <a
-            routerLink="/dashboard"
-            routerLinkActive="active"
+          <a routerLink="/dashboard" routerLinkActive="active"
             ><span class="menu-icon material-icons">details</span
             ><span class="menu-text">Statystyki</span></a
           >
@@ -58,7 +56,7 @@
     </li>
     <li *ngIf="hasPermissionToModule('ORDERS')">
       <a
-        routerLink="/orders"
+        [routerLink]="!isSideNavCollapsed ? '/orders' : null"
         routerLinkActive="active"
         (click)="openCollapsedSideNavToggle()"
       >

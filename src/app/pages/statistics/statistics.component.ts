@@ -105,10 +105,6 @@ export class StatisticsComponent {
     this.contextService
       .getCompanyIdObservable()
       .pipe(
-        filter(
-          (companyId): companyId is number =>
-            companyId !== undefined && companyId !== null
-        ),
         tap((companyId) => {
           this.isHolding = this.contextService.isHolding();
           this.companyOptions = this.contextService.getCompanies() ?? [];

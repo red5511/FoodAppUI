@@ -6,10 +6,10 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { ApprovedOrderWebSocketEvent } from '../../models/approved-order-web-socket-event';
+import { ApprovalDeadlinePassed } from '../../models/approval-deadline-passed';
 
 export interface Ehh3$Params {
-      body: ApprovedOrderWebSocketEvent
+      body: ApprovalDeadlinePassed
 }
 
 export function ehh3(http: HttpClient, rootUrl: string, params: Ehh3$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
@@ -28,4 +28,4 @@ export function ehh3(http: HttpClient, rootUrl: string, params: Ehh3$Params, con
   );
 }
 
-ehh3.PATH = '/api/v1/development/forGeneratingApi6';
+ehh3.PATH = '/api/v1/development/forGeneratingApi7';

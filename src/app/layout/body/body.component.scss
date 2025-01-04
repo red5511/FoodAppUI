@@ -1,4 +1,7 @@
 .body {
+    display: flex;
+    flex-direction: column;
+    align-items: center; // Ensure the container takes the full width
     width: 100%;
     height: 100vh;
     z-index: 0;

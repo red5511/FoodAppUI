@@ -72,6 +72,7 @@ export class SwitchWithDialogComponent {
   ngOnChanges() {
     console.log(this.isChecked);
     console.log('isChecked');
+    console.log('ngOnChanges w dialogu');
     if (this.isChecked) {
       this.requestInitOrderWebSocketTopic();
     }
@@ -88,6 +89,7 @@ export class SwitchWithDialogComponent {
       localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
       localStorage.removeItem('lastRecivingOrdersComanyId');
       this.isChecked = !this.isChecked;
+      console.log('place#2')
       this.contextService.setUserReceivingOrdersActive(this.isChecked);
     }
   }
@@ -106,6 +108,7 @@ export class SwitchWithDialogComponent {
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = true;
+        console.log('place#1')
         this.contextService.setUserReceivingOrdersActive(this.isChecked);
       },
     });

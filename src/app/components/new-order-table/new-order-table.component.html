@@ -1,47 +1,28 @@
 <p-toast />
 
-<p-card footer="Footer Content">
-  <p-table
+<p-table
   [value]="orders"
   dataKey="id"
-  [rowHover]="true"
   [expandedRowKeys]="expandedRows"
   (onRowExpand)="onRowExpand($event)"
   (onRowCollapse)="onRowCollapse($event)"
   [tableStyle]="{ 'min-width': '20rem' }"
 >
-  <ng-template pTemplate="caption">
-    <div class="flex flex-wrap justify-content-end gap-2">
-      <p-button class="custom-button"
-        label="Rozwiń wszystkie"
-        icon="pi pi-plus"
-        text
-        (onClick)="expandAll()"
-      />
-      <p-button
-        label="Zwiń wszystkie"
-        icon="pi pi-minus"
-        text
-        (onClick)="collapseAll()"
-      />
-    </div>
-  </ng-template>
   <ng-template pTemplate="header">
     <tr>
       <th style="margin-left: -22px; width: 1%"></th>
       <th style="width: 1%"></th>
-      <th style="width: 15%">Status</th>
-      <th style="width: 15%">
-        <div class="table-header-content">Kwota</div>
+      <th style="width: 20%">
+        <div>Kwota</div>
+        <div>Status</div>
       </th>
-      <th style="width:25%" pSortableColumn="deliveryTime">
-        <div class="table-header-content">
-          Data Dostawy <p-sortIcon field="deliveryTime" />
-        </div>
-        <div class="table-header-content">Adres Dostawy</div>
+      <th style="width: 22%">
+        <div class="table-header-content">Do odbioru</div>
+        <div class="table-header-content">Godzina dostawy</div>
       </th>
       <th>
-        <div class="table-header-content">Opis</div>
+        <div class="table-header-content">Kod odbioru</div>
+        <div class="table-header-content">Adres dostawy</div>
       </th>
     </tr>
   </ng-template>
@@ -58,22 +39,32 @@
           [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
         />
       </td>
-      <td class="custom-td">#{{ order.id }}</td>
       <td class="custom-td">
+        #{{ order.id }}
+        <br />
+        <div>
+          <img
+            style="border-radius: 15px"
+            [src]="'images/' + order.orderType + '.png'"
+          />
+        </div>
+      </td>
+      <td class="custom-td">
+        <div>{{ order.price | pricePln }}</div>
         <p-tag
           [value]="translations[order.status]"
           [severity]="getStatusSeverity(order.status)"
         />
       </td>
-      <td class="custom-td">{{ order.price | currency : "PLN" }}</td>
       <td class="custom-td">
-        <div>{{ order.deliveryTime | formattedDateTime }}</div>
-        <div>{{ order.deliveryAddress }}</div>
+        <div>{{ calcTimeDifference(order.deliveryTime) | minuteFormat }}</div>
+        <!-- <div>{{ order.deliveryTime | formattedOnlyTime }}</div> -->
+        <!-- <div>{{ order.deliveryTime | formattedDateTime }}</div> -->
+        <div>{{ order.approvalDeadline | formattedDateTime }}</div>
       </td>
       <td class="custom-td">
-        <div class="description-container" title="{{ order.description }}">
-          {{ order.description }}
-        </div>
+        <div>{{ order.deliveryCode }}</div>
+        <div>{{ order.deliveryAddress }}</div>
       </td>
     </tr>
   </ng-template>
@@ -81,6 +72,7 @@
     <tr class="expanded-row">
       <td colspan="7">
         <div class="p-3">
+          <p><b>Opis do zamówienia: </b>{{ order.description ?? "" }}</p>
           <p-table [value]="order.orderProducts" dataKey="id">
             <ng-template pTemplate="header">
               <tr>
@@ -94,13 +86,12 @@
               <tr class="custom-tr">
                 <td style="padding: 5px 11px">
                   <img
+                    style="border-radius: 15px"
                     [src]="orderProduct.product.imgUrl"
-                    alt="Product Image"
-                    style="width: 100px; height: 75px"
                   />
                 </td>
                 <td>{{ orderProduct.product.name }}</td>
-                <td>{{ orderProduct.price | currency : "PLN" }}</td>
+                <td>{{ orderProduct.price | pricePln }}</td>
                 <td>{{ orderProduct.quantity }}</td>
                 <!-- Accessing quantity from the map -->
               </tr>
@@ -111,9 +102,17 @@
               </tr>
             </ng-template>
           </p-table>
+          <order-actions
+            [showApprove]="order.actions.showApprove"
+            [showReject]="order.actions.showReject"
+            [showSetDeliveryTime]="order.actions.showSetDeliveryTime"
+            [showPrint]="order.actions.showPrint"
+            [showReadyToPickUp]="order.actions.showReadyToPickUp"
+            [order]="order"
+            [approvalTimeLeft]="approvalTimeLeft(order.approvalDeadline)"
+          ></order-actions>
         </div>
       </td>
     </tr>
   </ng-template>
 </p-table>
-</p-card>

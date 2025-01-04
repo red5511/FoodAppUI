@@ -15,7 +15,6 @@ import { FormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderGuestComponent } from './layout/header-guest/header-guest.component';
-import { DashboardComponent } from './pages/dashboard/dashboard.component';
 import { HttpTokenInterceptor } from './services/interceptor/http-token.interceptor';
 import { SidenavComponent } from './layout/sidenav/sidenav.component';
 import { HeaderLoggedInComponent } from './layout/header-logged-in/header-logged-in.component';
@@ -39,7 +38,7 @@ import { SidebarModule } from 'primeng/sidebar';
 import { DashboardPanelComponent } from './components/dashboard-panel/dashboard-panel.component';
 import { InputSwitchModule } from 'primeng/inputswitch';
 import { OrderListModule } from 'primeng/orderlist';
-import { NewOrderPanelComponent } from './layout/new-order-panel/new-order-panel.component';
+import { OrderActionsComponent } from './components/order-actions/order-actions.component';
 import { PricePlnPipe } from './pipes/price-pln.pipe';
 import { FormattedDatePipe } from './pipes/formatted-date.pipe';
 import { NewOrderTableComponent } from './components/new-order-table/new-order-table.component';
@@ -74,8 +73,12 @@ import { FloatLabel, FloatLabelModule } from 'primeng/floatlabel'; // Add this!
 import { InputNumberModule } from 'primeng/inputnumber';
 import { CalendarWithDialogComponent } from './components/calendar-with-dialog/calendar-with-dialog.component';
 import { FormattedDateTimePipe } from './pipes/formatted-date-time.pipe';
-import { CardModule, } from 'primeng/card'; 
-
+import { CardModule } from 'primeng/card';
+import { MinuteFormatPipe } from './pipes/minute-format.pipe';
+import { FormattedOnlyTimePipe } from './pipes/formatted-only-time.pipe copy';
+import { DeliveyTimeDialogComponent } from './common/components/delivey-time-dialog/delivey-time-dialog.component';
+import { MessagesModule } from 'primeng/messages';
+import { ToastWebsocketComponent } from './common/components/toast-websocket/toast-websocket.component';
 
 @NgModule({
   declarations: [
@@ -86,7 +89,6 @@ import { CardModule, } from 'primeng/card';
     ChangePasswordComponent,
     FooterComponent,
     HeaderGuestComponent,
-    DashboardComponent,
     HeaderLoggedInComponent,
     SidenavComponent,
     Dashboard2Component,
@@ -95,7 +97,7 @@ import { CardModule, } from 'primeng/card';
     BodyComponent,
     CustomToastComponent,
     DashboardPanelComponent,
-    NewOrderPanelComponent,
+    OrderActionsComponent,
     PricePlnPipe,
     FormattedDatePipe,
     NewOrderTableComponent,
@@ -106,6 +108,10 @@ import { CardModule, } from 'primeng/card';
     SwitchWithDialogComponent,
     CalendarWithDialogComponent,
     FormattedDateTimePipe,
+    MinuteFormatPipe,
+    FormattedOnlyTimePipe,
+    DeliveyTimeDialogComponent,
+    ToastWebsocketComponent,
   ],
   imports: [
     RouterModule,
@@ -115,15 +121,16 @@ import { CardModule, } from 'primeng/card';
     AppRoutingModule,
     HttpClientModule,
     CardModule,
+    MessagesModule,
     FormsModule,
     MatIconModule,
+    SelectButtonModule,
     FloatLabelModule,
     InputNumberModule,
     DropdownModule,
     MatToolbarModule,
     CheckboxModule,
     MatMenuModule,
-    SelectButtonModule,
     ToggleButtonModule,
     ConfirmDialogModule,
     MatDividerModule,

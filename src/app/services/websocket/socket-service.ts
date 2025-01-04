@@ -40,6 +40,7 @@ export class SocketService {
   }
 
   connectToMainTopic() {
+    console.log('connectToMainTopic')
     let topicName = this.contextService.getMainWebSocketTopicName();
     if (topicName !== undefined) {
       (this.MAIN_TOPIC = `/user/${topicName}/main`),

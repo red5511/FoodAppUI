@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export { ApprovalDeadlinePassed } from './models/approval-deadline-passed';
 export { ApprovedOrderWebSocketEvent } from './models/approved-order-web-socket-event';
 export { ApproveNewIncomingOrderRequest } from './models/approve-new-incoming-order-request';
 export { AuthenticationRequest } from './models/authentication-request';
@@ -35,6 +36,7 @@ export { ModifyCompanyRequest } from './models/modify-company-request';
 export { ModifyProductRequest } from './models/modify-product-request';
 export { NewOrderWebSocketEvent } from './models/new-order-web-socket-event';
 export { OpenHours } from './models/open-hours';
+export { OrderActions } from './models/order-actions';
 export { OrderDto } from './models/order-dto';
 export { OrderProductDto } from './models/order-product-dto';
 export { OrdersPagedResult } from './models/orders-paged-result';

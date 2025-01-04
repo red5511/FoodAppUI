@@ -18,6 +18,8 @@ import { ehh2 } from '../fn/development/ehh-2';
 import { Ehh2$Params } from '../fn/development/ehh-2';
 import { ehh3 } from '../fn/development/ehh-3';
 import { Ehh3$Params } from '../fn/development/ehh-3';
+import { ehh31 } from '../fn/development/ehh-31';
+import { Ehh31$Params } from '../fn/development/ehh-31';
 import { heartbeatWebSocketEvent } from '../fn/development/heartbeat-web-socket-event';
 import { HeartbeatWebSocketEvent } from '../models/heartbeat-web-socket-event';
 import { HeartbeatWebSocketEvent$Params } from '../fn/development/heartbeat-web-socket-event';
@@ -58,7 +60,7 @@ export class DevelopmentService extends BaseService {
   }
 
   /** Path part for operation `ehh3()` */
-  static readonly Ehh3Path = '/api/v1/development/forGeneratingApi6';
+  static readonly Ehh3Path = '/api/v1/development/forGeneratingApi7';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -78,6 +80,31 @@ export class DevelopmentService extends BaseService {
    */
   ehh3(params: Ehh3$Params, context?: HttpContext): Observable<void> {
     return this.ehh3$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `ehh31()` */
+  static readonly Ehh31Path = '/api/v1/development/forGeneratingApi6';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `ehh31()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  ehh31$Response(params: Ehh31$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return ehh31(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `ehh31$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  ehh31(params: Ehh31$Params, context?: HttpContext): Observable<void> {
+    return this.ehh31$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

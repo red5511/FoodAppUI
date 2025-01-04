@@ -1,7 +1,7 @@
 import { Component, HostListener } from '@angular/core';
 import { LoginService } from './services/login/login.service';
 import { SideNavToggle } from './components/side-nav-toggle.interface';
-import { FilterService, PrimeNGConfig } from 'primeng/api';
+import { FilterService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { SocketService } from './services/websocket/socket-service';
 import { ContextService } from './services/context/context.service';
 import { isCaptureEventType } from '@angular/core/primitives/event-dispatch';
@@ -26,7 +26,8 @@ export class AppComponent {
     private primengConfig: PrimeNGConfig,
     private filterService: FilterService,
     private webSocketService: SocketService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private messageService: MessageService
   ) {
     this.screenWidth = window.innerWidth;
     this.isSideNavVisible =
@@ -44,6 +45,7 @@ export class AppComponent {
   }
 
   ngOnInit() {
+
     window.addEventListener('beforeunload', this.handleWindowClose);
 
     this.primengConfig.setTranslation({

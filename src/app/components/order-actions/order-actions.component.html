@@ -1,0 +1,60 @@
+<button
+  *ngIf="showReject"
+  pButton
+  type="button"
+  label="Odrzuć"
+  icon="pi pi-times"
+  severity="danger"
+  [raised]="true"
+  (click)="rejectOrder()"
+  [disabled]="approvalTimeLeft"
+></button>
+<button
+  *ngIf="showApprove"
+  pButton
+  type="button"
+  [label]="approveButtonText"
+  icon="pi pi-check"
+  severity="success"
+  [raised]="true"
+  (click)="approveOrder()"
+  [disabled]="approvalTimeLeft"
+></button>
+
+<button
+  *ngIf="showSetDeliveryTime"
+  pButton
+  type="button"
+  [raised]="true"
+  [label]="deliveryTimeButtonText"
+  severity="info"
+  icon="pi pi-calendar-clock"
+  (click)="setDeliveryTime()"
+  [disabled]="approvalTimeLeft"
+></button>
+
+<button
+  *ngIf="showReadyToPickUp"
+  pButton
+  type="button"
+  label="Gotowe do odbioru"
+  icon="pi pi-check"
+  [raised]="true"
+  severity="success"
+></button>
+
+<button
+  *ngIf="showPrint"
+  pButton
+  type="button"
+  label="Drukuj"
+  [raised]="true"
+  icon="pi pi-print"
+></button>
+
+<app-delivey-time-dialog
+  [(setTimeDialogvisible)]="setTimeDialogvisible"
+  [deliveryDatePickedByUser]="deliveryDatePickedByUser"
+  [userDeliveryIsBiggerThat1Hour]="userDeliveryIsBiggerThat1Hour()"
+  (selectedTimeChange)="onTimeSelected($event)"
+></app-delivey-time-dialog>

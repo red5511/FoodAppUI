@@ -7,6 +7,7 @@ import {
 } from '@angular/core';
 import { ContextService } from '../../services/context/context.service';
 import { Subject, takeUntil } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenav',
@@ -29,6 +30,7 @@ export class SidenavComponent implements OnInit {
 
   constructor(
     private contextService: ContextService,
+    private router: Router
   ) {
     this.isSubmenuOpen = !this.isSideNavCollapsed && this.isSideNavVisible
   }
@@ -44,13 +46,20 @@ export class SidenavComponent implements OnInit {
     });
   }
 
+  isActive(path: string): boolean {
+    console.log('isActive')
+    console.log(this.router.url)
+    console.log(this.router.url === path)
+    return this.router.url === path;
+  }
+
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
   openCollapsedSideNavToggle() {
-    if (this.isSideNavVisible == false) {
+    if (this.isSideNavCollapsed == true) {
       this.isSubmenuOpen = false;
       this.onOpenCollapsedSideNavToggle.emit();
     }

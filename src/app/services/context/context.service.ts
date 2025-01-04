@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { map } from 'rxjs/operators'; // Import map operator for transforming responses
+import { filter, map } from 'rxjs/operators'; // Import map operator for transforming responses
 import { CompanyDto } from '../models';
 
 export interface Context {
@@ -23,14 +23,13 @@ export class ContextService {
 
   private userReceivingOrdersSubject = new Subject<boolean>();
   userReceivingOrdersSubjectVisibility$ =
-  
     this.userReceivingOrdersSubject.asObservable();
 
   constructor() {}
 
   setContext(
-    companyId: number,//active
-    companyName: string,//active
+    companyId: number, //active
+    companyName: string, //active
     mainWebSocketTopicName: string,
     permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
     userId: number,
@@ -42,7 +41,7 @@ export class ContextService {
       permittedModules,
       mainWebSocketTopicName,
       userId,
-      companies
+      companies,
     };
     this.contextSubject.next(newContext);
   }
@@ -51,8 +50,11 @@ export class ContextService {
     this.userReceivingOrdersSubject.next(isUserReceivingOrdersActive);
   }
 
-  getCompanyIdObservable(): Observable<number | undefined> {
-    return this.contextSubject.pipe(map((context) => context?.companyId));
+  getCompanyIdObservable(): Observable<number> {
+    return this.contextSubject.pipe(
+      map((context) => context?.companyId),
+      filter((companyId): companyId is number => !!companyId)
+    );
   }
 
   getCompanyId(): number | undefined {
@@ -75,7 +77,7 @@ export class ContextService {
     return this.contextSubject.getValue()?.companies;
   }
 
-  isHolding(): boolean{
+  isHolding(): boolean {
     return this.contextSubject.getValue()?.companyId === -888;
   }
 }

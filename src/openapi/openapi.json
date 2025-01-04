@@ -339,10 +339,27 @@
         }
       }
     },
-    "/api/v1/development/forGeneratingApi6": {
+    "/api/v1/development/forGeneratingApi7": {
       "post": {
         "tags": ["Development"],
         "operationId": "ehh3",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ApprovalDeadlinePassed"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/development/forGeneratingApi6": {
+      "post": {
+        "tags": ["Development"],
+        "operationId": "ehh3_1",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1034,11 +1051,22 @@
         "type": "object",
         "properties": { "order": { "$ref": "#/components/schemas/OrderDto" } }
       },
+      "OrderActions": {
+        "type": "object",
+        "properties": {
+          "showApprove": { "type": "boolean" },
+          "showReject": { "type": "boolean" },
+          "showSetDeliveryTime": { "type": "boolean" },
+          "showPrint": { "type": "boolean" },
+          "showReadyToPickUp": { "type": "boolean" }
+        }
+      },
       "OrderDto": {
         "type": "object",
         "properties": {
           "id": { "type": "integer", "format": "int64" },
           "companyId": { "type": "integer", "format": "int64" },
+          "deliveryCode": { "type": "string" },
           "companyName": { "type": "string" },
           "price": { "type": "number" },
           "description": { "type": "string" },
@@ -1049,7 +1077,9 @@
               "WAITING_FOR_ACCEPTANCE",
               "IN_EXECUTION",
               "EXECUTED",
-              "REJECTED"
+              "REJECTED",
+              "READY_FOR_PICK_UP",
+              "NOT_ACCEPTED"
             ]
           },
           "deliveryAddress": { "type": "string" },
@@ -1060,7 +1090,8 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/OrderProductDto" }
           },
-          "approvalDeadline": { "type": "string", "format": "date-time" }
+          "approvalDeadline": { "type": "string", "format": "date-time" },
+          "actions": { "$ref": "#/components/schemas/OrderActions" }
         }
       },
       "OrderProductDto": {
@@ -1104,7 +1135,9 @@
                 "WAITING_FOR_ACCEPTANCE",
                 "IN_EXECUTION",
                 "EXECUTED",
-                "REJECTED"
+                "REJECTED",
+                "READY_FOR_PICK_UP",
+                "NOT_ACCEPTED"
               ]
             }
           },
@@ -1168,7 +1201,14 @@
             "additionalProperties": {
               "type": "string",
               "description": "Map of severity",
-              "enum": ["info", "warning", "success", "danger", "contrast"]
+              "enum": [
+                "info",
+                "warning",
+                "success",
+                "danger",
+                "contrast",
+                "yellow"
+              ]
             },
             "description": "Map of severity"
           },
@@ -1189,7 +1229,9 @@
               "WAITING_FOR_ACCEPTANCE",
               "IN_EXECUTION",
               "EXECUTED",
-              "REJECTED"
+              "REJECTED",
+              "READY_FOR_PICK_UP",
+              "NOT_ACCEPTED"
             ]
           },
           "translatedValue": { "type": "string" }
@@ -1218,7 +1260,8 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           }
         },
@@ -1237,12 +1280,33 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           },
           "order": { "$ref": "#/components/schemas/OrderDto" }
         },
         "description": "Event for a new order created via WebSocket"
+      },
+      "ApprovalDeadlinePassed": {
+        "required": ["eventType", "orderId"],
+        "type": "object",
+        "properties": {
+          "eventType": {
+            "type": "string",
+            "description": "Event types for WebSocket events",
+            "enum": [
+              "NEW_ORDER",
+              "HEARTBEAT",
+              "DISCONNECTION",
+              "SERVER_SIDE_DISCONNECTION",
+              "APPROVED_ORDER",
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
+            ]
+          },
+          "orderId": { "type": "integer", "format": "int64" }
+        }
       },
       "ApprovedOrderWebSocketEvent": {
         "required": ["eventType", "orderId"],
@@ -1257,7 +1321,8 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           },
           "orderId": { "type": "integer", "format": "int64" }
@@ -1276,7 +1341,8 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           },
           "orderId": { "type": "integer", "format": "int64" }
@@ -1296,7 +1362,8 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           }
         }
@@ -1319,7 +1386,8 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           },
           "userId": { "type": "integer", "format": "int64" },
@@ -1329,7 +1397,12 @@
         "description": "Disconnection event via WebSocket"
       },
       "HeartbeatWebSocketEvent": {
-        "required": ["companyId", "eventType", "userId"],
+        "required": [
+          "companyId",
+          "eventType",
+          "orderReceivingTopicName",
+          "userId"
+        ],
         "type": "object",
         "properties": {
           "eventType": {
@@ -1341,11 +1414,13 @@
               "DISCONNECTION",
               "SERVER_SIDE_DISCONNECTION",
               "APPROVED_ORDER",
-              "REJECTED_ORDER"
+              "REJECTED_ORDER",
+              "APPROVAL_DEADLINE_PASSED"
             ]
           },
           "userId": { "type": "integer", "format": "int64" },
-          "companyId": { "type": "integer", "format": "int64" }
+          "companyId": { "type": "integer", "format": "int64" },
+          "orderReceivingTopicName": { "type": "string" }
         },
         "description": "Heartbeat event via WebSocket"
       },
@@ -1355,7 +1430,8 @@
           "sorts": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Sort" }
-          }
+          },
+          "isWaitingToAcceptanceSection": { "type": "boolean" }
         }
       },
       "DashboardGetOrdersResponse": {
