@@ -6216,6 +6216,10 @@
     background-color: #f97316;
     color: #ffffff;
   }
+  .p-tag.p-tag-yellow {
+    background-color: #eab308;
+    color: #ffffff;
+  }
   .p-tag.p-tag-danger {
     background-color: #ef4444;
     color: #ffffff;
