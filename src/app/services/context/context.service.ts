@@ -4,14 +4,11 @@ import { filter, map } from 'rxjs/operators'; // Import map operator for transfo
 import { CompanyDto } from '../models';
 
 export interface Context {
-  companyId: number;
-  // isCompanyReceivingOrdersActive: boolean;
-  // isUserReceivingOrdersActive: boolean;
-  companyName: string;
-  mainWebSocketTopicName: string;
+  selectedCompany: CompanyDto;
   permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
   userId: number;
   companies: CompanyDto[];
+  receivingCompanies: CompanyDto[];
 }
 
 @Injectable({
@@ -28,20 +25,18 @@ export class ContextService {
   constructor() {}
 
   setContext(
-    companyId: number, //active
-    companyName: string, //active
-    mainWebSocketTopicName: string,
+    selectedCompany: CompanyDto, //active
     permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
     userId: number,
-    companies: CompanyDto[]
+    companies: CompanyDto[],
+    receivingCompanies: CompanyDto[]
   ) {
     const newContext: Context = {
-      companyId,
-      companyName,
+      selectedCompany,
       permittedModules,
-      mainWebSocketTopicName,
       userId,
       companies,
+      receivingCompanies,
     };
     this.contextSubject.next(newContext);
   }
@@ -52,17 +47,13 @@ export class ContextService {
 
   getCompanyIdObservable(): Observable<number> {
     return this.contextSubject.pipe(
-      map((context) => context?.companyId),
+      map((context) => context?.selectedCompany.id),
       filter((companyId): companyId is number => !!companyId)
     );
   }
 
   getCompanyId(): number | undefined {
-    return this.contextSubject.getValue()?.companyId;
-  }
-
-  getMainWebSocketTopicName(): string | undefined {
-    return this.contextSubject.getValue()?.mainWebSocketTopicName;
+    return this.contextSubject.getValue()?.selectedCompany.id;
   }
 
   getContext(): Context | null {
@@ -77,7 +68,51 @@ export class ContextService {
     return this.contextSubject.getValue()?.companies;
   }
 
+  getReceivingCompanies(): CompanyDto[] | undefined {
+    return this.contextSubject.getValue()?.receivingCompanies;
+  }
+
+  getReceivingCompaniesTopicNames(): string[] | undefined {
+    return this.contextSubject
+      .getValue()
+      ?.receivingCompanies.map((company) => company.webSocketTopicName);
+  }
+
+  getReceivingCompaniesIds(): number[] | undefined {
+    return this.contextSubject
+      .getValue()
+      ?.receivingCompanies.map((company) => company.id);
+  }
+
   isHolding(): boolean {
-    return this.contextSubject.getValue()?.companyId === -888;
+    return this.contextSubject.getValue()?.selectedCompany.id === -888;
+  }
+
+  setReceivingCompaniesWithoutNext() {
+    const currentContext = this.contextSubject.getValue();
+
+    if (currentContext) {
+      // Modify the current value directly
+      currentContext.receivingCompanies = [currentContext.selectedCompany];
+      // Do not call next() to avoid notifying subscribers
+    } else {
+      console.error('Cannot update receivingCompanies: Context is null');
+    }
+  }
+
+  setReceivingCompaniesWithoutNextHolding(companyIds: number[]): void {
+    const currentContext = this.contextSubject.getValue();
+
+    if (currentContext) {
+      if (companyIds.length === 0) {
+        currentContext.receivingCompanies.length = 0;
+      } else {
+        currentContext.receivingCompanies = currentContext.companies.filter(
+          (company) => companyIds.includes(company.id)
+        );
+      }
+    } else {
+      console.error('Cannot update receivingCompanies: Context is null');
+    }
   }
 }

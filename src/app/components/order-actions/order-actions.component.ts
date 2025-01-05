@@ -145,11 +145,9 @@ export class OrderActionsComponent {
 
   approveOrder() {
     let companyId = this.contextService.getCompanyId();
-    let topicName = this.contextService.getMainWebSocketTopicName();
     let approveRequest: ApproveNewIncomingOrderRequest = {
       companyId: companyId ?? -999,
       orderId: this.order.id ?? -999,
-      orderReceivingTopicName: topicName ?? '-999',
     };
     this.orderService
       .approveNewIncomingOrder({ body: approveRequest })
@@ -160,11 +158,9 @@ export class OrderActionsComponent {
 
   rejectOrder() {
     let companyId = this.contextService.getCompanyId();
-    let topicName = this.contextService.getMainWebSocketTopicName();
     let rejectRequest: RejectNewIncomingOrderRequest = {
       companyId: companyId ?? -999,
       orderId: this.order.id ?? -999,
-      orderReceivingTopicName: topicName ?? '-999',
     };
     this.orderService
       .rejectNewIncomingOrder({ body: rejectRequest })

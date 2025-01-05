@@ -10,14 +10,12 @@ import { DashboardGetOrdersResponse } from '../../models/dashboard-get-orders-re
 import { GetActiveOrdersRequest } from '../../models/get-active-orders-request';
 
 export interface GetActiveOrders$Params {
-  companyId: number;
       body: GetActiveOrdersRequest
 }
 
 export function getActiveOrders(http: HttpClient, rootUrl: string, params: GetActiveOrders$Params, context?: HttpContext): Observable<StrictHttpResponse<DashboardGetOrdersResponse>> {
   const rb = new RequestBuilder(rootUrl, getActiveOrders.PATH, 'post');
   if (params) {
-    rb.path('companyId', params.companyId, {});
     rb.body(params.body, 'application/json');
   }
 

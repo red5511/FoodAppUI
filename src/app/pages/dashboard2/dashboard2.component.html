@@ -11,5 +11,9 @@
       optionValue="value"
     />
   </div>
-  <app-new-order-table [orders]="orders"></app-new-order-table>
+  <app-new-order-table
+    [orders]="orders"
+    [isHolding]="contextService.isHolding()"
+    [expandedRows]="expandedRows"
+  ></app-new-order-table>
 </p-card>

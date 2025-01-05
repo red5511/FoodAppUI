@@ -3,5 +3,4 @@
 export interface ApproveNewIncomingOrderRequest {
   companyId: number;
   orderId: number;
-  orderReceivingTopicName: string;
 }

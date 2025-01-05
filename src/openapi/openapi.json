@@ -472,14 +472,6 @@
       "post": {
         "tags": ["Dashboard"],
         "operationId": "getActiveOrders",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -904,6 +896,7 @@
           "openHours": { "$ref": "#/components/schemas/OpenHours" },
           "companyType": { "type": "string", "enum": ["FOOD"] },
           "webSocketTopicName": { "type": "string" },
+          "holding": { "type": "boolean" },
           "receivingOrdersActive": { "type": "boolean" }
         }
       },
@@ -942,17 +935,28 @@
         }
       },
       "InitOrderWebSocketTopicRequest": {
-        "required": ["companyId", "webSocketTopicName"],
+        "required": ["companyIdsToAdd", "companyIdsToRemove"],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "integer",
-            "description": "company id",
-            "format": "int64"
+          "companyIdsToAdd": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "company ids to add",
+            "items": {
+              "type": "integer",
+              "description": "company ids to add",
+              "format": "int64"
+            }
           },
-          "webSocketTopicName": {
-            "type": "string",
-            "description": "websocket topic name"
+          "companyIdsToRemove": {
+            "uniqueItems": true,
+            "type": "array",
+            "description": "company ids to remove",
+            "items": {
+              "type": "integer",
+              "description": "company ids to remove",
+              "format": "int64"
+            }
           }
         }
       },
@@ -1105,12 +1109,11 @@
         }
       },
       "RejectNewIncomingOrderRequest": {
-        "required": ["companyId", "orderId", "orderReceivingTopicName"],
+        "required": ["companyId", "orderId"],
         "type": "object",
         "properties": {
           "companyId": { "type": "integer", "format": "int64" },
-          "orderId": { "type": "integer", "format": "int64" },
-          "orderReceivingTopicName": { "type": "string" }
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "GetOrdersForCompanyRequest": {
@@ -1239,12 +1242,11 @@
         "description": "List of status models"
       },
       "ApproveNewIncomingOrderRequest": {
-        "required": ["companyId", "orderId", "orderReceivingTopicName"],
+        "required": ["companyId", "orderId"],
         "type": "object",
         "properties": {
           "companyId": { "type": "integer", "format": "int64" },
-          "orderId": { "type": "integer", "format": "int64" },
-          "orderReceivingTopicName": { "type": "string" }
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "WebSocketEvent": {
@@ -1369,12 +1371,7 @@
         }
       },
       "DisconnectionWebSocketEvent": {
-        "required": [
-          "companyId",
-          "eventType",
-          "orderReceivingTopicName",
-          "userId"
-        ],
+        "required": ["companyIds", "eventType", "userId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -1391,18 +1388,22 @@
             ]
           },
           "userId": { "type": "integer", "format": "int64" },
-          "companyId": { "type": "integer", "format": "int64" },
-          "orderReceivingTopicName": { "type": "string" }
+          "companyId": {
+            "uniqueItems": true,
+            "type": "array",
+            "writeOnly": true,
+            "items": { "type": "integer", "format": "int64" }
+          },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          }
         },
         "description": "Disconnection event via WebSocket"
       },
       "HeartbeatWebSocketEvent": {
-        "required": [
-          "companyId",
-          "eventType",
-          "orderReceivingTopicName",
-          "userId"
-        ],
+        "required": ["companyIds", "eventType", "userId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -1419,19 +1420,28 @@
             ]
           },
           "userId": { "type": "integer", "format": "int64" },
-          "companyId": { "type": "integer", "format": "int64" },
-          "orderReceivingTopicName": { "type": "string" }
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          }
         },
         "description": "Heartbeat event via WebSocket"
       },
       "GetActiveOrdersRequest": {
+        "required": ["companyIds", "isWaitingToAcceptanceSection"],
         "type": "object",
         "properties": {
           "sorts": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "isWaitingToAcceptanceSection": { "type": "boolean" }
+          "isWaitingToAcceptanceSection": { "type": "boolean" },
+          "companyIds": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          }
         }
       },
       "DashboardGetOrdersResponse": {

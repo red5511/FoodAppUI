@@ -102,14 +102,12 @@ export class WebSocketEventHandler {
   }
 
   sendHeartbeatEvent(destination: string, socketClient: any) {
-    const companyId = this.contextService.getCompanyId();
+    const companyIds = this.contextService.getReceivingCompaniesIds() ?? [-999];
     const userId = this.contextService.getUserId();
-    const topicName = this.contextService.getMainWebSocketTopicName();
     const event: HeartbeatWebSocketEvent = {
       eventType: 'HEARTBEAT',
-      companyId: companyId ?? -999,
+      companyIds,
       userId: userId ?? -999,
-      orderReceivingTopicName: topicName ?? ';(',
     };
     socketClient.send(
       '/app/heartbeat', // Backend endpoint to send the event to
@@ -120,19 +118,17 @@ export class WebSocketEventHandler {
   }
 
   sendDisconnectionEvent(socketClient: any) {
-    const companyId = this.contextService.getCompanyId();
+    const companyIds = this.contextService.getReceivingCompaniesIds() ?? [-999];
     const userId = this.contextService.getUserId();
-    const topicName = this.contextService.getMainWebSocketTopicName();
     const event: DisconnectionWebSocketEvent = {
       eventType: 'DISCONNECTION',
-      companyId: companyId ?? -999,
+      companyIds,
       userId: userId ?? -999,
-      orderReceivingTopicName: topicName ?? '-99999',
     };
     socketClient.send(
-      '/app/disconnect', // Backend endpoint to send the event to
-      {}, // Optional headers
-      JSON.stringify(event) // The message payload
+      '/app/disconnect',
+      {},
+      JSON.stringify(event)
     );
   }
 }

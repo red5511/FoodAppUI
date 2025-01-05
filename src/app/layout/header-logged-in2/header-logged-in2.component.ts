@@ -24,6 +24,8 @@ export class HeaderLoggedIn2Component {
   value: string = 'one-way';
   userId!: number;
   isHolding!: boolean;
+  receivingCompanies: CompanyDto[] = []
+  companiesPossibleToReceiving!: CompanyDto[];
   constructor(
     private dashboardService: DashboardService,
     private contextService: ContextService,
@@ -35,6 +37,7 @@ export class HeaderLoggedIn2Component {
       (response) => {
         if (response.companyDataList && response.companyDataList.length > 0) {
           this.companies = response.companyDataList;
+          this.companiesPossibleToReceiving = this.companies.filter(company => !company.holding)
           let firstCompany = response.companyDataList[0];
           if (!!firstCompany) {
             this.selectedCompany = firstCompany;
@@ -73,6 +76,12 @@ export class HeaderLoggedIn2Component {
     }
   }
 
+  onStartReceiving(){
+    console.log('onStartReceiving')
+    console.log(this.receivingCompanies)
+    this.updateContext(undefined)
+  }
+
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
@@ -91,12 +100,11 @@ export class HeaderLoggedIn2Component {
           ? this.companies.slice(0, -1)
           : this.companies;
       this.contextService.setContext(
-        this.selectedCompany.id as number,
-        this.selectedCompany.name as string,
-        this.selectedCompany.webSocketTopicName as string,
+        this.selectedCompany,
         permittedModules,
         this.userId,
-        companies
+        companies,
+        this.receivingCompanies
       );
     }
   }
@@ -109,6 +117,7 @@ export class HeaderLoggedIn2Component {
     localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
     localStorage.removeItem('lastRecivingOrdersComanyId');
     this.webSocketService.processDisconnection();
+    this.receivingCompanies = []
     this.updateContext(undefined);
     this.isHolding = this.contextService.isHolding();
   }

@@ -9,7 +9,7 @@ import {
   calculateMinutesDifferenceCeil,
   calculateSecondsDifferenceFloor,
 } from '../../common/dateUtils';
-import clone from 'lodash/clone';
+import { ContextService } from '../../services/context/context.service';
 
 @Component({
   selector: 'app-new-order-table',
@@ -17,8 +17,11 @@ import clone from 'lodash/clone';
   styleUrls: ['./new-order-table.component.scss'], // Fix typo, should be "styleUrls"
 })
 export class NewOrderTableComponent {
-  @Input()
+  @Input({ required: true })
   orders: OrderDto[] = [];
+  @Input({ required: true })
+  isHolding: boolean = true;
+  @Input({ required: true })
   expandedRows: { [s: string]: boolean } = {};
   translations: { [key: string]: string } = {
     WAITING_FOR_ACCEPTANCE: 'W akceptacji',

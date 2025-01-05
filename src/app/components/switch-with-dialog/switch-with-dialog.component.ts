@@ -1,7 +1,10 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ContextService } from '../../services/context/context.service';
 import { WebSocketService } from '../../services/services';
-import { InitOrderWebSocketTopicRequest } from '../../services/models';
+import {
+  CompanyDto,
+  InitOrderWebSocketTopicRequest,
+} from '../../services/models';
 import { SocketService } from '../../services/websocket/socket-service';
 
 @Component({
@@ -10,10 +13,16 @@ import { SocketService } from '../../services/websocket/socket-service';
   styleUrl: './switch-with-dialog.component.scss',
 })
 export class SwitchWithDialogComponent {
-  @Input() webSocketTopicName!: string;
-  @Input() isDisabled = false;
   @Input({ required: true }) isChecked!: boolean;
-  @Output() onToogleCheckbox: EventEmitter<boolean> = new EventEmitter();
+  @Input({ required: true }) isHolding!: boolean;
+  @Input({ required: true }) companies!: CompanyDto[];
+  @Input({ required: true }) receivingCompanies!: CompanyDto[];
+  @Output()
+  onStartReceiving: EventEmitter<any> = new EventEmitter<any>();
+  selectedCompanies: CompanyDto[] = [];
+  isHoldingButtonDisabled: boolean = true;
+  labelName: string = 'Odbieraj';
+  showStopAllButton: boolean = false;
 
   dialogVisible = false; // Visibility of the confirmation dialog
   constructor(
@@ -57,28 +66,39 @@ export class SwitchWithDialogComponent {
     const primaryColor1 = rootStyles
       .getPropertyValue('--primary-color1')
       .trim();
-    const primaryWhite = rootStyles
-      .getPropertyValue('--primary-white')
-      .trim();
-    const green = rootStyles
-      .getPropertyValue('--primary-green')
-      .trim();
+    const primaryWhite = rootStyles.getPropertyValue('--primary-white').trim();
+    const green = rootStyles.getPropertyValue('--primary-green').trim();
     this.config.color.unchecked = primaryWhite;
     this.config.color.checked = green;
     this.config.switchColor.unchecked = primaryColor1;
     this.config.switchColor.checked = primaryColor1;
+    this.selectedCompanies = structuredClone(this.receivingCompanies);
   }
 
   ngOnChanges() {
     console.log(this.isChecked);
     console.log('isChecked');
     console.log('ngOnChanges w dialogu');
+    this.selectedCompanies = structuredClone(this.receivingCompanies);
     if (this.isChecked) {
       this.requestInitOrderWebSocketTopic();
     }
   }
+
+  ngOnDestroy(): void {
+    console.log('ngOnDestroy XDDD');
+  }
+
   onCancel(): void {
     this.dialogVisible = false; // Close the dialog without toggling
+  }
+
+  onShowDialog() {
+    this.isHoldingButtonDisabled = true;
+  }
+
+  onHideDialog(){
+    this.selectedCompanies = structuredClone(this.receivingCompanies)
   }
 
   onConfirm(): void {
@@ -89,10 +109,48 @@ export class SwitchWithDialogComponent {
       localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
       localStorage.removeItem('lastRecivingOrdersComanyId');
       this.isChecked = !this.isChecked;
-      console.log('place#2')
+      console.log('place#2');
       this.contextService.setUserReceivingOrdersActive(this.isChecked);
     }
   }
+
+  onConfirmHolding() {
+    this.requestInitOrderWebSocketTopicHolding();
+    this.dialogVisible = false;
+    setTimeout(() => {
+      this.showStopAllButton = true;
+    }, 300); // Delay in milliseconds
+  }
+
+  onStopAllHolding() {
+    this.requestInitOrderWebSocketTopicStopAllHolding();
+    this.dialogVisible = false;
+    setTimeout(() => {
+      this.showStopAllButton = true;
+    }, 300); // Delay in milliseconds
+  }
+
+  onCheckboxChange() {
+    this.labelName = this.receivingCompanies.length > 1 ? 'Zmień' : 'Odbieraj';
+    if (
+      !this.areArraysIdentical(this.receivingCompanies, this.selectedCompanies)
+    ) {
+      this.isHoldingButtonDisabled = false;
+    } else {
+      this.isHoldingButtonDisabled = true;
+    }
+  }
+
+  areArraysIdentical(arr1: CompanyDto[], arr2: CompanyDto[]): boolean {
+    if (arr1.length !== arr2.length) {
+      return false;
+    }
+    const areIdentical = arr1.every((company1) =>
+      arr2.some((company2) => company1.id === company2.id)
+    );
+    return areIdentical;
+  }
+
   preventToggle(event: Event): void {
     // Prevent the toggle from toggling on click
     event.preventDefault();
@@ -101,14 +159,65 @@ export class SwitchWithDialogComponent {
   }
 
   requestInitOrderWebSocketTopic() {
+    const companyIdsToAdd = [this.contextService.getCompanyId() ?? -999];
     const body: InitOrderWebSocketTopicRequest = {
-      companyId: this.contextService.getCompanyId() ?? -999,
-      webSocketTopicName: this.webSocketTopicName,
+      companyIdsToAdd,
+      companyIdsToRemove: [],
     };
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = true;
-        console.log('place#1')
+        console.log('place#1');
+        this.contextService.setReceivingCompaniesWithoutNext();
+        this.contextService.setUserReceivingOrdersActive(this.isChecked);
+        this.onStartReceiving.emit()
+      },
+    });
+  }
+
+  requestInitOrderWebSocketTopicHolding() {
+    const receivingCompaniesIds = this.receivingCompanies.map(
+      (company) => company.id
+    );
+    const selectedCompaniesIds = this.selectedCompanies.map(
+      (company) => company.id
+    );
+    const companyIdsToAdd = selectedCompaniesIds.filter(
+      (selectedId) => !receivingCompaniesIds.includes(selectedId)
+    );
+    const companyIdsToRemove = receivingCompaniesIds.filter(
+      (receivingId) => !selectedCompaniesIds.includes(receivingId)
+    );
+    const body: InitOrderWebSocketTopicRequest = {
+      companyIdsToAdd,
+      companyIdsToRemove,
+    };
+    this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
+      next: () => {
+        this.isChecked = selectedCompaniesIds.length !== 0 ? true : false;
+        console.log('place#1');
+        this.receivingCompanies.length = 0;
+        this.receivingCompanies.push(...this.selectedCompanies);
+        this.contextService.setReceivingCompaniesWithoutNextHolding(
+          selectedCompaniesIds
+        );
+        this.contextService.setUserReceivingOrdersActive(this.isChecked);
+        this.onStartReceiving.emit()
+      },
+    });
+  }
+
+  requestInitOrderWebSocketTopicStopAllHolding() {
+    const body: InitOrderWebSocketTopicRequest = {
+      companyIdsToAdd: [],
+      companyIdsToRemove: this.receivingCompanies.map((company) => company.id),
+    };
+    this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
+      next: () => {
+        this.isChecked = false;
+        console.log('place#1');
+        this.receivingCompanies.length = 0;
+        this.contextService.setReceivingCompaniesWithoutNextHolding([]);
         this.contextService.setUserReceivingOrdersActive(this.isChecked);
       },
     });

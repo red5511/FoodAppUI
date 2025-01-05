@@ -1,9 +1,4 @@
-import {
-  ChangeDetectorRef,
-  Component,
-  SimpleChanges,
-  ViewChild,
-} from '@angular/core';
+import { Component } from '@angular/core';
 import { DashboardService } from '../../services/services';
 import { switchMap, filter, takeUntil, merge, Subject } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
@@ -15,7 +10,6 @@ import {
 } from '../../services/models';
 import { WebSocketEventHandler } from '../../services/websocket/web-socket-event-handler';
 import { GetActiveOrders$Params } from '../../services/fn/dashboard/get-active-orders';
-import { SelectButton } from 'primeng/selectbutton';
 
 @Component({
   selector: 'app-dashboard2',
@@ -30,10 +24,11 @@ export class Dashboard2Component {
   ];
   stateOptionsValue: 'TO_HANDLE' | 'TO_WAITING_FOR_ACCEPTANCE' = 'TO_HANDLE';
   orders: OrderDto[] = [];
+  expandedRows: { [s: string]: boolean } = {};
 
   constructor(
     private dashboardService: DashboardService,
-    private contextService: ContextService,
+    protected contextService: ContextService,
     private webSocketEventHandler: WebSocketEventHandler
   ) {}
 
@@ -79,12 +74,20 @@ export class Dashboard2Component {
       direction,
       field,
     };
+
+    const companyIds =
+      companyId !== -888
+        ? [companyId]
+        : this.contextService.getReceivingCompaniesIds() ?? [-999];
     const body: GetActiveOrdersRequest = {
       sorts: [sort],
       isWaitingToAcceptanceSection:
         this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE',
+      companyIds,
     };
-    const params: GetActiveOrders$Params = { companyId, body };
+    const params: GetActiveOrders$Params = { body };
+    console.log('powinienem strzlic a nie strzelam');
+    console.log(body);
     return this.dashboardService.getActiveOrders(params);
   }
 
@@ -98,5 +101,18 @@ export class Dashboard2Component {
 
   handleOrdersResponse(response: DashboardGetOrdersResponse) {
     this.orders = response.orderList ?? [];
+    this.expandFirst()
+  }
+
+  expandFirst() {
+    console.log('expandFirst')
+    console.log(this.orders)
+    if (this.orders.length > 0) {
+      const firstOrder = this.orders[0];
+      this.expandedRows = {}
+      this.expandedRows[firstOrder.id!] = true;
+      console.log(this.expandedRows)
+
+    }
   }
 }

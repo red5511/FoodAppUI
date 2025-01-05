@@ -2,6 +2,7 @@
 /* eslint-disable */
 import { Sort } from '../models/sort';
 export interface GetActiveOrdersRequest {
-  isWaitingToAcceptanceSection?: boolean;
+  companyIds: Array<number>;
+  isWaitingToAcceptanceSection: boolean;
   sorts?: Array<Sort>;
 }

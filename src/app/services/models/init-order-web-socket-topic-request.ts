@@ -3,12 +3,12 @@
 export interface InitOrderWebSocketTopicRequest {
 
   /**
-   * company id
+   * company ids to add
    */
-  companyId: number;
+  companyIdsToAdd: Array<number>;
 
   /**
-   * websocket topic name
+   * company ids to remove
    */
-  webSocketTopicName: string;
+  companyIdsToRemove: Array<number>;
 }
