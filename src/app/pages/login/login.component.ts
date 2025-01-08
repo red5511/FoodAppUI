@@ -39,7 +39,7 @@ export class LoginComponent {
             this.message = 'Account created successfully';
             this.tokenService.token = response.token as string;
             setTimeout(() => {
-              this.loginService.loggedIn();
+              this.loginService.changeLoggedInStatus();
               this.router.navigate(['dashboard2']);
             }, 300);
           }

@@ -12,9 +12,10 @@ export class SortableColumnEntryComponent {
   @Output() sortChanged: EventEmitter<{ field: string; state: 'ASC' | 'DESC' | 'NONE' }> =
     new EventEmitter();
 
+  noNoneField: string = 'createdDate'
   // Cycle the sorting state
   cycleSort() {
-    const nextState = this.getNextSortState(this.sortState[this.field]);
+    const nextState = this.getNextSortState(this.sortState[this.field], this.field);
 
     // Update the sort state for this field
     this.sortState[this.field] = nextState;
@@ -29,13 +30,16 @@ export class SortableColumnEntryComponent {
   }
 
   // Determine the next sorting state
-  getNextSortState(currentState: string): 'ASC' | 'DESC' | 'NONE' {
+  getNextSortState(currentState: string, field: string): 'ASC' | 'DESC' | 'NONE' {
     switch (currentState) {
       case 'NONE':
         return 'ASC';
       case 'ASC':
         return 'DESC';
       case 'DESC':
+        if(this.noNoneField === field){
+          return 'ASC'
+        }
         return 'NONE';
       default:
         return 'ASC';

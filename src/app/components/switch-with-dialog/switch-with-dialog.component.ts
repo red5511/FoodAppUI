@@ -18,7 +18,7 @@ export class SwitchWithDialogComponent {
   @Input({ required: true }) companies!: CompanyDto[];
   @Input({ required: true }) receivingCompanies!: CompanyDto[];
   @Output()
-  onStartReceiving: EventEmitter<any> = new EventEmitter<any>();
+  onStartReceiving: EventEmitter<CompanyDto[]> = new EventEmitter<CompanyDto[]>();
   selectedCompanies: CompanyDto[] = [];
   isHoldingButtonDisabled: boolean = true;
   labelName: string = 'Odbieraj';
@@ -167,10 +167,13 @@ export class SwitchWithDialogComponent {
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = true;
-        console.log('place#1');
+        console.log('place#1 :)))');
+        this.receivingCompanies.length = 0;
+        this.receivingCompanies.push(this.contextService.getCompany()!);
+        console.log(this.receivingCompanies);
         this.contextService.setReceivingCompaniesWithoutNext();
         this.contextService.setUserReceivingOrdersActive(this.isChecked);
-        this.onStartReceiving.emit()
+        this.onStartReceiving.emit(this.receivingCompanies)
       },
     });
   }

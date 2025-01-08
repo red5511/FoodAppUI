@@ -1,75 +1,31 @@
-<ng-toggle
-  class="custom-ng-toggle"
-  [(ngModel)]="isChecked"
-  [disabled]="config.disabled"
-  [width]="config.width"
-  [height]="config.height"
-  [margin]="config.margin"
-  [labels]="config.labels"
-  [color]="config.color"
-  [switchColor]="config.switchColor"
-  [fontColor]="config.fontColor"
-  [fontSize]="config.fontSize"
-  [textAlign]="config.textAlign"
-  (click)="preventToggle($event)"
-  required
-></ng-toggle>
+<ng-toggle class="custom-ng-toggle" [(ngModel)]="isChecked" [disabled]="config.disabled" [width]="config.width"
+  [height]="config.height" [margin]="config.margin" [labels]="config.labels" [color]="config.color"
+  [switchColor]="config.switchColor" [fontColor]="config.fontColor" [fontSize]="config.fontSize"
+  [textAlign]="config.textAlign" (click)="preventToggle($event)" required></ng-toggle>
 
-<p-dialog
-  *ngIf="!isHolding"
-  [(visible)]="dialogVisible"
-  [header]="'Uruchomienie odbierania zamówień'"
-  [closable]="true"
-  [modal]="true"
-  [dismissableMask] = "true"
->
+<p-dialog *ngIf="!isHolding" [(visible)]="dialogVisible" [header]="'Uruchomienie odbierania zamówień'" [closable]="true"
+  [modal]="true" [dismissableMask]="true">
   <p>
     {{
-      isChecked
-        ? "Czy chcesz zatrzymać odbieranie zamówień"
-        : "Czy chcesz rozpocząć odbieranie zamówień"
+    isChecked
+    ? "Czy chcesz zatrzymać odbieranie zamówień"
+    : "Czy chcesz rozpocząć odbieranie zamówień"
     }}
   </p>
   <div class="dialog-footer">
-    <button
-      pButton
-      type="button"
-      label="Nie"
-      icon="pi pi-times"
-      class="p-button-text custom-cancel-button"
-      (click)="onCancel()"
-    ></button>
-    <button
-      pButton
-      type="button"
-      label="Tak"
-      icon="pi pi-check"
-      (click)="onConfirm()"
-      class="custom-confirm-button"
-    ></button>
+    <button pButton type="button" label="Nie" icon="pi pi-times" class="p-button-text custom-cancel-button"
+      (click)="onCancel()"></button>
+    <button pButton type="button" label="Tak" icon="pi pi-check" (click)="onConfirm()"
+      class="custom-confirm-button"></button>
   </div>
 </p-dialog>
 
-<p-dialog
-  *ngIf="isHolding"
-  class="holding-dialog"
-  [(visible)]="dialogVisible"
-  [header]="'Wybierz firmy, dla których uruchomić przyjmowanie zamówień'"
-  [closable]="true"
-  [modal]="true"
-  (onShow)="onShowDialog()"
-  (onHide)="onHideDialog()"
-  [dismissableMask] = "true"
->
-  <p-table
-    [styleClass]="'p-datatable-sm'"
-    [value]="companies"
-    [(selection)]="selectedCompanies"
-    dataKey="id"
-    (onRowSelect)="onCheckboxChange()"
-    (onRowUnselect)="onCheckboxChange()"
-    (onHeaderCheckboxToggle)="onCheckboxChange()"
-  >
+<p-dialog *ngIf="isHolding" class="holding-dialog" [(visible)]="dialogVisible"
+  [header]="'Wybierz firmy, dla których uruchomić przyjmowanie zamówień'" [closable]="true" [modal]="true"
+  (onShow)="onShowDialog()" (onHide)="onHideDialog()" [dismissableMask]="true">
+  <p-table [styleClass]="'p-datatable-sm'" [value]="companies" [(selection)]="selectedCompanies" dataKey="id"
+    (onRowSelect)="onCheckboxChange()" (onRowUnselect)="onCheckboxChange()"
+    (onHeaderCheckboxToggle)="onCheckboxChange()">
     <ng-template pTemplate="header">
       <tr>
         <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
@@ -87,27 +43,11 @@
   </p-table>
 
   <div class="holding-buttons">
-    <button
-      *ngIf="showStopAllButton && receivingCompanies.length > 0"
-      pButton
-      type="button"
-      label="Zatrzymaj wszystkie"
-      icon="pi pi-stop-circle"
-      severity="danger"
-      [raised]="true"
-      (click)="onStopAllHolding()"
-    ></button>
+    <button *ngIf="showStopAllButton && receivingCompanies.length > 0" pButton type="button" label="Zatrzymaj wszystkie"
+      icon="pi pi-stop-circle" severity="danger" [raised]="true" (click)="onStopAllHolding()"></button>
 
-    <button
-      pButton
-      class="custom-confirm-button"
-      [disabled]="isHoldingButtonDisabled"
-      type="button"
-      [label]="receivingCompanies.length > 0 ? 'Zmień' : 'Odbieraj'"
-      icon="pi pi-check"
-      (click)="onConfirmHolding()"
-      class="custom-confirm-button"
-      [raised]="true"
-    ></button>
+    <button pButton class="custom-confirm-button" [disabled]="isHoldingButtonDisabled" type="button"
+      [label]="receivingCompanies.length > 0 ? 'Zmień' : 'Odbieraj'" icon="pi pi-check" (click)="onConfirmHolding()"
+      class="custom-confirm-button" [raised]="true"></button>
   </div>
 </p-dialog>

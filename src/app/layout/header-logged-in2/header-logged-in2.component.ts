@@ -3,6 +3,9 @@ import { DashboardService } from '../../services/services/dashboard.service';
 import { CompanyDto } from '../../services/models';
 import { ContextService } from '../../services/context/context.service';
 import { SocketService } from '../../services/websocket/socket-service';
+import { TokenService } from '../../services/token/token.service';
+import { LoginService } from '../../services/login/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header-logged-in2',
@@ -29,7 +32,10 @@ export class HeaderLoggedIn2Component {
   constructor(
     private dashboardService: DashboardService,
     private contextService: ContextService,
-    private webSocketService: SocketService
+    private webSocketService: SocketService,
+    private tokenService: TokenService,
+    private loginService: LoginService,
+    private router: Router
   ) {}
 
   ngOnInit(): void {
@@ -76,10 +82,14 @@ export class HeaderLoggedIn2Component {
     }
   }
 
-  onStartReceiving(){
+  onStartReceiving(xd: CompanyDto[]){
     console.log('onStartReceiving')
+    console.log(xd)
     console.log(this.receivingCompanies)
     this.updateContext(undefined)
+    console.log('onStartReceivingV2')
+    console.log(this.contextService)
+
   }
 
 
@@ -114,11 +124,22 @@ export class HeaderLoggedIn2Component {
   }
 
   companyOnChange() {
-    localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
-    localStorage.removeItem('lastRecivingOrdersComanyId');
-    this.webSocketService.processDisconnection();
+    this.removeConnections()
     this.receivingCompanies = []
     this.updateContext(undefined);
     this.isHolding = this.contextService.isHolding();
+  }
+
+  logout(){
+    this.removeConnections()
+    this.tokenService.removeToken();
+    this.loginService.changeLoggedInStatus();
+    this.router.navigate(['/login']);
+  }
+
+  removeConnections(){
+    localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
+    localStorage.removeItem('lastRecivingOrdersComanyId');
+    this.webSocketService.processDisconnection();
   }
 }

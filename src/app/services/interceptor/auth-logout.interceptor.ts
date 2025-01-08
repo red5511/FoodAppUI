@@ -32,7 +32,7 @@ export class AuthLogoutInterceptor implements HttpInterceptor {
         if (error.status === 401) {
           // Token is invalid or expired
           this.tokenService.removeToken();
-          this.loginService.loggedIn();
+          this.loginService.changeLoggedInStatus();
           this.router.navigate(['/login']);
         }
         return throwError(error);

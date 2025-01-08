@@ -86,8 +86,6 @@ export class Dashboard2Component {
       companyIds,
     };
     const params: GetActiveOrders$Params = { body };
-    console.log('powinienem strzlic a nie strzelam');
-    console.log(body);
     return this.dashboardService.getActiveOrders(params);
   }
 

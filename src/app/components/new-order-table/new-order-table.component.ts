@@ -107,11 +107,10 @@ export class NewOrderTableComponent {
     | 'info'
     | 'warning'
     | 'danger'
-    | 'contrast'
-    | 'yellow' {
+    | 'contrast' {
     switch (status) {
       case 'WAITING_FOR_ACCEPTANCE':
-        return 'yellow';
+        return 'contrast';
       case 'IN_EXECUTION':
         return 'warning';
       case 'EXECUTED':

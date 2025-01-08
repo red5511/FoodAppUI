@@ -52,6 +52,11 @@ export class ContextService {
     );
   }
 
+  getCompany(): CompanyDto | undefined {
+    return this.contextSubject.getValue()?.selectedCompany;
+  }
+
+
   getCompanyId(): number | undefined {
     return this.contextSubject.getValue()?.selectedCompany.id;
   }
@@ -90,7 +95,7 @@ export class ContextService {
 
   setReceivingCompaniesWithoutNext() {
     const currentContext = this.contextSubject.getValue();
-
+    console.log(currentContext)
     if (currentContext) {
       // Modify the current value directly
       currentContext.receivingCompanies = [currentContext.selectedCompany];

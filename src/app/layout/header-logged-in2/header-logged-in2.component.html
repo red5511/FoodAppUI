@@ -1,19 +1,11 @@
 <!-- toolbar.component.html -->
 <mat-toolbar class="custom-toolbar">
-  <div
-    class="toogle-menu"
-    [ngClass]="{
+  <div class="toogle-menu" [ngClass]="{
       'toogle-menu2': isSidebarVisible,
       'toogle-menu3': !isSidebarVisible,
-    }"
-  >
-    <button
-      mat-icon-button
-      class="neumorphic-button"
-      class="example-icon"
-      aria-label="Toggle Sidebar"
-      (click)="onToggleSidnav.emit()"
-    >
+    }">
+    <button mat-icon-button class="neumorphic-button" class="example-icon" aria-label="Toggle Sidebar"
+      (click)="onToggleSidnav.emit()">
       <mat-icon>menu</mat-icon>
     </button>
   </div>
@@ -22,21 +14,12 @@
   </a>
   <span class="example-spacer"></span>
   &nbsp;
-  <app-switch-with-dialog
-    *ngIf="userId !== undefined"
-    [isChecked]="isChecked"
-    [isHolding]="isHolding"
-    [companies]="companiesPossibleToReceiving"
-    [receivingCompanies]="receivingCompanies"
-    (onStartReceiving)="onStartReceiving()"
-  ></app-switch-with-dialog>
+  <app-switch-with-dialog *ngIf="userId !== undefined" [isChecked]="isChecked" [isHolding]="isHolding"
+    [companies]="companiesPossibleToReceiving" [receivingCompanies]="receivingCompanies"
+    (onStartReceiving)="onStartReceiving($event)"></app-switch-with-dialog>
   &nbsp; &nbsp;
-  <p-dropdown
-    *ngIf="userId !== undefined"
-    [options]="companies"
-    [(ngModel)]="selectedCompany"
-    (onChange)="companyOnChange()"
-    optionLabel="name"
-    class="custom-dropdown"
-  ></p-dropdown>
+  <p-dropdown *ngIf="userId !== undefined" [options]="companies" [(ngModel)]="selectedCompany"
+    (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
+  &nbsp; &nbsp;
+  <button pButton severity="info" type="button" label="Wyloguj" class="p-button-outlined" (click)="logout()"></button>
 </mat-toolbar>

@@ -14,7 +14,7 @@ export class LoginService {
     const isLoggedIn = !!token;
     this.isLoggedInSubject.next(isLoggedIn);
   }
-  loggedIn() {
+  changeLoggedInStatus() {
     this.isLoggedInSubject.next(!this.isLoggedInSubject.value);
   }
 }

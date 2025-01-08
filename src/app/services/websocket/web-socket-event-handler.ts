@@ -118,6 +118,8 @@ export class WebSocketEventHandler {
   }
 
   sendDisconnectionEvent(socketClient: any) {
+    console.log(' this.contextService.getReceivingCompaniesIds()')
+    console.log(this.contextService)
     const companyIds = this.contextService.getReceivingCompaniesIds() ?? [-999];
     const userId = this.contextService.getUserId();
     const event: DisconnectionWebSocketEvent = {

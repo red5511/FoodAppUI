@@ -18,7 +18,7 @@ import {
   DateRangeModel,
 } from '../../services/models';
 import { OrderService } from '../../services/services';
-import { filter, from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { DateResult } from '../calendar-with-dialog/calendar-with-dialog.component';
 
 @Component({
@@ -62,21 +62,30 @@ export class AllOrdersTableComponent {
       | 'warning'
       | 'success'
       | 'danger'
-      | 'contrast'
-      | 'yellow';
-  };
+      | 'contrast'  };
 
-  sortState: { [key: string]: string } = {
-  };
+  sortState!: { [key: string]: string };
 
   page: number = 1;
   size: number = 10;
-  sorts: Array<Sort> = [];
+  sorts!: Array<Sort>;
   private configPromise: Promise<void> | null = null;
   constructor(
     private orderService: OrderService,
     private contextService: ContextService
   ) {
+    this.setDefoultSorts()
+  }
+
+  setDefoultSorts(){
+    const sort: Sort = {
+      direction: 'DESC',
+      field: 'createdDate'
+    }
+    this.sorts = [sort]
+    this.sortState = {
+      'createdDate': 'DESC'
+    }
   }
 
   loadOrders() {
@@ -214,7 +223,7 @@ export class AllOrdersTableComponent {
     | 'warning'
     | 'danger'
     | 'contrast'
-    | 'yellow' {
+ {
     return this.statusSeverityMap?.[status];
   }
 
@@ -248,7 +257,7 @@ export class AllOrdersTableComponent {
       ];
     }
     else{
-      this.sorts = []
+      this.setDefoultSorts()
     }
     this.loadOrders();
   }
