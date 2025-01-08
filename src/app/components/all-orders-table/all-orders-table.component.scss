@@ -12,6 +12,14 @@
   padding: 1rem 5px;
 }
 
+::ng-deep .p-datatable th {
+  text-align: center;
+}
+
+::ng-deep .p-datatable td {
+  text-align: center;
+}
+
 :host
   ::ng-deep
   .p-multiselect-panel
@@ -26,18 +34,13 @@
 // Media query for smaller screens
 @media (max-width: 768px) {
   .table-header {
-    margin: 0px; // Reduced margin on smaller screens
-  }
-
-  ::host {
-    padding-left: 125px;
-    padding-right: 125px;
+    margin: 4px; // Reduced margin on smaller screens
   }
 }
 
 @media (max-width: 480px) {
   .table-header {
-    margin: 0px; // Further reduced margin on mobile screens
+    margin: 2px; // Further reduced margin on mobile screens
   }
 }
 
@@ -114,4 +117,8 @@ h2 {
   margin: 0;
   text-transform: uppercase;
   letter-spacing: 1.2px;
+}
+
+.sortable {
+  cursor: pointer; /* Changes the cursor to a hand when hovering */
 }

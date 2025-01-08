@@ -1,14 +1,11 @@
 :host {
   display: flex;
   justify-content: flex-end;
-    align-items: center;
-    gap: 1rem; /* Adjust this value based on your needs (0.5rem is equivalent to 8px) */
-  // border-top: 2px solid black;
-  // border-bottom: 2px solid black;
+  align-items: center;
+  gap: 0.5rem;
   padding-top: 18px;
-  // background-color: rgb(235, 243, 240);
 }
 
-.setTimeDialog{
+.setTimeDialog {
   height: 444px;
 }

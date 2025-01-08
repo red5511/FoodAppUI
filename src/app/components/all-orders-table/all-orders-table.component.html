@@ -84,21 +84,51 @@
       <tr>
         <th style="margin-left: -22px; width: 1%"></th>
         <th style="width: 1%"></th>
-        <th style="width: 1%"></th>
-        <th pSortableColumn="status" style="width: 15%">
-          Status <p-sortIcon field="status" />
+        <th [style.width]="isHolding ? '17%' : '20%'">
+          <app-sortable-column
+            field="price"
+            label="Kwota"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+            field="status"
+            label="Status"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
         </th>
-        <th pSortableColumn="price" style="width: 15%">
-          Kwota <p-sortIcon field="price" />
+        <th style="width: 26%">
+          <app-sortable-column
+            field="deliveryTime"
+            label="Data dostawy"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+          field="createdDate"
+          label="Data utworzenia"
+          [sortState]="sortState"
+          (sortChanged)="onSortChanged($event)"
+        ></app-sortable-column>
         </th>
-        <th pSortableColumn="deliveryTime" style="width: 15%">
-          Data <p-sortIcon field="deliveryTime" />
+        <th>
+          Kod zamówienia
+          <br>
+          <app-sortable-column
+            field="deliveryAddress"
+            label="Adres dostawy"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
         </th>
-        <th *ngIf="isHolding" pSortableColumn="company" style="width: 15%">
-          Firma <p-sortIcon field="company" />
-        </th>
-        <th pSortableColumn="description">
-          Opis <p-sortIcon field="description" />
+        <th *ngIf="isHolding">
+          <app-sortable-column
+            field="company"
+            label="Frima"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
         </th>
       </tr>
     </ng-template>
@@ -117,32 +147,37 @@
           />
         </td>
         <td>
-          <img
-          style="border-radius: 15px"
-          [src]="'images/' + order.orderType + '.png'"
-        />
+          <div>#{{ order.id }}</div>
+          <div>
+            <img
+              style="border-radius: 15px"
+              [src]="'images/' + order.orderType + '.png'"
+            />
+          </div>
         </td>
-        <td>#{{ order.id }}</td>
         <td>
+          <div>{{ order.price | pricePln }}</div>
           <p-tag
             [value]="statusesTranslations[order.status]"
             [severity]="getStatusSeverity(order.status)"
           />
         </td>
-        <td>{{ order.price | pricePln }}</td>
-        <td>{{ order.deliveryTime | formattedDate }}</td>
-        <td *ngIf="isHolding">{{ order.companyName }}</td>
         <td>
-          <div class="description-container" title="{{ order.description }}">
-            {{ order.description }}
-          </div>
+          <div>{{ order.deliveryTime | formattedDateTime }}</div>
+          <div>{{ order.createdDate | formattedDateTime }}</div>
         </td>
+        <td>
+          <div>{{ order.deliveryCode }}</div>
+          <div>{{ order.deliveryAddress }}</div>
+        </td>
+        <td *ngIf="isHolding">{{ order.companyName }}</td>
       </tr>
     </ng-template>
     <ng-template pTemplate="rowexpansion" let-order>
       <tr>
         <td colspan="7">
           <div class="p-3">
+            <p><b>Opis do zamówienia: </b>{{ order.description ?? "" }}</p>
             <p-table [value]="order.orderProducts" dataKey="id">
               <ng-template pTemplate="header">
                 <tr>
@@ -156,8 +191,8 @@
                 <tr>
                   <td>
                     <img
-                    style="border-radius: 15px"
-                    [src]="orderProduct.product.imgUrl"
+                      style="border-radius: 15px"
+                      [src]="orderProduct.product.imgUrl"
                     />
                   </td>
                   <td>{{ orderProduct.product.name }}</td>

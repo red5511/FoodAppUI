@@ -54,30 +54,3 @@
   // border-top: 5px solid rgba(150, 72, 0, 0.562);
   // border-top: 3px groove var(--primary-color1-transparent);
 }
-
-.mulit-row-column-entry {
-  display: flex;
-  flex-direction: column; /* Optional: Makes items stack vertically */
-  justify-content: center;
-  align-items: center;
-}
-
-.description-container {
-  display: block;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 260px;
-  cursor: pointer;
-}
-
-.description-container:hover {
-  overflow: visible;
-  white-space: normal;
-  position: absolute;
-  z-index: 10;
-  background: white;
-  border: 1px solid #ccc;
-  padding: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
-}

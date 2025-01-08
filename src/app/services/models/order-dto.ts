@@ -7,6 +7,7 @@ export interface OrderDto {
   approvalDeadline?: string;
   companyId?: number;
   companyName?: string;
+  createdDate?: string;
   customerName?: string;
   deliveryAddress?: string;
   deliveryCode?: string;

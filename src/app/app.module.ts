@@ -79,6 +79,7 @@ import { FormattedOnlyTimePipe } from './pipes/formatted-only-time.pipe copy';
 import { DeliveyTimeDialogComponent } from './common/components/delivey-time-dialog/delivey-time-dialog.component';
 import { MessagesModule } from 'primeng/messages';
 import { ToastWebsocketComponent } from './common/components/toast-websocket/toast-websocket.component';
+import { SortableColumnEntryComponent } from './components/sortable-column-entry/sortable-column-entry.component';
 
 @NgModule({
   declarations: [
@@ -112,6 +113,7 @@ import { ToastWebsocketComponent } from './common/components/toast-websocket/toa
     FormattedOnlyTimePipe,
     DeliveyTimeDialogComponent,
     ToastWebsocketComponent,
+    SortableColumnEntryComponent,
   ],
   imports: [
     RouterModule,

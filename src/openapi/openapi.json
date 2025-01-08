@@ -1089,6 +1089,7 @@
           "deliveryAddress": { "type": "string" },
           "customerName": { "type": "string" },
           "deliveryTime": { "type": "string", "format": "date-time" },
+          "createdDate": { "type": "string", "format": "date-time" },
           "orderProducts": {
             "uniqueItems": true,
             "type": "array",

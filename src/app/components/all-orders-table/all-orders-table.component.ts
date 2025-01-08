@@ -57,17 +57,27 @@ export class AllOrdersTableComponent {
   visible = true;
   private destroy$ = new Subject<void>();
   statusSeverityMap!: {
-    [key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast' | 'yellow';
+    [key: string]:
+      | 'info'
+      | 'warning'
+      | 'success'
+      | 'danger'
+      | 'contrast'
+      | 'yellow';
+  };
+
+  sortState: { [key: string]: string } = {
   };
 
   page: number = 1;
   size: number = 10;
-  sorts: Array<Sort> | undefined;
+  sorts: Array<Sort> = [];
   private configPromise: Promise<void> | null = null;
   constructor(
     private orderService: OrderService,
     private contextService: ContextService
-  ) {}
+  ) {
+  }
 
   loadOrders() {
     let selectedCompanyIds = this.selectedCompanyOptions.map(
@@ -100,8 +110,6 @@ export class AllOrdersTableComponent {
 
   loadOrdersLazy(event: TableLazyLoadEvent) {
     this.loading = true;
-    //let filters = this.createFilters(event.filters);
-    let sorts = this.createSorts(event.sortField, event.sortOrder);
     this.contextService
       .getCompanyIdObservable()
       .pipe(
@@ -119,7 +127,6 @@ export class AllOrdersTableComponent {
         next: () => {
           this.page = Math.floor(event.first! / event.rows!);
           this.size = event.rows!;
-          this.sorts = sorts;
           this.loadOrders();
         },
         error: (error) => {
@@ -138,7 +145,9 @@ export class AllOrdersTableComponent {
             this.statusOptions = response.orderStatusModels;
             this.statusSeverityMap = response.statusSeverityMap;
             this.dateRangeOptions = response.dataRangeModels;
-            this.selectedDateRangeValue = structuredClone(response.dataRangeModels.at(0));
+            this.selectedDateRangeValue = structuredClone(
+              response.dataRangeModels.at(0)
+            );
             this.statusesTranslations = response.orderStatusModels.reduce(
               (acc: { [key: string]: string }, model) => {
                 acc[model.orderStatus] = model.translatedValue;
@@ -164,84 +173,6 @@ export class AllOrdersTableComponent {
     // Signal to complete the observable pipeline
     this.destroy$.next();
     this.destroy$.complete();
-  }
-
-  // createFilters(filters: any): Array<Filter> | undefined {
-  //   if (filters) {
-  //     const resultFilters: Array<Filter> = [];
-
-  //     Object.keys(filters).forEach((fieldName) => {
-  //       const filterEntry = filters[fieldName];
-
-  //       // Check if the filterValue is an array (handle multiple filters per field)
-  //       if (Array.isArray(filterEntry.value)) {
-  //         const allValues: Array<string> = [];
-  //         filterEntry.value.forEach((val: any) => {
-  //           if (val) {
-  //             if (fieldName === 'status') {
-  //               allValues.push(val.orderStatus);
-  //             } else {
-  //               allValues.push(val);
-  //             }
-  //           }
-  //         });
-  //         resultFilters.push({
-  //           fieldName: fieldName,
-  //           values: allValues,
-  //         });
-  //       } else if (
-  //         filterEntry &&
-  //         filterEntry.value !== null &&
-  //         filterEntry.value !== undefined
-  //       ) {
-  //         resultFilters.push({
-  //           fieldName: fieldName,
-  //           values: Array.of(filterEntry.value),
-  //         });
-  //       } else if (filterEntry?.[0] != null && filterEntry[0].value != null) {
-  //         const value = filterEntry[0];
-  //         console.log(typeof value.value); // "Object"
-  //         resultFilters.push({
-  //           fieldName: fieldName,
-  //           values: Array.of(
-  //             value.value instanceof Date
-  //               ? value.value.toISOString()
-  //               : 'undefined'
-  //           ),
-  //           mode: value.matchMode, // Convert to ISO if it's a Date
-  //         });
-  //       }
-  //     });
-
-  //     return resultFilters.length > 0 ? resultFilters : undefined;
-  //   }
-
-  //   return undefined;
-  // }
-
-  createSorts(
-    sortField?: any,
-    sortOrder?: number | null | undefined
-  ): Array<Sort> | undefined {
-    if (sortField && sortOrder) {
-      const resultSorts: Array<Sort> = [];
-      let dir: 'ASC' | 'DESC'; // Explicitly declare dir as type 'ASC' | 'DESC'
-
-      if (sortOrder === 1) {
-        dir = 'ASC';
-      } else {
-        dir = 'DESC';
-      }
-
-      resultSorts.push({
-        field: sortField,
-        direction: dir, // This is now correctly typed
-      });
-
-      return resultSorts; // Return the resultSorts array
-    }
-
-    return undefined; // Return undefined if sortField is not provided
   }
 
   filterGlobal(event: Event, filterType: string): void {
@@ -276,7 +207,14 @@ export class AllOrdersTableComponent {
 
   getStatusSeverity(
     status: string
-  ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' | 'yellow' {
+  ):
+    | 'success'
+    | 'secondary'
+    | 'info'
+    | 'warning'
+    | 'danger'
+    | 'contrast'
+    | 'yellow' {
     return this.statusSeverityMap?.[status];
   }
 
@@ -291,6 +229,27 @@ export class AllOrdersTableComponent {
   }
 
   onFilterChange() {
+    this.loadOrders();
+  }
+
+  onSortChanged({
+    field,
+    state,
+  }: {
+    field: string;
+    state: 'ASC' | 'DESC' | 'NONE';
+  }) {
+    if (state !== 'NONE') {
+      this.sorts = [
+        {
+          direction: state,
+          field,
+        },
+      ];
+    }
+    else{
+      this.sorts = []
+    }
     this.loadOrders();
   }
 }
