@@ -1,65 +1,77 @@
 <app-header-guest></app-header-guest>
 
 <div class="container">
-  <div
-    *ngIf="message"
-    class="message-panel"
-    [ngClass]="{
-      success: !message.startsWith('Registration failed'),
-      error: message.startsWith('Registration failed'),
-    }"
-  >
+  <div *ngIf="message" class="message-panel" [ngClass]="{
+      success: !message.startsWith('Rejestracja nie powiodła się'),
+      error: message.startsWith('Rejestracja nie powiodła się'),
+    }">
     <div class="message-icon">
-      <span *ngIf="!message.startsWith('Registration failed')">&#10004;</span>
-      <span *ngIf="message.startsWith('Registration failed')">&#10006;</span>
+      <span *ngIf="!message.startsWith('Rejestracja nie powiodła się')">&#10004;</span>
+      <span *ngIf="message.startsWith('Rejestracja nie powiodła się')">&#10006;</span>
     </div>
     <div class="message-content">{{ message }}</div>
   </div>
 
   <div *ngIf="!isSuccess">
-    <h2>Register</h2>
-    <form (ngSubmit)="registerUser()">
-      <div class="form-group">
-        <label for="firstname">First name</label>
-        <input
-          id="firstname"
-          name="firstname"
-          required
-          type="text"
-          [(ngModel)]="registerRequest.firstName"
-        />
-      </div>
-      <div class="form-group">
-        <label for="lastname">Last name</label>
-        <input
-          id="lastname"
-          name="lastname"
-          required
-          type="text"
-          [(ngModel)]="registerRequest.lastName"
-        />
-      </div>
-      <div class="form-group">
+    <h2>Rejestracja</h2>
+    <form #registerForm="ngForm" (ngSubmit)="registerUser(registerForm)" novalidate>
+      <p-floatLabel>
+        <input pInputText id="email" [(ngModel)]="registerRequest.email" name="email" required type="text"
+          pattern="^[^@]+@[^@]+\.[^@]+$" class="input-full-width" #email="ngModel" />
         <label for="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          required
-          type="text"
-          [(ngModel)]="registerRequest.email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          required
-          type="password"
-          [(ngModel)]="registerRequest.password"
-        />
-      </div>
-      <button type="submit">Register</button>
+      </p-floatLabel>
+      <small class="custom-error" [ngClass]="{ show: email.invalid && email.touched }">
+        Błędny adres email
+      </small>
+      <p-floatLabel>
+        <input pInputText id="password" name="password" required type="password" minlength="8"
+          [(ngModel)]="registerRequest.password" #password="ngModel"
+          pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[a-zA-Z\d!@#$%^&*()_+\-=\[\]{};':&quot;\\|,.<>/?]{8,}$"
+          class="input-full-width" />
+        <label for="password">Hasło</label>
+      </p-floatLabel>
+      <small  class="custom-error" [ngClass]="{ show: password.invalid && password.touched }">
+        Hasło musi zawierać co najmniej 8 znaków w tym jedną małą i dużą literę
+      </small>
+
+      <p-floatLabel>
+        <input pInputText id="confirmPassword" name="confirmPassword" required type="password"
+          [(ngModel)]="confirmPassword" #confirmPasswordInput="ngModel" class="input-full-width" />
+        <label for="confirmPassword">Potwierdź Hasło</label>
+      </p-floatLabel>
+      <small  class="custom-error"
+        [ngClass]="{ show: confirmPasswordInput.touched && confirmPassword !== registerRequest.password }">
+        Hasła nie są identyczne
+      </small>
+
+      <p-floatLabel>
+        <input pInputText id="firstname" name="firstname" required type="text" [(ngModel)]="registerRequest.firstName"
+          #firstname="ngModel" class="input-full-width" />
+        <label for="firstname">Imię</label>
+      </p-floatLabel>
+      <small  class="custom-error" [ngClass]="{ show: firstname.invalid && firstname.touched }">
+        Imię jest wymagane
+      </small>
+
+      <p-floatLabel>
+        <input pInputText id="lastname" name="lastname" required type="text" [(ngModel)]="registerRequest.lastName"
+          #lastname="ngModel" class="input-full-width" />
+        <label for="lastname">Nazwisko</label>
+      </p-floatLabel>
+      <small  class="custom-error" [ngClass]="{ show: lastname.invalid && lastname.touched }">
+        Nazwisko jest wymagane
+      </small>
+
+      <p-floatLabel>
+        <input pInputText id="phoneNumber" name="phoneNumber" required type="text"
+          [(ngModel)]="registerRequest.phoneNumber" #phoneNumber="ngModel" pattern="(\+48)?\d{9}"
+          class="input-full-width" />
+        <label for="phoneNumber">Numer telefonu</label>
+      </p-floatLabel>
+      <small  class="custom-error" [ngClass]="{ show: phoneNumber.invalid && phoneNumber.touched }">
+        Numer telefonu jest wymagany
+      </small>
+      <button pButton type="submit" label="Zarejestruj" [raised]="true" [disabled]="registerForm.invalid"></button>
     </form>
   </div>
   <a routerLink="/login" class="link">Login</a>

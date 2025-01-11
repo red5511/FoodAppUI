@@ -21,5 +21,5 @@
   <p-dropdown *ngIf="userId !== undefined" [options]="companies" [(ngModel)]="selectedCompany"
     (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
   &nbsp; &nbsp;
-  <button pButton severity="info" type="button" label="Wyloguj" class="p-button-outlined" (click)="logout()"></button>
+  <button pButton type="button" label="Wyloguj" (click)="logout()"></button>
 </mat-toolbar>

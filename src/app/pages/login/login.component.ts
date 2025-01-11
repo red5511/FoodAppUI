@@ -36,7 +36,7 @@ export class LoginComponent {
           if (response) {
             this.isSuccess = true;
             this.authResponse = response;
-            this.message = 'Account created successfully';
+            this.message = 'Sukces!';
             this.tokenService.token = response.token as string;
             setTimeout(() => {
               this.loginService.changeLoggedInStatus();
@@ -45,7 +45,7 @@ export class LoginComponent {
           }
         },
         error: (err) => {
-          this.message = 'Login failed: ';
+          this.message = 'Błąd logowania: ';
           if (err.error) {
             this.message =
               this.message + (err.error.errorCode || 'Unknown error');

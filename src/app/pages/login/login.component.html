@@ -1,45 +1,33 @@
 <app-header-guest></app-header-guest>
 
 <div class="container">
-  <div
-    *ngIf="message"
-    class="message-panel"
-    [ngClass]="{
-      success: !message.startsWith('Login failed'),
-      error: message.startsWith('Login failed'),
-    }"
-  >
+  <div *ngIf="message" class="message-panel" [ngClass]="{
+      success: !message.startsWith('Błąd logowania'),
+      error: message.startsWith('Błąd logowania'),
+    }">
     <div class="message-icon">
-      <span *ngIf="!message.startsWith('Login failed')">&#10004;</span>
-      <span *ngIf="message.startsWith('Login failed')">&#10006;</span>
+      <span *ngIf="!message.startsWith('Błąd logowania')">&#10004;</span>
+      <span *ngIf="message.startsWith('Błąd logowania')">&#10006;</span>
     </div>
     <div class="message-content">{{ message }}</div>
   </div>
 
   <div *ngIf="!isSuccess">
-    <h2>Login</h2>
-    <form (ngSubmit)="loginUser()">
-      <div class="form-group">
+    <h2>Zaloguj się</h2>
+    <form #loginForm="ngForm" (ngSubmit)="loginUser()">
+      <p-floatLabel>
+        <input pInputText id="email" [(ngModel)]="authenticationRequest.email" name="email" required type="text"
+          class="input-full-width" #email="ngModel" />
         <label for="email">Email</label>
-        <input
-          id="email"
-          name="email"
-          required
-          type="text"
-          [(ngModel)]="authenticationRequest.email"
-        />
-      </div>
-      <div class="form-group">
-        <label for="password">Password</label>
-        <input
-          id="password"
-          name="password"
-          required
-          type="password"
-          [(ngModel)]="authenticationRequest.password"
-        />
-      </div>
-      <button type="submit">Login</button>
+      </p-floatLabel>
+
+      <p-floatLabel>
+        <input pInputText id="password" name="password" required type="password"
+          [(ngModel)]="authenticationRequest.password" #password="ngModel" class="input-full-width" />
+        <label for="password">Hasło</label>
+      </p-floatLabel>
+
+      <button pButton type="submit" label="Login" [raised]="true" [disabled]="loginForm.invalid"></button>
     </form>
   </div>
   <a routerLink="/register" class="link">Register</a>

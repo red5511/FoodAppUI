@@ -80,6 +80,7 @@ import { DeliveyTimeDialogComponent } from './common/components/delivey-time-dia
 import { MessagesModule } from 'primeng/messages';
 import { ToastWebsocketComponent } from './common/components/toast-websocket/toast-websocket.component';
 import { SortableColumnEntryComponent } from './components/sortable-column-entry/sortable-column-entry.component';
+import { NewUserPanelComponent } from './pages/new-user-panel/new-user-panel.component';
 
 @NgModule({
   declarations: [
@@ -114,6 +115,7 @@ import { SortableColumnEntryComponent } from './components/sortable-column-entry
     DeliveyTimeDialogComponent,
     ToastWebsocketComponent,
     SortableColumnEntryComponent,
+    NewUserPanelComponent,
   ],
   imports: [
     RouterModule,
