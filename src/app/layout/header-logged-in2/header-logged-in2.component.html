@@ -14,11 +14,11 @@
   </a>
   <span class="example-spacer"></span>
   &nbsp;
-  <app-switch-with-dialog *ngIf="userId !== undefined" [isChecked]="isChecked" [isHolding]="isHolding"
+  <app-switch-with-dialog *ngIf="selectedCompany !== undefined" [isChecked]="isChecked" [isHolding]="isHolding"
     [companies]="companiesPossibleToReceiving" [receivingCompanies]="receivingCompanies"
     (onStartReceiving)="onStartReceiving($event)"></app-switch-with-dialog>
   &nbsp; &nbsp;
-  <p-dropdown *ngIf="userId !== undefined" [options]="companies" [(ngModel)]="selectedCompany"
+  <p-dropdown *ngIf="selectedCompany !== undefined" [options]="companies" [(ngModel)]="selectedCompany"
     (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
   &nbsp; &nbsp;
   <button pButton type="button" label="Wyloguj" (click)="logout()"></button>

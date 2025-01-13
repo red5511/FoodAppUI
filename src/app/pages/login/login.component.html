@@ -10,6 +10,8 @@
       <span *ngIf="message.startsWith('Błąd logowania')">&#10006;</span>
     </div>
     <div class="message-content">{{ message }}</div>
+    <br>
+    <p-button *ngIf="isAccountNotActivated" [disabled]="alreadySend" (onClick)="onResendActivationEmail()" label="Wyślij ponowanie link aktywacyjny" [text]="true" />
   </div>
 
   <div *ngIf="!isSuccess">
@@ -30,6 +32,6 @@
       <button pButton type="submit" label="Login" [raised]="true" [disabled]="loginForm.invalid"></button>
     </form>
   </div>
-  <a routerLink="/register" class="link">Register</a>
-  <a routerLink="/changePassword" class="link">Forgot password?</a>
+  <a routerLink="/register" class="link">Rejestracja</a>
+  <a routerLink="/changePassword" class="link">Zapomniałeś hasła?</a>
 </div>

@@ -9,7 +9,8 @@ import { noneAuthPathsWhenJwtPresentGuard } from './services/guard/none-auth-pat
 import { authGuard } from './services/guard/auth.guard';
 import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
-import { NewUserPanelComponent } from './pages/new-user-panel/new-user-panel.component';
+import { MainComponent } from './pages/main/main.component';
+import { RestaurantOrderComponent } from './pages/restaurant-order/restaurant-order.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -47,10 +48,15 @@ const routes: Routes = [
     path: 'statistics',
     component: StatisticsComponent,
     canActivate: [authGuard],
-  },,
+  },
   {
-    path: 'new-user',
-    component: NewUserPanelComponent,
+    path: 'main',
+    component: MainComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'restaurant-order',
+    component: RestaurantOrderComponent,
     canActivate: [authGuard],
   },
 ];

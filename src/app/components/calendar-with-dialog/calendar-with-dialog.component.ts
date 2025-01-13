@@ -56,10 +56,6 @@ export class CalendarWithDialogComponent {
   }
 
   onDateRangeOptionClick() {
-    console.log('xd')
-    console.log(this.selectedDateRangeValue)
-    console.log(this.lastSelectedDateRangeValue)
-    console.log(this.dateRangeOptions)
     if (
       this.selectedDateRangeValue.dateRange === 'CUSTOM_DATE_RANGE' &&
       this.isCalendarClick

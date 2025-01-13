@@ -38,10 +38,6 @@ export class AppComponent {
         ? true
         : false;
     this.isTabletView = this.screenWidth < this.tabletMinWith;
-    console.log('xd');
-    console.log(this.screenWidth);
-    console.log(this.isSideNavVisible);
-    console.log(this.isSideNavCollapsed);
   }
 
   ngOnInit() {

@@ -23,6 +23,8 @@ import { initPasswordChange } from '../fn/authentication/init-password-change';
 import { InitPasswordChange$Params } from '../fn/authentication/init-password-change';
 import { register } from '../fn/authentication/register';
 import { Register$Params } from '../fn/authentication/register';
+import { resendActivationEmail } from '../fn/authentication/resend-activation-email';
+import { ResendActivationEmail$Params } from '../fn/authentication/resend-activation-email';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService extends BaseService {
@@ -127,6 +129,31 @@ export class AuthenticationService extends BaseService {
   authenticate(params: Authenticate$Params, context?: HttpContext): Observable<AuthenticationResponse> {
     return this.authenticate$Response(params, context).pipe(
       map((r: StrictHttpResponse<AuthenticationResponse>): AuthenticationResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `resendActivationEmail()` */
+  static readonly ResendActivationEmailPath = '/api/v1/auth/resend-activation-email/{email}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `resendActivationEmail()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  resendActivationEmail$Response(params: ResendActivationEmail$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return resendActivationEmail(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `resendActivationEmail$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  resendActivationEmail(params: ResendActivationEmail$Params, context?: HttpContext): Observable<void> {
+    return this.resendActivationEmail$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

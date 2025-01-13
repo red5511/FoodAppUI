@@ -1,11 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject, Observable, Subject } from 'rxjs';
-import { filter, map } from 'rxjs/operators'; // Import map operator for transforming responses
+import { filter, map, tap } from 'rxjs/operators'; // Import map operator for transforming responses
 import { CompanyDto } from '../models';
 
 export interface Context {
   selectedCompany: CompanyDto;
-  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>;
+  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | string>;
   userId: number;
   companies: CompanyDto[];
   receivingCompanies: CompanyDto[];
@@ -26,7 +26,7 @@ export class ContextService {
 
   setContext(
     selectedCompany: CompanyDto, //active
-    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'>,
+    permittedModules: Array<string>,
     userId: number,
     companies: CompanyDto[],
     receivingCompanies: CompanyDto[]
@@ -52,10 +52,15 @@ export class ContextService {
     );
   }
 
+  getContextObservable(): Observable<Context> {
+    return this.contextSubjectVisibility$.pipe(
+      filter((context) => context !== null && context !== undefined)
+    );
+  }
+
   getCompany(): CompanyDto | undefined {
     return this.contextSubject.getValue()?.selectedCompany;
   }
-
 
   getCompanyId(): number | undefined {
     return this.contextSubject.getValue()?.selectedCompany.id;
@@ -90,12 +95,12 @@ export class ContextService {
   }
 
   isHolding(): boolean {
-    return this.contextSubject.getValue()?.selectedCompany.id === -888;
+    return this.contextSubject.getValue()?.selectedCompany?.id === -888;
   }
 
   setReceivingCompaniesWithoutNext() {
     const currentContext = this.contextSubject.getValue();
-    console.log(currentContext)
+    console.log(currentContext);
     if (currentContext) {
       // Modify the current value directly
       currentContext.receivingCompanies = [currentContext.selectedCompany];

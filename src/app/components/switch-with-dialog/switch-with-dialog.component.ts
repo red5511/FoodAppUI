@@ -76,17 +76,10 @@ export class SwitchWithDialogComponent {
   }
 
   ngOnChanges() {
-    console.log(this.isChecked);
-    console.log('isChecked');
-    console.log('ngOnChanges w dialogu');
     this.selectedCompanies = structuredClone(this.receivingCompanies);
     if (this.isChecked) {
       this.requestInitOrderWebSocketTopic();
     }
-  }
-
-  ngOnDestroy(): void {
-    console.log('ngOnDestroy XDDD');
   }
 
   onCancel(): void {
@@ -109,7 +102,6 @@ export class SwitchWithDialogComponent {
       localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
       localStorage.removeItem('lastRecivingOrdersComanyId');
       this.isChecked = !this.isChecked;
-      console.log('place#2');
       this.contextService.setUserReceivingOrdersActive(this.isChecked);
     }
   }
@@ -167,7 +159,6 @@ export class SwitchWithDialogComponent {
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = true;
-        console.log('place#1 :)))');
         this.receivingCompanies.length = 0;
         this.receivingCompanies.push(this.contextService.getCompany()!);
         console.log(this.receivingCompanies);
@@ -198,7 +189,6 @@ export class SwitchWithDialogComponent {
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = selectedCompaniesIds.length !== 0 ? true : false;
-        console.log('place#1');
         this.receivingCompanies.length = 0;
         this.receivingCompanies.push(...this.selectedCompanies);
         this.contextService.setReceivingCompaniesWithoutNextHolding(
@@ -218,7 +208,6 @@ export class SwitchWithDialogComponent {
     this.webSocketService.initOrderWebSocketTopic({ body }).subscribe({
       next: () => {
         this.isChecked = false;
-        console.log('place#1');
         this.receivingCompanies.length = 0;
         this.contextService.setReceivingCompaniesWithoutNextHolding([]);
         this.contextService.setUserReceivingOrdersActive(this.isChecked);

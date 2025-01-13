@@ -26,14 +26,6 @@ export class ToastWebsocketComponent {
 
   ngOnInit() {
     this.requestUserInteraction(); // Set up the user interaction for audio
-    console.log('ngOnInit TOAST_WEBSOCKET');
-    // this.newOrderSubscription =
-    //   this.webSocketEventHandler.newOrDeadlinePassedSubjectVisibility$.subscribe(
-    //     (result: OrderHandledInfo) => {
-    //       console.log('no otrzymalkem ' + result.id);
-    //       this.handleNewOrder(result.id!);
-    //     }
-    //   );
     this.newOrderProcessedSubscription =
       this.webSocketEventHandler.orderProcessedVisibility$.subscribe(
         (result: OrderHandledInfo) => {

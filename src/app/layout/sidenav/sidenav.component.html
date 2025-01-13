@@ -13,8 +13,18 @@
         routerLinkActive="active"
         (click)="openCollapsedSideNavToggle()"
       >
-        <span class="menu-icon material-icons">dashboard</span>
+        <span class="menu-icon pi pi-play-circle"></span>
         <span *ngIf="!isSideNavCollapsed" class="menu-text">Panel Live</span>
+      </a>
+    </li>
+    <li *ngIf="hasPermissionToModule('RESTAURANT_ORDER')">
+      <a
+        [routerLink]="!isSideNavCollapsed ? '/restaurant-order' : null"
+        routerLinkActive="active"
+        (click)="openCollapsedSideNavToggle()"
+      >
+      <span class="menu-icon pi pi-warehouse"></span>
+      <span *ngIf="!isSideNavCollapsed" class="menu-text">Na miejscu</span>
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('STATISTICS')">
@@ -61,7 +71,7 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon material-icons">list_alt</span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Zamówienia</span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text">Historia zamówień</span>
       </a>
     </li>
   </ul>

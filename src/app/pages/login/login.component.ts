@@ -5,6 +5,8 @@ import { AuthenticationRequest } from '../../services/models/authentication-requ
 import { AuthenticationResponse } from '../../services/models/authentication-response';
 import { TokenService } from '../../services/token/token.service';
 import { LoginService } from '../../services/login/login.service';
+import { ResendActivationEmail$Params } from '../../services/fn/authentication/resend-activation-email';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-login',
@@ -19,13 +21,26 @@ export class LoginComponent {
   authResponse: AuthenticationResponse = {};
   message = '';
   isSuccess: boolean = false;
+  isAccountNotActivated: boolean = false;
+  alreadySend: boolean = false
 
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     private tokenService: TokenService,
     private loginService: LoginService,
+    private toastService: ToastrService,
   ) {}
+
+  onResendActivationEmail() {
+    const params: ResendActivationEmail$Params = {
+      email: this.authenticationRequest.email
+    } 
+    this.authService.resendActivationEmail(params).subscribe()
+    this.toastService.success('Email z aktywacja konta został wysłany, sprawdź skrzynke');
+    this.alreadySend = true
+
+  }
 
   loginUser() {
     this.message = '';
@@ -33,6 +48,7 @@ export class LoginComponent {
       .authenticate({ body: this.authenticationRequest })
       .subscribe({
         next: (response) => {
+          this.isAccountNotActivated = false;
           if (response) {
             this.isSuccess = true;
             this.authResponse = response;
@@ -40,13 +56,18 @@ export class LoginComponent {
             this.tokenService.token = response.token as string;
             setTimeout(() => {
               this.loginService.changeLoggedInStatus();
-              this.router.navigate(['dashboard2']);
+              this.router.navigate(['main']);
             }, 300);
           }
         },
         error: (err) => {
           this.message = 'Błąd logowania: ';
           if (err.error) {
+            if (err.error.errorCode.includes('Konto nie zostało aktywowane')) {
+              this.isAccountNotActivated = true;
+            } else {
+              this.isAccountNotActivated = false;
+            }
             this.message =
               this.message + (err.error.errorCode || 'Unknown error');
           }

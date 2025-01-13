@@ -24,7 +24,7 @@ export class ChangePasswordComponent {
         if (response) {
           this.response = response;
           this.isSuccess = true;
-          this.message = 'Email was send with reset password link';
+          this.message = 'Wysłaliśmy maila z resetem hasła';
         }
       },
       error: (err) => {

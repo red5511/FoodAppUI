@@ -9,7 +9,7 @@ export const noneAuthPathsWhenJwtPresentGuard: CanActivateFn = (
   const tokenService = inject(TokenService);
   const router = inject(Router);
   if (!!tokenService.token) {
-    router.navigate(['dashboard2']);
+    router.navigate(['main']);
     return false;
   }
   return true;

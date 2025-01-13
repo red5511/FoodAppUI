@@ -62,7 +62,8 @@ export class AllOrdersTableComponent {
       | 'warning'
       | 'success'
       | 'danger'
-      | 'contrast'  };
+      | 'contrast'
+      | 'yellow'};
 
   sortState!: { [key: string]: string };
 
@@ -223,6 +224,7 @@ export class AllOrdersTableComponent {
     | 'warning'
     | 'danger'
     | 'contrast'
+    | 'yellow'
  {
     return this.statusSeverityMap?.[status];
   }

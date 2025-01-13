@@ -27,7 +27,7 @@ export class HeaderLoggedIn2Component {
   value: string = 'one-way';
   userId!: number;
   isHolding!: boolean;
-  receivingCompanies: CompanyDto[] = []
+  receivingCompanies: CompanyDto[] = [];
   companiesPossibleToReceiving!: CompanyDto[];
   constructor(
     private dashboardService: DashboardService,
@@ -41,18 +41,19 @@ export class HeaderLoggedIn2Component {
   ngOnInit(): void {
     this.dashboardService.getConfig().subscribe(
       (response) => {
-        if (response.companyDataList && response.companyDataList.length > 0) {
+        if (response.companyDataList) {
           this.companies = response.companyDataList;
-          this.companiesPossibleToReceiving = this.companies.filter(company => !company.holding)
+          this.companiesPossibleToReceiving = this.companies.filter(
+            (company) => !company.holding
+          );
           let firstCompany = response.companyDataList[0];
-          if (!!firstCompany) {
-            this.selectedCompany = firstCompany;
-            this.isChecked = firstCompany.receivingOrdersActive as boolean; // todo cos do zmiany
-            this.userId = response.userId;
-            this.updateContext(response.permittedModules);
-            this.checkIfRecivingOrdersShouldBeTurnOn();
-            this.isHolding = this.contextService.isHolding();
-          }
+
+          this.selectedCompany = firstCompany;
+          this.isChecked = firstCompany?.receivingOrdersActive ?? false; // todo cos do zmiany
+          this.userId = response.userId;
+          this.updateContext(response.permittedModules);
+          this.checkIfRecivingOrdersShouldBeTurnOn();
+          this.isHolding = this.contextService.isHolding();
         }
       },
       (error) => {
@@ -82,23 +83,16 @@ export class HeaderLoggedIn2Component {
     }
   }
 
-  onStartReceiving(xd: CompanyDto[]){
-    console.log('onStartReceiving')
-    console.log(xd)
-    console.log(this.receivingCompanies)
-    this.updateContext(undefined)
-    console.log('onStartReceivingV2')
-    console.log(this.contextService)
-
+  onStartReceiving(xd: CompanyDto[]) {
+    this.updateContext(undefined);
   }
-
 
   toggleDropdown(): void {
     this.isDropdownOpen = !this.isDropdownOpen;
   }
 
   updateContext(
-    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS'> | undefined
+    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | string > | undefined
   ) {
     if (this.selectedCompany !== null) {
       if (!permittedModules) {
@@ -124,20 +118,20 @@ export class HeaderLoggedIn2Component {
   }
 
   companyOnChange() {
-    this.removeConnections()
-    this.receivingCompanies = []
+    this.removeConnections();
+    this.receivingCompanies = [];
     this.updateContext(undefined);
     this.isHolding = this.contextService.isHolding();
   }
 
-  logout(){
-    this.removeConnections()
+  logout() {
+    this.removeConnections();
     this.tokenService.removeToken();
     this.loginService.changeLoggedInStatus();
     this.router.navigate(['/login']);
   }
 
-  removeConnections(){
+  removeConnections() {
     localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
     localStorage.removeItem('lastRecivingOrdersComanyId');
     this.webSocketService.processDisconnection();
