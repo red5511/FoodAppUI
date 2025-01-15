@@ -3,3 +3,28 @@
     max-width: 1100px;
     box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
   }
+
+  ::ng-deep .p-datatable th {
+    text-align: center;
+  }
+  
+  ::ng-deep .p-datatable td {
+    text-align: center;
+  }
+
+  :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 5px;
+  }
+  
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    padding: 1rem 5px;
+  }
+
+  .filters {
+    padding: 10px;
+    display: flex;
+    gap: 25px 15px;
+    flex-wrap: wrap;
+    justify-content: left;
+    width: 100%;
+  }

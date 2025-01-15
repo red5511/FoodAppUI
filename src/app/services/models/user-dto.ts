@@ -1,9 +1,13 @@
 /* tslint:disable */
 /* eslint-disable */
+import { CompanyDto } from '../models/company-dto';
 export interface UserDto {
-  email?: string;
-  firstName?: string;
-  id?: number;
-  lastName?: string;
-  phoneNumber?: string;
+  companies: Array<CompanyDto>;
+  email: string;
+  enabled: boolean;
+  firstName: string;
+  id: number;
+  lastName: string;
+  locked: boolean;
+  phoneNumber: string;
 }

@@ -1,6 +1,6 @@
 <p-messages [(value)]="messages" [enableService]="false" />
 
-    <div *ngIf="messages.length == 0" class="card-container">
+    <div *ngIf="messagesAreRdy && messages.length == 0" class="card-container">
         <p-card (click)="onClickedLivePanel()" class="custom-card" header="Panel Live">
             <ng-template pTemplate="header">
               <img alt="Card 1" src="images/onlineOrdering.webp" />

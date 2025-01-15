@@ -24,7 +24,7 @@ export class SidenavComponent implements OnInit {
   @Output() 
   onOpenCollapsedSideNavToggle: EventEmitter<any> = new EventEmitter();
   isSubmenuOpen: boolean;
-  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | string> = [];
+  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string> = [];
   private destroy$ = new Subject<void>();
 
 
@@ -44,7 +44,6 @@ export class SidenavComponent implements OnInit {
   }
 
   ngOnChanges(): void {
-    console.log('plz nie zajedz mnie')
     this.isSubmenuOpen = !this.isSideNavCollapsed && this.isSubmenuOpen
   }
 
@@ -69,7 +68,7 @@ export class SidenavComponent implements OnInit {
   }
 
   hasPermissionToModule(
-    module: 'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | string,
+    module: 'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string,
   ): boolean {
     return this.permittedModules.includes(module);
   }

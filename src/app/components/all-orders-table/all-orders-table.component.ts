@@ -51,10 +51,6 @@ export class AllOrdersTableComponent {
   loading: boolean = true; // Initialize as true when loading data
   companyIdTemp: number | undefined;
   totalRecords!: number;
-  selectedCustomers: boolean[] = [];
-  rangeDates: any;
-  selectedDate: any;
-  visible = true;
   private destroy$ = new Subject<void>();
   statusSeverityMap!: {
     [key: string]:
@@ -63,7 +59,8 @@ export class AllOrdersTableComponent {
       | 'success'
       | 'danger'
       | 'contrast'
-      | 'yellow'};
+      // | 'yellow'
+    };
 
   sortState!: { [key: string]: string };
 
@@ -224,7 +221,7 @@ export class AllOrdersTableComponent {
     | 'warning'
     | 'danger'
     | 'contrast'
-    | 'yellow'
+    // | 'yellow'
  {
     return this.statusSeverityMap?.[status];
   }

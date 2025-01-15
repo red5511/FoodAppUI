@@ -22,6 +22,8 @@ export class AdminPanelUsersComponent {
   size: number = 10;
   sorts!: Array<Sort>;
   globalSearch: string | undefined;
+  sortState: { [key: string]: string } = {};
+
 
   constructor(private userAdministrationService: UserAdministrationService) {}
 
@@ -29,6 +31,10 @@ export class AdminPanelUsersComponent {
     this.loading = true;
     this.page = Math.floor(event.first! / event.rows!);
     this.size = event.rows!;
+    this.loadOrders()
+  }
+
+  loadOrders(){
     const dateRange = this.selectedDates.at(0)
       ? 'CUSTOM_DATE_RANGE'
       : undefined;
@@ -44,14 +50,52 @@ export class AdminPanelUsersComponent {
     this.userAdministrationService.getPagedUsers({ body }).subscribe({
       next: (response: GetPagedUsersResponse) => {
         if (response && response.pagedResult) {
-          this.users = response.pagedResult.users!;
-          this.totalRecords = response.pagedResult.totalRecords!;
+          this.users = response.pagedResult.users ?? [];
+          this.totalRecords = response.pagedResult.totalRecords ?? 0;
           this.loading = false; // Set to false once data is loaded
+          console.log('loadOrders')
+          console.log(response)
         }
       },
       error: (error) => {
         console.error('Error fetching companyId:', error);
       },
     });
+  }
+
+  onFilterChange() {
+    this.loadOrders();
+  }
+
+  onSortChanged({
+    field,
+    state,
+  }: {
+    field: string;
+    state: 'ASC' | 'DESC' | 'NONE';
+  }) {
+    if (state !== 'NONE') {
+      this.sorts = [
+        {
+          direction: state,
+          field,
+        },
+      ];
+    }
+    else{
+      this.setDefoultSorts()
+    }
+    this.loadOrders();
+  }
+
+  setDefoultSorts(){
+    const sort: Sort = {
+      direction: 'DESC',
+      field: 'createdDate'
+    }
+    this.sorts = [sort]
+    this.sortState = {
+      'createdDate': 'DESC'
+    }
   }
 }
