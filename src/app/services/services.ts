@@ -7,5 +7,5 @@ export { StatisticsService } from './services/statistics.service';
 export { OrderService } from './services/order.service';
 export { DevelopmentService } from './services/development.service';
 export { DashboardService } from './services/dashboard.service';
-export { DemoControllerService } from './services/demo-controller.service';
 export { UserAdministrationService } from './services/user-administration.service';
+export { DemoControllerService } from './services/demo-controller.service';

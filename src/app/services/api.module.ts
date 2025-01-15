@@ -13,8 +13,8 @@ import { StatisticsService } from './services/statistics.service';
 import { OrderService } from './services/order.service';
 import { DevelopmentService } from './services/development.service';
 import { DashboardService } from './services/dashboard.service';
-import { DemoControllerService } from './services/demo-controller.service';
 import { UserAdministrationService } from './services/user-administration.service';
+import { DemoControllerService } from './services/demo-controller.service';
 
 /**
  * Module that provides all services and configuration.
@@ -33,8 +33,8 @@ import { UserAdministrationService } from './services/user-administration.servic
     OrderService,
     DevelopmentService,
     DashboardService,
-    DemoControllerService,
     UserAdministrationService,
+    DemoControllerService,
     ApiConfiguration
   ],
 })

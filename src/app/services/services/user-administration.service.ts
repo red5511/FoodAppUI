@@ -13,6 +13,9 @@ import { getAllUsers } from '../fn/user-administration/get-all-users';
 import { GetAllUsers$Params } from '../fn/user-administration/get-all-users';
 import { getCompanyUsers } from '../fn/user-administration/get-company-users';
 import { GetCompanyUsers$Params } from '../fn/user-administration/get-company-users';
+import { getPagedUsers } from '../fn/user-administration/get-paged-users';
+import { GetPagedUsers$Params } from '../fn/user-administration/get-paged-users';
+import { GetPagedUsersResponse } from '../models/get-paged-users-response';
 import { getUsersNotBelongToCompany } from '../fn/user-administration/get-users-not-belong-to-company';
 import { GetUsersNotBelongToCompany$Params } from '../fn/user-administration/get-users-not-belong-to-company';
 import { GetUsersResponse } from '../models/get-users-response';
@@ -23,8 +26,58 @@ export class UserAdministrationService extends BaseService {
     super(config, http);
   }
 
+  /** Path part for operation `getAllUsers()` */
+  static readonly GetAllUsersPath = '/api/v1/admin-panel/users/users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllUsers()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUsers$Response(params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+    return getAllUsers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllUsers$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUsers(params?: GetAllUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
+    return this.getAllUsers$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getPagedUsers()` */
+  static readonly GetPagedUsersPath = '/api/v1/admin-panel/users/users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPagedUsers()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getPagedUsers$Response(params: GetPagedUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetPagedUsersResponse>> {
+    return getPagedUsers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getPagedUsers$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getPagedUsers(params: GetPagedUsers$Params, context?: HttpContext): Observable<GetPagedUsersResponse> {
+    return this.getPagedUsers$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetPagedUsersResponse>): GetPagedUsersResponse => r.body)
+    );
+  }
+
   /** Path part for operation `getCompanyUsers()` */
-  static readonly GetCompanyUsersPath = '/api/v1/admin-panel/user/{companyId}/users';
+  static readonly GetCompanyUsersPath = '/api/v1/admin-panel/users/{companyId}/users';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -49,7 +102,7 @@ export class UserAdministrationService extends BaseService {
   }
 
   /** Path part for operation `getUsersNotBelongToCompany()` */
-  static readonly GetUsersNotBelongToCompanyPath = '/api/v1/admin-panel/user/{companyId}/users-to-add';
+  static readonly GetUsersNotBelongToCompanyPath = '/api/v1/admin-panel/users/{companyId}/users-to-add';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -69,31 +122,6 @@ export class UserAdministrationService extends BaseService {
    */
   getUsersNotBelongToCompany(params: GetUsersNotBelongToCompany$Params, context?: HttpContext): Observable<GetUsersResponse> {
     return this.getUsersNotBelongToCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
-    );
-  }
-
-  /** Path part for operation `getAllUsers()` */
-  static readonly GetAllUsersPath = '/api/v1/admin-panel/user/users';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getAllUsers()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllUsers$Response(params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
-    return getAllUsers(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getAllUsers$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllUsers(params?: GetAllUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
-    return this.getAllUsers$Response(params, context).pipe(
       map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
     );
   }

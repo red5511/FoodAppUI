@@ -28,4 +28,4 @@ export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompa
   );
 }
 
-saveCompany.PATH = '/api/v1/administration/company/save';
+saveCompany.PATH = '/api/v1/admin-panel/companies/save';

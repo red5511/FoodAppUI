@@ -5,4 +5,5 @@ export interface UserDto {
   firstName?: string;
   id?: number;
   lastName?: string;
+  phoneNumber?: string;
 }

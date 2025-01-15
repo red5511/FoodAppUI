@@ -24,10 +24,12 @@ export { GetCompanyDetailsResponse } from './models/get-company-details-response
 export { GetOrdersConfigRequest } from './models/get-orders-config-request';
 export { GetOrdersConfigResponse } from './models/get-orders-config-response';
 export { GetOrdersForCompanyRequest } from './models/get-orders-for-company-request';
+export { GetPagedUsersResponse } from './models/get-paged-users-response';
 export { GetStatisticsChartRequest } from './models/get-statistics-chart-request';
 export { GetStatisticsChartResponse } from './models/get-statistics-chart-response';
 export { GetStatisticsConfigRequest } from './models/get-statistics-config-request';
 export { GetStatisticsConfigResponse } from './models/get-statistics-config-response';
+export { GetUsersAdministrationRequest } from './models/get-users-administration-request';
 export { GetUsersResponse } from './models/get-users-response';
 export { HeartbeatWebSocketEvent } from './models/heartbeat-web-socket-event';
 export { InitOrderWebSocketTopicRequest } from './models/init-order-web-socket-topic-request';
@@ -50,4 +52,5 @@ export { SaveCompanyRequest } from './models/save-company-request';
 export { ServerSideDisconnectionWebSocketEvent } from './models/server-side-disconnection-web-socket-event';
 export { Sort } from './models/sort';
 export { UserDto } from './models/user-dto';
+export { UsersPagedResult } from './models/users-paged-result';
 export { WebSocketEvent } from './models/web-socket-event';

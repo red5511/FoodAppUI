@@ -28,4 +28,4 @@ export function getCompanyUsers(http: HttpClient, rootUrl: string, params: GetCo
   );
 }
 
-getCompanyUsers.PATH = '/api/v1/admin-panel/user/{companyId}/users';
+getCompanyUsers.PATH = '/api/v1/admin-panel/users/{companyId}/users';

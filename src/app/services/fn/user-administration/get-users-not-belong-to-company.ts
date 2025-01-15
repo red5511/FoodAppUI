@@ -28,4 +28,4 @@ export function getUsersNotBelongToCompany(http: HttpClient, rootUrl: string, pa
   );
 }
 
-getUsersNotBelongToCompany.PATH = '/api/v1/admin-panel/user/{companyId}/users-to-add';
+getUsersNotBelongToCompany.PATH = '/api/v1/admin-panel/users/{companyId}/users-to-add';

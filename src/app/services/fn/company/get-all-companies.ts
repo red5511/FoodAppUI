@@ -26,4 +26,4 @@ export function getAllCompanies(http: HttpClient, rootUrl: string, params?: GetA
   );
 }
 
-getAllCompanies.PATH = '/api/v1/administration/company/companies';
+getAllCompanies.PATH = '/api/v1/admin-panel/companies/companies';

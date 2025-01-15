@@ -28,4 +28,4 @@ export function getCompanyDetails(http: HttpClient, rootUrl: string, params: Get
   );
 }
 
-getCompanyDetails.PATH = '/api/v1/administration/company/{companyId}/details';
+getCompanyDetails.PATH = '/api/v1/admin-panel/companies/{companyId}/details';

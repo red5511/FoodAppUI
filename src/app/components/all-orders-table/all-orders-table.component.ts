@@ -48,7 +48,7 @@ export class AllOrdersTableComponent {
   orders: OrderDto[] = []; // Define orders as an array of OrderDto
   statusesTranslations!: { [key: string]: string };
   statuses: OrderStatusModel[] = [];
-  loading: boolean = false; // Initialize as true when loading data
+  loading: boolean = true; // Initialize as true when loading data
   companyIdTemp: number | undefined;
   totalRecords!: number;
   selectedCustomers: boolean[] = [];

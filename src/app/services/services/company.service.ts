@@ -29,7 +29,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `modifyCompany()` */
-  static readonly ModifyCompanyPath = '/api/v1/administration/company/modify';
+  static readonly ModifyCompanyPath = '/api/v1/admin-panel/companies/modify';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -54,7 +54,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `saveCompany()` */
-  static readonly SaveCompanyPath = '/api/v1/administration/company/save';
+  static readonly SaveCompanyPath = '/api/v1/admin-panel/companies/save';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -79,7 +79,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `getCompanyDetails()` */
-  static readonly GetCompanyDetailsPath = '/api/v1/administration/company/{companyId}/details';
+  static readonly GetCompanyDetailsPath = '/api/v1/admin-panel/companies/{companyId}/details';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -104,7 +104,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `getAllCompanies()` */
-  static readonly GetAllCompaniesPath = '/api/v1/administration/company/companies';
+  static readonly GetAllCompaniesPath = '/api/v1/admin-panel/companies/companies';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -129,7 +129,7 @@ export class CompanyService extends BaseService {
   }
 
   /** Path part for operation `deleteCompany()` */
-  static readonly DeleteCompanyPath = '/api/v1/administration/company/delete';
+  static readonly DeleteCompanyPath = '/api/v1/admin-panel/companies/delete';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

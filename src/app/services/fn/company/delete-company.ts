@@ -28,4 +28,4 @@ export function deleteCompany(http: HttpClient, rootUrl: string, params: DeleteC
   );
 }
 
-deleteCompany.PATH = '/api/v1/administration/company/delete';
+deleteCompany.PATH = '/api/v1/admin-panel/companies/delete';
