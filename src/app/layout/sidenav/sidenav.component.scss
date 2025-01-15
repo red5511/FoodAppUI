@@ -23,7 +23,7 @@
     height: 45px;
 
     .menu-icon {
-        font-size: 24px;
+        font-size: 20px;
         margin-right: 10px;
     }
 
@@ -75,7 +75,7 @@
     li {
         position: relative;
         /* Necessary to position the custom bullet */
-        padding-left: 20px;
+        padding-left: 13px;
         /* Space for the custom bullet */
 
         &::before {
@@ -125,4 +125,5 @@
 
 .sidebar-menu-element-icon{
     padding-top: 3px;
+    margin-left: 5px;
 }

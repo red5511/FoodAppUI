@@ -11,6 +11,9 @@ import { AllOrdersComponent } from './pages/all-orders/all-orders.component';
 import { StatisticsComponent } from './pages/statistics/statistics.component';
 import { MainComponent } from './pages/main/main.component';
 import { RestaurantOrderComponent } from './pages/restaurant-order/restaurant-order.component';
+import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { AdminPanelUsersComponent } from './pages/admin-panel-users/admin-panel-users.component';
+import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admin-panel-comapnies.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -57,6 +60,21 @@ const routes: Routes = [
   {
     path: 'restaurant-order',
     component: RestaurantOrderComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin-panel',
+    component: AdminPanelComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin-panel/users',
+    component: AdminPanelUsersComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'admin-panel/companies',
+    component: AdminPanelComapniesComponent,
     canActivate: [authGuard],
   },
 ];

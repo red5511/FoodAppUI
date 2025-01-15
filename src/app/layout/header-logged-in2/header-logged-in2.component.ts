@@ -92,7 +92,7 @@ export class HeaderLoggedIn2Component {
   }
 
   updateContext(
-    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | string > | undefined
+    permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | string > | undefined
   ) {
     if (this.selectedCompany !== null) {
       if (!permittedModules) {

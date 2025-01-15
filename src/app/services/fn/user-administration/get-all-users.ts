@@ -26,4 +26,4 @@ export function getAllUsers(http: HttpClient, rootUrl: string, params?: GetAllUs
   );
 }
 
-getAllUsers.PATH = '/api/v1/administration/user/users';
+getAllUsers.PATH = '/api/v1/admin-panel/user/users';

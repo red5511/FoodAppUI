@@ -5,7 +5,7 @@ import { CompanyDto } from '../models';
 
 export interface Context {
   selectedCompany: CompanyDto;
-  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | string>;
+  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL' | string>;
   userId: number;
   companies: CompanyDto[];
   receivingCompanies: CompanyDto[];

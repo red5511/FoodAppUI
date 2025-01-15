@@ -82,6 +82,9 @@ import { ToastWebsocketComponent } from './common/components/toast-websocket/toa
 import { SortableColumnEntryComponent } from './components/sortable-column-entry/sortable-column-entry.component';
 import { MainComponent } from './pages/main/main.component';
 import { RestaurantOrderComponent } from './pages/restaurant-order/restaurant-order.component';
+import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
+import { AdminPanelUsersComponent } from './pages/admin-panel-users/admin-panel-users.component';
+import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admin-panel-comapnies.component';
 
 @NgModule({
   declarations: [
@@ -118,6 +121,9 @@ import { RestaurantOrderComponent } from './pages/restaurant-order/restaurant-or
     SortableColumnEntryComponent,
     MainComponent,
     RestaurantOrderComponent,
+    AdminPanelComponent,
+    AdminPanelUsersComponent,
+    AdminPanelComapniesComponent,
   ],
   imports: [
     RouterModule,

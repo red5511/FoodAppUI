@@ -721,73 +721,6 @@
         }
       }
     },
-    "/api/v1/administration/user/{companyId}/users": {
-      "get": {
-        "tags": ["UserAdministration"],
-        "operationId": "getCompanyUsers",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
-              }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      }
-    },
-    "/api/v1/administration/user/{companyId}/users-to-add": {
-      "get": {
-        "tags": ["UserAdministration"],
-        "operationId": "getUsersNotBelongToCompany",
-        "parameters": [
-          {
-            "name": "companyId",
-            "in": "path",
-            "required": true,
-            "schema": { "type": "integer", "format": "int64" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
-              }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      }
-    },
-    "/api/v1/administration/user/users": {
-      "get": {
-        "tags": ["UserAdministration"],
-        "operationId": "getAllUsers",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
-              }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      }
-    },
     "/api/v1/administration/company/{companyId}/details": {
       "get": {
         "tags": ["Company"],
@@ -827,6 +760,73 @@
                 "schema": {
                   "$ref": "#/components/schemas/GetAllCompaniesResponse"
                 }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/user/{companyId}/users": {
+      "get": {
+        "tags": ["UserAdministration"],
+        "operationId": "getCompanyUsers",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/user/{companyId}/users-to-add": {
+      "get": {
+        "tags": ["UserAdministration"],
+        "operationId": "getUsersNotBelongToCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/user/users": {
+      "get": {
+        "tags": ["UserAdministration"],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
               }
             }
           }
@@ -1538,7 +1538,8 @@
                 "LIVE_PANEL",
                 "STATISTICS",
                 "ORDERS",
-                "RESTAURANT_ORDER"
+                "RESTAURANT_ORDER",
+                "SUPER_ADMIN_PANEL"
               ]
             }
           },
@@ -1552,6 +1553,21 @@
           "companyName": { "type": "string" },
           "companyAddress": { "type": "string" },
           "openHours": { "$ref": "#/components/schemas/OpenHours" }
+        }
+      },
+      "GetCompanyDetailsResponse": {
+        "type": "object",
+        "properties": {
+          "company": { "$ref": "#/components/schemas/CompanyDto" }
+        }
+      },
+      "GetAllCompaniesResponse": {
+        "type": "object",
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
+          }
         }
       },
       "GetUsersResponse": {
@@ -1570,21 +1586,6 @@
           "firstName": { "type": "string" },
           "lastName": { "type": "string" },
           "email": { "type": "string" }
-        }
-      },
-      "GetCompanyDetailsResponse": {
-        "type": "object",
-        "properties": {
-          "company": { "$ref": "#/components/schemas/CompanyDto" }
-        }
-      },
-      "GetAllCompaniesResponse": {
-        "type": "object",
-        "properties": {
-          "companies": {
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/CompanyDto" }
-          }
         }
       },
       "DeleteProductRequest": {

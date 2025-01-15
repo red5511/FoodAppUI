@@ -24,7 +24,7 @@ export class UserAdministrationService extends BaseService {
   }
 
   /** Path part for operation `getCompanyUsers()` */
-  static readonly GetCompanyUsersPath = '/api/v1/administration/user/{companyId}/users';
+  static readonly GetCompanyUsersPath = '/api/v1/admin-panel/user/{companyId}/users';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -49,7 +49,7 @@ export class UserAdministrationService extends BaseService {
   }
 
   /** Path part for operation `getUsersNotBelongToCompany()` */
-  static readonly GetUsersNotBelongToCompanyPath = '/api/v1/administration/user/{companyId}/users-to-add';
+  static readonly GetUsersNotBelongToCompanyPath = '/api/v1/admin-panel/user/{companyId}/users-to-add';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -74,7 +74,7 @@ export class UserAdministrationService extends BaseService {
   }
 
   /** Path part for operation `getAllUsers()` */
-  static readonly GetAllUsersPath = '/api/v1/administration/user/users';
+  static readonly GetAllUsersPath = '/api/v1/admin-panel/user/users';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

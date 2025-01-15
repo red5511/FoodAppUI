@@ -3,7 +3,7 @@
 import { CompanyDto } from '../models/company-dto';
 export interface DashboardGetInitConfigResponse {
   companyDataList: Array<CompanyDto>;
-  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER'>;
+  permittedModules: Array<'LIVE_PANEL' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDER' | 'ADMIN_PANEL'>;
   receivingOrdersActive?: boolean;
   userId: number;
 }
