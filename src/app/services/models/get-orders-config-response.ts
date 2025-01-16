@@ -18,6 +18,6 @@ export interface GetOrdersConfigResponse {
    * Map of severity
    */
   statusSeverityMap: {
-[key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast';
+[key: string]: 'info' | 'warning' | 'success' | 'danger' | 'contrast' | 'yellow';
 };
 }

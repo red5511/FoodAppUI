@@ -48,10 +48,6 @@ export class SortableColumnEntryComponent {
 
   // Get the correct sort icon class
   getSortIcon(): string {
-    console.log('this.sortState[this.field]')
-    console.log(this.field)
-    console.log(this.sortState)
-    console.log(this.sortState[this.field])
     switch (this.sortState[this.field]) {
       case 'ASC':
         return 'pi-arrow-up'; // Ascending icon

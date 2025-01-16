@@ -1,6 +1,6 @@
 .sidebar {
     background-color: var(--primary-color1);
-    width: 220px;
+    width: 235px;
     padding: 5px;
     position: fixed;
     height: 4444px; /* Use 100vh instead of 100% for consistent viewport height */
@@ -17,7 +17,7 @@
     text-decoration: none;
     display: flex;
     align-items: center;
-    padding: 10px;
+    padding: 4px;
     border-radius: 10px;
     transition: all 0.3s;
     height: 45px;
@@ -64,6 +64,7 @@
 
 }
 
+
 .sidebar .sub-menu {
     //list-style: circle; /* This will add square bullets specifically to sub-menus */
     color: #d4d4d4;
@@ -98,6 +99,7 @@
     @include menu-item;
     width: 45px;
     padding-bottom: 5px;
+    padding-left: 12px;
     padding-top: 5px;
 
     &:hover {

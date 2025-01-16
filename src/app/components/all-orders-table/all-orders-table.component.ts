@@ -18,7 +18,7 @@ import {
   DateRangeModel,
 } from '../../services/models';
 import { OrderService } from '../../services/services';
-import { from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import { debounceTime, from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
 import { DateResult } from '../calendar-with-dialog/calendar-with-dialog.component';
 
 @Component({
@@ -59,7 +59,7 @@ export class AllOrdersTableComponent {
       | 'success'
       | 'danger'
       | 'contrast'
-      // | 'yellow'
+      | 'yellow'
     };
 
   sortState!: { [key: string]: string };
@@ -68,12 +68,25 @@ export class AllOrdersTableComponent {
   size: number = 10;
   sorts!: Array<Sort>;
   private configPromise: Promise<void> | null = null;
+  private searchSubject = new Subject<string>();
+
   constructor(
     private orderService: OrderService,
     private contextService: ContextService
   ) {
     this.setDefoultSorts()
   }
+
+    ngOnInit(): void {
+      this.searchSubject
+        .pipe(
+          debounceTime(600), // Delay of 300ms
+          takeUntil(this.destroy$) // Automatically unsubscribes on destroy
+        )
+        .subscribe((searchTerm) => {
+          this.onFilterChange();
+        });
+    }
 
   setDefoultSorts(){
     const sort: Sort = {
@@ -182,17 +195,6 @@ export class AllOrdersTableComponent {
     this.destroy$.complete();
   }
 
-  filterGlobal(event: Event, filterType: string): void {
-    const inputElement = event.target as HTMLInputElement;
-    this.dt2.filterGlobal(inputElement.value, filterType);
-  }
-
-  onInputChange(event: Event) {
-    const input = event.target as HTMLInputElement; // Cast to HTMLInputElement
-    const value = input.value; // Capture full input value
-    this.dt2.filterGlobal(value, 'contains'); // Trigger the filter function
-  }
-
   onRowExpand(event: TableRowExpandEvent) {
     const order = event.data;
     this.collapseAll();
@@ -221,7 +223,7 @@ export class AllOrdersTableComponent {
     | 'warning'
     | 'danger'
     | 'contrast'
-    // | 'yellow'
+    | 'yellow'
  {
     return this.statusSeverityMap?.[status];
   }
@@ -238,6 +240,10 @@ export class AllOrdersTableComponent {
 
   onFilterChange() {
     this.loadOrders();
+  }
+
+  onInputChange(value: string): void {
+    this.searchSubject.next(value); // Pass the input value to the Subject
   }
 
   onSortChanged({

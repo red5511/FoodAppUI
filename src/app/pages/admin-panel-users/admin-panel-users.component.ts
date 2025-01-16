@@ -5,8 +5,13 @@ import {
   Sort,
   UserDto,
 } from '../../services/models';
-import { TableLazyLoadEvent } from 'primeng/table';
+import {
+  TableLazyLoadEvent,
+  TableRowCollapseEvent,
+  TableRowExpandEvent,
+} from 'primeng/table';
 import { UserAdministrationService } from '../../services/services/user-administration.service';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-admin-panel-users',
@@ -23,18 +28,33 @@ export class AdminPanelUsersComponent {
   sorts!: Array<Sort>;
   globalSearch: string | undefined;
   sortState: { [key: string]: string } = {};
+  expandedRows: { [s: string]: boolean } = {};
+  private searchSubject = new Subject<string>();
+  private destroy$ = new Subject<void>();
 
+  constructor(private userAdministrationService: UserAdministrationService) {
+    this.setDefoultSorts()
+  }
 
-  constructor(private userAdministrationService: UserAdministrationService) {}
+  ngOnInit(): void {
+    this.searchSubject
+      .pipe(
+        debounceTime(600), // Delay of 300ms
+        takeUntil(this.destroy$) // Automatically unsubscribes on destroy
+      )
+      .subscribe((searchTerm) => {
+        this.onFilterChange(searchTerm);
+      });
+  }
 
   loadOrdersLazy(event: TableLazyLoadEvent) {
     this.loading = true;
     this.page = Math.floor(event.first! / event.rows!);
     this.size = event.rows!;
-    this.loadOrders()
+    this.loadOrders();
   }
 
-  loadOrders(){
+  loadOrders() {
     const dateRange = this.selectedDates.at(0)
       ? 'CUSTOM_DATE_RANGE'
       : undefined;
@@ -53,8 +73,8 @@ export class AdminPanelUsersComponent {
           this.users = response.pagedResult.users ?? [];
           this.totalRecords = response.pagedResult.totalRecords ?? 0;
           this.loading = false; // Set to false once data is loaded
-          console.log('loadOrders')
-          console.log(response)
+          console.log('loadOrders');
+          console.log(response);
         }
       },
       error: (error) => {
@@ -62,8 +82,14 @@ export class AdminPanelUsersComponent {
       },
     });
   }
+  onInputChange(value: string): void {
+    this.searchSubject.next(value); // Pass the input value to the Subject
+  }
 
-  onFilterChange() {
+  onFilterChange(searchTerm: string) {
+    this.globalSearch = searchTerm
+    console.log('onFilterChange')
+    this.loading = true;
     this.loadOrders();
   }
 
@@ -81,21 +107,43 @@ export class AdminPanelUsersComponent {
           field,
         },
       ];
-    }
-    else{
-      this.setDefoultSorts()
+    } else {
+      this.setDefoultSorts();
     }
     this.loadOrders();
   }
 
-  setDefoultSorts(){
+  setDefoultSorts() {
     const sort: Sort = {
       direction: 'DESC',
-      field: 'createdDate'
-    }
-    this.sorts = [sort]
+      field: 'createdDate',
+    };
+    this.sorts = [sort];
     this.sortState = {
-      'createdDate': 'DESC'
-    }
+      createdDate: 'DESC',
+    };
+  }
+
+  onRowExpand(event: TableRowExpandEvent) {
+    const order = event.data;
+    this.collapseAll();
+    this.expandedRows[order.id] = true;
+  }
+
+  onRowCollapse(event: TableRowCollapseEvent) {
+    const user = event.data;
+    delete this.expandedRows[user.id];
+  }
+
+  expandAll() {
+    this.users.forEach((order) => (this.expandedRows[order.id!] = true));
+  }
+
+  collapseAll() {
+    this.expandedRows = {};
+  }
+
+  onCalendarSelect(){
+    this.loadOrders()
   }
 }

@@ -42,7 +42,7 @@
             currency="PLN"
             min="0"
             max="999999"
-            (onChange)="onFilterChange()"
+            (ngModelChange)="onInputChange($event)"
           />
           <label for="over_label">Kwota</label>
         </p-floatLabel>
@@ -61,7 +61,7 @@
             id="over_label"
             [(ngModel)]="globalSearch"
             autocomplete="off"
-            (onChange)="onFilterChange()"
+            (ngModelChange)="onInputChange($event)"
           />
           <label for="over_label">Wyszkuwianie globalne</label>
         </p-floatLabel>

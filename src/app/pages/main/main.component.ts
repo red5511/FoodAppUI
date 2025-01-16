@@ -71,7 +71,7 @@ export class MainComponent {
   processRedirections(context: Context){
     if(Array.isArray(context.permittedModules) && context.permittedModules.length > 0)
     {
-      const includesLivePanel = context.permittedModules.includes('LIVE_PANEL')
+      const includesLivePanel = context.permittedModules.includes('ONLINE_ORDERS')
       const includesRestaurantOrdering = context.permittedModules.includes('STATISTICS')
       if(includesLivePanel && !includesRestaurantOrdering){
         this.router.navigate(['/dashboard2']);
