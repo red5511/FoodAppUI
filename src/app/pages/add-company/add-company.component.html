@@ -1,0 +1,52 @@
+<p-card [style]="{height: '100%' }" footer="Footer Content">
+    <div class="container">
+        <div *ngIf="isResponseSuccess != undefined" class="message-panel" [ngClass]="{
+        success: isResponseSuccess,
+        error:!isResponseSuccess,
+      }">
+            <div class="message-icon">
+                <span *ngIf="isResponseSuccess">&#10004;</span>
+                <span *ngIf="!isResponseSuccess">&#10006;</span>
+            </div>
+            <div>{{ message }}</div>
+        </div>
+
+        <div *ngIf="isResponseSuccess === undefined">
+            <h2>Dodaj firme</h2>
+            <form #saveComapnyForm="ngForm" (ngSubmit)="saveCompany()">
+                <p-floatLabel>
+                    <input pInputText id="name" [(ngModel)]="company.name" name="name" required type="text"
+                        class="input-full-width" #email="ngModel" />
+                    <label for="name">Nazwa firmy</label>
+                </p-floatLabel>
+
+                <p-floatLabel>
+                    <input pInputText id="city" name="city" required type="test" [(ngModel)]="company.address.city"
+                        class="input-full-width" />
+                    <label for="city">Miasto</label>
+                </p-floatLabel>
+
+                <p-floatLabel>
+                    <input pInputText id="postalCode" name="postalCode" required type="test"
+                        [(ngModel)]="company.address.postalCode" class="input-full-width" />
+                    <label for="postalCode">Kod pocztowy</label>
+                </p-floatLabel>
+
+                <p-floatLabel>
+                    <input pInputText id="street" name="street" required type="test"
+                        [(ngModel)]="company.address.street" class="input-full-width" />
+                    <label for="street">Ulica</label>
+                </p-floatLabel>
+
+                <p-floatLabel>
+                    <input pInputText id="streetNumber" name="streetNumber" required type="test"
+                        [(ngModel)]="company.address.streetNumber" class="input-full-width" />
+                    <label for="streetNumber">Nr budynku</label>
+                </p-floatLabel>
+
+                <button pButton type="button" label="Utwórz" icon="pi pi-check" (click)="saveCompany()"
+                    [disabled]="saveComapnyForm.invalid"></button>
+            </form>
+        </div>
+    </div>
+</p-card>
