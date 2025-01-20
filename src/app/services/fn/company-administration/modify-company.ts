@@ -6,15 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { GetPagedUsersResponse } from '../../models/get-paged-users-response';
-import { GetUsersAdministrationRequest } from '../../models/get-users-administration-request';
+import { ModifyCompanyRequest } from '../../models/modify-company-request';
 
-export interface GetPagedUsers$Params {
-      body: GetUsersAdministrationRequest
+export interface ModifyCompany$Params {
+      body: ModifyCompanyRequest
 }
 
-export function getPagedUsers(http: HttpClient, rootUrl: string, params: GetPagedUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetPagedUsersResponse>> {
-  const rb = new RequestBuilder(rootUrl, getPagedUsers.PATH, 'post');
+export function modifyCompany(http: HttpClient, rootUrl: string, params: ModifyCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  const rb = new RequestBuilder(rootUrl, modifyCompany.PATH, 'put');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -24,9 +23,9 @@ export function getPagedUsers(http: HttpClient, rootUrl: string, params: GetPage
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<GetPagedUsersResponse>;
+      return r as StrictHttpResponse<string>;
     })
   );
 }
 
-getPagedUsers.PATH = '/api/v1/admin-panel/users/pages';
+modifyCompany.PATH = '/api/v1/admin-panel/companies/modify';

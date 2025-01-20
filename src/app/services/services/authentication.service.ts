@@ -14,6 +14,8 @@ import { ActivateUser$Params } from '../fn/authentication/activate-user';
 import { authenticate } from '../fn/authentication/authenticate';
 import { Authenticate$Params } from '../fn/authentication/authenticate';
 import { AuthenticationResponse } from '../models/authentication-response';
+import { blockUser } from '../fn/authentication/block-user';
+import { BlockUser$Params } from '../fn/authentication/block-user';
 import { ChangeInitPasswordResponse } from '../models/change-init-password-response';
 import { changePassword } from '../fn/authentication/change-password';
 import { ChangePassword$Params } from '../fn/authentication/change-password';
@@ -25,11 +27,38 @@ import { register } from '../fn/authentication/register';
 import { Register$Params } from '../fn/authentication/register';
 import { resendActivationEmail } from '../fn/authentication/resend-activation-email';
 import { ResendActivationEmail$Params } from '../fn/authentication/resend-activation-email';
+import { unblockUser } from '../fn/authentication/unblock-user';
+import { UnblockUser$Params } from '../fn/authentication/unblock-user';
 
 @Injectable({ providedIn: 'root' })
 export class AuthenticationService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `unblockUser()` */
+  static readonly UnblockUserPath = '/api/v1/auth/unblock-user/{userId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `unblockUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  unblockUser$Response(params: UnblockUser$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return unblockUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `unblockUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  unblockUser(params: UnblockUser$Params, context?: HttpContext): Observable<void> {
+    return this.unblockUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
   }
 
   /** Path part for operation `changePassword()` */
@@ -54,6 +83,31 @@ export class AuthenticationService extends BaseService {
   changePassword(params: ChangePassword$Params, context?: HttpContext): Observable<string> {
     return this.changePassword$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `blockUser()` */
+  static readonly BlockUserPath = '/api/v1/auth/block-user/{userId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `blockUser()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  blockUser$Response(params: BlockUser$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return blockUser(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `blockUser$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  blockUser(params: BlockUser$Params, context?: HttpContext): Observable<void> {
+    return this.blockUser$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

@@ -33,6 +33,21 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/auth/unblock-user/{userId}": {
+      "put": {
+        "tags": ["Authentication"],
+        "operationId": "unblockUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
     "/api/v1/auth/password/change/confirm": {
       "put": {
         "tags": ["Authentication"],
@@ -61,6 +76,21 @@
         }
       }
     },
+    "/api/v1/auth/block-user/{userId}": {
+      "put": {
+        "tags": ["Authentication"],
+        "operationId": "blockUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
     "/api/v1/administration/company/{companyId}/user/{userId}": {
       "put": {
         "tags": ["Administration"],
@@ -85,7 +115,7 @@
     },
     "/api/v1/admin-panel/companies/modify": {
       "put": {
-        "tags": ["Company"],
+        "tags": ["CompanyAdministration"],
         "operationId": "modifyCompany",
         "requestBody": {
           "content": {
@@ -577,22 +607,7 @@
         }
       }
     },
-    "/api/v1/admin-panel/users/users": {
-      "get": {
-        "tags": ["UserAdministration"],
-        "operationId": "getAllUsers",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
-              }
-            }
-          }
-        },
-        "security": [{ "bearerAuth": [] }]
-      },
+    "/api/v1/admin-panel/users/pages": {
       "post": {
         "tags": ["UserAdministration"],
         "operationId": "getPagedUsers",
@@ -621,9 +636,27 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/admin-panel/users/add-or-remove-users-permissions": {
+      "post": {
+        "tags": ["UserAdministration"],
+        "operationId": "addOrRemoveUsersPermissions",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOrDeleteUsersPermissionsAdministrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/admin-panel/companies/save": {
       "post": {
-        "tags": ["Company"],
+        "tags": ["CompanyAdministration"],
         "operationId": "saveCompany",
         "requestBody": {
           "content": {
@@ -641,6 +674,53 @@
             }
           }
         },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/companies/pages": {
+      "post": {
+        "tags": ["CompanyAdministration"],
+        "operationId": "getPagedCompanies",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/GetCompanyAdministrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetPagedCompaniesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/companies/add-or-remove-users-companies": {
+      "post": {
+        "tags": ["CompanyAdministration"],
+        "operationId": "addOrRemoveUsersCompanies",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/AddOrDeleteUsersCompaniesAdministrationRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -815,9 +895,45 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/admin-panel/users/users": {
+      "get": {
+        "tags": ["UserAdministration"],
+        "operationId": "getAllUsers",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/users/permissions": {
+      "get": {
+        "tags": ["UserAdministration"],
+        "operationId": "getAllPermissions",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/GetAllPermissionsResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/admin-panel/companies/{companyId}/details": {
       "get": {
-        "tags": ["Company"],
+        "tags": ["CompanyAdministration"],
         "operationId": "getCompanyDetails",
         "parameters": [
           {
@@ -844,7 +960,7 @@
     },
     "/api/v1/admin-panel/companies/companies": {
       "get": {
-        "tags": ["Company"],
+        "tags": ["CompanyAdministration"],
         "operationId": "getAllCompanies",
         "responses": {
           "200": {
@@ -886,7 +1002,7 @@
     },
     "/api/v1/admin-panel/companies/delete": {
       "delete": {
-        "tags": ["Company"],
+        "tags": ["CompanyAdministration"],
         "operationId": "deleteCompany",
         "requestBody": {
           "content": {
@@ -928,16 +1044,38 @@
           "soldOut": { "type": "boolean" }
         }
       },
+      "Address": {
+        "type": "object",
+        "properties": {
+          "street": { "type": "string" },
+          "streetNumber": { "type": "string" },
+          "city": { "type": "string" },
+          "postalCode": { "type": "string" },
+          "country": { "type": "string" }
+        }
+      },
       "CompanyDto": {
-        "required": ["address", "id", "name", "webSocketTopicName"],
+        "required": [
+          "address",
+          "createdDate",
+          "id",
+          "name",
+          "users",
+          "webSocketTopicName"
+        ],
         "type": "object",
         "properties": {
           "id": { "type": "integer", "format": "int64" },
           "name": { "type": "string" },
-          "address": { "type": "string" },
           "openHours": { "$ref": "#/components/schemas/OpenHours" },
+          "address": { "$ref": "#/components/schemas/Address" },
           "companyType": { "type": "string", "enum": ["FOOD"] },
           "webSocketTopicName": { "type": "string" },
+          "createdDate": { "type": "string", "format": "date-time" },
+          "users": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/UserDto" }
+          },
           "holding": { "type": "boolean" },
           "receivingOrdersActive": { "type": "boolean" }
         }
@@ -974,6 +1112,51 @@
           "saturdayEnd": { "$ref": "#/components/schemas/LocalTime" },
           "sundayStart": { "$ref": "#/components/schemas/LocalTime" },
           "sundayEnd": { "$ref": "#/components/schemas/LocalTime" }
+        }
+      },
+      "UserDto": {
+        "required": [
+          "companies",
+          "createdDate",
+          "email",
+          "enabled",
+          "firstName",
+          "id",
+          "lastName",
+          "locked",
+          "permissions",
+          "phoneNumber"
+        ],
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": { "type": "string" },
+          "companies": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
+          },
+          "enabled": { "type": "boolean" },
+          "locked": { "type": "boolean" },
+          "createdDate": { "type": "string", "format": "date-time" },
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIEW_ONLINE_ORDERING",
+                "VIEW_STATISTICS",
+                "VIEW_ORDERS_HISTORY",
+                "VIEW_RESTAURANT_ORDERING",
+                "ADMINISTRATOR",
+                "SUPER_ADMINISTRATOR"
+              ]
+            }
+          }
         }
       },
       "InitOrderWebSocketTopicRequest": {
@@ -1570,50 +1753,6 @@
           "pagedResult": { "$ref": "#/components/schemas/UsersPagedResult" }
         }
       },
-      "UserDto": {
-        "required": [
-          "companies",
-          "createdDate",
-          "email",
-          "enabled",
-          "firstName",
-          "id",
-          "lastName",
-          "locked",
-          "permissions",
-          "phoneNumber"
-        ],
-        "type": "object",
-        "properties": {
-          "id": { "type": "integer", "format": "int64" },
-          "firstName": { "type": "string" },
-          "lastName": { "type": "string" },
-          "email": { "type": "string" },
-          "phoneNumber": { "type": "string" },
-          "companies": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": { "$ref": "#/components/schemas/CompanyDto" }
-          },
-          "enabled": { "type": "boolean" },
-          "locked": { "type": "boolean" },
-          "createdDate": { "type": "string", "format": "date-time" },
-          "permissions": {
-            "uniqueItems": true,
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "VIEW_ONLINE_ORDERING",
-                "VIEW_STATISTICS",
-                "VIEW_ORDERS_HISTORY",
-                "VIEW_RESTAURANT_ORDERING",
-                "SUPER_ADMINISTRATOR"
-              ]
-            }
-          }
-        }
-      },
       "UsersPagedResult": {
         "type": "object",
         "properties": {
@@ -1624,11 +1763,104 @@
           "totalRecords": { "type": "integer", "format": "int64" }
         }
       },
+      "AddOrDeleteUsersPermissionsAdministrationRequest": {
+        "required": ["permissionToAdd", "permissionToRemove", "userId"],
+        "type": "object",
+        "properties": {
+          "permissionToAdd": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIEW_ONLINE_ORDERING",
+                "VIEW_STATISTICS",
+                "VIEW_ORDERS_HISTORY",
+                "VIEW_RESTAURANT_ORDERING",
+                "ADMINISTRATOR",
+                "SUPER_ADMINISTRATOR"
+              ]
+            }
+          },
+          "permissionToRemove": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIEW_ONLINE_ORDERING",
+                "VIEW_STATISTICS",
+                "VIEW_ORDERS_HISTORY",
+                "VIEW_RESTAURANT_ORDERING",
+                "ADMINISTRATOR",
+                "SUPER_ADMINISTRATOR"
+              ]
+            }
+          },
+          "userId": { "type": "integer", "format": "int64" }
+        }
+      },
       "SaveCompanyRequest": {
         "type": "object",
         "properties": {
           "company": { "$ref": "#/components/schemas/CompanyDto" },
           "userEmail": { "type": "string" }
+        }
+      },
+      "GetCompanyAdministrationRequest": {
+        "type": "object",
+        "properties": {
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
+          "sorts": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/Sort" }
+          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
+          "dateRange": {
+            "type": "string",
+            "enum": [
+              "LAST_30_DAYS",
+              "LAST_15_DAYS",
+              "LAST_7_DAYS",
+              "CUSTOM_DATE_RANGE"
+            ]
+          },
+          "globalSearch": { "type": "string" }
+        }
+      },
+      "CompaniesPagedResult": {
+        "type": "object",
+        "properties": {
+          "companies": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
+          },
+          "totalRecords": { "type": "integer", "format": "int64" }
+        }
+      },
+      "GetPagedCompaniesResponse": {
+        "type": "object",
+        "properties": {
+          "pagedResult": { "$ref": "#/components/schemas/CompaniesPagedResult" }
+        }
+      },
+      "AddOrDeleteUsersCompaniesAdministrationRequest": {
+        "required": ["companyIdsToAdd", "companyIdsToRemove", "userId"],
+        "type": "object",
+        "properties": {
+          "companyIdsToAdd": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          },
+          "companyIdsToRemove": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": { "type": "integer", "format": "int64" }
+          },
+          "userId": { "type": "integer", "format": "int64" }
         }
       },
       "DashboardGetInitConfigResponse": {
@@ -1662,7 +1894,7 @@
         "type": "object",
         "properties": {
           "companyName": { "type": "string" },
-          "companyAddress": { "type": "string" },
+          "companyAddress": { "$ref": "#/components/schemas/Address" },
           "openHours": { "$ref": "#/components/schemas/OpenHours" }
         }
       },
@@ -1672,6 +1904,27 @@
           "users": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/UserDto" }
+          }
+        }
+      },
+      "GetAllPermissionsResponse": {
+        "required": ["permissions"],
+        "type": "object",
+        "properties": {
+          "permissions": {
+            "uniqueItems": true,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "VIEW_ONLINE_ORDERING",
+                "VIEW_STATISTICS",
+                "VIEW_ORDERS_HISTORY",
+                "VIEW_RESTAURANT_ORDERING",
+                "ADMINISTRATOR",
+                "SUPER_ADMINISTRATOR"
+              ]
+            }
           }
         }
       },
@@ -1685,7 +1938,6 @@
         "type": "object",
         "properties": {
           "companies": {
-            "uniqueItems": true,
             "type": "array",
             "items": { "$ref": "#/components/schemas/CompanyDto" }
           }

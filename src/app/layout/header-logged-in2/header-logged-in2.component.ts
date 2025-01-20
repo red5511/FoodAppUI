@@ -132,8 +132,6 @@ export class HeaderLoggedIn2Component {
   }
 
   removeConnections() {
-    localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
-    localStorage.removeItem('lastRecivingOrdersComanyId');
     this.webSocketService.processDisconnection();
   }
 }

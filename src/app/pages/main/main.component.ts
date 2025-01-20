@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 })
 export class MainComponent {
   messages: Message[] = [];
-  messagesAreRdy: boolean = false
+  areCardsVisible: boolean = false
   private destroy$ = new Subject<void>();
 
   constructor(private contextService: ContextService, private router: Router) {}
@@ -64,8 +64,8 @@ export class MainComponent {
     console.log(this.messages)
     if (this.messages.length === 0) {
       this.processRedirections(context)
+      this.areCardsVisible = true
     }
-    this.messagesAreRdy = true
   }
 
   processRedirections(context: Context){

@@ -181,6 +181,8 @@ export class SocketService {
   }
 
   processDisconnection() {
+    localStorage.removeItem('dateTimeToTurnOnRecivingOrders');
+    localStorage.removeItem('lastRecivingOrdersComanyId');
     if (this.isConnected) {
       this.eventHandler.sendDisconnectionEvent(this.socketClient);
       this.disconnect();

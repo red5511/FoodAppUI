@@ -9,7 +9,7 @@
     [pageLinks]="5"
     [totalRecords]="totalRecords"
     [lazy]="true"
-    (onLazyLoad)="loadOrdersLazy($event)"
+    (onLazyLoad)="loadUsersLazy($event)"
     [paginator]="true"
     [tableStyle]="{ 'min-width': '20rem' }"
     [expandedRowKeys]="expandedRows"
@@ -35,7 +35,7 @@
             [(ngModel)]="globalSearch"
             autocomplete="off"
             (ngModelChange)="onInputChange($event)"
-            />
+          />
           <label for="over_label">Wyszkuwianie globalne</label>
         </p-floatLabel>
       </div>
@@ -157,7 +157,11 @@
               <ng-template pTemplate="body" let-company>
                 <tr>
                   <td>{{ company.name }}</td>
-                  <td>{{ company.address }}</td>
+                  <td>
+                    {{ company.address.postalCode }}
+                    {{ company.address.city }} ul.{{ company.address.street }}
+                    {{ company.address.streetNumber }}
+                  </td>
                   <td>{{ company.webSocketTopicName }}</td>
                   <!-- Accessing quantity from the map -->
                 </tr>
@@ -173,9 +177,41 @@
                 pButton
                 severity="info"
                 type="button"
-                label="Modyfikuj"
+                label="Modyfikuj firmy"
                 [raised]="true"
                 icon="pi pi-user-edit"
+                (click)="onModifyCompanyClick(user)"
+              ></button>
+              <button
+                pButton
+                severity="info"
+                type="button"
+                label="Modyfikuj prawa"
+                [raised]="true"
+                icon="pi pi-user-edit"
+                (click)="onModifyPermissionsClick(user)"
+              ></button>
+              <button
+                *ngIf="!user.locked"
+                pButton
+                severity="info"
+                type="button"
+                label="Zablokuj"
+                severity="danger"
+                [raised]="true"
+                icon="pi pi-ban"
+                (click)="onBanDialog(user)"
+              ></button>
+              <button
+                *ngIf="user.locked"
+                pButton
+                severity="info"
+                type="button"
+                label="Odblokuj"
+                severity="danger"
+                [raised]="true"
+                icon="pi pi-ban"
+                (click)="onUnbanDialog(user)"
               ></button>
             </div>
           </div>
@@ -186,8 +222,218 @@
     <ng-template pTemplate=" emptymessage">
       <tr>
         <td></td>
-        <td colspan="5">Brak użytkowników/td></td>
+        <td colspan="5">Brak użytkowników</td>
       </tr>
     </ng-template>
   </p-table>
 </p-card>
+
+<p-dialog
+  [(visible)]="dialogBanVisible"
+  [header]="'Potwierdź'"
+  [closable]="true"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <p>Jesteś pewny, że chcesz zablokować tego użytkownika?</p>
+  <div class="dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Nie"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="dialogBanVisible = false"
+    ></button>
+    <button
+      pButton
+      [severity]="'danger'"
+      type="button"
+      label="Tak"
+      icon="pi pi-check"
+      (click)="onBanConfirm()"
+      class="custom-confirm-button"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-dialog
+  [(visible)]="dialogUnbanVisible"
+  [header]="'Potwierdź'"
+  [closable]="true"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <p>Jesteś pewny, że chcesz odblokować tego użytkownika?</p>
+  <div class="dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Nie"
+      icon="pi pi-times"
+      class="p-button-text"
+      (click)="dialogUnbanVisible = false"
+    ></button>
+    <button
+      pButton
+      [severity]="'danger'"
+      type="button"
+      label="Tak"
+      icon="pi pi-check"
+      (click)="onUnbanConfirm()"
+      class="custom-confirm-button"
+    ></button>
+  </div>
+</p-dialog>
+
+<p-dialog
+  class="company-dialog"
+  [(visible)]="companySearchVisible"
+  [header]="'Zarządzaj dostępnymi firmami użytkownika'"
+  [closable]="true"
+  [modal]="true"
+>
+  <p-pickList
+    [style]="{ height: '85%' }"
+    [source]="companies"
+    [target]="usersCompanies"
+    [dragdrop]="true"
+    [keepSelection] = "false"
+    [responsive]="true"
+    [showSourceControls]="false"
+    [showTargetControls]="false"
+    [showTargetFilter]="false"
+    [sourceStyle]="{ height: '80%' }"
+    [targetStyle]="{ height: '90%' }"
+    (onMoveToSource)="onCompanyChange()"
+    (onMoveAllToSource)="onCompanyChange()"
+    (onMoveToTarget)="onCompanyChange()"
+    (onMoveAllToTarget)="onCompanyChange()"
+    sourceHeader="Firmy do dodania"
+    targetHeader="Firmy użytkownika"
+    filterBy="name"
+    sourceFilterPlaceholder="Search by name"
+    breakpoint="800px"
+  >
+    <ng-template pTemplate="sourceFilter">
+      <p-floatLabel [style]="{ width: '100%' }">
+        <input
+          [style]="{ width: '100%' }"
+          pInputText
+          id="over_label"
+          [(ngModel)]="globalCompanySearch"
+          autocomplete="off"
+          (ngModelChange)="onInputCompanyChange($event)"
+        />
+        <label for="over_label">Wyszukaj po nazwie lub id</label>
+      </p-floatLabel>
+    </ng-template>
+
+    <ng-template let-company pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3">
+        <div class="flex-1 flex flex-column gap-2">
+          <div class="flex align-products-center gap-2">
+            <i class="pi pi-building-columns text-sm"></i>
+            <span>
+              {{ company.id }}
+            </span>
+          </div>
+          <div class="font-bold">
+            {{ company.name }}
+          </div>
+          <div class="font-bold">
+            {{ company.address.postalCode }} {{ company.address.city }}
+          </div>
+          <div class="font-bold">
+            ul.{{ company.address.street }} {{ company.address.streetNumber }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+  <div class="buttons">
+    <button
+      pButton
+      [severity]="'danger'"
+      type="button"
+      label="Zatwierdź"
+      icon="pi pi-check"
+      class="custom-confirm-button"
+      (click)="onApproveCompanyChanges()"
+      [disabled]="
+        addedCompanyIdsToUser.length === 0 &&
+        removedCompanyIdsToUser.length === 0
+      "
+    ></button>
+  </div>
+  <p style="color: green" *ngIf="addedCompanyIdsToUser.length > 0">
+    Id do dodania: {{ addedCompanyIdsToUser }}
+  </p>
+  <p style="color: red" *ngIf="removedCompanyIdsToUser.length > 0">
+    Id do usunięcia: {{ removedCompanyIdsToUser }}
+  </p>
+</p-dialog>
+
+
+<p-dialog
+  class="company-dialog"
+  [(visible)]="permissionDialogVisible"
+  [header]="'Zarządzaj uprawnieniami użytkownika'"
+  [closable]="true"
+  [modal]="true"
+>
+  <p-pickList
+    [style]="{ height: '85%' }"
+    [source]="allPermissionCloned"
+    [target]="usersPermission"
+    [metaKeySelection] = "false"
+    [dragdrop]="true"
+    [responsive]="true"
+    [showSourceControls]="false"
+    [showTargetControls]="false"
+    [showTargetFilter]="false"
+    [sourceStyle]="{ height: '80%' }"
+    [targetStyle]="{ height: '90%' }"
+    (onMoveToSource)="onPermissionChange()"
+    (onMoveAllToSource)="onPermissionChange()"
+    (onMoveToTarget)="onPermissionChange()"
+    (onMoveAllToTarget)="onPermissionChange()"
+    sourceHeader="Uprawnienia do dodania"
+    targetHeader="Uprawnienia użytkownika"
+    breakpoint="800px"
+  >
+    <ng-template let-permission pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3">
+        <div class="flex-1 flex flex-column gap-2">
+          <div class="flex align-products-center gap-2">
+            <i class="pi pi-star text-sm"></i>
+            <span>
+              {{ permission }}
+            </span>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+  <div class="buttons">
+    <button
+      pButton
+      [severity]="'danger'"
+      type="button"
+      label="Zatwierdź"
+      icon="pi pi-check"
+      class="custom-confirm-button"
+      (click)="onApprovePermissionChanges()"
+      [disabled]="
+        addedPermissionsToUser.length === 0 &&
+        removedPermissionsToUser.length === 0
+      "
+    ></button>
+  </div>
+  <p style="color: green" *ngIf="addedPermissionsToUser.length > 0">
+    Liczba dodanych praw: {{ addedPermissionsToUser.length }}
+  </p>
+  <p style="color: red" *ngIf="removedPermissionsToUser.length > 0">
+    Liczba usuniętych praw: {{ removedPermissionsToUser.length }}
+  </p>
+</p-dialog>

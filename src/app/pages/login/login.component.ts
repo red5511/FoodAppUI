@@ -22,24 +22,28 @@ export class LoginComponent {
   message = '';
   isSuccess: boolean = false;
   isAccountNotActivated: boolean = false;
-  alreadySend: boolean = false
+  alreadySend: boolean = false;
 
   constructor(
     private authService: AuthenticationService,
     private router: Router,
     private tokenService: TokenService,
     private loginService: LoginService,
-    private toastService: ToastrService,
+    private toastService: ToastrService
   ) {}
 
   onResendActivationEmail() {
     const params: ResendActivationEmail$Params = {
-      email: this.authenticationRequest.email
-    } 
-    this.authService.resendActivationEmail(params).subscribe()
-    this.toastService.success('Email z aktywacja konta został wysłany, sprawdź skrzynke');
-    this.alreadySend = true
-
+      email: this.authenticationRequest.email,
+    };
+    this.authService.resendActivationEmail(params).subscribe({
+      next: () => {
+        this.toastService.success(
+          'Email z aktywacja konta został wysłany, sprawdź skrzynke'
+        );
+      },
+    });
+    this.alreadySend = true;
   }
 
   loginUser() {
@@ -63,6 +67,7 @@ export class LoginComponent {
         error: (err) => {
           this.message = 'Błąd logowania: ';
           if (err.error) {
+            this.authenticationRequest.password = '';
             if (err.error.errorCode.includes('Konto nie zostało aktywowane')) {
               this.isAccountNotActivated = true;
             } else {

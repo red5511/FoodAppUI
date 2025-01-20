@@ -1,5 +1,8 @@
 /* tslint:disable */
 /* eslint-disable */
+export { AddOrDeleteUsersCompaniesAdministrationRequest } from './models/add-or-delete-users-companies-administration-request';
+export { AddOrDeleteUsersPermissionsAdministrationRequest } from './models/add-or-delete-users-permissions-administration-request';
+export { Address } from './models/address';
 export { ApprovalDeadlinePassed } from './models/approval-deadline-passed';
 export { ApprovedOrderWebSocketEvent } from './models/approved-order-web-socket-event';
 export { ApproveNewIncomingOrderRequest } from './models/approve-new-incoming-order-request';
@@ -7,6 +10,7 @@ export { AuthenticationRequest } from './models/authentication-request';
 export { AuthenticationResponse } from './models/authentication-response';
 export { ChangeInitPasswordRequest } from './models/change-init-password-request';
 export { ChangeInitPasswordResponse } from './models/change-init-password-response';
+export { CompaniesPagedResult } from './models/companies-paged-result';
 export { CompanyDto } from './models/company-dto';
 export { CreateOrderRequest } from './models/create-order-request';
 export { CreateProductRequest } from './models/create-product-request';
@@ -20,10 +24,13 @@ export { DeleteProductRequest } from './models/delete-product-request';
 export { DisconnectionWebSocketEvent } from './models/disconnection-web-socket-event';
 export { GetActiveOrdersRequest } from './models/get-active-orders-request';
 export { GetAllCompaniesResponse } from './models/get-all-companies-response';
+export { GetAllPermissionsResponse } from './models/get-all-permissions-response';
+export { GetCompanyAdministrationRequest } from './models/get-company-administration-request';
 export { GetCompanyDetailsResponse } from './models/get-company-details-response';
 export { GetOrdersConfigRequest } from './models/get-orders-config-request';
 export { GetOrdersConfigResponse } from './models/get-orders-config-response';
 export { GetOrdersForCompanyRequest } from './models/get-orders-for-company-request';
+export { GetPagedCompaniesResponse } from './models/get-paged-companies-response';
 export { GetPagedUsersResponse } from './models/get-paged-users-response';
 export { GetStatisticsChartRequest } from './models/get-statistics-chart-request';
 export { GetStatisticsChartResponse } from './models/get-statistics-chart-response';

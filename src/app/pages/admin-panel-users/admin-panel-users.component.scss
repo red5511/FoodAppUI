@@ -1,42 +1,66 @@
 :host {
-    width: 98%; // Take the full width of the parent container
-    max-width: 1100px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-  }
+  width: 98%; // Take the full width of the parent container
+  max-width: 1100px;
+  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+}
 
-  ::ng-deep .p-datatable th {
-    text-align: center;
-  }
-  
-  ::ng-deep .p-datatable td {
-    text-align: center;
-  }
+::ng-deep .p-datatable th {
+  text-align: center;
+}
 
-  :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
-    padding: 1rem 5px;
-  }
-  
-  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
-    padding: 1rem 5px;
-  }
+::ng-deep .p-datatable td {
+  text-align: center;
+}
 
-  :host ::ng-deep .expansion-table .p-datatable .p-datatable-tbody > tr > td {
-    padding: 4px 5px;
-  }
+:host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+  padding: 1rem 5px;
+}
 
-  .buttons {
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  padding: 1rem 5px;
+}
+
+:host ::ng-deep .expansion-table .p-datatable .p-datatable-tbody > tr > td {
+  padding: 4px 5px;
+}
+
+:host ::ng-deep .p-picklist .p-picklist-list .p-picklist-item.p-highlight {
+  color: #080F14;
+  background: #e3d2fd;
+}
+
+:host ::ng-deep .company-dialog .p-dialog {
+  width: 92%;
+  height: 80%;
+  max-width: 1100px;
+}
+
+
+.buttons {
+  margin-top: 1rem;
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem;
+  gap: 1rem;
   padding-top: 18px;
 }
 
-  .filters {
-    padding: 10px;
-    display: flex;
-    gap: 25px 15px;
-    flex-wrap: wrap;
-    justify-content: left;
-    width: 100%;
-  }
+.filters {
+  padding: 10px;
+  display: flex;
+  gap: 25px 15px;
+  flex-wrap: wrap;
+  justify-content: left;
+  width: 100%;
+}
+
+.dialog-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 2rem;
+}
+
+.custom-confirm-button {
+  margin-left: auto; /* This will push the second button to the right */
+}
+

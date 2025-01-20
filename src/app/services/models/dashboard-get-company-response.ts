@@ -1,8 +1,9 @@
 /* tslint:disable */
 /* eslint-disable */
+import { Address } from '../models/address';
 import { OpenHours } from '../models/open-hours';
 export interface DashboardGetCompanyResponse {
-  companyAddress?: string;
+  companyAddress?: Address;
   companyName?: string;
   openHours?: OpenHours;
 }

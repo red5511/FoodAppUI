@@ -80,7 +80,7 @@ export class AllOrdersTableComponent {
     ngOnInit(): void {
       this.searchSubject
         .pipe(
-          debounceTime(600), // Delay of 300ms
+          debounceTime(400), // Delay of 300ms
           takeUntil(this.destroy$) // Automatically unsubscribes on destroy
         )
         .subscribe((searchTerm) => {

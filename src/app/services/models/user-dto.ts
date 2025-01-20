@@ -10,6 +10,6 @@ export interface UserDto {
   id: number;
   lastName: string;
   locked: boolean;
-  permissions: Array<'VIEW_ONLINE_ORDERING' | 'VIEW_STATISTICS' | 'VIEW_ORDERS_HISTORY' | 'VIEW_RESTAURANT_ORDERING' | 'SUPER_ADMINISTRATOR'>;
+  permissions: Array<'VIEW_ONLINE_ORDERING' | 'VIEW_STATISTICS' | 'VIEW_ORDERS_HISTORY' | 'VIEW_RESTAURANT_ORDERING' | 'ADMINISTRATOR' | 'SUPER_ADMINISTRATOR'>;
   phoneNumber: string;
 }

@@ -9,6 +9,11 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { addOrRemoveUsersPermissions } from '../fn/user-administration/add-or-remove-users-permissions';
+import { AddOrRemoveUsersPermissions$Params } from '../fn/user-administration/add-or-remove-users-permissions';
+import { getAllPermissions } from '../fn/user-administration/get-all-permissions';
+import { GetAllPermissions$Params } from '../fn/user-administration/get-all-permissions';
+import { GetAllPermissionsResponse } from '../models/get-all-permissions-response';
 import { getAllUsers } from '../fn/user-administration/get-all-users';
 import { GetAllUsers$Params } from '../fn/user-administration/get-all-users';
 import { getCompanyUsers } from '../fn/user-administration/get-company-users';
@@ -26,33 +31,8 @@ export class UserAdministrationService extends BaseService {
     super(config, http);
   }
 
-  /** Path part for operation `getAllUsers()` */
-  static readonly GetAllUsersPath = '/api/v1/admin-panel/users/users';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `getAllUsers()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllUsers$Response(params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
-    return getAllUsers(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `getAllUsers$Response()` instead.
-   *
-   * This method doesn't expect any request body.
-   */
-  getAllUsers(params?: GetAllUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
-    return this.getAllUsers$Response(params, context).pipe(
-      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
-    );
-  }
-
   /** Path part for operation `getPagedUsers()` */
-  static readonly GetPagedUsersPath = '/api/v1/admin-panel/users/users';
+  static readonly GetPagedUsersPath = '/api/v1/admin-panel/users/pages';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -73,6 +53,31 @@ export class UserAdministrationService extends BaseService {
   getPagedUsers(params: GetPagedUsers$Params, context?: HttpContext): Observable<GetPagedUsersResponse> {
     return this.getPagedUsers$Response(params, context).pipe(
       map((r: StrictHttpResponse<GetPagedUsersResponse>): GetPagedUsersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `addOrRemoveUsersPermissions()` */
+  static readonly AddOrRemoveUsersPermissionsPath = '/api/v1/admin-panel/users/add-or-remove-users-permissions';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addOrRemoveUsersPermissions()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addOrRemoveUsersPermissions$Response(params: AddOrRemoveUsersPermissions$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return addOrRemoveUsersPermissions(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addOrRemoveUsersPermissions$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addOrRemoveUsersPermissions(params: AddOrRemoveUsersPermissions$Params, context?: HttpContext): Observable<void> {
+    return this.addOrRemoveUsersPermissions$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
@@ -123,6 +128,56 @@ export class UserAdministrationService extends BaseService {
   getUsersNotBelongToCompany(params: GetUsersNotBelongToCompany$Params, context?: HttpContext): Observable<GetUsersResponse> {
     return this.getUsersNotBelongToCompany$Response(params, context).pipe(
       map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllUsers()` */
+  static readonly GetAllUsersPath = '/api/v1/admin-panel/users/users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllUsers()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUsers$Response(params?: GetAllUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<GetUsersResponse>> {
+    return getAllUsers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllUsers$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllUsers(params?: GetAllUsers$Params, context?: HttpContext): Observable<GetUsersResponse> {
+    return this.getAllUsers$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetUsersResponse>): GetUsersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllPermissions()` */
+  static readonly GetAllPermissionsPath = '/api/v1/admin-panel/users/permissions';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllPermissions()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPermissions$Response(params?: GetAllPermissions$Params, context?: HttpContext): Observable<StrictHttpResponse<GetAllPermissionsResponse>> {
+    return getAllPermissions(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllPermissions$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllPermissions(params?: GetAllPermissions$Params, context?: HttpContext): Observable<GetAllPermissionsResponse> {
+    return this.getAllPermissions$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetAllPermissionsResponse>): GetAllPermissionsResponse => r.body)
     );
   }
 

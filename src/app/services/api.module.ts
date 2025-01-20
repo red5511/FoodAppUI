@@ -7,7 +7,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 import { ProductService } from './services/product.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AdministrationService } from './services/administration.service';
-import { CompanyService } from './services/company.service';
+import { CompanyAdministrationService } from './services/company-administration.service';
 import { WebSocketService } from './services/web-socket.service';
 import { StatisticsService } from './services/statistics.service';
 import { OrderService } from './services/order.service';
@@ -27,7 +27,7 @@ import { DemoControllerService } from './services/demo-controller.service';
     ProductService,
     AuthenticationService,
     AdministrationService,
-    CompanyService,
+    CompanyAdministrationService,
     WebSocketService,
     StatisticsService,
     OrderService,

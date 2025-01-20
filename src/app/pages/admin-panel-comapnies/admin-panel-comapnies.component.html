@@ -1,1 +1,187 @@
-<p>admin-panel-comapnies works!</p>
+<p-card footer="Footer Content">
+  <p-table
+    #dt2
+    [value]="companies"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    [pageLinks]="5"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="loadComapniesLazy($event)"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '20rem' }"
+    [expandedRowKeys]="expandedRows"
+    (onRowExpand)="onRowExpand($event)"
+    (onRowCollapse)="onRowCollapse($event)"
+  >
+    <ng-template pTemplate="caption">
+      <div class="filters">
+        <p-floatLabel>
+          <p-calendar
+            [(ngModel)]="selectedDates"
+            selectionMode="range"
+            [readonlyInput]="true"
+            (onSelect)="onCalendarSelect()"
+          />
+          <label for="birth_date">Zakres dat</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <input
+            pInputText
+            id="over_label"
+            [(ngModel)]="globalSearch"
+            autocomplete="off"
+            (ngModelChange)="onInputChange($event)"
+          />
+          <label for="over_label">Wyszkuwianie globalne</label>
+        </p-floatLabel>
+      </div>
+    </ng-template>
+
+    <ng-template pTemplate="header">
+      <tr>
+        <th></th>
+        <th>
+          <app-sortable-column
+            field="id"
+            label="Id"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th>
+          <app-sortable-column
+            field="name"
+            label="Nazwa"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th>
+          <app-sortable-column
+            field="address.city"
+            label="Miasto"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+            field="address.street"
+            label="Ulica"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th>
+          <app-sortable-column
+            field="createdDate"
+            label="Utworzenie"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+            field="usersAmount"
+            label="Użytkownicy"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate="body" let-company let-expanded="expanded">
+      <tr>
+        <td>
+          <p-button
+            type="button"
+            pRipple
+            [pRowToggler]="company"
+            [text]="true"
+            [rounded]="true"
+            [plain]="true"
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+          />
+        </td>
+        <td>{{ company.id }}</td>
+        <td>
+          <div>{{ company.name }}</div>
+        </td>
+        <td>
+          <div>{{ company.address.city }} {{ company.address.postalCode }}</div>
+          ul.{{ company.address.street }}
+          {{ company.address.streetNumber }}
+        </td>
+        <td>
+          <div>{{ company.createdDate | formattedDate }}</div>
+          <div>{{ company.users.length }}</div>
+        </td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-company>
+      <tr>
+        <td colspan="5">
+          <div>
+            <p-table [value]="company.users" class="expansion-table">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th>
+                    <div>Email</div>
+                    <div>Użytkownik</div>
+                  </th>
+                  <th>
+                    <div>Aktywowany</div>
+                    <div>Zbanowany</div>
+                  </th>
+                  <th>
+                    <div>Telefon</div>
+                  </th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-user>
+                <tr>
+                  <td>
+                    <div>{{ user.email }}</div>
+                    <div>{{ user.firstName + " " + user.lastName }}</div>
+                  </td>
+                  <td>
+                    <div>{{ user.enabled ? "Tak" : "Nie" }}</div>
+                    <div>{{ user.locked ? "Tak" : "Nie" }}</div>
+                  </td>
+                  <td>
+                    <div>{{ user.phoneNumber }}</div>
+                  </td>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6">Brak użytkowników</td>
+                </tr>
+              </ng-template>
+            </p-table>
+
+            <div class="buttons">
+              <button
+                pButton
+                severity="info"
+                type="button"
+                label="Modyfikuj firmy"
+                [raised]="true"
+                icon="pi pi-user-edit"
+                (click)="(2)"
+              ></button>
+            </div>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
+
+    <ng-template pTemplate=" emptymessage">
+      <tr>
+        <td></td>
+        <td colspan="6">Brak Firm</td>
+      </tr>
+    </ng-template>
+  </p-table>
+</p-card>

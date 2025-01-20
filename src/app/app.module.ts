@@ -85,6 +85,7 @@ import { RestaurantOrderComponent } from './pages/restaurant-order/restaurant-or
 import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { AdminPanelUsersComponent } from './pages/admin-panel-users/admin-panel-users.component';
 import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admin-panel-comapnies.component';
+import { PickListModule } from 'primeng/picklist';
 
 @NgModule({
   declarations: [
@@ -134,6 +135,7 @@ import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admi
     HttpClientModule,
     CardModule,
     MessagesModule,
+    PickListModule,
     FormsModule,
     MatIconModule,
     SelectButtonModule,
