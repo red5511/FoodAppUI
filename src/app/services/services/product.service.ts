@@ -9,6 +9,9 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { getPagedProducts } from '../fn/product/get-paged-products';
+import { GetPagedProducts$Params } from '../fn/product/get-paged-products';
+import { GetPagedProductsResponse } from '../models/get-paged-products-response';
 import { saveProduct } from '../fn/product/save-product';
 import { SaveProduct$Params } from '../fn/product/save-product';
 import { saveProduct1 } from '../fn/product/save-product-1';
@@ -69,6 +72,31 @@ export class ProductService extends BaseService {
   saveProduct1(params: SaveProduct1$Params, context?: HttpContext): Observable<string> {
     return this.saveProduct1$Response(params, context).pipe(
       map((r: StrictHttpResponse<string>): string => r.body)
+    );
+  }
+
+  /** Path part for operation `getPagedProducts()` */
+  static readonly GetPagedProductsPath = '/api/v1/product/pages';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getPagedProducts()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getPagedProducts$Response(params: GetPagedProducts$Params, context?: HttpContext): Observable<StrictHttpResponse<GetPagedProductsResponse>> {
+    return getPagedProducts(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getPagedProducts$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  getPagedProducts(params: GetPagedProducts$Params, context?: HttpContext): Observable<GetPagedProductsResponse> {
+    return this.getPagedProducts$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetPagedProductsResponse>): GetPagedProductsResponse => r.body)
     );
   }
 

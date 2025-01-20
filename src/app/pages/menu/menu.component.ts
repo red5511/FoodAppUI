@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
-import { ProductDto, Sort } from '../../services/models';
+import { GetPagedProductsResponse, GetProductsRequest, ProductDto, Sort } from '../../services/models';
 import { TableLazyLoadEvent, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
-import { debounceTime, Subject, takeUntil } from 'rxjs';
+import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
-import { OrderService } from '../../services/services';
+import { OrderService, ProductService } from '../../services/services';
 
 @Component({
   selector: 'app-menu',
@@ -25,7 +25,7 @@ export class MenuComponent {
   private destroy$ = new Subject<void>();
 
   constructor(
-    private orderService: OrderService,
+    private productService: ProductService,
     private contextService: ContextService
   ) {
     this.setDefoultSorts()
@@ -44,14 +44,44 @@ export class MenuComponent {
       
       
     loadProductsLazy(event: TableLazyLoadEvent){
-      this.loading = true;
-      this.page = Math.floor(event.first! / event.rows!);
-      this.size = event.rows!;
-      this.loadProducts()
+      this.contextService
+      .getCompanyIdObservable()
+      .pipe(
+            takeUntil(this.destroy$))
+          .subscribe({
+            next: () => {
+              this.page = Math.floor(event.first! / event.rows!);
+              this.size = event.rows!;
+              this.loading = true;
+              this.loadProducts();
+            },
+            error: (error) => {
+              console.error('Error fetching companyId:', error);
+            },
+          });
     }
   
     loadProducts(){
-  
+          const body: GetProductsRequest = {
+            page: this.page,
+            size: this.size,
+            sorts: this.sorts,
+            globalSearch: this.globalSearch,
+            companyId: this.contextService.getCompanyId()
+          };
+
+          this.productService.getPagedProducts({ body }).subscribe({
+            next: (response: GetPagedProductsResponse) => {
+              if (response && response.pagedResult) {
+                this.products = response.pagedResult.products ?? [];
+                this.totalRecords = response.pagedResult.totalRecords ?? 0;
+                this.loading = false; // Set to false once data is loaded
+              }
+            },
+            error: (error) => {
+              console.error('Error fetching companyId:', error);
+            },
+          });
     }
         
     setDefoultSorts(){
@@ -62,7 +92,7 @@ export class MenuComponent {
 
       this.sorts = [sort]
       this.sortState = {
-        'createdDate': 'DESC'
+        'name': 'DESC'
       }
   }
 
