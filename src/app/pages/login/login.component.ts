@@ -74,7 +74,7 @@ export class LoginComponent {
               this.isAccountNotActivated = false;
             }
             this.message =
-              this.message + (err.error.errorCode || 'Unknown error');
+              this.message + (err.error.errorCode || 'Nieznany bład');
           }
         },
       });

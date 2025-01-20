@@ -9,6 +9,8 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { addOrRemoveCompaniesUsers } from '../fn/user-administration/add-or-remove-companies-users';
+import { AddOrRemoveCompaniesUsers$Params } from '../fn/user-administration/add-or-remove-companies-users';
 import { addOrRemoveUsersPermissions } from '../fn/user-administration/add-or-remove-users-permissions';
 import { AddOrRemoveUsersPermissions$Params } from '../fn/user-administration/add-or-remove-users-permissions';
 import { getAllPermissions } from '../fn/user-administration/get-all-permissions';
@@ -77,6 +79,31 @@ export class UserAdministrationService extends BaseService {
    */
   addOrRemoveUsersPermissions(params: AddOrRemoveUsersPermissions$Params, context?: HttpContext): Observable<void> {
     return this.addOrRemoveUsersPermissions$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `addOrRemoveCompaniesUsers()` */
+  static readonly AddOrRemoveCompaniesUsersPath = '/api/v1/admin-panel/users/add-or-remove-companies-users';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `addOrRemoveCompaniesUsers()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addOrRemoveCompaniesUsers$Response(params: AddOrRemoveCompaniesUsers$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return addOrRemoveCompaniesUsers(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `addOrRemoveCompaniesUsers$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  addOrRemoveCompaniesUsers(params: AddOrRemoveCompaniesUsers$Params, context?: HttpContext): Observable<void> {
+    return this.addOrRemoveCompaniesUsers$Response(params, context).pipe(
       map((r: StrictHttpResponse<void>): void => r.body)
     );
   }

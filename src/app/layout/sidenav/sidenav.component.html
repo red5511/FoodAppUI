@@ -27,6 +27,16 @@
         <span *ngIf="!isSideNavCollapsed" class="menu-text">Zamówienia na miejscu</span>
       </a>
     </li>
+    <li *ngIf="hasPermissionToModule('MENU_PANEL') && !isHolding">
+      <a
+        [routerLink]="!isSideNavCollapsed ? '/menu' : null"
+        routerLinkActive="active"
+        (click)="openCollapsedSideNavToggle()"
+      >
+        <span class="menu-icon pi pi-tablet"></span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text">Zarządzaj menu</span>
+      </a>
+    </li>
     <li *ngIf="hasPermissionToModule('STATISTICS')">
       <a
         [routerLink]="!isSideNavCollapsed ? '/statistics' : null"
@@ -83,6 +93,12 @@
           <a routerLink="/admin-panel/companies" routerLinkActive="active"
             ><span class="menu-icon pi pi-briefcase"></span
             ><span class="menu-text">Firmy</span></a
+          >
+        </li>
+        <li *ngIf="hasPermissionToModule('ADMIN_PANEL')">
+          <a routerLink="/admin-panel/companies/save" routerLinkActive="active"
+            ><span class="menu-icon pi pi-briefcase"></span
+            ><span class="menu-text">Dodaj firme</span></a
           >
         </li>
       </ul>

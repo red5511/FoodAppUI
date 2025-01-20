@@ -86,6 +86,8 @@ import { AdminPanelComponent } from './pages/admin-panel/admin-panel.component';
 import { AdminPanelUsersComponent } from './pages/admin-panel-users/admin-panel-users.component';
 import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admin-panel-comapnies.component';
 import { PickListModule } from 'primeng/picklist';
+import { AddCompanyComponent } from './pages/add-company/add-company.component';
+import { MenuComponent } from './pages/menu/menu.component';
 
 @NgModule({
   declarations: [
@@ -125,6 +127,8 @@ import { PickListModule } from 'primeng/picklist';
     AdminPanelComponent,
     AdminPanelUsersComponent,
     AdminPanelComapniesComponent,
+    AddCompanyComponent,
+    MenuComponent,
   ],
   imports: [
     RouterModule,

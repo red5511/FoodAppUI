@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+export { AddOrDeleteCompaniesUsersAdministrationRequest } from './models/add-or-delete-companies-users-administration-request';
 export { AddOrDeleteUsersCompaniesAdministrationRequest } from './models/add-or-delete-users-companies-administration-request';
 export { AddOrDeleteUsersPermissionsAdministrationRequest } from './models/add-or-delete-users-permissions-administration-request';
 export { Address } from './models/address';
@@ -56,6 +57,7 @@ export { RegisterRequest } from './models/register-request';
 export { RejectedOrderWebSocketEvent } from './models/rejected-order-web-socket-event';
 export { RejectNewIncomingOrderRequest } from './models/reject-new-incoming-order-request';
 export { SaveCompanyRequest } from './models/save-company-request';
+export { SaveCompanyResponse } from './models/save-company-response';
 export { ServerSideDisconnectionWebSocketEvent } from './models/server-side-disconnection-web-socket-event';
 export { Sort } from './models/sort';
 export { UserDto } from './models/user-dto';

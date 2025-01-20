@@ -49,7 +49,6 @@ export class HeaderLoggedIn2Component {
           let firstCompany = response.companyDataList[0];
 
           this.selectedCompany = firstCompany;
-          this.isChecked = firstCompany?.receivingOrdersActive ?? false; // todo cos do zmiany
           this.userId = response.userId;
           this.updateContext(response.permittedModules);
           this.checkIfRecivingOrdersShouldBeTurnOn();

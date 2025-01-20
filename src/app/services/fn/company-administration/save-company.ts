@@ -7,12 +7,13 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { SaveCompanyRequest } from '../../models/save-company-request';
+import { SaveCompanyResponse } from '../../models/save-company-response';
 
 export interface SaveCompany$Params {
       body: SaveCompanyRequest
 }
 
-export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<SaveCompanyResponse>> {
   const rb = new RequestBuilder(rootUrl, saveCompany.PATH, 'post');
   if (params) {
     rb.body(params.body, 'application/json');
@@ -23,7 +24,7 @@ export function saveCompany(http: HttpClient, rootUrl: string, params: SaveCompa
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return r as StrictHttpResponse<SaveCompanyResponse>;
     })
   );
 }

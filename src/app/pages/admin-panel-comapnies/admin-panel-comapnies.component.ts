@@ -1,8 +1,11 @@
 import { Component } from '@angular/core';
 import {
+  AddOrDeleteCompaniesUsersAdministrationRequest,
   CompanyDto,
   GetCompanyAdministrationRequest,
+  GetUsersAdministrationRequest,
   Sort,
+  UserDto,
 } from '../../services/models';
 import {
   TableLazyLoadEvent,
@@ -10,7 +13,8 @@ import {
   TableRowExpandEvent,
 } from 'primeng/table';
 import { debounceTime, Subject, takeUntil } from 'rxjs';
-import { CompanyAdministrationService } from '../../services/services';
+import { CompanyAdministrationService, UserAdministrationService } from '../../services/services';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-admin-panel-comapnies',
@@ -24,17 +28,28 @@ export class AdminPanelComapniesComponent {
   expandedRows: { [s: string]: boolean } = {};
   selectedDates: Date[] = []; // Only 2 entries
   globalSearch: string | undefined;
+  globalUserSearch = '';
   sorts!: Array<Sort>;
   sortState: { [key: string]: string } = {};
   page: number = 1;
   size: number = 10;
+  selectedCompany!: CompanyDto
+  companiesUsers: UserDto[] = [];
+  users: UserDto[] = [];
+  userSearchVisible = false;
+  addedUserToComapny: UserDto[] = [];
+  addedUserFirstLastNameToComapny: string[] = [];
+  removedUserToComapny: UserDto[] = [];
+  removedUserFirstLastNameToComapny: string[] = [];
 
   private searchSubject = new Subject<string>();
   private searchCompanySubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
   constructor(
-    private companyAdministrationService: CompanyAdministrationService
+    private companyAdministrationService: CompanyAdministrationService,
+    private userAdministrationService: UserAdministrationService,
+    private toastService: ToastrService,
   ) {
     this.setDefoultSorts();
   }
@@ -144,5 +159,90 @@ export class AdminPanelComapniesComponent {
     };
   }
 
-  onUserSearch(searchInput: string) {}
+  onUserSearch(searchInput: string) {
+    const sort: Sort = {
+      direction: 'ASC',
+      field: 'lastName',
+    };
+    const body: GetUsersAdministrationRequest = {
+      page: 0,
+      size: 100,
+      sorts: [sort],
+      globalSearch: searchInput,
+    };
+    this.userAdministrationService.getPagedUsers({ body }).subscribe({
+      next: (response) => {
+        if (response.pagedResult?.users) {
+          this.users = response.pagedResult.users
+            .filter(
+              (user) =>
+                !this.companiesUsers
+                  .map((selectedUser) => selectedUser.id)
+                  .includes(user.id)
+            )
+            .sort((a, b) => a.lastName.localeCompare(b.lastName)); // Sort companies alphabetically by name
+        }
+      },
+    });
+  }
+
+  onModifyUsersClick(company: CompanyDto){
+    this.selectedCompany = company
+    this.companiesUsers = structuredClone(company.users);
+    this.users = [];
+    this.userSearchVisible = true;
+    this.addedUserToComapny = [];
+    this.addedUserFirstLastNameToComapny = [];
+    this.removedUserToComapny = [];
+    this.removedUserFirstLastNameToComapny = [];
+    this.globalUserSearch = '';
+  }
+
+  onUserChange(){
+    const selectedCompanyUserIds = this.selectedCompany.users.map(
+      (user) => user.id
+    );
+    const userComapnyIds = this.companiesUsers.map(
+      (user) => user.id
+    );
+
+    this.addedUserToComapny = this.companiesUsers
+      .filter(
+        (companyUser) => !selectedCompanyUserIds.includes(companyUser.id)
+      )
+      .sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+      this.removedUserToComapny = this.selectedCompany.users
+      .filter((user) => !userComapnyIds.includes(user.id))
+      .sort((a, b) => a.lastName.localeCompare(b.lastName));
+
+      this.addedUserFirstLastNameToComapny = this.addedUserToComapny.map((el) => el.firstName + ' ' + el.lastName)
+      this.removedUserFirstLastNameToComapny = this.addedUserToComapny.map((el) => el.firstName + ' ' + el.lastName)
+  }
+
+  onApproveUserChanges(){
+        this.loading = true;
+        this.userSearchVisible = false;
+        const body: AddOrDeleteCompaniesUsersAdministrationRequest = {
+          usersIdsToAdd: this.addedUserToComapny.map((user) => user.id),
+          usersIdsToRemove: this.removedUserToComapny.map((user) => user.id),
+          companyId: this.selectedCompany.id,
+        };
+        this.userAdministrationService
+          .addOrRemoveCompaniesUsers({ body })
+          .subscribe({
+            next: () => {
+              this.loadCompanies();
+              this.toastService.success('Użytkownicy zostali zmienionieni');
+              this.loading = false;
+            },
+            error: (error) => {
+              this.loading = false;
+            },
+          });
+  }
+
+  onInputUserChange(value: string){
+    this.searchCompanySubject.next(value); // Pass the input value to the Subject
+  }
 }

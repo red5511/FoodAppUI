@@ -3,5 +3,4 @@
 import { CompanyDto } from '../models/company-dto';
 export interface SaveCompanyRequest {
   company?: CompanyDto;
-  userEmail?: string;
 }

@@ -26,6 +26,7 @@ import { modifyCompany } from '../fn/company-administration/modify-company';
 import { ModifyCompany$Params } from '../fn/company-administration/modify-company';
 import { saveCompany } from '../fn/company-administration/save-company';
 import { SaveCompany$Params } from '../fn/company-administration/save-company';
+import { SaveCompanyResponse } from '../models/save-company-response';
 
 @Injectable({ providedIn: 'root' })
 export class CompanyAdministrationService extends BaseService {
@@ -67,7 +68,7 @@ export class CompanyAdministrationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveCompany$Response(params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  saveCompany$Response(params: SaveCompany$Params, context?: HttpContext): Observable<StrictHttpResponse<SaveCompanyResponse>> {
     return saveCompany(this.http, this.rootUrl, params, context);
   }
 
@@ -77,9 +78,9 @@ export class CompanyAdministrationService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveCompany(params: SaveCompany$Params, context?: HttpContext): Observable<string> {
+  saveCompany(params: SaveCompany$Params, context?: HttpContext): Observable<SaveCompanyResponse> {
     return this.saveCompany$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<SaveCompanyResponse>): SaveCompanyResponse => r.body)
     );
   }
 

@@ -166,10 +166,10 @@
                 pButton
                 severity="info"
                 type="button"
-                label="Modyfikuj firmy"
+                label="Modyfikuj użytkownikow"
                 [raised]="true"
                 icon="pi pi-user-edit"
-                (click)="(2)"
+                (click)="onModifyUsersClick(company)"
               ></button>
             </div>
           </div>
@@ -185,3 +185,90 @@
     </ng-template>
   </p-table>
 </p-card>
+
+
+
+<p-dialog
+  class="company-dialog"
+  [(visible)]="userSearchVisible"
+  [header]="'Zarządzaj dostępnymi użytkownikami firmy'"
+  [closable]="true"
+  [modal]="true"
+>
+  <p-pickList
+    [style]="{ height: '85%' }"
+    [source]="users"
+    [target]="companiesUsers"
+    [dragdrop]="true"
+    [keepSelection] = "false"
+    [responsive]="true"
+    [showSourceControls]="false"
+    [showTargetControls]="false"
+    [showTargetFilter]="false"
+    [sourceStyle]="{ height: '80%' }"
+    [targetStyle]="{ height: '90%' }"
+    (onMoveToSource)="onUserChange()"
+    (onMoveAllToSource)="onUserChange()"
+    (onMoveToTarget)="onUserChange()"
+    (onMoveAllToTarget)="onUserChange()"
+    sourceHeader="Użytkownicy do dodania"
+    targetHeader="Użtykownicy firmy"
+    filterBy="name"
+    sourceFilterPlaceholder="Search by name"
+    breakpoint="800px"
+  >
+    <ng-template pTemplate="sourceFilter">
+      <p-floatLabel [style]="{ width: '100%' }">
+        <input
+          [style]="{ width: '100%' }"
+          pInputText
+          id="over_label"
+          [(ngModel)]="globalUserSearch"
+          autocomplete="off"
+          (ngModelChange)="onInputUserChange($event)"
+        />
+        <label for="over_label">Wyszukaj po mailu/imieniu/nazwisku/nr tel</label>
+      </p-floatLabel>
+    </ng-template>
+
+    <ng-template let-user pTemplate="item">
+      <div class="flex flex-wrap p-2 align-items-center gap-3">
+        <div class="flex-1 flex flex-column gap-2">
+          <div class="flex align-products-center gap-2">
+            <i class="pi pi-user text-sm"></i>
+            <span>
+              {{ user.email }}
+            </span>
+          </div>
+          <div class="font-bold">
+            {{ user.firstName }} {{ user.lastName }}
+          </div>
+          <div class="font-bold">
+            {{ user.phoneNumber }}
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-pickList>
+  <div class="buttons">
+    <button
+      pButton
+      [severity]="'danger'"
+      type="button"
+      label="Zatwierdź"
+      icon="pi pi-check"
+      class="custom-confirm-button"
+      (click)="onApproveUserChanges()"
+      [disabled]="
+        addedUserToComapny.length === 0 &&
+        removedUserToComapny.length === 0
+      "
+    ></button>
+  </div>
+  <p style="color: green" *ngIf="addedUserToComapny.length > 0">
+    Do dodania: {{ addedUserFirstLastNameToComapny }}
+  </p>
+  <p style="color: red" *ngIf="removedUserToComapny.length > 0">
+    Do usunięcia: {{ removedUserFirstLastNameToComapny }}
+  </p>
+</p-dialog>

@@ -25,6 +25,8 @@ export class SidenavComponent implements OnInit {
   onOpenCollapsedSideNavToggle: EventEmitter<any> = new EventEmitter();
   isSubmenuOpen: boolean;
   permittedModules: Array<'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS_HISTORY' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string> = [];
+  isHolding: boolean = false
+  
   private destroy$ = new Subject<void>();
 
 
@@ -40,6 +42,7 @@ export class SidenavComponent implements OnInit {
     .pipe(takeUntil(this.destroy$))
     .subscribe((context) => {
       this.permittedModules = context?.permittedModules ?? [];
+      this.isHolding = this.contextService.isHolding() 
     });
   }
 
