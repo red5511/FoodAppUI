@@ -20,6 +20,7 @@ export class MenuComponent {
   sortState!: { [key: string]: string };
   page: number = 1;
   size: number = 50;
+  addNewProductDialogVisibility: boolean = false
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -143,4 +144,9 @@ export class MenuComponent {
     collapseAll() {
       this.expandedRows = {};
     }
+
+    onAddNewProductClick(){
+      this.addNewProductDialogVisibility = true
+    }
+
 }

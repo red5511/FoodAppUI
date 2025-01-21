@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 
 @Component({
   selector: 'app-body',
@@ -17,4 +17,7 @@ export class BodyComponent {
 
   @Input()
   isLoggedIn!: boolean;
+
+  @Output()
+  onToggleSidnav: EventEmitter<any> = new EventEmitter<any>();
 }

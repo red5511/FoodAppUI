@@ -6,5 +6,10 @@
   bodyNormal: !isSideNavVisible || !isLoggedIn,
 }"
 >
+  <app-header-logged-in2
+    *ngIf="isLoggedIn"
+    (onToggleSidnav)="onToggleSidnav.emit()"
+  >
+  </app-header-logged-in2>
   <router-outlet></router-outlet>
 </div>

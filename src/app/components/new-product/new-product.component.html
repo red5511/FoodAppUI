@@ -1,0 +1,22 @@
+<form #saveProductForm="ngForm" (ngSubmit)="saveProduct()">
+    <p-floatLabel>
+        <input pInputText id="name" [(ngModel)]="product.name" name="name" required type="text"
+            class="input-full-width" #email="ngModel" />
+        <label for="name">Nazwa produktu</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <input pInputText id="price" name="price" required type="text" [(ngModel)]="product.price"
+            class="input-full-width" />
+        <label for="city">Kwota</label>
+    </p-floatLabel>
+
+    <p-floatLabel>
+        <input pInputText id="description" name="description" required type="text"
+            [(ngModel)]="product.description" class="input-full-width" />
+        <label for="description">Opis</label>
+    </p-floatLabel>
+
+    <button pButton type="button" label="Utwórz" icon="pi pi-check" (click)="saveProduct()"
+        [disabled]="saveProductForm.invalid"></button>
+</form>

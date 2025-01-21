@@ -1,8 +1,4 @@
 <app-header-guest *ngIf="!isLoggedIn"></app-header-guest>
-<app-header-logged-in2
-  *ngIf="isLoggedIn"
-  (onToggleSidnav)="onToggleSidnav()"
-></app-header-logged-in2>
 
 <app-sidenav
   *ngIf="isLoggedIn"
@@ -17,5 +13,7 @@
   [isSideNavCollapsed]="isSideNavCollapsed"
   [isTabletView]="isTabletView"
   [isLoggedIn]="isLoggedIn"
+  (onToggleSidnav)="onToggleSidnav()"
 ></app-body>
+
 <app-toast-websocket *ngIf="isLoggedIn"></app-toast-websocket>

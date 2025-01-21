@@ -12,7 +12,17 @@ export class SortableColumnEntryComponent {
   @Output() sortChanged: EventEmitter<{ field: string; state: 'ASC' | 'DESC' | 'NONE' }> =
     new EventEmitter();
 
-  noNoneField: string = 'createdDate'
+    private _noNoneField: string = 'createdDate'; // Default value
+
+    @Input()
+    set noNoneField(value: string) {
+      this._noNoneField = value || 'createdDate'; // Fallback to 'createdDate' if no value is passed
+    }
+  
+    get noNoneField(): string {
+      return this._noNoneField;
+    }
+    
   // Cycle the sorting state
   cycleSort() {
     const nextState = this.getNextSortState(this.sortState[this.field], this.field);

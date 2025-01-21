@@ -1,11 +1,11 @@
 /* tslint:disable */
 /* eslint-disable */
 export interface ProductDto {
-  companyId: number;
+  companyId?: number;
   description?: string;
-  id: number;
+  id?: number;
   imgUrl?: string;
-  name: string;
-  price: number;
+  name?: string;
+  price?: number;
   soldOut?: boolean;
 }
