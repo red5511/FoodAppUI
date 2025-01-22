@@ -9,6 +9,7 @@
     padding: 20px;
   }
   
+  
 
 .input-full-width {
   width: 100%;
@@ -20,4 +21,17 @@
 
 button{
     padding: 1rem;
+}
+
+.header-custom{
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.input-full-width:disabled {
+  background-color: #d3d3d3; /* Light gray background for disabled */
+  color: #9e9e9e; /* Light gray text color for disabled */
+  border-color: #d6d6d6; /* Gray border for disabled */
+  cursor: not-allowed; /* Show a 'not-allowed' cursor */
 }

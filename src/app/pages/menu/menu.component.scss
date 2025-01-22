@@ -25,6 +25,11 @@
     padding: 4px 5px;
   }
 
+  ::ng-deep .p-dialog-header{
+    padding: 24px 24px 0px 0px;
+
+  }
+
   .buttons {
     margin-top: 1rem;
     display: flex;

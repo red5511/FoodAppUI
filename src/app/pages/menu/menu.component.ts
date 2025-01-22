@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { GetPagedProductsResponse, GetProductsRequest, ProductDto, Sort } from '../../services/models';
+import { GetPagedProductsResponse, GetProductsRequest, ProductCategoryDto, ProductDto, Sort } from '../../services/models';
 import { TableLazyLoadEvent, TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
@@ -12,6 +12,7 @@ import { OrderService, ProductService } from '../../services/services';
 })
 export class MenuComponent {
   products: ProductDto[] = []
+  productCategories: ProductCategoryDto[] = []
   loading: boolean = true
   totalRecords!: number;
   expandedRows: { [s: string]: boolean } = {};
@@ -77,6 +78,9 @@ export class MenuComponent {
                 this.products = response.pagedResult.products ?? [];
                 this.totalRecords = response.pagedResult.totalRecords ?? 0;
                 this.loading = false; // Set to false once data is loaded
+                if(this.productCategories.length == 0){
+                  this.productCategories = response.productCategories ?? []
+                }
               }
             },
             error: (error) => {

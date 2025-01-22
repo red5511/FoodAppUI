@@ -128,11 +128,10 @@
 <p-dialog
 [style]="{ width: '70%' }"
 [(visible)]="addNewProductDialogVisibility"
-  [header]="'Stwórz nowy produkt'"
   [closable]="true"
   [modal]="true"
 >
-  <app-new-product></app-new-product>
+  <app-new-product [productCategories]="productCategories"></app-new-product>
 </p-dialog>
 <!-- 
 <app-custom-dialog>

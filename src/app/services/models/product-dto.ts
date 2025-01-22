@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { ProductCategoryDto } from '../models/product-category-dto';
 export interface ProductDto {
   companyId?: number;
   description?: string;
@@ -7,5 +8,6 @@ export interface ProductDto {
   imgUrl?: string;
   name?: string;
   price?: number;
+  productCategory?: ProductCategoryDto;
   soldOut?: boolean;
 }

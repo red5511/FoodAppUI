@@ -54,6 +54,7 @@ export { OrderProductDto } from './models/order-product-dto';
 export { OrdersPagedResult } from './models/orders-paged-result';
 export { OrderStatusModel } from './models/order-status-model';
 export { PagedOrdersResponse } from './models/paged-orders-response';
+export { ProductCategoryDto } from './models/product-category-dto';
 export { ProductDto } from './models/product-dto';
 export { ProductsPagedResult } from './models/products-paged-result';
 export { RegisterRequest } from './models/register-request';
