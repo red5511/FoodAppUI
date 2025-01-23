@@ -56,6 +56,8 @@ export { OrderStatusModel } from './models/order-status-model';
 export { PagedOrdersResponse } from './models/paged-orders-response';
 export { ProductCategoryDto } from './models/product-category-dto';
 export { ProductDto } from './models/product-dto';
+export { ProductPropertiesDto } from './models/product-properties-dto';
+export { ProductPropertyDto } from './models/product-property-dto';
 export { ProductsPagedResult } from './models/products-paged-result';
 export { RegisterRequest } from './models/register-request';
 export { RejectedOrderWebSocketEvent } from './models/rejected-order-web-socket-event';
