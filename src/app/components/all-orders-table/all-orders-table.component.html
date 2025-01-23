@@ -58,7 +58,7 @@
       <label for="over_label">Firmy</label>
     </p-floatLabel>
   </div>
-  
+
   <p-table
     #dt2
     [value]="orders"
@@ -69,7 +69,6 @@
     [pageLinks]="5"
     [totalRecords]="totalRecords"
     [lazy]="true"
-    [rowHover]="true"
     [globalFilterFields]="['status', 'price', 'deliveryTime', 'description']"
     (onLazyLoad)="loadOrdersLazy($event)"
     [paginator]="true"
@@ -77,6 +76,9 @@
     [expandedRowKeys]="expandedRows"
     (onRowExpand)="onRowExpand($event)"
     (onRowCollapse)="onRowCollapse($event)"
+    selectionMode="single"
+    [(selection)]="selectedRow"
+    (onRowSelect)="onRowClicked($event)"
   >
     <!-- <ng-template pTemplate="caption">
       <div class="filters">
@@ -194,7 +196,7 @@
     </ng-template>
 
     <ng-template pTemplate="body" let-order let-expanded="expanded">
-      <tr>
+      <tr (click)="onRowClicked(order)">
         <td>
           <p-button
             type="button"

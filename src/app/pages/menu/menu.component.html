@@ -126,11 +126,19 @@
 </p-card>
 
 <p-dialog
-[style]="{ width: '70%' }"
+[style]="{ width: '80%'}"
+class="custom-dialog"
 [(visible)]="addNewProductDialogVisibility"
   [closable]="true"
   [modal]="true"
 >
+<ng-template pTemplate="header">
+  <div class="header-custom">
+    <!-- <h4 class="custom-h4"><b>Stwórz nowy produkt</b></h4> -->
+    <span class="title"><h4>Stwórz nowy produkt</h4></span>
+  </div>
+  </ng-template>
+
   <app-new-product [productCategories]="productCategories"></app-new-product>
 </p-dialog>
 <!-- 

@@ -4,6 +4,7 @@ import {
   TableLazyLoadEvent,
   TableRowCollapseEvent,
   TableRowExpandEvent,
+  TableRowSelectEvent,
 } from 'primeng/table';
 import { ContextService } from '../../services/context/context.service';
 import {
@@ -51,6 +52,8 @@ export class AllOrdersTableComponent {
   loading: boolean = true; // Initialize as true when loading data
   companyIdTemp: number | undefined;
   totalRecords!: number;
+  selectedRow: OrderDto| undefined;
+
   private destroy$ = new Subject<void>();
   statusSeverityMap!: {
     [key: string]:
@@ -265,5 +268,10 @@ export class AllOrdersTableComponent {
       this.setDefoultSorts()
     }
     this.loadOrders();
+  }
+
+  onRowClicked(event: any) {
+    console.log('Row clicked:', event.data); // event.data contains clicked row data
+    // Add your logic here
   }
 }

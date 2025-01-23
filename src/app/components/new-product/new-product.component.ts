@@ -11,6 +11,8 @@ export class NewProductComponent {
   productCategories!: ProductCategoryDto[];
   product: ProductDto = {};
   selectedProductCategory: ProductCategoryDto | undefined;
+  isNewCategoryButtonVisible: boolean = false
+  newCategoryInput: string = ''
 
   ngOnInit(){
     console.log('selectedProductCategory')
@@ -18,5 +20,9 @@ export class NewProductComponent {
   }
   saveProduct(){
     console.log('clicked')
+  }
+
+  onNewCategoryClick(){
+    this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible
   }
 }

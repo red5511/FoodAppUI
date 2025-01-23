@@ -1,34 +1,130 @@
-<div class="header-custom">
-    <h5>Stwórz nowy produkt</h5>
-</div>
+<!-- <div class="header-custom">
+  <h4 class="custom-h4"><b>Stwórz nowy produkt</b></h4>
+</div> -->
 
-<p>Wybierz kategorie produktu</p>
-<br>
-<p-floatLabel>
-    <p-dropdown [style]="{ width: '18rem' }" [(ngModel)]="selectedProductCategory" [options]="productCategories"
-        optionLabel="name" />
-    <label for="over_label">Kategoria</label>
-</p-floatLabel>
-
-<form #saveProductForm="ngForm" (ngSubmit)="saveProduct()">
+<div class="double-container">
+  <div class="container1">
+    <h6>Wybierz kategorie produktu</h6>
+    <br />
     <p-floatLabel>
-        <input pInputText  id="disabled-input"  [disabled]="selectedProductCategory === undefined" pInputText id="name" [(ngModel)]="product.name"
-            name="name" required type="text" class="input-full-width" />
+      <p-dropdown
+        [style]="{ width: '100%' }"
+        [(ngModel)]="selectedProductCategory"
+        [options]="productCategories"
+        optionLabel="name"
+      />
+      <label for="over_label">Kategoria</label>
+    </p-floatLabel>
+    <div class="toggle-container">
+        <p-button
+          *ngIf="!isNewCategoryButtonVisible"
+          [severity]="'success'"
+          class="custom-text-button"
+          label="Dodaj nowa kategorie"
+          [text]="true"
+          (onClick)="onNewCategoryClick()"
+        ></p-button>
+        
+        <span *ngIf="isNewCategoryButtonVisible" class="input-container">
+          <p-floatLabel>
+            <input
+            class="category-input"
+              pInputText
+              id="newCategory"
+              name="newCategory"
+              required
+              type="text"
+              [(ngModel)]="newCategoryInput"
+              autocomplete="off"
+            />
+            <label for="newCategory">Nowa kategoria</label>
+          </p-floatLabel>
+        </span>
+        <button
+        *ngIf="isNewCategoryButtonVisible"
+        [disabled] = "newCategoryInput === ''"
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Dodaj"
+        icon="pi pi-check"
+        (click)="saveProduct()"
+      ></button>
+      </div>
+    <h6>Wypełnij dane</h6>
+    <form #saveProductForm="ngForm" (ngSubmit)="saveProduct()">
+      <p-floatLabel>
+        <input
+          pInputText
+          id="disabled-input"
+          [disabled]="selectedProductCategory === undefined"
+          pInputText
+          id="name"
+          [(ngModel)]="product.name"
+          name="name"
+          required
+          type="text"
+          class="input-full-width"
+          autocomplete="off"
+        />
         <label for="name">Nazwa produktu</label>
-    </p-floatLabel>
+      </p-floatLabel>
 
-    <p-floatLabel>
-        <input [disabled]="selectedProductCategory === undefined" pInputText id="price" name="price" required
-            type="text" [(ngModel)]="product.price" class="input-full-width" />
+      <p-floatLabel>
+        <input
+          [disabled]="selectedProductCategory === undefined"
+          pInputText
+          id="price"
+          name="price"
+          required
+          type="text"
+          [(ngModel)]="product.price"
+          class="input-full-width"
+          autocomplete="off"
+        />
         <label for="city">Kwota</label>
-    </p-floatLabel>
+      </p-floatLabel>
 
-    <p-floatLabel>
-        <input [disabled]="selectedProductCategory === undefined" pInputText id="description" name="description"
-            required type="text" [(ngModel)]="product.description" class="input-full-width" />
+      <p-floatLabel>
+        <input
+          [disabled]="selectedProductCategory === undefined"
+          pInputText
+          id="description"
+          name="description"
+          required
+          type="text"
+          [(ngModel)]="product.description"
+          class="input-full-width"
+          autocomplete="off"
+        />
         <label for="description">Opis</label>
-    </p-floatLabel>
-
-    <button pButton type="button" label="Utwórz" icon="pi pi-check"
-        (click)="saveProduct()" [disabled]="saveProductForm.invalid || selectedProductCategory === undefined"></button>
-</form>
+      </p-floatLabel>
+    </form>
+  </div>
+  <p-divider layout="vertical" />
+  <div class="container2">
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+    <h1>xdddd</h1>
+  </div>
+</div>
+<div class="footer">
+    <button
+    size="large"
+    pButton
+    type="button"
+    [severity]="'success'"
+    label="Utwórz"
+    icon="pi pi-check"
+    (click)="saveProduct()"
+    [disabled]="
+      saveProductForm.invalid || selectedProductCategory === undefined
+    "
+  ></button>
+</div>

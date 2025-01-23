@@ -1,32 +1,56 @@
 :host {
-    width: 90%;
-    height: 90%;
-    height: 90%;
-    max-width: 900px;
-  }
+  height: 100%;
+}
 
-  .container {
-    padding: 20px;
-  }
-  
-  
+.custom-h4{
+  margin: 0px;
+}
+
+.container {
+  padding: 20px;
+}
+
+::ng-deep .custom-text-button .p-button {
+  padding: 0;
+  margin-top: 2rem;
+  margin-bottom: 3.5rem;
+  height: 100%; /* Ensure the button takes the full height of the container */
+}
+
+.toggle-container {
+  display: flex;
+  align-items: center; /* Vertically center elements */
+  justify-content: space-between;
+  height: 6.5rem; /* Set a fixed height for the container */
+}
+
+.input-container {
+  display: flex;
+  align-items: center; /* Vertically align the input field */
+  height: 100%; /* Match the height of the parent container */
+}
+
+.category-input{
+  width: 90%;
+}
 
 .input-full-width {
   width: 100%;
-  height: 50px;
+  height: 48px;
   display: block;
   margin-bottom: 2rem;
   margin-top: 2rem;
 }
 
-button{
-    padding: 1rem;
+.category-input {
+  height: 48px; /* Match the height of the parent container */
 }
 
-.header-custom{
+.header-custom {
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-bottom: 1rem;
 }
 
 .input-full-width:disabled {
@@ -34,4 +58,24 @@ button{
   color: #9e9e9e; /* Light gray text color for disabled */
   border-color: #d6d6d6; /* Gray border for disabled */
   cursor: not-allowed; /* Show a 'not-allowed' cursor */
+}
+
+.double-container {
+  display: flex;
+}
+
+.container1 {
+  width: 50%;
+}
+.container2 {
+  width: 50%;
+  max-height: 500px;
+  height: 90%;
+  overflow-y: auto;
+}
+
+.footer {
+  display: flex;
+  justify-content: end;
+  margin-top: 1%;
 }
