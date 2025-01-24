@@ -1,0 +1,77 @@
+:host {
+  overflow-y: hidden;
+}
+
+::ng-deep .custom-text-button .p-button {
+  padding: 0;
+}
+
+.custom-h4 {
+  margin: 0px;
+}
+
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+
+.add-new-product-panels {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  width: 100%;
+  height: 100;
+  padding-left: 2rem;
+
+  .form-step {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+  }
+
+  // .form-step {
+  //     position: absolute; /* Allow sliding without affecting layout */
+  //     top: 0;
+  //     left: 0;
+  //   }
+
+  .button-container {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+  }
+}
+
+.toggle-container {
+  display: flex;
+  align-items: end; /* Vertically center input and button */
+  justify-content: space-between; /* Push input and button to edges */
+  gap: 1rem; /* Spacing between input and button */
+  height: 4.5rem; /* Fixed height */
+  width: 100%; /* Full width of the container */
+  margin-bottom: 10px;
+}
+
+.input-wrapper {
+  flex: 1; /* Take all available space except for the button */
+}
+
+.category-input {
+  width: 100%; /* Make input fill its container */
+}
+
+.input-full-width {
+  width: 100%;
+  height: 48px;
+  display: block;
+  margin-bottom: 1.5rem;
+}
+
+.footer {
+  display: flex;
+  justify-content: flex-end; /* Aligns the button to the right */
+  width: 100%; /* Optional: make the footer span the entire page width */
+}

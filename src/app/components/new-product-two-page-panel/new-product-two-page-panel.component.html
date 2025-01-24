@@ -1,0 +1,154 @@
+<p-dialog
+  [(visible)]="isDialogVisible"
+  [modal]="true"
+  [closable]="true"
+  [style]="{ width: '80%', height: '80%' }"
+  [contentStyle]="{ overflow: 'hidden', padding: '0' }"
+  (onHide)="onHide()"
+>
+  <ng-template pTemplate="header">
+    <i
+      *ngIf="currentStep === 2"
+      class="pi pi-arrow-left"
+      style="font-size: 1.5rem"
+      (click)="currentStep = 1"
+    ></i>
+    <div class="header-custom">
+      <span class="title"><h4>Stwórz nowy produkt</h4></span>
+    </div>
+  </ng-template>
+  <div *ngIf="currentStep === 1" class="add-new-product-panels">
+    <div
+      class="form-step"
+      [@slideAnimation]="'in'"
+      [@.disabled]="!isDialogVisible"
+    >
+      <div class="toggle-container">
+        <p-button
+          *ngIf="!isNewCategoryButtonVisible"
+          [severity]="'success'"
+          class="custom-text-button"
+          label="Dodaj nową kategorie"
+          [text]="true"
+          (onClick)="onNewCategoryClick()"
+        ></p-button>
+        <div class="input-wrapper" *ngIf="isNewCategoryButtonVisible">
+          <p-floatLabel>
+            <input
+              class="category-input"
+              pInputText
+              id="newCategory"
+              name="newCategory"
+              required
+              type="text"
+              [(ngModel)]="newCategoryInput"
+              autocomplete="off"
+            />
+            <label for="newCategory">Nowa kategoria</label>
+          </p-floatLabel>
+        </div>
+        <button
+          *ngIf="isNewCategoryButtonVisible"
+          [disabled]="newCategoryInput === ''"
+          pButton
+          type="button"
+          [severity]="'success'"
+          label="Dodaj"
+          icon="pi pi-check"
+          (click)="(2)"
+        ></button>
+      </div>
+      <h6 style="margin-bottom: 1.5rem">Wybierz kategorie produktu</h6>
+      <p-floatLabel style="margin-bottom: 1.5rem">
+        <p-dropdown
+          [style]="{ width: '100%' }"
+          [(ngModel)]="selectedProductCategory"
+          [options]="productCategories"
+          optionLabel="name"
+        />
+        <label for="over_label">Kategoria</label>
+      </p-floatLabel>
+      <h6 style="margin-bottom: 20px">Wypełnij dane</h6>
+      <form #saveProductForm="ngForm" (ngSubmit)="(2)">
+        <p-floatLabel>
+          <input
+            pInputText
+            id="disabled-input"
+            pInputText
+            id="name"
+            [(ngModel)]="product.name"
+            name="name"
+            required
+            type="text"
+            class="input-full-width"
+            autocomplete="off"
+          />
+          <label for="name">Nazwa produktu</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <input
+            pInputText
+            id="price"
+            name="price"
+            required
+            type="text"
+            [(ngModel)]="product.price"
+            class="input-full-width"
+            autocomplete="off"
+          />
+          <label for="city">Kwota</label>
+        </p-floatLabel>
+
+        <p-floatLabel>
+          <input
+            pInputText
+            id="description"
+            name="description"
+            required
+            type="text"
+            [(ngModel)]="product.description"
+            class="input-full-width"
+            autocomplete="off"
+          />
+          <label for="description">Opis</label>
+        </p-floatLabel>
+      </form>
+    </div>
+    <!-- Second Form -->
+  </div>
+  <div *ngIf="currentStep === 2" class="add-new-product-panels">
+    <div class="form-step" [@slideAnimation]="'in'">
+      <app-new-product-add-new-property></app-new-product-add-new-property>
+      <h6>Właściwosci</h6>
+      <app-new-product-properties-list
+        [productPropertiesList]="productPropertiesList"
+      ></app-new-product-properties-list>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <div class="footer">
+      <button
+        *ngIf="currentStep === 1"
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Dalej"
+        icon="pi pi-arrow-right"
+        (click)="nextStep()"
+      ></button>
+    </div>
+    <div class="footer">
+      <button
+        *ngIf="currentStep === 2"
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Stwórz"
+        icon="pi pi-check"
+        (click)="nextStep()"
+      ></button>
+    </div>
+  </ng-template>
+</p-dialog>

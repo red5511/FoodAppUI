@@ -1,0 +1,81 @@
+<p-button
+*ngIf="!isNewProductPropertiesButtonVisible"
+[severity]="'success'"
+class="custom-text-button"
+label="Dodaj nowe właściowości"
+[text]="true"
+(onClick)="onNewProductPropertiesClick()"
+></p-button>
+
+<div class="toggle-container">
+    <!-- First Row: Two Elements -->
+    <div class="row">
+      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
+        <p-floatLabel>
+          <input
+            class="category-input"
+            pInputText
+            id="newCategory"
+            name="newCategory"
+            required
+            type="text"
+            [(ngModel)]="newCategoryInput"
+            autocomplete="off"
+          />
+          <label for="newCategory">Nowa właściwość</label>
+        </p-floatLabel>
+      </span>
+      <p-checkbox
+        *ngIf="isNewProductPropertiesButtonVisible"
+        [(ngModel)]="productPropertiesReqired"
+        [binary]="true"
+        inputId="binary"
+        label="Właściowość wymagana"
+      ></p-checkbox>
+    </div>
+  
+    <!-- Second Row: Three Elements -->
+    <div class="row">
+      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
+        <p-floatLabel>
+          <input
+            class="category-input"
+            pInputText
+            id="newCategory"
+            name="newCategory"
+            required
+            type="text"
+            [(ngModel)]="newCategoryInput"
+            autocomplete="off"
+          />
+          <label for="newCategory">Nowa właściwość</label>
+        </p-floatLabel>
+      </span>
+      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
+        <p-floatLabel>
+          <input
+            class="category-input"
+            pInputText
+            id="newCategory"
+            name="newCategory"
+            required
+            type="text"
+            [(ngModel)]="newCategoryInput"
+            autocomplete="off"
+          />
+          <label for="newCategory">Nowa właściwość</label>
+        </p-floatLabel>
+      </span>
+      <button
+        *ngIf="isNewProductPropertiesButtonVisible"
+        [disabled]="newCategoryInput === ''"
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Dodaj"
+        icon="pi pi-check"
+        (click)="2"
+      ></button>
+    </div>
+  </div>
+  

@@ -1,0 +1,21 @@
+.toggle-container {
+    display: flex;
+    flex-direction: column; /* Ensures rows stack vertically */
+    gap: 1rem; /* Adds space between rows */
+  }
+  
+  .row {
+    display: flex;
+    flex-wrap: nowrap; /* Ensures elements in a row stay side by side */
+    justify-content: space-between; /* Distributes elements across the row */
+    gap: 1rem; /* Adds space between items in the row */
+  }
+  
+  .input-container {
+    flex: 1; /* Allows items to grow evenly within the row */
+  }
+  
+  button {
+    flex-shrink: 0; /* Prevents the button from shrinking */
+  }
+  

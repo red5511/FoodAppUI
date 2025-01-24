@@ -1,5 +1,41 @@
 <div class="double-container">
   <div class="container1">
+    <div class="toggle-container">
+      <p-button
+        *ngIf="!isNewCategoryButtonVisible"
+        [severity]="'success'"
+        class="custom-text-button"
+        label="Dodaj nową kategorie"
+        [text]="true"
+        (onClick)="onNewCategoryClick()"
+      ></p-button>
+
+      <span *ngIf="isNewCategoryButtonVisible" class="input-container">
+        <p-floatLabel>
+          <input
+            class="category-input"
+            pInputText
+            id="newCategory"
+            name="newCategory"
+            required
+            type="text"
+            [(ngModel)]="newCategoryInput"
+            autocomplete="off"
+          />
+          <label for="newCategory">Nowa kategoria</label>
+        </p-floatLabel>
+      </span>
+      <button
+        *ngIf="isNewCategoryButtonVisible"
+        [disabled]="newCategoryInput === ''"
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Dodaj"
+        icon="pi pi-check"
+        (click)="saveProduct()"
+      ></button>
+    </div>
     <h6>Wybierz kategorie produktu</h6>
     <br />
     <p-floatLabel>
@@ -11,42 +47,6 @@
       />
       <label for="over_label">Kategoria</label>
     </p-floatLabel>
-    <div class="toggle-container">
-        <p-button
-          *ngIf="!isNewCategoryButtonVisible"
-          [severity]="'success'"
-          class="custom-text-button"
-          label="Dodaj nowa kategorie"
-          [text]="true"
-          (onClick)="onNewCategoryClick()"
-        ></p-button>
-        
-        <span *ngIf="isNewCategoryButtonVisible" class="input-container">
-          <p-floatLabel>
-            <input
-            class="category-input"
-              pInputText
-              id="newCategory"
-              name="newCategory"
-              required
-              type="text"
-              [(ngModel)]="newCategoryInput"
-              autocomplete="off"
-            />
-            <label for="newCategory">Nowa kategoria</label>
-          </p-floatLabel>
-        </span>
-        <button
-        *ngIf="isNewCategoryButtonVisible"
-        [disabled] = "newCategoryInput === ''"
-        pButton
-        type="button"
-        [severity]="'success'"
-        label="Dodaj"
-        icon="pi pi-check"
-        (click)="saveProduct()"
-      ></button>
-      </div>
     <h6>Wypełnij dane</h6>
     <form #saveProductForm="ngForm" (ngSubmit)="saveProduct()">
       <p-floatLabel>
@@ -99,17 +99,17 @@
   </div>
   <p-divider layout="vertical" />
   <div class="container2">
-    <h6>Właściwosci</h6>
-    <p>wlasci</p>
-    <p>wlasci</p>
-    <p>wlasci</p>
-    <p>wlasci</p>
-    <p>wlasci</p>
-    <p>wlasci</p>
+    <app-new-product-add-new-property></app-new-product-add-new-property>
+    <span>
+      <h6>Właściwosci</h6>
+    </span>
+    <app-new-product-properties-list
+      [productPropertiesList]="productPropertiesList"
+    ></app-new-product-properties-list>
   </div>
 </div>
 <div class="footer">
-    <button
+  <button
     size="large"
     pButton
     type="button"
