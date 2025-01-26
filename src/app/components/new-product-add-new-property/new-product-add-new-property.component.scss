@@ -1,21 +1,82 @@
+
 .toggle-container {
-    display: flex;
-    flex-direction: column; /* Ensures rows stack vertically */
-    gap: 1rem; /* Adds space between rows */
-  }
-  
-  .row {
-    display: flex;
-    flex-wrap: nowrap; /* Ensures elements in a row stay side by side */
-    justify-content: space-between; /* Distributes elements across the row */
-    gap: 1rem; /* Adds space between items in the row */
-  }
-  
-  .input-container {
-    flex: 1; /* Allows items to grow evenly within the row */
-  }
-  
-  button {
-    flex-shrink: 0; /* Prevents the button from shrinking */
-  }
-  
+  display: flex;
+  flex-direction: column; /* Ensures rows stack vertically */
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  gap: 1rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: nowrap; /* Ensures elements in a row stay side by side */
+  gap: 2rem; /* Adds space between items in the row */
+  align-items: center;
+}
+
+.input-container {
+  // flex: 1; /* Allows items to grow evenly within the row */
+}
+
+.button-container {
+  width: 100%;
+  display: flex;
+  align-items: end;
+  height: 4.5rem;
+}
+
+button {
+  flex-shrink: 0; /* Prevents the button from shrinking */
+}
+
+small.custom-error {
+  display: block;
+  color: red;
+  font-size: 0.875rem;
+  margin-top: 0.25rem;
+  visibility: hidden; /* Initially hide the error message */
+  height: 1.5rem; /* Reserve space for the error message */
+}
+
+small.custom-error.show {
+  visibility: visible; /* Show the error message when validation fails */
+}
+
+.red-small-visible {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+}
+
+.red-small {
+  color: red;
+  font-size: 0.8rem;
+  margin-top: 0.25rem;
+  display: block;
+  visibility: hidden
+}
+
+small.red-small.show {
+  visibility: visible; /* Show the error message when the form is invalid */
+}
+.capitalize {
+  text-transform: capitalize; /* Capitalizes the first letter of each word */
+}
+
+.custom-icon {
+  font-size: 1.5rem;
+  color: green;
+}
+
+.last-row {
+  display: flex;
+  justify-content: flex-end; /* Aligns the button to the right */
+  width: 100%; /* Optional: make the footer span the entire page width */
+  padding-right: 1.5rem;
+}
+
+.checkbox-div {
+  display: "flex";
+  flex-direction: "column";
+}

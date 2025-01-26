@@ -1,12 +1,8 @@
-:host {
-  overflow-y: hidden;
-}
-
 ::ng-deep .custom-text-button .p-button {
   padding: 0;
 }
 
-.custom-h4 {
+::ng-deep .input-full-width .p-inputtext .custom-h4 {
   margin: 0px;
 }
 
@@ -22,20 +18,14 @@
   flex-direction: column;
   align-items: start;
   width: 100%;
-  height: 100;
   padding-left: 2rem;
 
+
   .form-step {
-    width: 50%;
+    width: 100%;
     display: flex;
     flex-direction: column;
   }
-
-  // .form-step {
-  //     position: absolute; /* Allow sliding without affecting layout */
-  //     top: 0;
-  //     left: 0;
-  //   }
 
   .button-container {
     margin-top: 1rem;
@@ -74,4 +64,12 @@
   display: flex;
   justify-content: flex-end; /* Aligns the button to the right */
   width: 100%; /* Optional: make the footer span the entire page width */
+}
+
+
+.content-container {
+  display: flex;
+  flex-direction: column; /* Allow children to expand vertically */
+  height: 100%;
+  overflow-x: hidden;
 }

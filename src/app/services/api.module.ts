@@ -10,6 +10,7 @@ import { AdministrationService } from './services/administration.service';
 import { CompanyAdministrationService } from './services/company-administration.service';
 import { WebSocketService } from './services/web-socket.service';
 import { StatisticsService } from './services/statistics.service';
+import { ProductPropertiesService } from './services/product-properties.service';
 import { OrderService } from './services/order.service';
 import { DevelopmentService } from './services/development.service';
 import { DashboardService } from './services/dashboard.service';
@@ -30,6 +31,7 @@ import { DemoControllerService } from './services/demo-controller.service';
     CompanyAdministrationService,
     WebSocketService,
     StatisticsService,
+    ProductPropertiesService,
     OrderService,
     DevelopmentService,
     DashboardService,

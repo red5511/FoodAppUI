@@ -14,6 +14,8 @@ export { ChangeInitPasswordResponse } from './models/change-init-password-respon
 export { CompaniesPagedResult } from './models/companies-paged-result';
 export { CompanyDto } from './models/company-dto';
 export { CreateOrderRequest } from './models/create-order-request';
+export { CreateProductPropertiesRequest } from './models/create-product-properties-request';
+export { CreateProductPropertiesResponse } from './models/create-product-properties-response';
 export { CreateProductRequest } from './models/create-product-request';
 export { DashboardGetCompanyResponse } from './models/dashboard-get-company-response';
 export { DashboardGetInitConfigResponse } from './models/dashboard-get-init-config-response';

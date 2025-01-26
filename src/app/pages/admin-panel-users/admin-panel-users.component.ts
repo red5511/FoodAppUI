@@ -30,7 +30,8 @@ type UserPermission =
   | 'VIEW_ORDERS_HISTORY'
   | 'VIEW_RESTAURANT_ORDERING'
   | 'ADMINISTRATOR'
-  | 'SUPER_ADMINISTRATOR';
+  | 'SUPER_ADMINISTRATOR'
+  | 'VIEW_MENU_PANEL';
 
 @Component({
   selector: 'app-admin-panel-users',

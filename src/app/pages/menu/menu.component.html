@@ -7,6 +7,7 @@
     icon="pi pi-plus-circle"
     (click)="onAddNewProductClick()"
   ></button>
+
   <p-divider></p-divider>
   <div class="filters">
     <p-floatLabel>
@@ -125,8 +126,8 @@
   </p-table>
 </p-card>
 
-<app-new-product-two-page-panel
-  [(isDialogVisible)]="addNewProductDialogVisibility"
-  [productCategories]="productCategories"
-  [productPropertiesList]="productPropertiesList"
-></app-new-product-two-page-panel>
+  <app-new-product-two-page-panel
+    [(isDialogVisible)]="addNewProductDialogVisibility"
+    [productCategories]="productCategories"
+    [productPropertiesList]="productPropertiesList"
+  ></app-new-product-two-page-panel>

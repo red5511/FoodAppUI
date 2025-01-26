@@ -1,81 +1,149 @@
-<p-button
-*ngIf="!isNewProductPropertiesButtonVisible"
-[severity]="'success'"
-class="custom-text-button"
-label="Dodaj nowe właściowości"
-[text]="true"
-(onClick)="onNewProductPropertiesClick()"
-></p-button>
+<div *ngIf="!isNewProductPropertiesButtonVisible" class="button-container">
+  <p-button
+    [severity]="'success'"
+    class="custom-text-button"
+    label="Dodaj nową grupe"
+    [text]="true"
+    (onClick)="onNewProductPropertiesClick()"
+  ></p-button>
+</div>
+<div *ngIf="isNewProductPropertiesButtonVisible" class="toggle-container">
+  <form #productForm="ngForm" (ngSubmit)="onAddNewProperties(productForm)" novalidate>
+    <div *ngIf="isNewProductPropertiesButtonVisible" class="toggle-container">
+      <!-- First Row: Group Name and Required Checkbox -->
+      <div class="row">
+        <span class="input-container">
+          <p-floatLabel>
+            <input
+              [ngClass]="{
+                'ng-invalid':
+                  (name.invalid || isProductPropertiesNotUnique) &&
+                  name.touched,
+                'ng-dirty':
+                  (name.invalid || isProductPropertiesNotUnique) && name.touched
+              }"
+              pInputText
+              id="newCategory"
+              name="name"
+              #name="ngModel"
+              required
+              type="text"
+              [(ngModel)]="productProperties.name"
+              autocomplete="off"
+              (change)="validateUniqueness()"
+              (input)="capitalizeFirstLetter()"
+            />
+            <label for="newCategory">Nazwa grupy</label>
+          </p-floatLabel>
+          <small
+            class="custom-error"
+            [ngClass]="{
+              show:
+                (name.invalid || isProductPropertiesNotUnique) && name.touched
+            }"
+          >
+            {{
+              isProductPropertiesNotUnique
+                ? "Podana nazwa jest już zajęta"
+                : "Nazwa grupy jest wymagana"
+            }}
+          </small>
+        </span>
 
-<div class="toggle-container">
-    <!-- First Row: Two Elements -->
-    <div class="row">
-      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
-        <p-floatLabel>
-          <input
-            class="category-input"
-            pInputText
-            id="newCategory"
-            name="newCategory"
-            required
-            type="text"
-            [(ngModel)]="newCategoryInput"
-            autocomplete="off"
-          />
-          <label for="newCategory">Nowa właściwość</label>
-        </p-floatLabel>
-      </span>
-      <p-checkbox
-        *ngIf="isNewProductPropertiesButtonVisible"
-        [(ngModel)]="productPropertiesReqired"
-        [binary]="true"
-        inputId="binary"
-        label="Właściowość wymagana"
-      ></p-checkbox>
+        <div class="checkbox-div">
+          <p-checkbox
+            [(ngModel)]="productProperties.required"
+            [binary]="true"
+            inputId="binary"
+            label="Grupa obowiązkowa"
+          ></p-checkbox>
+          <br />
+          <small
+            >Po zaznaczeniu jedna z opcji podczas zamawiania musi być
+            wybrana</small
+          >
+        </div>
+      </div>
+
+      <!-- Second Row: Product List -->
+      <div
+        *ngFor="let property of productPropertyList; let i = index"
+        class="row"
+      >
+        <i
+          class="pi pi-minus-circle custom-icon"
+          (click)="removeProperty(i)"
+          [style]="{ color: 'red', cursor: 'pointer' }"
+        ></i>
+        <span class="input-container">
+          <p-floatLabel>
+            <input
+              [ngClass]="{
+                'ng-invalid': propertyName.invalid && propertyName.touched,
+                'ng-dirty': propertyName.invalid && propertyName.touched
+              }"
+              pInputText
+              id="newCategory-{{ i }}"
+              name="propertyName-{{ i }}"
+              required
+              type="text"
+              [(ngModel)]="property.name"
+              #propertyName="ngModel"
+              autocomplete="off"
+            />
+            <label for="newCategory-{{ i }}">Nazwa produktu</label>
+          </p-floatLabel>
+          <small
+            class="custom-error"
+            [ngClass]="{ show: propertyName.invalid && propertyName.touched }"
+          >
+            Nazwa produktu jest wymagana
+          </small>
+        </span>
+        <span class="input-container">
+          <p-floatLabel>
+            <p-inputNumber
+              [(ngModel)]="property.price"
+              name="propertyPrice-{{ i }}"
+              inputId="currency-{{ i }}"
+              mode="currency"
+              currency="PLN"
+              class="input-full-width"
+              autocomplete="off"
+              [min]="0"
+              [max]="99999.99"
+              #propertyPrice="ngModel"
+            ></p-inputNumber>
+            <label for="currency-{{ i }}">Kwota</label>
+          </p-floatLabel>
+          <small style="visibility: hidden" class="custom-error">
+            Kwota jest wymagana i musi być większa od 0
+          </small>
+        </span>
+      </div>
+
+      <!-- Add New Property Button -->
+      <i
+        class="pi pi-plus-circle custom-icon"
+        style="
+          font-size: 1.5rem;
+          color: green;
+          cursor: pointer;
+          align-self: flex-start;
+        "
+        (click)="addProperty()"
+      ></i>
+
+      <!-- Submit Button -->
+      <div class="last-row">
+        <button
+          pButton
+          type="submit"
+          [severity]="'success'"
+          label="Dodaj"
+          icon="pi pi-check"
+        ></button>
+      </div>
     </div>
-  
-    <!-- Second Row: Three Elements -->
-    <div class="row">
-      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
-        <p-floatLabel>
-          <input
-            class="category-input"
-            pInputText
-            id="newCategory"
-            name="newCategory"
-            required
-            type="text"
-            [(ngModel)]="newCategoryInput"
-            autocomplete="off"
-          />
-          <label for="newCategory">Nowa właściwość</label>
-        </p-floatLabel>
-      </span>
-      <span *ngIf="isNewProductPropertiesButtonVisible" class="input-container">
-        <p-floatLabel>
-          <input
-            class="category-input"
-            pInputText
-            id="newCategory"
-            name="newCategory"
-            required
-            type="text"
-            [(ngModel)]="newCategoryInput"
-            autocomplete="off"
-          />
-          <label for="newCategory">Nowa właściwość</label>
-        </p-floatLabel>
-      </span>
-      <button
-        *ngIf="isNewProductPropertiesButtonVisible"
-        [disabled]="newCategoryInput === ''"
-        pButton
-        type="button"
-        [severity]="'success'"
-        label="Dodaj"
-        icon="pi pi-check"
-        (click)="2"
-      ></button>
-    </div>
-  </div>
-  
+  </form>
+</div>

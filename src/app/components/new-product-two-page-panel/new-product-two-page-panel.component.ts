@@ -1,5 +1,12 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import {
+  Component,
+  ElementRef,
+  EventEmitter,
+  Input,
+  Output,
+  ViewChild,
+} from '@angular/core';
 import {
   ProductCategoryDto,
   ProductDto,
@@ -38,6 +45,7 @@ export class NewProductTwoPagePanelComponent {
   newCategoryInput: string = '';
   selectedProductCategory: ProductCategoryDto | undefined;
   product: ProductDto = {};
+  isOverflowY: boolean = false
 
   onNewCategoryClick() {
     this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
@@ -61,4 +69,15 @@ export class NewProductTwoPagePanelComponent {
     this.selectedProductCategory = undefined; // Reset the selected category
     this.product = {}; // Reset the product object
   }
+
+  isFirstPageFormValid() {
+    return (
+      this.selectedProductCategory === undefined ||
+      this.product.name === undefined ||
+      this.product.name === '' ||
+      this.product.price === undefined
+    );
+  }
+
+  onAddedNewProductProperties() {}
 }
