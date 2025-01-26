@@ -23,8 +23,8 @@ export class NewProductAddNewPropertyComponent {
   isProductPropertiesNotUnique: boolean = false;
   newCategoryInput: string = '';
   productPropertyList: ProductPropertyDto[] = [{}];
-  productProperties: ProductPropertiesDto = {};
-  propertiesNameRequiredValidationError: boolean = false;
+  productProperties: ProductPropertiesDto = { required: false };
+  isCheckbox: boolean = false;
 
   constructor(
     private productPropertiesService: ProductPropertiesService,
@@ -55,12 +55,20 @@ export class NewProductAddNewPropertyComponent {
         next: (response) => {
           // this.addedNewProductProperties.emit(this.productProperties)
           if (response.productProperties) {
+            this.resetToDefault();
+
             this.productPropertiesList.push(response.productProperties);
             this.toastService.success('Nowa grupa została utworzona');
           }
         },
       });
     }
+  }
+
+  resetToDefault() {
+    this.isNewProductPropertiesButtonVisible = false;
+    this.productProperties = {};
+    this.productPropertyList = [{}];
   }
 
   addProperty(): void {
@@ -84,9 +92,18 @@ export class NewProductAddNewPropertyComponent {
     productForm.form.markAllAsTouched();
 
     // Check if the form is valid after marking all controls as touched
-    if (productForm.valid) {
+    if (productForm.valid && !this.isProductPropertiesNotUnique) {
       return true;
     }
     return false;
+  }
+
+  capitalizeFirstLetterInLoop(value: string, index: number): void {
+    if (value && value.length > 0) {
+      this.productPropertyList[index].name =
+        value.charAt(0).toUpperCase() + value.slice(1);
+    } else {
+      this.productPropertyList[index].name = value; // In case the value is empty
+    }
   }
 }

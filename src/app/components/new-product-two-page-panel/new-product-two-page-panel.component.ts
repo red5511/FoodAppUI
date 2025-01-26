@@ -1,17 +1,10 @@
 import { trigger, transition, style, animate } from '@angular/animations';
-import {
-  Component,
-  ElementRef,
-  EventEmitter,
-  Input,
-  Output,
-  ViewChild,
-} from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   ProductCategoryDto,
-  ProductDto,
   ProductPropertiesDto,
 } from '../../services/models';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-new-product-two-page-panel',
@@ -44,8 +37,24 @@ export class NewProductTwoPagePanelComponent {
   isNewCategoryButtonVisible: boolean = false;
   newCategoryInput: string = '';
   selectedProductCategory: ProductCategoryDto | undefined;
-  product: ProductDto = {};
-  isOverflowY: boolean = false
+  productForm!: FormGroup;
+
+  product = {
+    name: '',
+    price: null,
+    description: '',
+  };
+
+  constructor(private fb: FormBuilder) {}
+
+  ngOnInit() {
+    this.productForm = this.fb.group({
+      selectedProductCategory: [null, Validators.required],
+      name: ['', [Validators.required, Validators.minLength(1)]],
+      price: [null, [Validators.required, Validators.min(0)]],
+      description: [''], // Optional field
+    });
+  }
 
   onNewCategoryClick() {
     this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
@@ -54,7 +63,27 @@ export class NewProductTwoPagePanelComponent {
   currentStep = 1; // Track the current step
 
   nextStep() {
-    this.currentStep = 2;
+    console.log('nextStep');
+    console.log(this.productForm.valid);
+    console.log(this.productForm);
+
+    if (this.currentStep === 1 && this.productForm.valid) {
+      this.currentStep = 2;
+    } else {
+      this.markFormFieldsTouched();
+    }
+  }
+
+  markFormFieldsTouched() {
+    Object.keys(this.productForm.controls).forEach((field) => {
+      const control = this.productForm.get(field);
+      if (control) control.markAsTouched();
+    });
+  }
+
+  isFieldInvalid(field: string) {
+    const control = this.productForm.get(field);
+    return control?.invalid && (control.dirty || control.touched);
   }
 
   previousStep() {
@@ -67,7 +96,11 @@ export class NewProductTwoPagePanelComponent {
     this.isNewCategoryButtonVisible = false; // Hide the new category input
     this.newCategoryInput = ''; // Clear the input field
     this.selectedProductCategory = undefined; // Reset the selected category
-    this.product = {}; // Reset the product object
+    this.product = {
+      name: '',
+      price: null,
+      description: '',
+    };
   }
 
   isFirstPageFormValid() {
@@ -80,4 +113,38 @@ export class NewProductTwoPagePanelComponent {
   }
 
   onAddedNewProductProperties() {}
+
+  capitalizeFirstLetterForName(event: Event, fieldName: string): void {
+    const inputElement = event.target as HTMLInputElement; // Explicitly cast to HTMLInputElement
+    if (inputElement && inputElement.value) {
+      const capitalized =
+        inputElement.value.charAt(0).toUpperCase() +
+        inputElement.value.slice(1);
+      this.productForm.get(fieldName)?.setValue(capitalized); // Update the form control value
+    }
+  }
+
+  // capitalizeFirstLetterForName2(value: string | undefined): void {
+  //   if (value && value.length > 0) {
+  //     this.product.name = value.charAt(0).toUpperCase() + value.slice(1);
+  //   } else {
+  //     this.product.name = value; // Handle empty value
+  //   }
+  // }
+
+  capitalizeFirstLetterForCategory(value: string): void {
+    if (value && value.length > 0) {
+      this.newCategoryInput = value.charAt(0).toUpperCase() + value.slice(1);
+    } else {
+      this.newCategoryInput = value; // Handle empty value
+    }
+  }
+
+  capitalizeFirstLetterForDescription(value: string): void {
+    if (value && value.length > 0) {
+      this.product.description = value.charAt(0).toUpperCase() + value.slice(1);
+    } else {
+      this.product.description = value; // Handle empty value
+    }
+  }
 }

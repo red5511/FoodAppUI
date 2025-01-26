@@ -20,7 +20,7 @@ dataKey="id"
       <p-tableCheckbox [value]="productPropertiesList" />
     </td>
     <td>{{ productProperties.name }}</td>
-    <td>{{ productProperties.required }}</td>
+    <td>{{ productProperties.required ? 'Tak' : 'Nie'}}</td>
     <td>
       <p-button
         type="button"

@@ -11,7 +11,7 @@ import {
 import { RegisterComponent } from './pages/register/register.component';
 import { LoginComponent } from './pages/login/login.component';
 import { WelcomeComponent } from './pages/welcome/welcome.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ChangePasswordComponent } from './pages/change-password/change-password.component';
 import { FooterComponent } from './layout/footer/footer.component';
 import { HeaderGuestComponent } from './layout/header-guest/header-guest.component';
@@ -152,6 +152,7 @@ import { NewProductAddNewPropertyComponent } from './components/new-product-add-
     PickListModule,
     FormsModule,
     MatIconModule,
+    ReactiveFormsModule,
     SelectButtonModule,
     FloatLabelModule,
     InputNumberModule,

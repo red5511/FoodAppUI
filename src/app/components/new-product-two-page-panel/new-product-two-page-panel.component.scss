@@ -1,5 +1,12 @@
+::ng-deep .custom-dialog .p-dialog {
+  width: 80%;
+  height: 80%;
+  max-width: 900px;
+}
+
 ::ng-deep .custom-text-button .p-button {
   padding: 0;
+  margin-bottom: 1rem;
 }
 
 ::ng-deep .input-full-width .p-inputtext .custom-h4 {
@@ -19,7 +26,9 @@
   align-items: start;
   width: 100%;
   padding-left: 2rem;
-
+  padding-right: 2rem;
+  padding-top: 2rem;
+  padding-bottom: 1rem;
 
   .form-step {
     width: 100%;
@@ -57,7 +66,7 @@
   width: 100%;
   height: 48px;
   display: block;
-  margin-bottom: 1.5rem;
+  margin-top: 2rem;
 }
 
 .footer {
@@ -66,10 +75,13 @@
   width: 100%; /* Optional: make the footer span the entire page width */
 }
 
-
 .content-container {
   display: flex;
   flex-direction: column; /* Allow children to expand vertically */
   height: 100%;
   overflow-x: hidden;
+}
+
+small.custom-error {
+  color: red;
 }

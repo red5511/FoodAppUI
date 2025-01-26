@@ -52,11 +52,12 @@
 
         <div class="checkbox-div">
           <p-checkbox
-            [(ngModel)]="productProperties.required"
-            [binary]="true"
-            inputId="binary"
-            label="Grupa obowiązkowa"
-          ></p-checkbox>
+          [(ngModel)]="productProperties.required"
+          [binary]="true"
+          inputId="binary"
+          label="Grupa obowiązkowa"
+          name="required"
+        ></p-checkbox>
           <br />
           <small
             >Po zaznaczeniu jedna z opcji podczas zamawiania musi być
@@ -88,6 +89,7 @@
               required
               type="text"
               [(ngModel)]="property.name"
+              (ngModelChange)="capitalizeFirstLetterInLoop($event, i)"
               #propertyName="ngModel"
               autocomplete="off"
             />
