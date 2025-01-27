@@ -9,15 +9,15 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { deleteProduct } from '../fn/product/delete-product';
+import { DeleteProduct$Params } from '../fn/product/delete-product';
 import { getPagedProducts } from '../fn/product/get-paged-products';
 import { GetPagedProducts$Params } from '../fn/product/get-paged-products';
 import { GetPagedProductsResponse } from '../models/get-paged-products-response';
+import { modifyProduct } from '../fn/product/modify-product';
+import { ModifyProduct$Params } from '../fn/product/modify-product';
 import { saveProduct } from '../fn/product/save-product';
 import { SaveProduct$Params } from '../fn/product/save-product';
-import { saveProduct1 } from '../fn/product/save-product-1';
-import { SaveProduct1$Params } from '../fn/product/save-product-1';
-import { saveProduct2 } from '../fn/product/save-product-2';
-import { SaveProduct2$Params } from '../fn/product/save-product-2';
 
 @Injectable({ providedIn: 'root' })
 export class ProductService extends BaseService {
@@ -25,8 +25,33 @@ export class ProductService extends BaseService {
     super(config, http);
   }
 
+  /** Path part for operation `modifyProduct()` */
+  static readonly ModifyProductPath = '/api/v1/product/modify';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `modifyProduct()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  modifyProduct$Response(params: ModifyProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return modifyProduct(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `modifyProduct$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  modifyProduct(params: ModifyProduct$Params, context?: HttpContext): Observable<void> {
+    return this.modifyProduct$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
   /** Path part for operation `saveProduct()` */
-  static readonly SaveProductPath = '/api/v1/product/modify';
+  static readonly SaveProductPath = '/api/v1/product/save';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
@@ -34,7 +59,7 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct$Response(params: SaveProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
+  saveProduct$Response(params: SaveProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
     return saveProduct(this.http, this.rootUrl, params, context);
   }
 
@@ -44,34 +69,9 @@ export class ProductService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct(params: SaveProduct$Params, context?: HttpContext): Observable<string> {
+  saveProduct(params: SaveProduct$Params, context?: HttpContext): Observable<void> {
     return this.saveProduct$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
-    );
-  }
-
-  /** Path part for operation `saveProduct1()` */
-  static readonly SaveProduct1Path = '/api/v1/product/save';
-
-  /**
-   * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `saveProduct1()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  saveProduct1$Response(params: SaveProduct1$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-    return saveProduct1(this.http, this.rootUrl, params, context);
-  }
-
-  /**
-   * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `saveProduct1$Response()` instead.
-   *
-   * This method sends `application/json` and handles request body of type `application/json`.
-   */
-  saveProduct1(params: SaveProduct1$Params, context?: HttpContext): Observable<string> {
-    return this.saveProduct1$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 
@@ -100,28 +100,28 @@ export class ProductService extends BaseService {
     );
   }
 
-  /** Path part for operation `saveProduct2()` */
-  static readonly SaveProduct2Path = '/api/v1/product/delete';
+  /** Path part for operation `deleteProduct()` */
+  static readonly DeleteProductPath = '/api/v1/product/delete';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.
-   * To access only the response body, use `saveProduct2()` instead.
+   * To access only the response body, use `deleteProduct()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct2$Response(params: SaveProduct2$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-    return saveProduct2(this.http, this.rootUrl, params, context);
+  deleteProduct$Response(params: DeleteProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return deleteProduct(this.http, this.rootUrl, params, context);
   }
 
   /**
    * This method provides access only to the response body.
-   * To access the full response (for headers, for example), `saveProduct2$Response()` instead.
+   * To access the full response (for headers, for example), `deleteProduct$Response()` instead.
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveProduct2(params: SaveProduct2$Params, context?: HttpContext): Observable<string> {
-    return this.saveProduct2$Response(params, context).pipe(
-      map((r: StrictHttpResponse<string>): string => r.body)
+  deleteProduct(params: DeleteProduct$Params, context?: HttpContext): Observable<void> {
+    return this.deleteProduct$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

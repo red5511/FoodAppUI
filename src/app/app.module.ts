@@ -88,7 +88,6 @@ import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admi
 import { PickListModule } from 'primeng/picklist';
 import { AddCompanyComponent } from './pages/add-company/add-company.component';
 import { MenuComponent } from './pages/menu/menu.component';
-import { NewProductComponent } from './components/new-product/new-product.component';
 import { CustomDialogComponent } from './components/custom-dialog/custom-dialog.component';
 import { NewProductPropertiesListComponent } from './components/new-product-properties-list/new-product-properties-list.component';
 import { NewProductTwoPagePanelComponent } from './components/new-product-two-page-panel/new-product-two-page-panel.component';
@@ -134,7 +133,6 @@ import { NewProductAddNewPropertyComponent } from './components/new-product-add-
     AdminPanelComapniesComponent,
     AddCompanyComponent,
     MenuComponent,
-    NewProductComponent,
     CustomDialogComponent,
     NewProductPropertiesListComponent,
     NewProductAddNewPropertyComponent,

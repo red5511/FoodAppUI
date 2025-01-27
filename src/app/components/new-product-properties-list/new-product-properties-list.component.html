@@ -5,19 +5,20 @@ dataKey="id"
 [expandedRowKeys]="expandedRows"
 (onRowExpand)="onRowExpand($event)"
 (onRowCollapse)="onRowCollapse($event)"
+(selectionChange)="selectionChange($event)"
 >
 <ng-template pTemplate="header">
   <tr>
     <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
     <th>Nazwa</th>
-    <th>Wymagana</th>
+    <th>Wymagane wybranie jednej z opcji</th>
     <th></th>
   </tr>
 </ng-template>
 <ng-template pTemplate="body" let-productProperties let-expanded="expanded">
   <tr>
     <td>
-      <p-tableCheckbox [value]="productPropertiesList" />
+      <p-tableCheckbox [value]="productProperties" />
     </td>
     <td>{{ productProperties.name }}</td>
     <td>{{ productProperties.required ? 'Tak' : 'Nie'}}</td>

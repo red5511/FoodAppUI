@@ -13,7 +13,7 @@
     "/api/v1/product/modify": {
       "put": {
         "tags": ["Product"],
-        "operationId": "saveProduct",
+        "operationId": "modifyProduct",
         "requestBody": {
           "content": {
             "application/json": {
@@ -22,14 +22,7 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -215,7 +208,7 @@
     "/api/v1/product/save": {
       "post": {
         "tags": ["Product"],
-        "operationId": "saveProduct_1",
+        "operationId": "saveProduct",
         "requestBody": {
           "content": {
             "application/json": {
@@ -224,14 +217,7 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -283,6 +269,35 @@
               "application/json": {
                 "schema": {
                   "$ref": "#/components/schemas/CreateProductPropertiesResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/product-category/save": {
+      "post": {
+        "tags": ["ProductCategory"],
+        "operationId": "saveProductCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateProductCategoryResponse"
                 }
               }
             }
@@ -1056,7 +1071,7 @@
     "/api/v1/product/delete": {
       "delete": {
         "tags": ["Product"],
-        "operationId": "saveProduct_2",
+        "operationId": "deleteProduct",
         "requestBody": {
           "content": {
             "application/json": {
@@ -1065,14 +1080,7 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        },
+        "responses": { "200": { "description": "OK" } },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -1460,6 +1468,22 @@
         "properties": {
           "productProperties": {
             "$ref": "#/components/schemas/ProductPropertiesDto"
+          }
+        }
+      },
+      "CreateProductCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "productCategory": {
+            "$ref": "#/components/schemas/ProductCategoryDto"
+          }
+        }
+      },
+      "CreateProductCategoryResponse": {
+        "type": "object",
+        "properties": {
+          "productCategory": {
+            "$ref": "#/components/schemas/ProductCategoryDto"
           }
         }
       },

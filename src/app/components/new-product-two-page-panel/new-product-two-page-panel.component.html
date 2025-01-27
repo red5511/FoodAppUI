@@ -34,33 +34,63 @@
               [text]="true"
               (onClick)="onNewCategoryClick()"
             ></p-button>
-            <div class="input-wrapper" *ngIf="isNewCategoryButtonVisible">
-              <p-floatLabel>
-                <input
-                  class="category-input"
-                  pInputText
-                  id="newCategory"
-                  name="newCategory"
-                  required
-                  type="text"
-                  [(ngModel)]="newCategoryInput"
-                  autocomplete="off"
-                />
-                <label for="newCategory">Nowa kategoria</label>
-              </p-floatLabel>
-            </div>
-            <button
+            <form
+              [formGroup]="categoryForm"
               *ngIf="isNewCategoryButtonVisible"
-              [disabled]="newCategoryInput === ''"
-              pButton
-              type="button"
-              [severity]="'success'"
-              label="Dodaj"
-              icon="pi pi-check"
-              (click)="(2)"
-            ></button>
+              class="category-form"
+            >
+              <div class="input-wrapper">
+                <p-floatLabel>
+                  <input
+                    [ngClass]="{
+                      'ng-invalid': isCategoryFieldInvalid('newCategoryName'),
+                      'ng-dirty': isCategoryFieldInvalid('newCategoryName')
+                    }"
+                    class="category-input"
+                    pInputText
+                    type="text"
+                    autocomplete="off"
+                    (input)="
+                      capitalizeFirstLetterForCategory(
+                        $event,
+                        'newCategoryName'
+                      )
+                    "
+                    formControlName="newCategoryName"
+                  />
+                  <label for="newCategory">Nowa kategoria</label>
+                </p-floatLabel>
+              </div>
+              <button
+                pButton
+                type="button"
+                [severity]="'success'"
+                label="Dodaj"
+                icon="pi pi-check"
+                (click)="onAddNewCategory()"
+              ></button>
+            </form>
           </div>
-          <h6 style="margin-bottom: 2rem">Wybierz kategorie produktu</h6>
+          <small
+            class="custom-error"
+            *ngIf="
+              categoryForm.get('newCategoryName')?.hasError('required') &&
+              categoryForm.get('newCategoryName')?.touched
+            "
+          >
+            Nazwa produktu jest wymagana
+          </small>
+          <small
+            class="custom-error"
+            *ngIf="
+              categoryForm.get('newCategoryName')?.hasError('notUnique')"
+          >
+            Nazwa kategorii jest już zajęta
+          </small>
+
+          <h6 style="margin-bottom: 2rem; margin-top: 1rem">
+            Wybierz kategorie produktu
+          </h6>
           <form [formGroup]="productForm">
             <p-floatLabel style="margin-bottom: 2rem">
               <p-dropdown
@@ -72,6 +102,7 @@
                 [style]="{ width: '100%' }"
                 [options]="productCategories"
                 optionLabel="name"
+                (onChange)="onCategoryChange($event)"
               />
               <label for="over_label">Kategoria</label>
             </p-floatLabel>
@@ -97,12 +128,12 @@
                 type="text"
                 class="input-full-width"
                 autocomplete="off"
-                (input)="capitalizeFirstLetterForName($event, 'name')"
+                (input)="capitalizeFirstLetter($event, 'name')"
               />
               <label for="name">Nazwa produktu</label>
             </p-floatLabel>
             <small class="custom-error" *ngIf="isFieldInvalid('name')">
-              Proszę wprowadzić nazwę produktu (min. 1 znaki)
+              Proszę wprowadzić nazwę produktu
             </small>
 
             <p-floatLabel>
@@ -129,7 +160,7 @@
 
             <p-floatLabel>
               <input
-                (input)="capitalizeFirstLetterForName($event, 'description')"
+                (input)="capitalizeFirstLetter($event, 'description')"
                 pInputText
                 id="description"
                 name="description"
@@ -153,7 +184,7 @@
           <h6>Grupy</h6>
           <app-new-product-properties-list
             [productPropertiesList]="productPropertiesList"
-            (addedNewProductProperties)="onAddedNewProductProperties()"
+            (onChangeCheckedBoxes)="onChangeCheckedBoxes($event)"
           ></app-new-product-properties-list>
         </div>
       </div>
@@ -183,6 +214,7 @@
         [severity]="'success'"
         label="Zatwierdź"
         icon="pi pi-check"
+        (click)="onCreateNewProduct()"
       ></button>
     </div>
   </ng-template>

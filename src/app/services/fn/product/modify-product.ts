@@ -6,14 +6,14 @@ import { filter, map } from 'rxjs/operators';
 import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
-import { CreateProductRequest } from '../../models/create-product-request';
+import { ModifyProductRequest } from '../../models/modify-product-request';
 
-export interface SaveProduct$Params {
-      body: CreateProductRequest
+export interface ModifyProduct$Params {
+      body: ModifyProductRequest
 }
 
-export function saveProduct(http: HttpClient, rootUrl: string, params: SaveProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
-  const rb = new RequestBuilder(rootUrl, saveProduct.PATH, 'post');
+export function modifyProduct(http: HttpClient, rootUrl: string, params: ModifyProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, modifyProduct.PATH, 'put');
   if (params) {
     rb.body(params.body, 'application/json');
   }
@@ -28,4 +28,4 @@ export function saveProduct(http: HttpClient, rootUrl: string, params: SaveProdu
   );
 }
 
-saveProduct.PATH = '/api/v1/product/save';
+modifyProduct.PATH = '/api/v1/product/modify';

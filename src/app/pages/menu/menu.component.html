@@ -127,7 +127,8 @@
 </p-card>
 
   <app-new-product-two-page-panel
-    [(isDialogVisible)]="addNewProductDialogVisibility"
+    [isDialogVisible]="addNewProductDialogVisibility"
     [productCategories]="productCategories"
     [productPropertiesList]="productPropertiesList"
+    (dialogVisibleChange)="dialogVisibleChange($event)"
   ></app-new-product-two-page-panel>

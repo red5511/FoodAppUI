@@ -8,24 +8,24 @@ import { RequestBuilder } from '../../request-builder';
 
 import { DeleteProductRequest } from '../../models/delete-product-request';
 
-export interface SaveProduct2$Params {
+export interface DeleteProduct$Params {
       body: DeleteProductRequest
 }
 
-export function saveProduct2(http: HttpClient, rootUrl: string, params: SaveProduct2$Params, context?: HttpContext): Observable<StrictHttpResponse<string>> {
-  const rb = new RequestBuilder(rootUrl, saveProduct2.PATH, 'delete');
+export function deleteProduct(http: HttpClient, rootUrl: string, params: DeleteProduct$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  const rb = new RequestBuilder(rootUrl, deleteProduct.PATH, 'delete');
   if (params) {
     rb.body(params.body, 'application/json');
   }
 
   return http.request(
-    rb.build({ responseType: 'json', accept: 'application/json', context })
+    rb.build({ responseType: 'text', accept: '*/*', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return r as StrictHttpResponse<string>;
+      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
     })
   );
 }
 
-saveProduct2.PATH = '/api/v1/product/delete';
+deleteProduct.PATH = '/api/v1/product/delete';

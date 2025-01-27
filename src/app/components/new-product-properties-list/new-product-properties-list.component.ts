@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ProductPropertiesDto } from '../../services/models';
 import { TableRowExpandEvent, TableRowCollapseEvent } from 'primeng/table';
 
@@ -10,6 +10,8 @@ import { TableRowExpandEvent, TableRowCollapseEvent } from 'primeng/table';
 export class NewProductPropertiesListComponent {
   @Input({ required: true })
   productPropertiesList!: ProductPropertiesDto[];
+  @Output()
+  onChangeCheckedBoxes: EventEmitter<ProductPropertiesDto[]> = new EventEmitter<ProductPropertiesDto[]>();
   selectedProductProperties!: ProductPropertiesDto;
   expandedRows: { [s: string]: boolean } = {};
 
@@ -26,5 +28,12 @@ export class NewProductPropertiesListComponent {
 
   collapseAll() {
     this.expandedRows = {};
+  }
+
+  selectionChange(event: ProductPropertiesDto[]){
+    if(event !== undefined){
+      this.onChangeCheckedBoxes.emit(event)
+    }
+      
   }
 }

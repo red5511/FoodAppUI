@@ -1,10 +1,18 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
+  CreateProductCategoryRequest,
+  CreateProductRequest,
   ProductCategoryDto,
   ProductPropertiesDto,
 } from '../../services/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  ProductCategoryService,
+  ProductService,
+} from '../../services/services';
+import { ContextService } from '../../services/context/context.service';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-new-product-two-page-panel',
@@ -33,11 +41,14 @@ export class NewProductTwoPagePanelComponent {
   @Input({ required: true })
   isDialogVisible!: boolean;
   @Output()
-  isDialogVisibleChange = new EventEmitter<boolean>();
+  dialogVisibleChange = new EventEmitter<boolean>();
   isNewCategoryButtonVisible: boolean = false;
   newCategoryInput: string = '';
   selectedProductCategory: ProductCategoryDto | undefined;
   productForm!: FormGroup;
+  categoryForm!: FormGroup;
+  isProductCategoryNotUnique: boolean = false;
+  checkedCheckBoxProductProperties: ProductPropertiesDto[] = [];
 
   product = {
     name: '',
@@ -45,7 +56,13 @@ export class NewProductTwoPagePanelComponent {
     description: '',
   };
 
-  constructor(private fb: FormBuilder) {}
+  constructor(
+    private fb: FormBuilder,
+    private productCategoryService: ProductCategoryService,
+    private contextService: ContextService,
+    private toastService: ToastrService,
+    private productService: ProductService
+  ) {}
 
   ngOnInit() {
     this.productForm = this.fb.group({
@@ -53,6 +70,16 @@ export class NewProductTwoPagePanelComponent {
       name: ['', [Validators.required, Validators.minLength(1)]],
       price: [null, [Validators.required, Validators.min(0)]],
       description: [''], // Optional field
+    });
+    this.setDefoultCategoryFromValidation();
+  }
+
+  setDefoultCategoryFromValidation() {
+    this.categoryForm = this.fb.group({
+      newCategoryName: [
+        '',
+        [Validators.required, this.validateNameUniqueness.bind(this)],
+      ],
     });
   }
 
@@ -63,10 +90,6 @@ export class NewProductTwoPagePanelComponent {
   currentStep = 1; // Track the current step
 
   nextStep() {
-    console.log('nextStep');
-    console.log(this.productForm.valid);
-    console.log(this.productForm);
-
     if (this.currentStep === 1 && this.productForm.valid) {
       this.currentStep = 2;
     } else {
@@ -86,12 +109,28 @@ export class NewProductTwoPagePanelComponent {
     return control?.invalid && (control.dirty || control.touched);
   }
 
+  markCategoryFormFieldsTouched() {
+    Object.keys(this.categoryForm.controls).forEach((field) => {
+      const control = this.categoryForm.get(field);
+      if (control) control.markAsTouched();
+    });
+  }
+
+  isCategoryFieldInvalid(field: string) {
+    return (
+      (this.categoryForm.get('newCategoryName')?.hasError('required') &&
+        this.categoryForm.get('newCategoryName')?.touched) ||
+      (this.categoryForm.get('newCategoryName')?.hasError('notUnique') &&
+        this.categoryForm.get('newCategoryName')?.touched)
+    );
+  }
+
   previousStep() {
     this.currentStep = 1;
   }
 
   onHide() {
-    this.isDialogVisibleChange.emit(false);
+    this.dialogVisibleChange.emit(false);
     this.currentStep = 1; // Reset to the first step
     this.isNewCategoryButtonVisible = false; // Hide the new category input
     this.newCategoryInput = ''; // Clear the input field
@@ -112,9 +151,11 @@ export class NewProductTwoPagePanelComponent {
     );
   }
 
-  onAddedNewProductProperties() {}
+  onChangeCheckedBoxes(event: ProductPropertiesDto[]) {
+    this.checkedCheckBoxProductProperties = event;
+  }
 
-  capitalizeFirstLetterForName(event: Event, fieldName: string): void {
+  capitalizeFirstLetter(event: Event, fieldName: string): void {
     const inputElement = event.target as HTMLInputElement; // Explicitly cast to HTMLInputElement
     if (inputElement && inputElement.value) {
       const capitalized =
@@ -124,27 +165,69 @@ export class NewProductTwoPagePanelComponent {
     }
   }
 
-  // capitalizeFirstLetterForName2(value: string | undefined): void {
-  //   if (value && value.length > 0) {
-  //     this.product.name = value.charAt(0).toUpperCase() + value.slice(1);
-  //   } else {
-  //     this.product.name = value; // Handle empty value
-  //   }
-  // }
-
-  capitalizeFirstLetterForCategory(value: string): void {
-    if (value && value.length > 0) {
-      this.newCategoryInput = value.charAt(0).toUpperCase() + value.slice(1);
-    } else {
-      this.newCategoryInput = value; // Handle empty value
+  capitalizeFirstLetterForCategory(event: Event, fieldName: string): void {
+    const inputElement = event.target as HTMLInputElement; // Explicitly cast to HTMLInputElement
+    if (inputElement && inputElement.value) {
+      const capitalized =
+        inputElement.value.charAt(0).toUpperCase() +
+        inputElement.value.slice(1);
+      this.categoryForm.get(fieldName)?.setValue(capitalized); // Update the form control value
     }
   }
 
-  capitalizeFirstLetterForDescription(value: string): void {
-    if (value && value.length > 0) {
-      this.product.description = value.charAt(0).toUpperCase() + value.slice(1);
+  onAddNewCategory() {
+    console.log('onAddNewCategory');
+    if (this.categoryForm.valid) {
+      const productCategory: ProductCategoryDto = {
+        name: this.categoryForm.get('newCategoryName')?.getRawValue(),
+        companyId: this.contextService.getCompanyId() ?? -999,
+      };
+      const body: CreateProductCategoryRequest = {
+        productCategory: productCategory,
+      };
+
+      this.productCategoryService.saveProductCategory({ body }).subscribe({
+        next: (response) => {
+          if (response.productCategory) {
+            this.toastService.success('Nowa kategoria została utworzona');
+            this.productCategories.push(response.productCategory);
+            this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
+            this.setDefoultCategoryFromValidation();
+          }
+        },
+      });
     } else {
-      this.product.description = value; // Handle empty value
+      this.markCategoryFormFieldsTouched();
     }
+  }
+
+  validateNameUniqueness(control: any) {
+    if (this.productCategories.map((el) => el.name).includes(control.value)) {
+      return { notUnique: true }; // Return an error object if invalid
+    }
+    return null; // Return null if valid
+  }
+
+  onCategoryChange(event: any): void {
+    this.selectedProductCategory = event.value;
+  }
+
+  onCreateNewProduct() {
+    const body: CreateProductRequest = {
+      product: {
+        companyId: this.contextService.getCompanyId() ?? -999,
+        name: this.productForm.get('name')?.getRawValue(),
+        price: this.productForm.get('price')?.getRawValue(),
+        description: this.productForm.get('description')?.getRawValue(),
+        productCategory: this.selectedProductCategory,
+        productPropertiesList: this.checkedCheckBoxProductProperties,
+      },
+    };
+    this.productService.saveProduct({ body }).subscribe({
+      next: () => {
+        this.toastService.success('Produkt został utworzony');
+        this.isDialogVisible = false
+      },
+    });
   }
 }

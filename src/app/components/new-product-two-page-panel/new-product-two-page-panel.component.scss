@@ -51,7 +51,15 @@
   gap: 1rem; /* Spacing between input and button */
   height: 4.5rem; /* Fixed height */
   width: 100%; /* Full width of the container */
-  margin-bottom: 10px;
+}
+
+.category-form {
+  display: flex;
+  align-items: end; /* Vertically center input and button */
+  justify-content: space-between; /* Push input and button to edges */
+  gap: 1rem; /* Spacing between input and button */
+  height: 4.5rem; /* Fixed height */
+  width: 100%; /* Full width of the container */
 }
 
 .input-wrapper {
