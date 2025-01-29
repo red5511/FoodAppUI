@@ -38,6 +38,7 @@ export { GetOrdersForCompanyRequest } from './models/get-orders-for-company-requ
 export { GetPagedCompaniesResponse } from './models/get-paged-companies-response';
 export { GetPagedProductsResponse } from './models/get-paged-products-response';
 export { GetPagedUsersResponse } from './models/get-paged-users-response';
+export { GetProductsByCategoriesResponse } from './models/get-products-by-categories-response';
 export { GetProductsRequest } from './models/get-products-request';
 export { GetStatisticsChartRequest } from './models/get-statistics-chart-request';
 export { GetStatisticsChartResponse } from './models/get-statistics-chart-response';
@@ -62,6 +63,7 @@ export { ProductCategoryDto } from './models/product-category-dto';
 export { ProductDto } from './models/product-dto';
 export { ProductPropertiesDto } from './models/product-properties-dto';
 export { ProductPropertyDto } from './models/product-property-dto';
+export { ProductsByCategoryTabView } from './models/products-by-category-tab-view';
 export { ProductsPagedResult } from './models/products-paged-result';
 export { RegisterRequest } from './models/register-request';
 export { RejectedOrderWebSocketEvent } from './models/rejected-order-web-socket-event';

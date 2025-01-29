@@ -1,0 +1,121 @@
+// ::ng-deep .custom-card .p-card .p-component {
+//     width: 9rem;
+//     height: 9rem;
+// }
+
+// ::ng-deep .custom-card .p-card {
+//     background-color: aqua;
+//     margin-right: 1rem;
+//     margin-bottom: 1rem;
+// }
+// .custom-card {
+//     display: flex;
+//     flex-direction: column;
+//     justify-content: space-between;
+//     width: 20%; /* Cards will take up 20% of the container width */
+//     height: 350px; /* Set a fixed height to ensure uniformity */
+//     margin-bottom: 1rem; /* Space between cards */
+//     margin-right: 1rem; /* Space between cards */
+//     box-sizing: border-box; /* Include padding in the height calculation */
+//     overflow: hidden; /* Hide overflow content */
+//   }
+  
+//   ::ng-deep .p-card .p-card-header,
+//   .p-card .p-card-content {
+//     overflow: hidden; /* Prevent content from overflowing */
+//     text-overflow: ellipsis; /* Optional: Add ellipsis for overflowed text */
+//   }
+  
+::ng-deep .custom-fieldset .p-fieldset {
+    margin-top: 2rem;
+}
+
+::ng-deep .p-fieldset .p-fieldset-content {
+  padding: 0;
+}
+
+.cards-container{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+.custom-card {
+  width: 23%; /* Fixed width for the card */
+  height: 200px; /* Fixed height for the card */
+  background-color: #fff; /* Card background color */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow for a nice effect */
+  border-radius: 8px; /* Rounded corners */
+  padding: 1%; /* Padding inside the card */
+  margin-top: 1rem; /* Space between cards */
+  margin-right: 2%; /* Space between cards */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  overflow: hidden; /* Hide overflowed content */
+  text-align: center; /* Center align text inside the card */
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  border: 1px solid #10182083;
+  background-color: #e0f7fa; /* Zgaszony błękit */
+  // background-color: #e0f2f1; /* Miętowy */
+  // background-color: #f8bbd0; /* Pudrowy róż */
+  // background-color: #fbe9e7; /* Beżowy */
+  // background-color: #c8e6c9; /* Zielony z nutą szarości */
+  // background-color: #e1bee7; /* Jasny fiolet */
+  // background-color: #ffcc80; /* Zgaszona pomarańczowa */
+  // background-color: #d7ccc8; /* Ciepły szary-brązowy */
+
+}
+
+/* Hover effect for the card */
+.custom-card:hover {
+  transform: translateY(-5px); /* Lift the card slightly */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
+}
+
+/* Title style */
+// .custom-card h3 {
+//   font-size: 1.2rem;
+//   font-weight: bold;
+//   color: #333;
+//   margin: 0 0 10px; /* Space between title and content */
+//   overflow: hidden;
+//   text-overflow: ellipsis; /* Truncate long titles */
+//   white-space: nowrap;
+// }
+
+.custom-card h3 {
+  font-size: 1.2rem;
+  margin: 10px 0;
+  white-space: normal; /* Allow wrapping */
+  overflow: hidden; /* Hide text that exceeds the limit */
+  text-overflow: ellipsis; /* Add ellipsis for overflow text */
+  display: -webkit-box; /* Enables multi-line text behavior */
+  -webkit-line-clamp: 2; /* Limits to 2 lines */
+  -webkit-box-orient: vertical; /* Set text direction to vertical */
+
+}
+/* Price and description styles */
+.custom-card p {
+  font-size: 0.9rem;
+  color: #666;
+  margin: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Allows line breaks */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Allows only two lines */
+  -webkit-box-orient: vertical; /* Ensures vertical orientation */
+}
+
+.custom-card .price-p{
+  font-size: 1.2rem;
+  color: #666;
+  margin: 5px 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: normal; /* Allows line breaks */
+  display: -webkit-box;
+  -webkit-line-clamp: 2; /* Allows only two lines */
+  -webkit-box-orient: vertical; /* Ensures vertical orientation */
+}

@@ -1,0 +1,9 @@
+<p-fieldset class="custom-fieldset" *ngFor="let category of getCategoryKeys(productsByCategory)" [legend]="category" [toggleable]="true">
+    <div class="cards-container">
+      <div class="custom-card" *ngFor="let product of productsByCategory[category]">
+        <h3>{{ product.name }}</h3>
+        <p class="price-p">{{ product.price | pricePln}}</p>
+        <p>{{ product.description }}</p> <!-- Adds 3 non-breaking spaces and a zero-width space -->
+      </div>
+    </div>
+</p-fieldset>

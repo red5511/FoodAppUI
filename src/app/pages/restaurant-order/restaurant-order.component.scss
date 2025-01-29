@@ -1,0 +1,15 @@
+:host {
+    width: 98%; // Take the full width of the parent container
+    max-width: 1100px;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    margin-top: 4%;
+    margin-bottom: 10%;
+  }
+
+  ::ng-deep .p-tabview {
+    padding: 0;
+  }
+
+  ::ng-deep .p-tabview-panels {
+    padding: 0;
+  }

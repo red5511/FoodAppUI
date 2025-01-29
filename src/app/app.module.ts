@@ -93,6 +93,9 @@ import { NewProductPropertiesListComponent } from './components/new-product-prop
 import { NewProductTwoPagePanelComponent } from './components/new-product-two-page-panel/new-product-two-page-panel.component';
 import { NewProductAddNewPropertyComponent } from './components/new-product-add-new-property/new-product-add-new-property.component';
 import { MenuProductPropertiesExpandedTableComponent } from './components/menu-product-properties-expanded-table/menu-product-properties-expanded-table.component';
+import { TabViewModule } from 'primeng/tabview';
+import { ProductCardComponent } from './components/product-card/product-card.component';
+import { FieldsetModule } from 'primeng/fieldset';
 
 @NgModule({
   declarations: [
@@ -139,6 +142,7 @@ import { MenuProductPropertiesExpandedTableComponent } from './components/menu-p
     NewProductAddNewPropertyComponent,
     NewProductTwoPagePanelComponent,
     MenuProductPropertiesExpandedTableComponent,
+    ProductCardComponent,
   ],
   imports: [
     RouterModule,
@@ -154,6 +158,7 @@ import { MenuProductPropertiesExpandedTableComponent } from './components/menu-p
     MatIconModule,
     ReactiveFormsModule,
     SelectButtonModule,
+    TabViewModule,
     FloatLabelModule,
     InputNumberModule,
     DropdownModule,
@@ -174,6 +179,7 @@ import { MenuProductPropertiesExpandedTableComponent } from './components/menu-p
     DividerModule,
     CalendarModule,
     RatingModule,
+    FieldsetModule,
     DialogModule,
     MultiSelectModule,
     IconFieldModule,
