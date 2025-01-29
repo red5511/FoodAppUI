@@ -103,6 +103,7 @@
                 [options]="productCategories"
                 optionLabel="name"
                 (onChange)="onCategoryChange($event)"
+                selecte
               />
               <label for="over_label">Kategoria</label>
             </p-floatLabel>
@@ -184,6 +185,7 @@
           <h6>Grupy</h6>
           <app-new-product-properties-list
             [productPropertiesList]="productPropertiesList"
+            [selectedProductProperties]="modifiedProduct?.productPropertiesList ?? []"
             (onChangeCheckedBoxes)="onChangeCheckedBoxes($event)"
           ></app-new-product-properties-list>
         </div>

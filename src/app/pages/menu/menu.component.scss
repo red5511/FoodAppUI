@@ -5,6 +5,10 @@
     margin-top: 4%;
   }
 
+:host ::ng-deep .p-button {
+  transition: none !important;
+}
+
   ::ng-deep .p-datatable th {
     text-align: center;
   }
@@ -72,4 +76,9 @@
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
+  }
+
+  .dialog-footer {
+    display: flex;
+    justify-content: space-between;
   }

@@ -1113,6 +1113,7 @@
       "ModifyProductRequest": {
         "type": "object",
         "properties": {
+          "modifiedId": { "type": "integer", "format": "int64" },
           "product": { "$ref": "#/components/schemas/ProductDto" }
         }
       },

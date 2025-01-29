@@ -1,0 +1,65 @@
+<p-table
+  [value]="productPropertiesList"
+  class="expansion-table"
+  dataKey="id"
+  [expandedRowKeys]="expandedRows"
+  (onRowExpand)="onRowExpand($event)"
+  (onRowCollapse)="onRowCollapse($event)"
+>
+  <ng-template pTemplate="header">
+    <tr>
+      <th></th>
+      <th>Nazwa</th>
+      <th>Wymagane wybranie jednej z opcji</th>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="body" let-productProperties let-expanded="expanded">
+    <tr>
+      <p-button
+        type="button"
+        pRipple
+        [pRowToggler]="productProperties"
+        [text]="true"
+        [rounded]="true"
+        [plain]="true"
+        [icon]="
+          expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'
+        "
+      />
+      <td>{{ productProperties.name }}</td>
+      <td>{{ productProperties.required ? "Tak" : "Nie" }}</td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="rowexpansion" let-productProperties>
+    <tr class="expanded-row">
+      <td colspan="7">
+        <div class="p-3">
+          <p-table [value]="productProperties.propertyList" dataKey="id">
+            <ng-template pTemplate="header">
+              <tr>
+                <th>Nazwa</th>
+                <th>Kwota</th>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="body" let-property>
+              <tr class="custom-tr">
+                <td>{{ property.name }}</td>
+                <td>{{ property.price | pricePln }}</td>
+              </tr>
+            </ng-template>
+            <ng-template pTemplate="emptymessage">
+              <tr>
+                <td colspan="6">Brak opcji dla grupy</td>
+              </tr>
+            </ng-template>
+          </p-table>
+        </div>
+      </td>
+    </tr>
+  </ng-template>
+  <ng-template pTemplate="emptymessage">
+    <tr>
+      <td colspan="6">Brak grup dla produktu</td>
+    </tr>
+  </ng-template>
+</p-table>

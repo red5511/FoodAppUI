@@ -7,7 +7,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class PricePlnPipe implements PipeTransform {
   transform(value: number | undefined): string {
     if (value == null || isNaN(value)) {
-      return '';
+      return '-';
     }
 
     const formattedNumber = new Intl.NumberFormat('pl-PL', {
@@ -15,6 +15,6 @@ export class PricePlnPipe implements PipeTransform {
       maximumFractionDigits: 2,
     }).format(value);
 
-    return `${formattedNumber} PLN`;
+    return `${formattedNumber} zł`;
   }
 }

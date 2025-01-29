@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import {
+  DeleteProductRequest,
   GetPagedProductsResponse,
   GetProductsRequest,
   ProductCategoryDto,
@@ -12,9 +13,10 @@ import {
   TableRowCollapseEvent,
   TableRowExpandEvent,
 } from 'primeng/table';
-import { debounceTime, Subject, switchMap, takeUntil } from 'rxjs';
+import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
-import { OrderService, ProductService } from '../../services/services';
+import { ProductService } from '../../services/services';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-menu',
@@ -23,9 +25,11 @@ import { OrderService, ProductService } from '../../services/services';
 })
 export class MenuComponent {
   products: ProductDto[] = [];
+  modifiedProduct: ProductDto | undefined;
   productCategories: ProductCategoryDto[] = [];
   productPropertiesList: ProductPropertiesDto[] = [];
   loading: boolean = true;
+  isProductTwoPagePanelVisible: boolean = false;
   totalRecords!: number;
   expandedRows: { [s: string]: boolean } = {};
   globalSearch: string = '';
@@ -33,14 +37,16 @@ export class MenuComponent {
   sortState!: { [key: string]: string };
   page: number = 1;
   size: number = 50;
-  addNewProductDialogVisibility: boolean = false;
+  deleteProductDialogVisible: boolean = false;
+  selectedProductIdToDelete: number | undefined = undefined;
 
   private searchSubject = new Subject<string>();
   private destroy$ = new Subject<void>();
 
   constructor(
     private productService: ProductService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private toastService: ToastrService
   ) {
     this.setDefoultSorts();
   }
@@ -105,13 +111,13 @@ export class MenuComponent {
 
   setDefoultSorts() {
     const sort: Sort = {
-      direction: 'DESC',
-      field: 'name',
+      direction: 'ASC',
+      field: 'productCategory',
     };
 
     this.sorts = [sort];
     this.sortState = {
-      name: 'DESC',
+      productCategory: 'ASC',
     };
   }
 
@@ -162,14 +168,43 @@ export class MenuComponent {
     this.expandedRows = {};
   }
 
-  onAddNewProductClick() {
-    console.log('onAddNewProductClick');
-    console.log(this.addNewProductDialogVisibility);
-    this.addNewProductDialogVisibility = true;
+  dialogVisibleChange(loadProducts: boolean) {
+    if (loadProducts) {
+      this.loadProducts();
+    }
+    this.isProductTwoPagePanelVisible = false;
   }
 
-  dialogVisibleChange(event: boolean) {
-    this.addNewProductDialogVisibility = event;
-    this.loadProducts();
+  onDeleteProductButtonClick(productId: number) {
+    this.deleteProductDialogVisible = true;
+    this.selectedProductIdToDelete = productId;
+  }
+
+  onModifyProductButtonClick(product: ProductDto) {
+    this.isProductTwoPagePanelVisible = true;
+    this.modifiedProduct = product;
+  }
+
+  onCancelDeleteProduct() {
+    this.deleteProductDialogVisible = false;
+  }
+
+  onApproveDeleteProduct() {
+    const body: DeleteProductRequest = {
+      companyId: this.contextService.getCompanyId() ?? -999,
+      productId: this.selectedProductIdToDelete,
+    };
+    this.productService.deleteProduct({ body }).subscribe({
+      next: () => {
+        this.toastService.success('Usunięcie produktu przebiegło poprawnie');
+        this.loadProducts();
+        this.deleteProductDialogVisible = false;
+      },
+    });
+  }
+
+  onAddNewProductClick() {
+    this.modifiedProduct = undefined;
+    this.isProductTwoPagePanelVisible = true;
   }
 }

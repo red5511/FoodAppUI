@@ -1,13 +1,13 @@
 <p-card footer="Footer Content">
   <button
     pButton
-    severity="info"
     type="button"
     label="Dodaj nowy produkt"
     icon="pi pi-plus-circle"
+    pRipple="false"
+    [autofocus]="false"
     (click)="onAddNewProductClick()"
   ></button>
-
   <p-divider></p-divider>
   <div class="filters">
     <p-floatLabel>
@@ -47,7 +47,16 @@
             field="name"
             label="Nazwa"
             [sortState]="sortState"
-            [noNoneField]="'name'"
+            [noNoneField]="'productCategory'"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th>
+          <app-sortable-column
+            field="productCategory"
+            label="Kategoria"
+            [sortState]="sortState"
+            [noNoneField]="'productCategory'"
             (sortChanged)="onSortChanged($event)"
           ></app-sortable-column>
         </th>
@@ -56,21 +65,21 @@
             field="price"
             label="Kwota"
             [sortState]="sortState"
-            [noNoneField]="'name'"
+            [noNoneField]="'productCategory'"
             (sortChanged)="onSortChanged($event)"
           ></app-sortable-column>
         </th>
-        <th>Opis</th>
+        <th [style.width]="'30%'">Opis</th>
       </tr>
     </ng-template>
 
-    <ng-template pTemplate="body" let-order let-expanded="expanded">
+    <ng-template pTemplate="body" let-product let-expanded="expanded">
       <tr>
         <td>
           <p-button
             type="button"
             pRipple
-            [pRowToggler]="order"
+            [pRowToggler]="product"
             [text]="true"
             [rounded]="true"
             [plain]="true"
@@ -78,47 +87,46 @@
           />
         </td>
         <td>
-          <div>{{ order.name }}</div>
+          <div>{{ product.name }}</div>
         </td>
         <td>
-          <div>{{ order.price | pricePln }}</div>
+          <div>{{ product.productCategory?.name }}</div>
         </td>
         <td>
-          <div>{{ order.description }}</div>
+          <div>{{ product.price | pricePln }}</div>
+        </td>
+        <td>
+          <div>{{ product.description }}</div>
         </td>
       </tr>
     </ng-template>
-    <ng-template pTemplate="rowexpansion" let-user>
+    <ng-template pTemplate="rowexpansion" let-product>
       <tr>
-        <td colspan="5">
-          <div>
-            <p-table [value]="user.permissions" class="expansion-table">
-              <ng-template pTemplate="header"> </ng-template>
-              <ng-template pTemplate="emptymessage">
-                <tr>
-                  <div class="buttons">
-                    <button
-                      pButton
-                      severity="info"
-                      type="button"
-                      label="Modyfiuj"
-                      [raised]="true"
-                      icon="pi pi-file-edit"
-                      (click)="(2)"
-                    ></button>
-                    <button
-                      pButton
-                      severity="warning"
-                      type="button"
-                      label="Usuń"
-                      [raised]="true"
-                      icon="pi pi-trash"
-                      (click)="(2)"
-                    ></button>
-                  </div>
-                </tr>
-              </ng-template>
-            </p-table>
+        <td colspan="7">
+          <div class="p-3">
+            <app-menu-product-properties-expanded-table
+              [productPropertiesList]="product.productPropertiesList"
+            ></app-menu-product-properties-expanded-table>
+            <div class="buttons">
+              <button
+                pButton
+                severity="info"
+                type="button"
+                label="Modyfiuj"
+                [raised]="true"
+                icon="pi pi-file-edit"
+                (click)="onModifyProductButtonClick(product)"
+              ></button>
+              <button
+                pButton
+                severity="warning"
+                type="button"
+                label="Usuń"
+                [raised]="true"
+                icon="pi pi-trash"
+                (click)="onDeleteProductButtonClick(product.id)"
+              ></button>
+            </div>
           </div>
         </td>
       </tr>
@@ -126,9 +134,39 @@
   </p-table>
 </p-card>
 
-  <app-new-product-two-page-panel
-    [isDialogVisible]="addNewProductDialogVisibility"
-    [productCategories]="productCategories"
-    [productPropertiesList]="productPropertiesList"
-    (dialogVisibleChange)="dialogVisibleChange($event)"
-  ></app-new-product-two-page-panel>
+<p-dialog
+  [(visible)]="deleteProductDialogVisible"
+  [header]="'Potwierdź'"
+  [closable]="true"
+  [modal]="true"
+  [dismissableMask]="true"
+>
+  <p>Czy jesteś pewny, że chcesz usunąć ten produkt?</p>
+  <div class="dialog-footer">
+    <button
+      pButton
+      type="button"
+      label="Nie"
+      icon="pi pi-times"
+      class="p-button-text custom-cancel-button"
+      (click)="onCancelDeleteProduct()"
+    ></button>
+    <button
+      pButton
+      type="button"
+      label="Tak"
+      icon="pi pi-check"
+      (click)="onApproveDeleteProduct()"
+      class="custom-confirm-button"
+    ></button>
+  </div>
+</p-dialog>
+
+<app-new-product-two-page-panel
+  *ngIf="isProductTwoPagePanelVisible"
+  [productCategories]="productCategories"
+  [productPropertiesList]="productPropertiesList"
+  [isDialogVisible]="isProductTwoPagePanelVisible"
+  [modifiedProduct]="modifiedProduct"
+  (dialogVisibleChange)="dialogVisibleChange($event)"
+></app-new-product-two-page-panel>

@@ -3,7 +3,9 @@ import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CreateProductCategoryRequest,
   CreateProductRequest,
+  ModifyProductRequest,
   ProductCategoryDto,
+  ProductDto,
   ProductPropertiesDto,
 } from '../../services/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
@@ -39,7 +41,9 @@ export class NewProductTwoPagePanelComponent {
   @Input({ required: true })
   productPropertiesList!: ProductPropertiesDto[];
   @Input({ required: true })
-  isDialogVisible!: boolean;
+  isDialogVisible: boolean = false;
+  @Input()
+  modifiedProduct: ProductDto | undefined;
   @Output()
   dialogVisibleChange = new EventEmitter<boolean>();
   isNewCategoryButtonVisible: boolean = false;
@@ -65,22 +69,35 @@ export class NewProductTwoPagePanelComponent {
   ) {}
 
   ngOnInit() {
-    this.productForm = this.fb.group({
-      selectedProductCategory: [null, Validators.required],
-      name: ['', [Validators.required, Validators.minLength(1)]],
-      price: [null, [Validators.required, Validators.min(0)]],
-      description: [''], // Optional field
-    });
-    this.setDefoultCategoryFromValidation();
+    this.setDefaultFromValidations();
+    console.log('this.modifiedProduct?.productCategory');
+    console.log(this.modifiedProduct?.productCategory);
   }
 
-  setDefoultCategoryFromValidation() {
+  setDefaultCategoryFromValidations() {
     this.categoryForm = this.fb.group({
       newCategoryName: [
         '',
         [Validators.required, this.validateNameUniqueness.bind(this)],
       ],
     });
+  }
+  setDefaultFromValidations() {
+    const formName = this.modifiedProduct?.name;
+    const formPrice = this.modifiedProduct?.price;
+    const formDescription = this.modifiedProduct?.description;
+    this.selectedProductCategory = this.modifiedProduct?.productCategory;
+
+    this.productForm = this.fb.group({
+      selectedProductCategory: [
+        this.selectedProductCategory,
+        Validators.required,
+      ],
+      name: [formName, [Validators.required, Validators.minLength(1)]],
+      price: [formPrice, [Validators.required, Validators.min(0)]],
+      description: [formDescription], // Optional field
+    });
+    this.setDefaultCategoryFromValidations();
   }
 
   onNewCategoryClick() {
@@ -130,7 +147,12 @@ export class NewProductTwoPagePanelComponent {
   }
 
   onHide() {
+    this.resetPropertiesToDefault();
     this.dialogVisibleChange.emit(false);
+  }
+
+  resetPropertiesToDefault() {
+    this.setDefaultFromValidations();
     this.currentStep = 1; // Reset to the first step
     this.isNewCategoryButtonVisible = false; // Hide the new category input
     this.newCategoryInput = ''; // Clear the input field
@@ -140,6 +162,7 @@ export class NewProductTwoPagePanelComponent {
       price: null,
       description: '',
     };
+    this.modifiedProduct = undefined;
   }
 
   isFirstPageFormValid() {
@@ -192,7 +215,7 @@ export class NewProductTwoPagePanelComponent {
             this.toastService.success('Nowa kategoria została utworzona');
             this.productCategories.push(response.productCategory);
             this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
-            this.setDefoultCategoryFromValidation();
+            this.setDefaultCategoryFromValidations();
           }
         },
       });
@@ -213,8 +236,20 @@ export class NewProductTwoPagePanelComponent {
   }
 
   onCreateNewProduct() {
+    console.log(this.modifiedProduct);
+    
+    
+    if (this.modifiedProduct === undefined) {
+      this.createNewProduct();
+    } else {
+      this.modifyProduct();
+    }
+  }
+
+  createNewProduct() {
     const body: CreateProductRequest = {
       product: {
+        id: this.modifiedProduct?.id,
         companyId: this.contextService.getCompanyId() ?? -999,
         name: this.productForm.get('name')?.getRawValue(),
         price: this.productForm.get('price')?.getRawValue(),
@@ -226,7 +261,31 @@ export class NewProductTwoPagePanelComponent {
     this.productService.saveProduct({ body }).subscribe({
       next: () => {
         this.toastService.success('Produkt został utworzony');
-        this.isDialogVisible = false
+        this.isDialogVisible = false;
+        this.dialogVisibleChange.emit(true);
+        this.resetPropertiesToDefault();
+      },
+    });
+  }
+
+  modifyProduct() {
+    const body: ModifyProductRequest = {
+      modifiedId: this.modifiedProduct?.id,
+      product: {
+        companyId: this.contextService.getCompanyId() ?? -999,
+        name: this.productForm.get('name')?.getRawValue(),
+        price: this.productForm.get('price')?.getRawValue(),
+        description: this.productForm.get('description')?.getRawValue(),
+        productCategory: this.selectedProductCategory,
+        productPropertiesList: this.checkedCheckBoxProductProperties,
+      },
+    };
+    this.productService.modifyProduct({ body }).subscribe({
+      next: () => {
+        this.toastService.success('Produkt został zmodyfikowany');
+        this.isDialogVisible = false;
+        this.dialogVisibleChange.emit(true);
+        this.resetPropertiesToDefault();
       },
     });
   }

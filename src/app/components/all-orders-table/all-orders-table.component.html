@@ -80,68 +80,6 @@
     [(selection)]="selectedRow"
     (onRowSelect)="onRowClicked($event)"
   >
-    <!-- <ng-template pTemplate="caption">
-      <div class="filters">
-        <span class="p-float-label">
-          <p-multiSelect
-            [style]="{ width: '9rem' }"
-            [maxSelectedLabels]="1"
-            [(ngModel)]="selectedStatusOptions"
-            [options]="statusOptions"
-            (onChange)="onFilterChange()"
-            optionLabel="translatedValue"
-          />
-          <label for="over_label">Statusy</label>
-        </span>
-
-        <p-floatLabel>
-          <p-inputNumber
-            [style]="{ width: '8rem', height: '50px' }"
-            [inputStyle]="{ 'min-width': '5rem' }"
-            inputId="integeronly"
-            [(ngModel)]="price"
-            mode="currency"
-            currency="PLN"
-            min="0"
-            max="999999"
-            (ngModelChange)="onInputChange($event)"
-          />
-          <label for="over_label">Kwota</label>
-        </p-floatLabel>
-
-        <app-calendar-with-dialog
-          [dateRangeOptions]="dateRangeOptions"
-          [selectedDateRangeValue]="selectedDateRangeValue"
-          [lastSelectedDateRangeValue]="selectedDateRangeValue"
-          (onDateChange)="onDateChange($event)"
-        ></app-calendar-with-dialog>
-
-        <p-floatLabel>
-          <input
-            pInputText
-            [style]="{ width: '14rem', height: '50px' }"
-            id="over_label"
-            [(ngModel)]="globalSearch"
-            autocomplete="off"
-            (ngModelChange)="onInputChange($event)"
-          />
-          <label for="over_label">Wyszkuwianie globalne</label>
-        </p-floatLabel>
-
-        <p-floatLabel *ngIf="isHolding">
-          <p-multiSelect
-            [style]="{ width: '18rem' }"
-            [maxSelectedLabels]="1"
-            [(ngModel)]="selectedCompanyOptions"
-            [options]="companyOptions"
-            (onChange)="onFilterChange()"
-            optionLabel="name"
-          />
-          <label for="over_label">Firmy</label>
-        </p-floatLabel>
-      </div>
-    </ng-template> -->
-
     <ng-template pTemplate="header">
       <tr>
         <th style="margin-left: -22px; width: 1%"></th>

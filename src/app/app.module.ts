@@ -92,6 +92,7 @@ import { CustomDialogComponent } from './components/custom-dialog/custom-dialog.
 import { NewProductPropertiesListComponent } from './components/new-product-properties-list/new-product-properties-list.component';
 import { NewProductTwoPagePanelComponent } from './components/new-product-two-page-panel/new-product-two-page-panel.component';
 import { NewProductAddNewPropertyComponent } from './components/new-product-add-new-property/new-product-add-new-property.component';
+import { MenuProductPropertiesExpandedTableComponent } from './components/menu-product-properties-expanded-table/menu-product-properties-expanded-table.component';
 
 @NgModule({
   declarations: [
@@ -137,6 +138,7 @@ import { NewProductAddNewPropertyComponent } from './components/new-product-add-
     NewProductPropertiesListComponent,
     NewProductAddNewPropertyComponent,
     NewProductTwoPagePanelComponent,
+    MenuProductPropertiesExpandedTableComponent,
   ],
   imports: [
     RouterModule,

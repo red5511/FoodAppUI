@@ -10,9 +10,10 @@ import { TableRowExpandEvent, TableRowCollapseEvent } from 'primeng/table';
 export class NewProductPropertiesListComponent {
   @Input({ required: true })
   productPropertiesList!: ProductPropertiesDto[];
+  @Input()
+  selectedProductProperties: ProductPropertiesDto[] = [];
   @Output()
   onChangeCheckedBoxes: EventEmitter<ProductPropertiesDto[]> = new EventEmitter<ProductPropertiesDto[]>();
-  selectedProductProperties!: ProductPropertiesDto;
   expandedRows: { [s: string]: boolean } = {};
 
   onRowExpand(event: TableRowExpandEvent) {
