@@ -1,0 +1,28 @@
+:container {
+  display: flex;
+  align-items: end; /* Vertically center input and button */
+  justify-content: space-between; /* Push input and button to edges */
+  gap: 1rem; /* Spacing between input and button */
+  height: 4.5rem; /* Fixed height */
+  width: 100%; /* Full width of the container */
+}
+
+small.custom-error {
+  color: red;
+}
+
+.category-form {
+  display: flex;
+  align-items: end; /* Vertically center input and button */
+  justify-content: space-between; /* Push input and button to edges */
+  gap: 1rem; /* Spacing between input and button */
+  height: 4.5rem; /* Fixed height */
+  width: 100%; /* Full width of the container */
+}
+
+.input-wrapper {
+  flex: 1; /* Take all available space except for the button */
+}
+.category-input {
+  width: 100%; /* Make input fill its container */
+}

@@ -1,0 +1,22 @@
+:host {
+    width: 98%; // Take the full width of the parent container
+    max-width: 1500px;
+    // box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+    padding: 1rem;
+    margin-bottom: 100px;
+    margin-top: 2%;
+
+  }
+
+  .toggle-container {
+    display: flex;
+    align-items: end; /* Vertically center input and button */
+    justify-content: space-between; /* Push input and button to edges */
+    gap: 1rem; /* Spacing between input and button */
+    height: 4.5rem; /* Fixed height */
+    width: 100%; /* Full width of the container */
+  }
+
+  :host ::ng-deep .p-button {
+    transition: none !important;
+  }

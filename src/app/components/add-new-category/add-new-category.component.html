@@ -1,0 +1,67 @@
+<div class="container">
+  <button
+    pButton
+    *ngIf="!isNewCategoryButtonVisible && normalButton"
+    type="button"
+    label="Dodaj nową kategorie"
+    icon="pi pi-plus-circle"
+    [autofocus]="false"
+    (click)="onNewCategoryClick()"
+  ></button>
+
+  <p-button
+    *ngIf="!isNewCategoryButtonVisible && !normalButton"
+    [severity]="'success'"
+    class="custom-text-button"
+    label="Dodaj nową kategorie"
+    [text]="true"
+    (onClick)="onNewCategoryClick()"
+  ></p-button>
+
+  <form
+    [formGroup]="categoryForm"
+    *ngIf="isNewCategoryButtonVisible"
+    class="category-form"
+  >
+    <div class="input-wrapper">
+      <p-floatLabel>
+        <input
+          [ngClass]="{
+            'ng-invalid': isCategoryFieldInvalid('newCategoryName'),
+            'ng-dirty': isCategoryFieldInvalid('newCategoryName')
+          }"
+          class="category-input"
+          pInputText
+          type="text"
+          autocomplete="off"
+          (input)="capitalizeFirstLetterForCategory($event, 'newCategoryName')"
+          formControlName="newCategoryName"
+        />
+        <label for="newCategory">Nowa kategoria</label>
+      </p-floatLabel>
+    </div>
+    <button
+      pButton
+      type="button"
+      [severity]="'success'"
+      label="Dodaj"
+      icon="pi pi-check"
+      (click)="onAddNewCategory()"
+    ></button>
+  </form>
+</div>
+<small
+  class="custom-error"
+  *ngIf="
+    categoryForm.get('newCategoryName')?.hasError('required') &&
+    categoryForm.get('newCategoryName')?.touched
+  "
+>
+  Nazwa kategorii jest wymagana
+</small>
+<small
+  class="custom-error"
+  *ngIf="categoryForm.get('newCategoryName')?.hasError('notUnique')"
+>
+  Nazwa kategorii jest już zajęta
+</small>

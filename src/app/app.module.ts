@@ -96,6 +96,11 @@ import { MenuProductPropertiesExpandedTableComponent } from './components/menu-p
 import { TabViewModule } from 'primeng/tabview';
 import { ProductCardComponent } from './components/product-card/product-card.component';
 import { FieldsetModule } from 'primeng/fieldset';
+import { RippleModule } from 'primeng/ripple';
+import { MenuCategoryComponent } from './pages/menu-category/menu-category.component';
+import { CommonModule } from '@angular/common';
+import { AddNewCategoryComponent } from './components/add-new-category/add-new-category.component';
+
 
 @NgModule({
   declarations: [
@@ -143,6 +148,8 @@ import { FieldsetModule } from 'primeng/fieldset';
     NewProductTwoPagePanelComponent,
     MenuProductPropertiesExpandedTableComponent,
     ProductCardComponent,
+    MenuCategoryComponent,
+    AddNewCategoryComponent,
   ],
   imports: [
     RouterModule,
@@ -161,6 +168,8 @@ import { FieldsetModule } from 'primeng/fieldset';
     TabViewModule,
     FloatLabelModule,
     InputNumberModule,
+    RippleModule,
+    CommonModule,
     DropdownModule,
     MatToolbarModule,
     CheckboxModule,

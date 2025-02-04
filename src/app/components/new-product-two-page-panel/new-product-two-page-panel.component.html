@@ -25,68 +25,10 @@
           [@slideAnimation]="'in'"
           [@.disabled]="!isDialogVisible"
         >
-          <div class="toggle-container">
-            <p-button
-              *ngIf="!isNewCategoryButtonVisible"
-              [severity]="'success'"
-              class="custom-text-button"
-              label="Dodaj nową kategorie"
-              [text]="true"
-              (onClick)="onNewCategoryClick()"
-            ></p-button>
-            <form
-              [formGroup]="categoryForm"
-              *ngIf="isNewCategoryButtonVisible"
-              class="category-form"
-            >
-              <div class="input-wrapper">
-                <p-floatLabel>
-                  <input
-                    [ngClass]="{
-                      'ng-invalid': isCategoryFieldInvalid('newCategoryName'),
-                      'ng-dirty': isCategoryFieldInvalid('newCategoryName')
-                    }"
-                    class="category-input"
-                    pInputText
-                    type="text"
-                    autocomplete="off"
-                    (input)="
-                      capitalizeFirstLetterForCategory(
-                        $event,
-                        'newCategoryName'
-                      )
-                    "
-                    formControlName="newCategoryName"
-                  />
-                  <label for="newCategory">Nowa kategoria</label>
-                </p-floatLabel>
-              </div>
-              <button
-                pButton
-                type="button"
-                [severity]="'success'"
-                label="Dodaj"
-                icon="pi pi-check"
-                (click)="onAddNewCategory()"
-              ></button>
-            </form>
-          </div>
-          <small
-            class="custom-error"
-            *ngIf="
-              categoryForm.get('newCategoryName')?.hasError('required') &&
-              categoryForm.get('newCategoryName')?.touched
-            "
-          >
-            Nazwa produktu jest wymagana
-          </small>
-          <small
-            class="custom-error"
-            *ngIf="
-              categoryForm.get('newCategoryName')?.hasError('notUnique')"
-          >
-            Nazwa kategorii jest już zajęta
-          </small>
+          <app-add-new-category
+            [productCategories]="productCategories"
+            [isNewCategoryButtonVisible]="isNewCategoryButtonVisible"
+          ></app-add-new-category>
 
           <h6 style="margin-bottom: 2rem; margin-top: 1rem">
             Wybierz kategorie produktu
@@ -185,7 +127,9 @@
           <h6>Grupy</h6>
           <app-new-product-properties-list
             [productPropertiesList]="productPropertiesList"
-            [selectedProductProperties]="modifiedProduct?.productPropertiesList ?? []"
+            [selectedProductProperties]="
+              modifiedProduct?.productPropertiesList ?? []
+            "
             (onChangeCheckedBoxes)="onChangeCheckedBoxes($event)"
           ></app-new-product-properties-list>
         </div>

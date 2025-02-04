@@ -43,7 +43,7 @@ export class AppComponent {
   ngOnInit() {
 
     window.addEventListener('beforeunload', this.handleWindowClose);
-
+    this.primengConfig.ripple = true
     this.primengConfig.setTranslation({
       selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',

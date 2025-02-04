@@ -1,11 +1,11 @@
 export { ProductService } from './services/product.service';
+export { ProductCategoryService } from './services/product-category.service';
 export { AuthenticationService } from './services/authentication.service';
 export { AdministrationService } from './services/administration.service';
 export { CompanyAdministrationService } from './services/company-administration.service';
 export { WebSocketService } from './services/web-socket.service';
 export { StatisticsService } from './services/statistics.service';
 export { ProductPropertiesService } from './services/product-properties.service';
-export { ProductCategoryService } from './services/product-category.service';
 export { OrderService } from './services/order.service';
 export { DevelopmentService } from './services/development.service';
 export { DashboardService } from './services/dashboard.service';

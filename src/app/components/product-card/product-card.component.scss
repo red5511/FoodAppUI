@@ -19,34 +19,37 @@
 //     box-sizing: border-box; /* Include padding in the height calculation */
 //     overflow: hidden; /* Hide overflow content */
 //   }
-  
+
 //   ::ng-deep .p-card .p-card-header,
 //   .p-card .p-card-content {
 //     overflow: hidden; /* Prevent content from overflowing */
 //     text-overflow: ellipsis; /* Optional: Add ellipsis for overflowed text */
 //   }
-  
+
 ::ng-deep .custom-fieldset .p-fieldset {
-    margin-top: 2rem;
+  margin-top: 2rem;
 }
 
 ::ng-deep .p-fieldset .p-fieldset-content {
   padding: 0;
 }
 
-.cards-container{
-    display: flex;
-    flex-wrap: wrap;
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
 }
-
 
 .custom-card {
   width: 23%; /* Fixed width for the card */
   height: 200px; /* Fixed height for the card */
   background-color: #fff; /* Card background color */
+  background-size: cover; /* Scale image to cover entire div */
+  background-position: center; /* Center image */
+  background-repeat: no-repeat; /* Prevent repetition */
+
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow for a nice effect */
   border-radius: 8px; /* Rounded corners */
-  padding: 1%; /* Padding inside the card */
+  // padding: 1%; /* Padding inside the card */
   margin-top: 1rem; /* Space between cards */
   margin-right: 2%; /* Space between cards */
   display: flex;
@@ -54,22 +57,24 @@
   justify-content: space-between;
   overflow: hidden; /* Hide overflowed content */
   text-align: center; /* Center align text inside the card */
+  cursor: pointer;
   transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
   border: 1px solid #10182083;
-  background-color: #e0f7fa; /* Zgaszony błękit */
-  // background-color: #e0f2f1; /* Miętowy */
-  // background-color: #f8bbd0; /* Pudrowy róż */
-  // background-color: #fbe9e7; /* Beżowy */
-  // background-color: #c8e6c9; /* Zielony z nutą szarości */
-  // background-color: #e1bee7; /* Jasny fiolet */
-  // background-color: #ffcc80; /* Zgaszona pomarańczowa */
-  // background-color: #d7ccc8; /* Ciepły szary-brązowy */
-
+  position: relative; // ✅ Required for ripple
+  
 }
+
+// background-color: #e0f7fa; /* Zgaszony błękit */
+// background-color: #e0f2f1; /* Miętowy */
+// background-color: #f8bbd0; /* Pudrowy róż */
+// background-color: #fbe9e7; /* Beżowy */
+// background-color: #c8e6c9; /* Zielony z nutą szarości */
+// background-color: #e1bee7; /* Jasny fiolet */
+// background-color: #ffcc80; /* Zgaszona pomarańczowa */
+// background-color: #d7ccc8; /* Ciepły szary-brązowy */
 
 /* Hover effect for the card */
 .custom-card:hover {
-  transform: translateY(-5px); /* Lift the card slightly */
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Darker shadow on hover */
 }
 
@@ -85,6 +90,7 @@
 // }
 
 .custom-card h3 {
+  font-weight: bold;
   font-size: 1.2rem;
   margin: 10px 0;
   white-space: normal; /* Allow wrapping */
@@ -93,12 +99,11 @@
   display: -webkit-box; /* Enables multi-line text behavior */
   -webkit-line-clamp: 2; /* Limits to 2 lines */
   -webkit-box-orient: vertical; /* Set text direction to vertical */
-
 }
 /* Price and description styles */
 .custom-card p {
   font-size: 0.9rem;
-  color: #666;
+  // color: #666;
   margin: 5px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -108,9 +113,9 @@
   -webkit-box-orient: vertical; /* Ensures vertical orientation */
 }
 
-.custom-card .price-p{
+.custom-card .price-p {
   font-size: 1.2rem;
-  color: #666;
+  // color: #666;
   margin: 5px 0;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -118,4 +123,44 @@
   display: -webkit-box;
   -webkit-line-clamp: 2; /* Allows only two lines */
   -webkit-box-orient: vertical; /* Ensures vertical orientation */
+}
+
+.plus-icon {
+  position: absolute;
+  top: 8px; /* Distance from the top */
+  right: 8px; /* Distance from the right */
+  background: #ffffff; /* Optional: Background for better visibility */
+  color: orange; /* Blue color */
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.overlay {
+  position: absolute;
+  top: 0; /* Cover from the top */
+  left: 0; /* Cover from the left */
+  width: 100%;
+  height: 100%; /* Full height */
+  background: rgba(0, 0, 0, 0.75); /* Semi-transparent black */
+  color: rgb(247, 247, 247);
+  padding: 10px;
+  text-align: center;
+}
+
+.card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Crop the image to fit */
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -1; /* Send image behind content */
 }

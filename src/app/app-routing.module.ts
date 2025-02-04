@@ -16,6 +16,7 @@ import { AdminPanelUsersComponent } from './pages/admin-panel-users/admin-panel-
 import { AdminPanelComapniesComponent } from './pages/admin-panel-comapnies/admin-panel-comapnies.component';
 import { AddCompanyComponent } from './pages/add-company/add-company.component';
 import { MenuComponent } from './pages/menu/menu.component';
+import { MenuCategoryComponent } from './pages/menu-category/menu-category.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -67,6 +68,11 @@ const routes: Routes = [
   {
     path: 'menu',
     component: MenuComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'menu/category',
+    component: MenuCategoryComponent,
     canActivate: [authGuard],
   },
   {

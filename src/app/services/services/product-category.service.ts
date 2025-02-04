@@ -9,7 +9,12 @@ import { BaseService } from '../base-service';
 import { ApiConfiguration } from '../api-configuration';
 import { StrictHttpResponse } from '../strict-http-response';
 
+import { changeProductCategoriesSortOrder } from '../fn/product-category/change-product-categories-sort-order';
+import { ChangeProductCategoriesSortOrder$Params } from '../fn/product-category/change-product-categories-sort-order';
 import { CreateProductCategoryResponse } from '../models/create-product-category-response';
+import { getAllCategories } from '../fn/product-category/get-all-categories';
+import { GetAllCategories$Params } from '../fn/product-category/get-all-categories';
+import { GetAllCategoriesResponse } from '../models/get-all-categories-response';
 import { saveProductCategory } from '../fn/product-category/save-product-category';
 import { SaveProductCategory$Params } from '../fn/product-category/save-product-category';
 
@@ -17,6 +22,31 @@ import { SaveProductCategory$Params } from '../fn/product-category/save-product-
 export class ProductCategoryService extends BaseService {
   constructor(config: ApiConfiguration, http: HttpClient) {
     super(config, http);
+  }
+
+  /** Path part for operation `changeProductCategoriesSortOrder()` */
+  static readonly ChangeProductCategoriesSortOrderPath = '/api/v1/product-category/menu/category/{companyId}/change-order';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `changeProductCategoriesSortOrder()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  changeProductCategoriesSortOrder$Response(params: ChangeProductCategoriesSortOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return changeProductCategoriesSortOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `changeProductCategoriesSortOrder$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  changeProductCategoriesSortOrder(params: ChangeProductCategoriesSortOrder$Params, context?: HttpContext): Observable<void> {
+    return this.changeProductCategoriesSortOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
   }
 
   /** Path part for operation `saveProductCategory()` */
@@ -41,6 +71,31 @@ export class ProductCategoryService extends BaseService {
   saveProductCategory(params: SaveProductCategory$Params, context?: HttpContext): Observable<CreateProductCategoryResponse> {
     return this.saveProductCategory$Response(params, context).pipe(
       map((r: StrictHttpResponse<CreateProductCategoryResponse>): CreateProductCategoryResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `getAllCategories()` */
+  static readonly GetAllCategoriesPath = '/api/v1/product-category/menu/category/{companyId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `getAllCategories()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllCategories$Response(params: GetAllCategories$Params, context?: HttpContext): Observable<StrictHttpResponse<GetAllCategoriesResponse>> {
+    return getAllCategories(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `getAllCategories$Response()` instead.
+   *
+   * This method doesn't expect any request body.
+   */
+  getAllCategories(params: GetAllCategories$Params, context?: HttpContext): Observable<GetAllCategoriesResponse> {
+    return this.getAllCategories$Response(params, context).pipe(
+      map((r: StrictHttpResponse<GetAllCategoriesResponse>): GetAllCategoriesResponse => r.body)
     );
   }
 

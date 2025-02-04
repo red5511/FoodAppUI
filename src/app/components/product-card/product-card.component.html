@@ -1,9 +1,42 @@
-<p-fieldset class="custom-fieldset" *ngFor="let category of getCategoryKeys(productsByCategory)" [legend]="category" [toggleable]="true">
-    <div class="cards-container">
-      <div class="custom-card" *ngFor="let product of productsByCategory[category]">
+<p-fieldset
+  class="custom-fieldset"
+  *ngFor="let category of getCategoryKeys(productsByCategory)"
+  [legend]="category"
+  [toggleable]="true"
+>
+  <div class="cards-container">
+    <div
+      class="custom-card"
+      *ngFor="let product of productsByCategory[category]"
+      [ngStyle]="{ 'background-image': 'url(' + product.imgUrl + ')' }"
+      pRipple
+    >
+    <div class="overlay">
+      <div class="plus-icon">
+        <i class="pi pi-plus"></i>
+      </div>
         <h3>{{ product.name }}</h3>
-        <p class="price-p">{{ product.price | pricePln}}</p>
-        <p>{{ product.description }}</p> <!-- Adds 3 non-breaking spaces and a zero-width space -->
+        <p class="price-p">{{ product.price | pricePln }}</p>
+        <p>{{ product.description }}</p>
       </div>
     </div>
+  </div>
 </p-fieldset>
+
+  <!-- <div class="cards-container">
+    <div
+      class="custom-card p-ripple"
+      *ngFor="let product of productsByCategory[category]"
+      [ngStyle]="{ 'background-image': 'url(' + product.imgUrl + ')' }"
+      pRipple
+    >
+      <div class="plus-icon">
+        <i class="pi pi-plus"></i>
+      </div>
+      <div class="overlay">
+        <h3>{{ product.name }}</h3>
+        <p class="price-p">{{ product.price | pricePln }}</p>
+        <p>{{ product.description }}</p>
+      </div>
+    </div>
+  </div> -->

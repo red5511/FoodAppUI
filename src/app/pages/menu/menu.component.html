@@ -1,4 +1,3 @@
-<p-card footer="Footer Content">
   <button
     pButton
     type="button"
@@ -8,7 +7,6 @@
     [autofocus]="false"
     (click)="onAddNewProductClick()"
   ></button>
-  <p-divider></p-divider>
   <div class="filters">
     <p-floatLabel>
       <input
@@ -132,7 +130,6 @@
       </tr>
     </ng-template>
   </p-table>
-</p-card>
 
 <p-dialog
   [(visible)]="deleteProductDialogVisible"

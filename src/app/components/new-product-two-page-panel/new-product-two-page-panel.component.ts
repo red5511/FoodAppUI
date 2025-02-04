@@ -1,7 +1,6 @@
 import { trigger, transition, style, animate } from '@angular/animations';
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
-  CreateProductCategoryRequest,
   CreateProductRequest,
   ModifyProductRequest,
   ProductCategoryDto,
@@ -10,7 +9,6 @@ import {
 } from '../../services/models';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import {
-  ProductCategoryService,
   ProductService,
 } from '../../services/services';
 import { ContextService } from '../../services/context/context.service';
@@ -50,9 +48,9 @@ export class NewProductTwoPagePanelComponent {
   newCategoryInput: string = '';
   selectedProductCategory: ProductCategoryDto | undefined;
   productForm!: FormGroup;
-  categoryForm!: FormGroup;
   isProductCategoryNotUnique: boolean = false;
   checkedCheckBoxProductProperties: ProductPropertiesDto[] = [];
+  currentStep = 1; // Track the current step
 
   product = {
     name: '',
@@ -62,7 +60,6 @@ export class NewProductTwoPagePanelComponent {
 
   constructor(
     private fb: FormBuilder,
-    private productCategoryService: ProductCategoryService,
     private contextService: ContextService,
     private toastService: ToastrService,
     private productService: ProductService
@@ -74,14 +71,6 @@ export class NewProductTwoPagePanelComponent {
     console.log(this.modifiedProduct?.productCategory);
   }
 
-  setDefaultCategoryFromValidations() {
-    this.categoryForm = this.fb.group({
-      newCategoryName: [
-        '',
-        [Validators.required, this.validateNameUniqueness.bind(this)],
-      ],
-    });
-  }
   setDefaultFromValidations() {
     const formName = this.modifiedProduct?.name;
     const formPrice = this.modifiedProduct?.price;
@@ -97,14 +86,8 @@ export class NewProductTwoPagePanelComponent {
       price: [formPrice, [Validators.required, Validators.min(0)]],
       description: [formDescription], // Optional field
     });
-    this.setDefaultCategoryFromValidations();
   }
 
-  onNewCategoryClick() {
-    this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
-  }
-
-  currentStep = 1; // Track the current step
 
   nextStep() {
     if (this.currentStep === 1 && this.productForm.valid) {
@@ -124,22 +107,6 @@ export class NewProductTwoPagePanelComponent {
   isFieldInvalid(field: string) {
     const control = this.productForm.get(field);
     return control?.invalid && (control.dirty || control.touched);
-  }
-
-  markCategoryFormFieldsTouched() {
-    Object.keys(this.categoryForm.controls).forEach((field) => {
-      const control = this.categoryForm.get(field);
-      if (control) control.markAsTouched();
-    });
-  }
-
-  isCategoryFieldInvalid(field: string) {
-    return (
-      (this.categoryForm.get('newCategoryName')?.hasError('required') &&
-        this.categoryForm.get('newCategoryName')?.touched) ||
-      (this.categoryForm.get('newCategoryName')?.hasError('notUnique') &&
-        this.categoryForm.get('newCategoryName')?.touched)
-    );
   }
 
   previousStep() {
@@ -186,49 +153,6 @@ export class NewProductTwoPagePanelComponent {
         inputElement.value.slice(1);
       this.productForm.get(fieldName)?.setValue(capitalized); // Update the form control value
     }
-  }
-
-  capitalizeFirstLetterForCategory(event: Event, fieldName: string): void {
-    const inputElement = event.target as HTMLInputElement; // Explicitly cast to HTMLInputElement
-    if (inputElement && inputElement.value) {
-      const capitalized =
-        inputElement.value.charAt(0).toUpperCase() +
-        inputElement.value.slice(1);
-      this.categoryForm.get(fieldName)?.setValue(capitalized); // Update the form control value
-    }
-  }
-
-  onAddNewCategory() {
-    console.log('onAddNewCategory');
-    if (this.categoryForm.valid) {
-      const productCategory: ProductCategoryDto = {
-        name: this.categoryForm.get('newCategoryName')?.getRawValue(),
-        companyId: this.contextService.getCompanyId() ?? -999,
-      };
-      const body: CreateProductCategoryRequest = {
-        productCategory: productCategory,
-      };
-
-      this.productCategoryService.saveProductCategory({ body }).subscribe({
-        next: (response) => {
-          if (response.productCategory) {
-            this.toastService.success('Nowa kategoria została utworzona');
-            this.productCategories.push(response.productCategory);
-            this.isNewCategoryButtonVisible = !this.isNewCategoryButtonVisible;
-            this.setDefaultCategoryFromValidations();
-          }
-        },
-      });
-    } else {
-      this.markCategoryFormFieldsTouched();
-    }
-  }
-
-  validateNameUniqueness(control: any) {
-    if (this.productCategories.map((el) => el.name).includes(control.value)) {
-      return { notUnique: true }; // Return an error object if invalid
-    }
-    return null; // Return null if valid
   }
 
   onCategoryChange(event: any): void {

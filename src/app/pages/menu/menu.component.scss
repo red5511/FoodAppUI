@@ -1,9 +1,24 @@
 :host {
-    width: 98%; // Take the full width of the parent container
-    max-width: 1100px;
-    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-    margin-top: 4%;
+  width: 98%; // Take the full width of the parent container
+  max-width: 1500px;
+  // box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+  padding: 1rem;
+  margin-bottom: 100px;
+  margin-top: 2%;
+
   }
+
+  ::ng-deep .p-selectbutton .p-button {
+    padding: 0.15rem 1.75rem; /* Adjust padding for smaller buttons */
+    margin-bottom: 2rem;
+  }
+  
+  .centred-div {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
 
 :host ::ng-deep .p-button {
   transition: none !important;
