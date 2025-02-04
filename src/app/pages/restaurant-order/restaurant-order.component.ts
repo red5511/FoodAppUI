@@ -3,6 +3,7 @@ import { ProductDto, ProductsByCategoryTabView } from '../../services/models';
 import { ProductService } from '../../services/services';
 import { ContextService } from '../../services/context/context.service';
 import { Subject, takeUntil } from 'rxjs';
+import { CartService } from '../../services/cart/cart-service';
 
 @Component({
   selector: 'app-restaurant-order',
@@ -15,7 +16,8 @@ export class RestaurantOrderComponent {
   destroy$ = new Subject<void>();
 
   constructor(private productService: ProductService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    private cartService: CartService
   ){}
 
   ngOnInit(){

@@ -8,13 +8,14 @@
     <div
       class="custom-card"
       *ngFor="let product of productsByCategory[category]"
+      (click)="startAddingToCart(product)"
       [ngStyle]="{ 'background-image': 'url(' + product.imgUrl + ')' }"
       pRipple
     >
-    <div class="overlay">
-      <div class="plus-icon">
-        <i class="pi pi-plus"></i>
-      </div>
+      <div class="overlay">
+        <div class="plus-icon">
+          <i class="pi pi-plus"></i>
+        </div>
         <h3>{{ product.name }}</h3>
         <p class="price-p">{{ product.price | pricePln }}</p>
         <p>{{ product.description }}</p>
@@ -23,7 +24,70 @@
   </div>
 </p-fieldset>
 
-  <!-- <div class="cards-container">
+<p-dialog
+  *ngIf="isChoosePropertiesDialogVisible"
+  [header]="'Wybierz opcje dla zamówienia'"
+  [closable]="true"
+  [modal]="true"
+  [dismissableMask]="true"
+  [style]="{ width: '500px' }"
+>
+  <form [formGroup]="productForm" (ngSubmit)="addToCart()">
+    <div *ngFor="let property of selectedProduct?.productPropertiesList">
+      <p>{{ property.name }}</p>
+      <small
+        *ngIf="
+          productForm.get('property_' + property.id)?.touched &&
+          productForm.get('property_' + property.id)?.invalid
+        "
+        class="p-error"
+      >
+        Ta sekcja jest wymagana!
+      </small>
+      <div *ngIf="property.required; else optionalTemplate">
+        <!-- Radio buttons for required properties -->
+        <div *ngFor="let option of property.propertyList" class="option">
+          <p-radioButton
+            [inputId]="'radio_' + option.id"
+            name="property_{{ property.id }}"
+            [value]="option"
+            formControlName="property_{{ property.id }}"
+          ></p-radioButton>
+          <label [for]="'radio_' + option.id"
+            >{{ option.name }} (+{{ option.price | pricePln }})</label
+          >
+        </div>
+      </div>
+
+      Optional properties (Checkbox)
+      <ng-template #optionalTemplate>
+        <div *ngFor="let option of property.propertyList" class="option">
+          <p-checkbox
+            *ngIf="selectedOptionalProperties[property.id!]"
+            [inputId]="'checkbox_' + option.id"
+            [binary]="true"
+            [(ngModel)]="selectedOptionalProperties[property.id!][option.id!]"
+          >
+          </p-checkbox>
+          <label [for]="'checkbox_' + option.id"
+            >{{ option.name }} (+{{ option.price | pricePln }})</label
+          >
+        </div>
+      </ng-template>
+    </div>
+
+    <p-footer>
+      <button
+        severity="warning"
+        pButton
+        label="Zatwierdź"
+        icon="pi pi-check"
+      ></button>
+    </p-footer>
+  </form>
+</p-dialog>
+
+<!-- <div class="cards-container">
     <div
       class="custom-card p-ripple"
       *ngFor="let product of productsByCategory[category]"

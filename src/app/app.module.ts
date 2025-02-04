@@ -100,6 +100,8 @@ import { RippleModule } from 'primeng/ripple';
 import { MenuCategoryComponent } from './pages/menu-category/menu-category.component';
 import { CommonModule } from '@angular/common';
 import { AddNewCategoryComponent } from './components/add-new-category/add-new-category.component';
+import { CartFooterComponent } from './components/cart-footer/cart-footer.component';
+import { RadioButtonModule } from 'primeng/radiobutton';
 
 
 @NgModule({
@@ -150,6 +152,7 @@ import { AddNewCategoryComponent } from './components/add-new-category/add-new-c
     ProductCardComponent,
     MenuCategoryComponent,
     AddNewCategoryComponent,
+    CartFooterComponent,
   ],
   imports: [
     RouterModule,
@@ -171,6 +174,7 @@ import { AddNewCategoryComponent } from './components/add-new-category/add-new-c
     RippleModule,
     CommonModule,
     DropdownModule,
+    RadioButtonModule,
     MatToolbarModule,
     CheckboxModule,
     MatMenuModule,
