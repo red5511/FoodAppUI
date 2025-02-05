@@ -1,9 +1,10 @@
 <div class="cart-footer" *ngIf="isVisible()">
     <div class="cart-info">
-      <span>🥙 {{ totalItems }} {{ totalItems === 1 ? 'produkt' : 'produkty'}}</span>
+      <span
+        [ngClass]="{ 'glow-span': isGlowing }"
+      >🥙 Produkty: {{ totalItems }}</span>
       <span>💰 Suma: {{ totalPrice | pricePln }}</span>
       <button class="clear-cart-btn" (click)="clearCart()">🗑️ Wyczyść koszyk</button>
     </div>
     <button pRipple class="checkout-btn">Podsumowanie</button>
   </div>
-  

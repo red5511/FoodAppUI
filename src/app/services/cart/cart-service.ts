@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { ProductDto } from '../models';
+import { OrderProductDto, ProductDto } from '../models';
 
 @Injectable({
   providedIn: 'root'
@@ -9,14 +9,14 @@ export class CartService {
   private cart = new BehaviorSubject<any[]>([]);
   cartUpdated = this.cart.asObservable();
 
-  addToCart(product: ProductDto) {
+  addToCart(orderProduct: OrderProductDto) {
     const currentCart = this.cart.value;
-    const existingItem = currentCart.find(item => item.id === product.id);
+    const existingItem = currentCart.find(item => item.id === orderProduct.id);
 
     if (existingItem) {
-      existingItem.quantity++;
+      existingItem.quantity = existingItem.quantity + orderProduct.quantity;
     } else {
-      currentCart.push({ ...product, quantity: 1 });
+      currentCart.push({ ...orderProduct, quantity: orderProduct.quantity });
     }
 
     this.cart.next([...currentCart]);

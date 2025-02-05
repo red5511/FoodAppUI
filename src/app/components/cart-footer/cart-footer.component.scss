@@ -3,8 +3,7 @@
     bottom: 0;
     left: 0;
     width: 100%;
-    // background: #ff5622e0;
-    background-color: rgba(255, 68, 0, 0.842);
+    background-color: rgba(255, 68, 0, 0.91);
     color: white;
     padding: 1rem 2rem;
     display: flex;
@@ -24,6 +23,7 @@
         background: rgba(255, 255, 255, 0.15);
         padding: 0.5rem 1rem;
         border-radius: 10px;
+        transition: all 0.3s ease-in-out; // Smooth transition for glow effect
       }
     }
   
@@ -32,7 +32,8 @@
       gap: 1rem;
     }
   
-    .checkout-btn, .clear-cart-btn {
+    .checkout-btn,
+    .clear-cart-btn {
       border: none;
       padding: 0.75rem 1.5rem;
       font-size: 1.1rem;
@@ -47,15 +48,32 @@
     .checkout-btn {
       background: white;
       color: #ff5722;
-  
     }
   
     // Clear Cart Button
     .clear-cart-btn {
       background: #292929b2;
       color: white;
-  
     }
+  }
+  
+  @keyframes strong-glow {
+    0% {
+      text-shadow: 0 0 5px rgba(255, 223, 186, 0.8), 0 0 10px rgba(255, 223, 186, 0.8);
+      box-shadow: 0 0 5px rgba(255, 223, 186, 0.8), 0 0 10px rgba(255, 223, 186, 0.8);
+    }
+    50% {
+      text-shadow: 0 0 20px rgba(255, 223, 186, 0.8), 0 0 40px rgba(255, 223, 186, 0.8);
+      box-shadow: 0 0 20px rgba(255, 223, 186, 0.8), 0 0 40px rgba(255, 223, 186, 0.8);
+    }
+    100% {
+      text-shadow: 0 0 5px rgba(255, 223, 186, 0.8), 0 0 10px rgba(255, 223, 186, 0.8);
+      box-shadow: 0 0 5px rgba(255, 223, 186, 0.8), 0 0 10px rgba(255, 223, 186, 0.8);
+    }
+  }
+  
+  .glow-span {
+    animation: strong-glow 1.5s ease-in-out;
   }
   
   // Responsive Design
@@ -73,10 +91,10 @@
         width: 100%;
       }
   
-      .checkout-btn, .clear-cart-btn {
+      .checkout-btn,
+      .clear-cart-btn {
         width: 100%;
         margin-bottom: 0.5rem;
       }
     }
   }
-  

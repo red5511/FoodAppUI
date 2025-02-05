@@ -1,5 +1,5 @@
 import { Component, Input } from '@angular/core';
-import { ProductDto, ProductPropertyDto } from '../../services/models';
+import { OrderProductDto, ProductDto, ProductPropertyDto } from '../../services/models';
 import { CartService } from '../../services/cart/cart-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -17,6 +17,8 @@ export class ProductCardComponent {
   selectedOptionalProperties: { [key: number]: { [key: number]: boolean } } =
     {};
   productForm!: FormGroup;
+  formSubmitted: boolean = false; // Custom property to track form submission
+  quantity: number = 1; // Default quantity
 
   constructor(private cartService: CartService, private fb: FormBuilder) {}
 
@@ -36,13 +38,18 @@ export class ProductCardComponent {
   initializeForm() {
     if (this.selectedProduct) {
       this.productForm = this.fb.group({});
-  
+
       this.selectedProduct.productPropertiesList?.forEach((property: any) => {
         if (property.required) {
           this.productForm.addControl(
             `property_${property.id}`,
-            this.fb.control('', Validators.required) // Add required validation for radio buttons
+            this.fb.control(null, Validators.required) // Use null instead of ''
           );
+        } else {
+          property.propertyList?.forEach((option: any) => {
+            const controlName = `optional_${property.id}_${option.id}`;
+            this.productForm.addControl(controlName, this.fb.control(false));
+          });
         }
       });
     }
@@ -55,25 +62,45 @@ export class ProductCardComponent {
   }
 
   startAddingToCart(product: ProductDto) {
-    if (product.productPropertiesList?.length === 0) {
-      this.cartService.addToCart(product);
-    } else {
+
       this.selectedProduct = product;
-      this.initializeOptionalProperties();
-      this.initializeForm();
+      this.initializeForm(); // Removed initializeOptionalProperties()
       this.isChoosePropertiesDialogVisible = true;
-    }
   }
 
   addToCart() {
-    console.log(this.productForm);
-    
+    this.formSubmitted = true; // Set to true when form is submitted
+    this.productForm.markAllAsTouched(); // Mark all controls as touched
+
     if (this.productForm.valid) {
       this.isChoosePropertiesDialogVisible = false;
-      this.cartService.addToCart(this.selectedProduct);
+      const orderProduct: OrderProductDto = {
+        price: this.selectedProduct.price! * this.quantity,
+        product: this.selectedProduct,
+        quantity: this.quantity
+      }
+      this.cartService.addToCart(orderProduct);
+      this.formSubmitted = false;
     } else {
       console.log('Form is invalid');
-      this.productForm.markAllAsTouched(); // Mark all controls as touched to show validation errors
     }
+  }
+
+  incrementQuantity() {
+    if (this.quantity < 10) {
+      this.quantity++;
+    }
+  }
+
+  decrementQuantity() {
+    if (this.quantity > 1) {
+      this.quantity--;
+    }
+  }
+
+  onHide(){
+    console.log('hide');
+    
+    this.quantity = 1
   }
 }
