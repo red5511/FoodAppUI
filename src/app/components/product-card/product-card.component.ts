@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { OrderProductDto, ProductDto, ProductPropertyDto } from '../../services/models';
+import {
+  OrderProductDto,
+  ProductDto,
+  ProductPropertiesDto,
+  ProductPropertyDto,
+} from '../../services/models';
 import { CartService } from '../../services/cart/cart-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 
@@ -62,10 +67,9 @@ export class ProductCardComponent {
   }
 
   startAddingToCart(product: ProductDto) {
-
-      this.selectedProduct = product;
-      this.initializeForm(); // Removed initializeOptionalProperties()
-      this.isChoosePropertiesDialogVisible = true;
+    this.selectedProduct = product;
+    this.initializeForm();
+    this.isChoosePropertiesDialogVisible = true;
   }
 
   addToCart() {
@@ -75,15 +79,84 @@ export class ProductCardComponent {
     if (this.productForm.valid) {
       this.isChoosePropertiesDialogVisible = false;
       const orderProduct: OrderProductDto = {
-        price: this.selectedProduct.price! * this.quantity,
+        id: Math.floor(Math.random() * 100000000000), // generuje fakowe id na potrzeby dzialania koszyka, backend je nadpisze
+        price: this.calculateTotalPrice(),
         product: this.selectedProduct,
-        quantity: this.quantity
-      }
+        quantity: this.quantity,
+        productPropertiesList: this.getSelectedProductProperties(),
+      };
+      console.log(orderProduct);
+
       this.cartService.addToCart(orderProduct);
       this.formSubmitted = false;
     } else {
       console.log('Form is invalid');
     }
+  }
+
+  calculateTotalPrice() {
+    let totalPrice = this.selectedProduct.price!;
+
+    // Iterate over selected properties (radio buttons)
+    this.selectedProduct.productPropertiesList?.forEach((property) => {
+      if (property.required) {
+        const selectedOptionId = this.productForm.get(
+          `property_${property.id}`
+        )?.value;
+        const selectedOption = property.propertyList!.find(
+          (option) => option.id === selectedOptionId
+        );
+        if (selectedOption) {
+          totalPrice += selectedOption.price!; // Add the price of the selected option
+        }
+      } else {
+        // Iterate over optional properties (checkboxes)
+        property.propertyList?.forEach((option) => {
+          const controlName = `optional_${property.id}_${option.id}`;
+          if (this.productForm.get(controlName)?.value) {
+            totalPrice += option.price!; // Add price if checkbox is checked
+          }
+        });
+      }
+    });
+
+    console.log('calculateTotalPrice');
+    console.log(totalPrice);
+    console.log(this.quantity);
+    console.log(totalPrice);
+
+    totalPrice *= this.quantity;
+
+    return totalPrice;
+  }
+
+  getSelectedProductProperties() {
+    let productPropertiesList: ProductPropertiesDto[] = [];
+
+    // Iterate over selected properties (radio buttons)
+    this.selectedProduct.productPropertiesList?.forEach((property) => {
+      if (property.required) {
+        const selectedOptionId = this.productForm.get(
+          `property_${property.id}`
+        )?.value;
+        const selectedOption = property.propertyList!.find(
+          (option) => option.id === selectedOptionId
+        );
+        if (selectedOption) {
+          productPropertiesList.push(selectedOption);
+        }
+      } else {
+        // Iterate over optional properties (checkboxes)
+        property.propertyList?.forEach((option) => {
+          const controlName = `optional_${property.id}_${option.id}`;
+          if (this.productForm.get(controlName)?.value) {
+            productPropertiesList.push(option);
+          }
+        });
+      }
+    });
+
+    return productPropertiesList;
   }
 
   incrementQuantity() {
@@ -98,9 +171,9 @@ export class ProductCardComponent {
     }
   }
 
-  onHide(){
+  onHide() {
     console.log('hide');
-    
-    this.quantity = 1
+
+    this.quantity = 1;
   }
 }

@@ -1633,7 +1633,11 @@
           "order": { "$ref": "#/components/schemas/OrderDto" },
           "product": { "$ref": "#/components/schemas/ProductDto" },
           "quantity": { "type": "integer", "format": "int32" },
-          "price": { "type": "number" }
+          "price": { "type": "number" },
+          "productPropertiesList": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
+          }
         }
       },
       "RejectNewIncomingOrderRequest": {

@@ -102,6 +102,8 @@ import { CommonModule } from '@angular/common';
 import { AddNewCategoryComponent } from './components/add-new-category/add-new-category.component';
 import { CartFooterComponent } from './components/cart-footer/cart-footer.component';
 import { RadioButtonModule } from 'primeng/radiobutton';
+import { DataViewModule } from 'primeng/dataview';
+import { CartFinalSummaryComponent } from './components/cart-final-summary/cart-final-summary.component';
 
 
 @NgModule({
@@ -153,6 +155,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     MenuCategoryComponent,
     AddNewCategoryComponent,
     CartFooterComponent,
+    CartFinalSummaryComponent,
   ],
   imports: [
     RouterModule,
@@ -171,6 +174,7 @@ import { RadioButtonModule } from 'primeng/radiobutton';
     TabViewModule,
     FloatLabelModule,
     InputNumberModule,
+    DataViewModule,
     RippleModule,
     CommonModule,
     DropdownModule,
