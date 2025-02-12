@@ -1,0 +1,75 @@
+import { Component, Input } from '@angular/core';
+import { CartSummaryModel, WHAT_TO_DO_CODES } from '../../common/commonModels';
+
+interface OrderProcessOption {
+  name: string;
+  active: boolean;
+  code: WHAT_TO_DO_CODES;
+}
+
+@Component({
+  selector: 'app-cart-final-summary-second-panel',
+  templateUrl: './cart-final-summary-second-panel.component.html',
+  styleUrl: './cart-final-summary-second-panel.component.scss',
+})
+export class CartFinalSummarySecondPanelComponent {
+  @Input()
+  cartSummaryModel!: CartSummaryModel;
+  paymentMethod!: string;
+  isTakeaway: string = 'Nie';
+  executionTime: string = 'Tak szybko jak to możliwe';
+  setTimeDialogvisible: boolean = false;
+  items: OrderProcessOption[] = [
+    {
+      name: 'Wydruk bonowy',
+      code: 'BON_PRINT',
+      active: false,
+    },
+    {
+      name: 'Nabij na kase fiskalną',
+      code: 'KASA_FISKALNA',
+      active: false,
+    },
+    {
+      name: 'Oznacz zamówienie jako zakończone',
+      code: 'MARK_ORDER_AS_EXECUTED',
+      active: false,
+    },
+  ];
+
+  onSelectItem(item: OrderProcessOption): void {
+    // Toggle the active state
+    item.active = !item.active;
+
+    // Ensure whatToDoCodes is initialized
+    if (!this.cartSummaryModel.whatToDoCodes) {
+      this.cartSummaryModel.whatToDoCodes = [];
+    }
+
+    if (item.active) {
+      // Add the code if it isn't already in the list
+      if (
+        !this.cartSummaryModel.whatToDoCodes.includes(item.code as WHAT_TO_DO_CODES)
+      ) {
+        this.cartSummaryModel.whatToDoCodes.push(item.code as WHAT_TO_DO_CODES);
+      }
+    } else {
+      // Remove the code by filtering it out
+      this.cartSummaryModel.whatToDoCodes = this.cartSummaryModel.whatToDoCodes.filter(
+        (code) => code !== item.code
+      );
+    }
+  }
+
+  onExecutionTimeButtonClick() {
+    this.setTimeDialogvisible = true;
+  }
+
+  selectedTimeChange(date: Date) {
+    this.executionTime = date.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+    });
+    this.cartSummaryModel.executionDateTime = date;
+  }
+}

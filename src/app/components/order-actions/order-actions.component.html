@@ -22,14 +22,14 @@
 ></button>
 
 <button
-  *ngIf="showSetDeliveryTime"
+  *ngIf="showSetExecutionTime"
   pButton
   type="button"
   [raised]="true"
-  [label]="deliveryTimeButtonText"
+  [label]="executionTimeButtonText"
   severity="info"
   icon="pi pi-calendar-clock"
-  (click)="setDeliveryTime()"
+  (click)="setExecutionTime()"
   [disabled]="approvalTimeLeft"
 ></button>
 

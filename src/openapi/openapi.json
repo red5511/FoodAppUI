@@ -332,10 +332,18 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
-    "/api/v1/order/save": {
+    "/api/v1/order/save/{companyId}": {
       "post": {
         "tags": ["Order"],
         "operationId": "saveOrder",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
         "requestBody": {
           "content": {
             "application/json": {
@@ -1214,6 +1222,10 @@
           "price": { "type": "number" },
           "imgUrl": { "type": "string" },
           "description": { "type": "string" },
+          "productStatus": {
+            "type": "string",
+            "enum": ["ACTIVE", "DELETED", "MODIFIED"]
+          },
           "soldOut": { "type": "boolean" },
           "productCategory": {
             "$ref": "#/components/schemas/ProductCategoryDto"
@@ -1615,15 +1627,16 @@
           },
           "deliveryAddress": { "type": "string" },
           "customerName": { "type": "string" },
-          "deliveryTime": { "type": "string", "format": "date-time" },
+          "executionTime": { "type": "string", "format": "date-time" },
           "createdDate": { "type": "string", "format": "date-time" },
           "orderProducts": {
-            "uniqueItems": true,
             "type": "array",
             "items": { "$ref": "#/components/schemas/OrderProductDto" }
           },
           "approvalDeadline": { "type": "string", "format": "date-time" },
-          "actions": { "$ref": "#/components/schemas/OrderActions" }
+          "actions": { "$ref": "#/components/schemas/OrderActions" },
+          "paymentMethod": { "type": "string", "enum": ["CASH", "CARD"] },
+          "takeaway": { "type": "boolean" }
         }
       },
       "OrderProductDto": {

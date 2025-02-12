@@ -27,15 +27,20 @@
 <p-dialog
   [(visible)]="isChoosePropertiesDialogVisible"
   [header]="'Podaj szczegóły'"
-  [closable]="true"
   [modal]="true"
+  closable="true"
+  draggable="false"
   [dismissableMask]="true"
   (onHide)="onHide()"
   [style]="{ width: '500px' }"
 >
-  <form *ngIf="isChoosePropertiesDialogVisible" [formGroup]="productForm" (ngSubmit)="addToCart()">
+  <form
+    *ngIf="isChoosePropertiesDialogVisible"
+    [formGroup]="productForm"
+    (ngSubmit)="addToCart()"
+  >
     <div *ngFor="let property of selectedProduct?.productPropertiesList">
-      <p>{{ property.name }}</p>
+      <p-divider></p-divider>
       <small
         *ngIf="
           (productForm.get('property_' + property.id)?.dirty ||
@@ -46,6 +51,7 @@
       >
         Ta sekcja jest wymagana!
       </small>
+      <p style="font-weight: bold">{{ property.name }}</p>
       <div *ngIf="property.required; else optionalTemplate">
         <!-- Radio buttons for required properties -->
         <div *ngFor="let option of property.propertyList" class="option">
@@ -74,6 +80,7 @@
         </div>
       </ng-template>
     </div>
+    <p-divider></p-divider>
 
     <div class="dialog-footer">
       <div>

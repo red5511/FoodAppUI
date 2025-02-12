@@ -1,0 +1,55 @@
+<p-dataView [value]="cartSummaryModel.orderProducts" layout="list">
+  <ng-template let-cartItems pTemplate="list">
+    <div
+      class="col-12"
+      *ngFor="let item of cartItems; trackBy: trackById"
+      [@itemAnim]
+    >
+      <div class="cart-item">
+        <div class="product-info">
+          <div class="quantity-selector">
+            <p-inputNumber
+              id="quantity"
+              [(ngModel)]="item.quantity"
+              [min]="0"
+              [max]="99"
+              (onInput)="onQuantityChange(item)"
+              mode="decimal"
+              showButtons
+              buttonLayout="horizontal"
+              incrementButtonIcon="pi pi-plus"
+              decrementButtonIcon="pi pi-minus"
+            ></p-inputNumber>
+          </div>
+          <img
+            *ngIf="item.product?.imgUrl"
+            [src]="item.product.imgUrl"
+            [alt]="item.product?.name"
+            class="big-product-image"
+          />
+          <div class="product-info-strings">
+            <div class="big-product-name" *ngIf="item.product?.name">
+              {{ item.product.name }}
+            </div>
+            <!-- Apply Angular animation trigger to the price element -->
+            <p>
+              {{ item.price | pricePln }}
+            </p>
+            <div class="options-container">
+              <div
+                class="property-item"
+                *ngFor="let prop of item.productPropertiesList"
+              >
+                {{ prop.name }}
+                <span *ngIf="prop.price">(+{{ prop.price | pricePln }})</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+  <ng-template pTemplate="empty">
+    <p>Koszyk jest pusty</p>
+  </ng-template>
+</p-dataView>

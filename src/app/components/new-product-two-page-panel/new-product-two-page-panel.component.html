@@ -13,12 +13,12 @@
       style="font-size: 1.5rem; cursor: pointer; margin-left: 2rem"
       (click)="currentStep = 1"
     ></i>
-    <div class="header-custom">
+    <div>
       <span class="title"><h4>Stwórz nowy produkt</h4></span>
     </div>
   </ng-template>
   <ng-template pTemplate="content">
-    <div #contentContainer class="content-container">
+    <div class="content-container">
       <div *ngIf="currentStep === 1" class="add-new-product-panels">
         <div
           class="form-step"

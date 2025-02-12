@@ -28,7 +28,7 @@ export class OrderActionsComponent {
   @Input({ required: true })
   showApprove!: boolean;
   @Input({ required: true })
-  showSetDeliveryTime!: boolean;
+  showSetExecutionTime!: boolean;
   @Input({ required: true })
   showPrint!: boolean;
   @Input({ required: true })
@@ -39,7 +39,7 @@ export class OrderActionsComponent {
   approvalTimeLeft!: boolean;
   time: Date[] | undefined;
   setTimeDialogvisible: boolean = false;
-  deliveryTimeButtonText = 'Czas odbioru';
+  executionTimeButtonText = 'Czas odbioru';
   deliveryDatePickedByUser: Date | undefined;
   approveButtonText: string = 'Akceptuj';
   private intervalSubscriptionInMinutes: Subscription | undefined;
@@ -64,8 +64,8 @@ export class OrderActionsComponent {
       }
       this.updateButtonTextInMinutes();
     }
-    if (this.order.deliveryTime !== undefined) {
-      this.deliveryDatePickedByUser = new Date(this.order.deliveryTime);
+    if (this.order.executionTime !== undefined) {
+      this.deliveryDatePickedByUser = new Date(this.order.executionTime);
     }
   }
 
@@ -170,14 +170,13 @@ export class OrderActionsComponent {
   }
 
   onTimeSelected(time: Date) {
-    this.deliveryTimeButtonText = time.toLocaleTimeString([], {
+    this.executionTimeButtonText = time.toLocaleTimeString([], {
       hour: '2-digit',
       minute: '2-digit',
     });
-    console.log('Selected delivery time:', time);
   }
 
-  setDeliveryTime() {
+  setExecutionTime() {
     console.log(this.setTimeDialogvisible);
     this.setTimeDialogvisible = true;
   }

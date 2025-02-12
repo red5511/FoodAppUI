@@ -29,7 +29,7 @@ export class OrderService extends BaseService {
   }
 
   /** Path part for operation `saveOrder()` */
-  static readonly SaveOrderPath = '/api/v1/order/save';
+  static readonly SaveOrderPath = '/api/v1/order/save/{companyId}';
 
   /**
    * This method provides access to the full `HttpResponse`, allowing access to response headers.

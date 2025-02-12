@@ -3,9 +3,20 @@
   (onHide)="closeDialog()"
   header=""
   [modal]="true"
-  [style]="{ width: '30rem', height:  userDeliveryIsBiggerThat1Hour ? '670px' : '600'}"
+  closable="true"
+  draggable="false"
+  [dismissableMask]="true"
+  [style]="{
+    width: '30rem',
+    height: userDeliveryIsBiggerThat1Hour ? '670px' : '600px'
+  }"
 >
-  <p-messages *ngIf="userDeliveryIsBiggerThat1Hour" [(value)]="messages" [enableService]="false" [closable]="false" />
+  <p-messages
+    *ngIf="userDeliveryIsBiggerThat1Hour"
+    [(value)]="messages"
+    [enableService]="false"
+    [closable]="false"
+  />
 
   <div class="container">
     <h5>Wybierz czas</h5>

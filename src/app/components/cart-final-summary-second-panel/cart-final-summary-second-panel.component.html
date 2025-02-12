@@ -1,0 +1,89 @@
+<!-- <p-card class="custom-card"> -->
+<h6 style="margin-top: 2rem; margin-bottom: 2rem">Co robimy?</h6>
+<p-dataView [value]="items" layout="list">
+  <ng-template let-items pTemplate="list">
+    <div class="col-12" *ngFor="let item of items">
+      <div
+        [ngClass]="{ active: item.active }"
+        pRipple
+        (click)="onSelectItem(item)"
+        class="item"
+      >
+        {{ item.name }}
+        <div *ngIf="!item.active" class="plus-icon">
+          <i class="pi pi-plus"></i>
+        </div>
+        <div
+          [ngClass]="{ active: item.active }"
+          *ngIf="item.active"
+          class="plus-icon"
+        >
+          <i class="pi pi-check"></i>
+        </div>
+      </div>
+    </div>
+  </ng-template>
+</p-dataView>
+<!-- </p-card> -->
+
+<p-divider />
+<!-- <p-card class="custom-card"> -->
+<h6 style="margin-top: 2rem">Forma płatności</h6>
+<div class="payment-method-radio-buttons">
+  <p-radioButton
+    name="cash"
+    value="Gotówka"
+    [(ngModel)]="cartSummaryModel.paymentMethod"
+    inputId="paymentMethod1"
+  />
+  <label style="margin-right: 2rem" for="paymentMethod1" class="ml-2">
+    Gotówka
+  </label>
+  <p-radioButton
+    name="card"
+    value="Karta"
+    [(ngModel)]="cartSummaryModel.paymentMethod"
+    inputId="paymentMethod2"
+  />
+  <label for="paymentMethod2" class="ml-2"> Karta </label>
+</div>
+<!-- </p-card> -->
+<p-divider />
+<!-- <p-card class="custom-card"> -->
+<h6 style="margin-top: 2rem">Na wynos?</h6>
+<div class="takeaway-radio-buttons">
+  <p-radioButton
+    name="yes"
+    value="Tak"
+    [(ngModel)]="cartSummaryModel.isTakeaway"
+    inputId="takeaway1"
+  />
+  <label style="margin-right: 2rem" for="takeaway1" class="ml-2"> Tak </label>
+  <p-radioButton
+    name="no"
+    value="Nie"
+    [(ngModel)]="cartSummaryModel.isTakeaway"
+    inputId="takeaway2"
+  />
+  <label for="takeaway2" class="ml-2"> Nie </label>
+</div>
+<!-- </p-card> -->
+<p-divider />
+
+<h6 style="margin-top: 2rem">Godzina realizacji</h6>
+<div class="execution-time-section">
+  <span style="margin-right: 2rem; font-weight: bold; font-size: 1.2rem">{{ executionTime }}</span>
+  <p-button
+    [severity]="'success'"
+    class="custom-text-button"
+    label="Zmień godzinę realizacji"
+    [text]="true"
+    (onClick)="onExecutionTimeButtonClick()"
+  ></p-button>
+</div>
+
+<app-delivey-time-dialog
+  [(setTimeDialogvisible)]="setTimeDialogvisible"
+  [userDeliveryIsBiggerThat1Hour]="false"
+  (selectedTimeChange)="selectedTimeChange($event)"
+></app-delivey-time-dialog>

@@ -11,5 +11,6 @@ export interface ProductDto {
   price?: number;
   productCategory?: ProductCategoryDto;
   productPropertiesList?: Array<ProductPropertiesDto>;
+  productStatus?: 'ACTIVE' | 'DELETED' | 'MODIFIED';
   soldOut?: boolean;
 }

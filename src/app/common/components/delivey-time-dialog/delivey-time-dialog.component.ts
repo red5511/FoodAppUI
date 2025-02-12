@@ -9,7 +9,7 @@ import { Message } from 'primeng/api';
 export class DeliveyTimeDialogComponent {
   @Input({ required: true })
   setTimeDialogvisible!: boolean;
-  @Input({ required: true })
+  @Input()
   deliveryDatePickedByUser: Date | undefined;
   @Input({ required: true })
   userDeliveryIsBiggerThat1Hour!: boolean;

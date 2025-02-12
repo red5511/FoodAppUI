@@ -104,6 +104,8 @@ import { CartFooterComponent } from './components/cart-footer/cart-footer.compon
 import { RadioButtonModule } from 'primeng/radiobutton';
 import { DataViewModule } from 'primeng/dataview';
 import { CartFinalSummaryComponent } from './components/cart-final-summary/cart-final-summary.component';
+import { CartFinalSummaryFirstPanelComponent } from './components/cart-final-summary-first-panel/cart-final-summary-first-panel.component';
+import { CartFinalSummarySecondPanelComponent } from './components/cart-final-summary-second-panel/cart-final-summary-second-panel.component';
 
 
 @NgModule({
@@ -156,6 +158,8 @@ import { CartFinalSummaryComponent } from './components/cart-final-summary/cart-
     AddNewCategoryComponent,
     CartFooterComponent,
     CartFinalSummaryComponent,
+    CartFinalSummaryFirstPanelComponent,
+    CartFinalSummarySecondPanelComponent,
   ],
   imports: [
     RouterModule,

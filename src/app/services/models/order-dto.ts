@@ -11,11 +11,13 @@ export interface OrderDto {
   customerName?: string;
   deliveryAddress?: string;
   deliveryCode?: string;
-  deliveryTime?: string;
   description?: string;
+  executionTime?: string;
   id?: number;
   orderProducts?: Array<OrderProductDto>;
   orderType?: 'GLOVO' | 'PYSZNE_PL';
+  paymentMethod?: 'CASH' | 'CARD';
   price?: number;
   status?: 'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED' | 'READY_FOR_PICK_UP' | 'NOT_ACCEPTED';
+  takeaway?: boolean;
 }

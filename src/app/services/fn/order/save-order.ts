@@ -9,12 +9,14 @@ import { RequestBuilder } from '../../request-builder';
 import { CreateOrderRequest } from '../../models/create-order-request';
 
 export interface SaveOrder$Params {
+  companyId: number;
       body: CreateOrderRequest
 }
 
 export function saveOrder(http: HttpClient, rootUrl: string, params: SaveOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
   const rb = new RequestBuilder(rootUrl, saveOrder.PATH, 'post');
   if (params) {
+    rb.path('companyId', params.companyId, {});
     rb.body(params.body, 'application/json');
   }
 
@@ -28,4 +30,4 @@ export function saveOrder(http: HttpClient, rootUrl: string, params: SaveOrder$P
   );
 }
 
-saveOrder.PATH = '/api/v1/order/save';
+saveOrder.PATH = '/api/v1/order/save/{companyId}';
