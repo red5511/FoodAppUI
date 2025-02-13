@@ -17,6 +17,7 @@ import { debounceTime, Subject, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
 import { ProductService } from '../../services/services';
 import { ToastrService } from 'ngx-toastr';
+import { ImageService } from '../../services/images/Image-service';
 
 @Component({
   selector: 'app-menu',
@@ -46,7 +47,8 @@ export class MenuComponent {
   constructor(
     private productService: ProductService,
     private contextService: ContextService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    public imageService: ImageService
   ) {
     this.setDefoultSorts();
   }

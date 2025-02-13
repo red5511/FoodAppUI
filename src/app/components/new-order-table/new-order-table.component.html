@@ -50,8 +50,8 @@
         <br />
         <div>
           <img
-            *ngIf="imageService.getProductImageUrl(order.orderType)"
-            [src]="imageService.getProductImageUrl(order.orderType)"
+            *ngIf="orderUtils.getImage(order.orderType)"
+            [src]="orderUtils.getImage(order.orderType)"
             style="
               border-radius: 15px;
               width: 28px;
@@ -119,10 +119,10 @@
               <tr class="custom-tr">
                 <td style="padding: 5px 11px">
                   <img
-                    *ngIf="orderProduct.product.imgUrl"
-                    class="small-product"
-                    [src]="orderProduct.product.imgUrl"
-                  />
+                  *ngIf="imageService.getProductImageUrl(orderProduct.product.imgUrl)"
+                  [src]="imageService.getProductImageUrl(orderProduct.product.imgUrl)"
+                  class="small-product"
+                />
                 </td>
                 <td>{{ orderProduct.product.name }}</td>
                 <td>{{ orderProduct.price | pricePln }}</td>
