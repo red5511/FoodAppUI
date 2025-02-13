@@ -5,7 +5,14 @@ import { CompanyDto } from '../models';
 
 export interface Context {
   selectedCompany: CompanyDto;
-  permittedModules: Array<'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | string>;
+  permittedModules: Array<
+    | 'ONLINE_ORDERS'
+    | 'STATISTICS'
+    | 'ORDERS'
+    | 'RESTAURANT_ORDERS'
+    | 'ADMIN_PANEL'
+    | string
+  >;
   userId: number;
   companies: CompanyDto[];
   receivingCompanies: CompanyDto[];
@@ -64,6 +71,10 @@ export class ContextService {
 
   getCompanyId(): number | undefined {
     return this.contextSubject.getValue()?.selectedCompany.id;
+  }
+
+  getDefaultProductImgUrl(): string | undefined {
+    return this.contextSubject.getValue()?.selectedCompany.defaultProductImgUrl;
   }
 
   getContext(): Context | null {

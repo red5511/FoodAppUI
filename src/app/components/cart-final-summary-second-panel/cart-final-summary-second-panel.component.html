@@ -72,7 +72,9 @@
 
 <h6 style="margin-top: 2rem">Godzina realizacji</h6>
 <div class="execution-time-section">
-  <span style="margin-right: 2rem; font-weight: bold; font-size: 1.2rem">{{ executionTime }}</span>
+  <span style="margin-right: 2rem; font-weight: bold; font-size: 1.2rem">{{
+    cartSummaryModel.executionDateTime?.toISOString() | formattedOnlyTime
+  }}</span>
   <p-button
     [severity]="'success'"
     class="custom-text-button"
@@ -81,6 +83,15 @@
     (onClick)="onExecutionTimeButtonClick()"
   ></p-button>
 </div>
+<h6 style="margin-top: 2rem; margin-bottom: 2rem">Notatka do zamówienia</h6>
+<textarea
+  [(ngModel)]="cartSummaryModel.desctiption"
+  class="custom-textarea"
+  id="float-input"
+  rows="6"
+  pInputTextarea
+  [maxLength]="510"
+></textarea>
 
 <app-delivey-time-dialog
   [(setTimeDialogvisible)]="setTimeDialogvisible"

@@ -7,6 +7,7 @@ import {
 } from '../../services/models';
 import { CartService } from '../../services/cart/cart-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ImageService } from '../../services/images/Image-service';
 
 @Component({
   selector: 'app-product-card',
@@ -25,7 +26,11 @@ export class ProductCardComponent {
   formSubmitted: boolean = false; // Custom property to track form submission
   quantity: number = 1; // Default quantity
 
-  constructor(private cartService: CartService, private fb: FormBuilder) {}
+  constructor(
+    private cartService: CartService,
+    private fb: FormBuilder,
+    public  imageService: ImageService
+  ) {}
 
   initializeOptionalProperties() {
     if (this.selectedProduct?.productPropertiesList) {
@@ -172,8 +177,6 @@ export class ProductCardComponent {
   }
 
   onHide() {
-    console.log('hide');
-
     this.quantity = 1;
   }
 }

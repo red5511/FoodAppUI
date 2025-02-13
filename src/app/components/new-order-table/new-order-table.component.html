@@ -16,9 +16,12 @@
         <div>Kwota</div>
         <div>Status</div>
       </th>
+      <th>
+        <div>Na wynos</div>
+      </th>
       <th [style.width]="isHolding ? '15%' : '20%'">
         <div class="table-header-content">Odbiór za</div>
-        <div class="table-header-content">Dostawa</div>
+        <div class="table-header-content">Realizacja</div>
       </th>
       <th>
         <div class="table-header-content">Kod odbioru</div>
@@ -47,21 +50,42 @@
         <br />
         <div>
           <img
-            style="border-radius: 15px"
-            [src]="'images/' + order.orderType + '.png'"
+            *ngIf="imageService.getProductImageUrl(order.orderType)"
+            [src]="imageService.getProductImageUrl(order.orderType)"
+            style="
+              border-radius: 15px;
+              width: 28px;
+              height: 28px;
+              object-fit: cover;
+            "
           />
         </div>
       </td>
       <td class="custom-td">
-        <div>{{ order.price | pricePln }}</div>
+        <div>
+          {{ order.price | pricePln }}
+          <i
+            *ngIf="orderUtils.isCashPayment(order.paymentMethod)"
+            class="pi pi-money-bill"
+            style="color: rgb(0, 95, 0); font-size: 1rem"
+          ></i>
+          <i
+            *ngIf="orderUtils.isCardPayment(order.paymentMethod)"
+            class="pi pi-credit-card"
+            style="font-size: 1rem"
+          ></i>
+        </div>
         <p-tag
           [value]="translations[order.status]"
-          [severity]="getStatusSeverity(order.status)"
+          [severity]="orderUtils.getStatusSeverity(order.status)"
         />
       </td>
       <td class="custom-td">
-        <div>{{ calcTimeDifference(order.deliveryTime) | minuteFormat }}</div>
-        <div>{{ order.deliveryTime | formattedOnlyTime }}</div>
+        <div>{{ order.isTakeaway ? "Tak" : "Nie" }}</div>
+      </td>
+      <td class="custom-td">
+        <div>{{ calcTimeDifference(order.executionTime) | minuteFormat }}</div>
+        <div>{{ order.executionTime | formattedDateTime }}</div>
         <!-- <div>{{ order.deliveryTime | formattedDateTime }}</div> -->
         <!-- <div>{{ order.approvalDeadline | formattedDateTime }}</div> -->
       </td>
@@ -78,7 +102,9 @@
     <tr class="expanded-row">
       <td colspan="7">
         <div class="p-3">
-          <p><b>Opis do zamówienia: </b>{{ order.description ?? "" }}</p>
+          <p class="wrap-text">
+            <b>Opis do zamówienia: </b>{{ order.description ?? "" }}
+          </p>
           <p-table [value]="order.orderProducts" dataKey="id">
             <ng-template pTemplate="header">
               <tr>
@@ -86,19 +112,22 @@
                 <th>Nazwa</th>
                 <th>Kwota</th>
                 <th>Ilość</th>
+                <th style="max-width: 50%">Opcje</th>
               </tr>
             </ng-template>
             <ng-template pTemplate="body" let-orderProduct>
               <tr class="custom-tr">
                 <td style="padding: 5px 11px">
                   <img
-                    style="border-radius: 15px"
+                    *ngIf="orderProduct.product.imgUrl"
+                    class="small-product"
                     [src]="orderProduct.product.imgUrl"
                   />
                 </td>
                 <td>{{ orderProduct.product.name }}</td>
                 <td>{{ orderProduct.price | pricePln }}</td>
                 <td>{{ orderProduct.quantity }}</td>
+                <td>{{ orderUtils.getProductPropertiesNames(orderProduct.productPropertiesList) }}</td>
                 <!-- Accessing quantity from the map -->
               </tr>
             </ng-template>

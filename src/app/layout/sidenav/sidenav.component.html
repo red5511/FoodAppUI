@@ -7,16 +7,6 @@
   }"
 >
   <ul>
-    <li *ngIf="hasPermissionToModule('ONLINE_ORDERS')">
-      <a
-        [routerLink]="!isSideNavCollapsed ? '/dashboard2' : null"
-        routerLinkActive="active"
-        (click)="openCollapsedSideNavToggle()"
-      >
-        <span class="menu-icon pi pi-play-circle"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Zamówienia online</span>
-      </a>
-    </li>
     <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS')">
       <a
         [routerLink]="!isSideNavCollapsed ? '/restaurant-order' : null"
@@ -24,7 +14,17 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-building-columns"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Zamówienia na miejscu</span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text">Nowe zamówienie</span>
+      </a>
+    </li>
+    <li *ngIf="hasPermissionToModule('ONLINE_ORDERS')">
+      <a
+        [routerLink]="!isSideNavCollapsed ? '/dashboard2' : null"
+        routerLinkActive="active"
+        (click)="openCollapsedSideNavToggle()"
+      >
+        <span class="menu-icon pi pi-play-circle"></span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text">Obsługa zamówień</span>
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('MENU_PANEL') && !isHolding">

@@ -97,3 +97,10 @@
     display: flex;
     justify-content: space-between;
   }
+
+  .small-product {
+    border-radius: 15px;
+    width: 3.5rem;
+    height: 3.5rem;
+    object-fit: cover;
+  }

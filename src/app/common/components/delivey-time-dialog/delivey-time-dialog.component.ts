@@ -19,6 +19,8 @@ export class DeliveyTimeDialogComponent {
   selectedTimeChange = new EventEmitter<Date>();
   selectedTime: Date | undefined;
   messages: Message[] = [];
+  selectedDateTime24h: Date | undefined;
+  timeButtonLabel: string = 'Zatwierdź';
 
   predefinedTimes = [
     { label: '10 min', value: 10 },
@@ -29,6 +31,7 @@ export class DeliveyTimeDialogComponent {
     { label: '1.5 h', value: 90 },
     { label: '2 h', value: 120 },
     { label: '2.5 h', value: 150 },
+    { label: '5 h', value: 300 },
   ];
 
   ngOnInit(): void {
@@ -56,12 +59,38 @@ export class DeliveyTimeDialogComponent {
   approveSelectedCalendarTime() {
     if (this.selectedTime !== undefined) {
       this.selectedTimeChange.emit(this.selectedTime);
-      this.closeDialog();
+    } else if (this.selectedDateTime24h !== undefined) {
+      this.selectedTimeChange.emit(this.selectedDateTime24h);
     }
+    this.closeDialog();
+  }
+
+  onSelectTime() {
+    this.selectedDateTime24h = undefined;
+    this.timeButtonLabel =
+      'Zatwierdź - ' +
+      this.selectedTime?.toLocaleTimeString('pl-PL', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
+  }
+
+  onSelectDateTime24() {
+    this.selectedTime = undefined;
+    this.timeButtonLabel =
+      'Zatwierdź - ' +
+      this.selectedDateTime24h?.toLocaleTimeString('pl-PL', {
+        hour: '2-digit',
+        minute: '2-digit',
+        hour12: false,
+      });
   }
 
   closeDialog() {
     this.setTimeDialogvisible = false;
+    this.selectedTime = undefined;
+    this.selectedDateTime24h = undefined;
     this.setTimeDialogvisibleChange.emit(this.setTimeDialogvisible);
   }
 }

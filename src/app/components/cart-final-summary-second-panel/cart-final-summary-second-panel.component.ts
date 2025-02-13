@@ -15,9 +15,6 @@ interface OrderProcessOption {
 export class CartFinalSummarySecondPanelComponent {
   @Input()
   cartSummaryModel!: CartSummaryModel;
-  paymentMethod!: string;
-  isTakeaway: string = 'Nie';
-  executionTime: string = 'Tak szybko jak to możliwe';
   setTimeDialogvisible: boolean = false;
   items: OrderProcessOption[] = [
     {
@@ -37,6 +34,10 @@ export class CartFinalSummarySecondPanelComponent {
     },
   ];
 
+  ngOnInit(): void {
+    this.cartSummaryModel.executionDateTime = new Date();
+  }
+
   onSelectItem(item: OrderProcessOption): void {
     // Toggle the active state
     item.active = !item.active;
@@ -49,15 +50,18 @@ export class CartFinalSummarySecondPanelComponent {
     if (item.active) {
       // Add the code if it isn't already in the list
       if (
-        !this.cartSummaryModel.whatToDoCodes.includes(item.code as WHAT_TO_DO_CODES)
+        !this.cartSummaryModel.whatToDoCodes.includes(
+          item.code as WHAT_TO_DO_CODES
+        )
       ) {
         this.cartSummaryModel.whatToDoCodes.push(item.code as WHAT_TO_DO_CODES);
       }
     } else {
       // Remove the code by filtering it out
-      this.cartSummaryModel.whatToDoCodes = this.cartSummaryModel.whatToDoCodes.filter(
-        (code) => code !== item.code
-      );
+      this.cartSummaryModel.whatToDoCodes =
+        this.cartSummaryModel.whatToDoCodes.filter(
+          (code) => code !== item.code
+        );
     }
   }
 
@@ -66,10 +70,10 @@ export class CartFinalSummarySecondPanelComponent {
   }
 
   selectedTimeChange(date: Date) {
-    this.executionTime = date.toLocaleTimeString([], {
-      hour: '2-digit',
-      minute: '2-digit',
-    });
+    // this.executionTime = date.toLocaleTimeString([], {
+    //   hour: '2-digit',
+    //   minute: '2-digit',
+    // });
     this.cartSummaryModel.executionDateTime = date;
   }
 }

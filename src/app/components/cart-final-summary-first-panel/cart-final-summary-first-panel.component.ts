@@ -11,6 +11,7 @@ import {
   animate,
 } from '@angular/animations';
 import { CartSummaryModel } from '../../common/commonModels';
+import { ImageService } from '../../services/images/Image-service';
 
 @Component({
   selector: 'app-cart-final-summary-first-panel',
@@ -45,7 +46,10 @@ export class CartFinalSummaryFirstPanelComponent {
 
   private destroy$ = new Subject<void>();
 
-  constructor(private cartService: CartService) {}
+  constructor(
+    private cartService: CartService,
+    public imageService: ImageService
+  ) {}
 
   ngOnInit(): void {
     this.cartService.cartUpdated

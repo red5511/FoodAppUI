@@ -64,12 +64,12 @@ export class Dashboard2Component {
   }
 
   getActiveOrdersForCompany(companyId: number) {
-    const direction =
-      this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE' ? 'ASC' : 'DESC';
+    const direction = 'ASC'
+      // this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE' ? 'ASC' : 'DESC';
     const field =
       this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE'
         ? 'createdDate'
-        : 'deliveryTime';
+        : 'executionTime';
     const sort: Sort = {
       direction,
       field,

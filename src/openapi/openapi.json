@@ -1303,6 +1303,7 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/UserDto" }
           },
+          "defaultProductImgUrl": { "type": "string" },
           "holding": { "type": "boolean" }
         }
       },
@@ -1612,7 +1613,7 @@
           "deliveryCode": { "type": "string" },
           "companyName": { "type": "string" },
           "price": { "type": "number" },
-          "description": { "type": "string" },
+          "description": { "maxLength": 510, "minLength": 0, "type": "string" },
           "orderType": { "type": "string", "enum": ["GLOVO", "PYSZNE_PL"] },
           "status": {
             "type": "string",

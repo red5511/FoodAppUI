@@ -6,12 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormattedOnlyTimePipe implements PipeTransform {
   transform(value: string | undefined): string {
     if (!value) {
-      return 'Invalid date'; // Handle undefined or empty string
+      return 'Błędna data'; // Handle undefined or empty string
     }
 
     const date = new Date(value);
     if (isNaN(date.getTime())) {
-      return 'Invalid date'; // Handle invalid date string
+      return 'Błędna data'; // Handle Błędna data string
     }
 
     // Format the date to "DD.MM.YYYY"
@@ -25,6 +25,6 @@ export class FormattedOnlyTimePipe implements PipeTransform {
     const seconds = String(date.getSeconds()).padStart(2, '0');
 
     // Combine date and time
-    return `${hours}:${minutes}:${seconds}`;
+    return `${hours}:${minutes}`;
   }
 }

@@ -22,8 +22,8 @@
             ></p-inputNumber>
           </div>
           <img
-            *ngIf="item.product?.imgUrl"
-            [src]="item.product.imgUrl"
+            *ngIf="imageService.getProductImageUrl(item.product.imgUrl)"
+            [src]="imageService.getProductImageUrl(item.product.imgUrl)"
             [alt]="item.product?.name"
             class="big-product-image"
           />

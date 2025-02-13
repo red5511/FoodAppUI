@@ -14,6 +14,8 @@ import { CreateOrderRequest, OrderDto } from '../../services/models';
 import { ToastrService } from 'ngx-toastr';
 import { CartSummaryModel } from '../../common/commonModels';
 import { ContextService } from '../../services/context/context.service';
+import { DatePipe } from '@angular/common';
+import { toNormalLocalDateTime } from '../../common/dateUtils';
 
 @Component({
   selector: 'app-cart-final-summary',
@@ -38,7 +40,11 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   @Input({ required: true }) isSummaryPanelVisible!: boolean;
   @Output() onSummaryPanelVisibleChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  cartSummaryModel: CartSummaryModel = { isTakeaway: 'Nie', orderProducts: [] };
+  cartSummaryModel: CartSummaryModel = {
+    isTakeaway: 'Nie',
+    orderProducts: [],
+    executionDateTime: new Date(),
+  };
   totalItems: number = 0;
   totalPrice: number = 0;
   isGlowing: boolean = false;
@@ -51,7 +57,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private orderService: OrderService,
     private toastService: ToastrService,
-    private contextSerice: ContextService
+    private contextSerice: ContextService // private datePipe: DatePipe
   ) {}
 
   ngOnInit(): void {
@@ -67,6 +73,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
 
   closeDialog() {
     this.onSummaryPanelVisibleChange.emit(this.isSummaryPanelVisible);
+    this.currentStep = 1;
   }
 
   ngOnDestroy(): void {
@@ -89,7 +96,9 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
           this.isSummaryPanelVisible = false;
           this.cartService.clearCart();
           this.toastService.success(
-            'Zamówienie zostało dodane i sfinalizowane'
+            this.isOrderExecuted()
+              ? 'Zamówienie zostało utworzone i zrealizowane'
+              : 'Zamówienie zostalo utworzone i jest w realizacji'
           );
         },
       });
@@ -98,10 +107,18 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   mapOrder(): OrderDto {
     const status = this.isOrderExecuted() ? 'EXECUTED' : 'IN_EXECUTION';
     const paymentMethod =
-      this.cartSummaryModel.paymentMethod === 'Gotówka' ? 'CASH' : 'CARD';
+      this.cartSummaryModel.paymentMethod === 'Gotówka'
+        ? 'CASH'
+        : this.cartSummaryModel.paymentMethod === 'Karta'
+        ? 'CARD'
+        : undefined;
+
     return {
-      executionTime: this.cartSummaryModel.executionDateTime?.toDateString(),
-      description: 'TO_DO',
+      executionTime: toNormalLocalDateTime(
+        this.cartSummaryModel.executionDateTime!
+      )?.toString(),
+      // executionTime: this.datePipe.transform(this.cartSummaryModel.executionDateTime, 'd.MM.yyyy HH:mm:ss') ?? undefined,
+      description: this.cartSummaryModel.desctiption,
       orderProducts: this.cartSummaryModel.orderProducts,
       paymentMethod,
       price: this.totalPrice,

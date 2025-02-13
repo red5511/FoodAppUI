@@ -40,6 +40,7 @@
     <ng-template pTemplate="header">
       <tr>
         <th></th>
+        <th></th>
         <th>
           <app-sortable-column
             field="name"
@@ -83,6 +84,12 @@
             [plain]="true"
             [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
           />
+        </td>
+        <td>
+          <img *ngIf="product.imgUrl"
+          class="small-product"
+          [src]="product.imgUrl"
+        />
         </td>
         <td>
           <div>{{ product.name }}</div>

@@ -7,19 +7,24 @@
   draggable="false"
   [dismissableMask]="true"
   [style]="{
-    width: '30rem',
-    height: userDeliveryIsBiggerThat1Hour ? '670px' : '600px'
+    width: '40rem',
+    height: userDeliveryIsBiggerThat1Hour ? '870px' : '800px'
   }"
 >
-  <p-messages
+  <ng-template style="margin-bottom: 2rem" pTemplate="header">
+    <div class="header-custom">
+      <span class="title"><h4>Wybierz czas</h4></span>
+    </div>
+  </ng-template>
+
+  <!-- <p-messages
     *ngIf="userDeliveryIsBiggerThat1Hour"
     [(value)]="messages"
     [enableService]="false"
     [closable]="false"
-  />
+  /> -->
 
   <div class="container">
-    <h5>Wybierz czas</h5>
     <div class="time-options">
       <button
         *ngFor="let time of predefinedTimes"
@@ -30,27 +35,46 @@
         (click)="selectTime(time.value)"
       ></button>
     </div>
-    <h5>lub</h5>
+    <h4>lub</h4>
     <div class="calendar-wrapper">
       <p-floatLabel>
         <p-calendar
           inputId="calendar-timeonly"
           [(ngModel)]="selectedTime"
           [timeOnly]="true"
+          (onSelect)="onSelectTime()"
         ></p-calendar>
         <label class="custom-float-label" for="calendar-timeonly"
           >Podaj godzinę</label
         >
       </p-floatLabel>
-      <button
-        *ngIf="selectedTime != undefined"
-        style="margin-top: 145px"
-        pButton
-        type="button"
-        class="p-button-primary"
-        (click)="approveSelectedCalendarTime()"
-        label="Zatwierdz"
-      ></button>
+      <h4>lub</h4>
+      <p-floatLabel>
+        <p-calendar
+          inputId="calendar-24h"
+          [(ngModel)]="selectedDateTime24h"
+          [showTime]="true"
+          [touchUI]="true"
+          [hourFormat]="'24'"
+          (onSelect)="onSelectDateTime24()"
+        />
+        <label class="custom-float-label" for="calendar-timeonly"
+          >Podaj date i godzinę</label
+        >
+      </p-floatLabel>
     </div>
   </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      *ngIf="selectedTime != undefined || selectedDateTime24h != undefined"
+      severity="success"
+      style="margin-top: 145px"
+      pButton
+      type="button"
+      class="p-button-primary"
+      (click)="approveSelectedCalendarTime()"
+      [label]="timeButtonLabel"
+    ></button>
+  </ng-template>
 </p-dialog>

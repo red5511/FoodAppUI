@@ -1,7 +1,7 @@
 :host {
   display: flex;
   flex-direction: column;
-  width: 99%; // Take the full width of the parent container
+  width: 100%; // Take the full width of the parent container
   max-width: 1500px;
 }
 
@@ -53,4 +53,22 @@
 .custom-td {
   // border-top: 5px solid rgba(150, 72, 0, 0.562);
   // border-top: 3px groove var(--primary-color1-transparent);
+}
+
+.small-product {
+  border-radius: 15px;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+}
+
+.wrap-text {
+  /* Make sure it takes the full width of its container */
+  width: 100%;
+  /* Allow the text to wrap */
+  white-space: normal;
+  /* Break long words if necessary */
+  overflow-wrap: break-word;
+  /* Some browsers may need this too */
+  word-break: break-all;
 }

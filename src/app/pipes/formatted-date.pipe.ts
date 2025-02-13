@@ -6,12 +6,12 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class FormattedDatePipe implements PipeTransform {
   transform(value: string | undefined): string {
     if (!value) {
-      return 'Invalid date'; // Handle undefined or empty string
+      return 'Błędna data'; // Handle undefined or empty string
     }
 
     const date = new Date(value);
     if (isNaN(date.getTime())) {
-      return 'Invalid date'; // Handle invalid date string
+      return 'Błędna data'; // Handle Błędna data string
     }
 
     // Format the date to "DD.MM.YYYY"

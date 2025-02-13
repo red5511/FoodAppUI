@@ -9,6 +9,8 @@ import {
   calculateMinutesDifferenceCeil,
   calculateSecondsDifferenceFloor,
 } from '../../common/dateUtils';
+import { ImageService } from '../../services/images/Image-service';
+import { OrderUtils } from '../../common/orders-utils';
 
 @Component({
   selector: 'app-new-order-table',
@@ -31,7 +33,11 @@ export class NewOrderTableComponent {
   sorts: Sort[] | undefined;
   private intervalId: any;
 
-  constructor(private cdr: ChangeDetectorRef) {}
+  constructor(
+    private cdr: ChangeDetectorRef,
+    public imageService: ImageService,
+    public orderUtils: OrderUtils
+  ) {}
 
   ngOnInit(): void {
     this.refreshAtStartOfMinute();
@@ -97,30 +103,5 @@ export class NewOrderTableComponent {
 
   approvalTimeLeft(approvalDeadline: string) {
     return calculateSecondsDifferenceFloor(approvalDeadline!) < 1;
-  }
-
-  getStatusSeverity(
-    status: string
-  ):
-    | 'success'
-    | 'secondary'
-    | 'info'
-    | 'warning'
-    | 'danger'
-    | 'contrast' {
-    switch (status) {
-      case 'WAITING_FOR_ACCEPTANCE':
-        return 'contrast';
-      case 'IN_EXECUTION':
-        return 'warning';
-      case 'EXECUTED':
-        return 'success';
-      case 'REJECTED':
-        return 'danger';
-      case 'READY_FOR_PICK_UP':
-        return 'info';
-      default:
-        return 'contrast';
-    }
   }
 }

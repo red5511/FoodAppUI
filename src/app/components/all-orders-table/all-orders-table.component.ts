@@ -19,8 +19,18 @@ import {
   DateRangeModel,
 } from '../../services/models';
 import { OrderService } from '../../services/services';
-import { debounceTime, from, map, Subject, switchMap, takeUntil, tap } from 'rxjs';
+import {
+  debounceTime,
+  from,
+  map,
+  Subject,
+  switchMap,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { DateResult } from '../calendar-with-dialog/calendar-with-dialog.component';
+import { ImageService } from '../../services/images/Image-service';
+import { OrderUtils } from '../../common/orders-utils';
 
 @Component({
   selector: 'app-all-orders-table',
@@ -52,7 +62,7 @@ export class AllOrdersTableComponent {
   loading: boolean = true; // Initialize as true when loading data
   companyIdTemp: number | undefined;
   totalRecords!: number;
-  selectedRow: OrderDto| undefined;
+  selectedRow: OrderDto | undefined;
 
   private destroy$ = new Subject<void>();
   statusSeverityMap!: {
@@ -62,8 +72,8 @@ export class AllOrdersTableComponent {
       | 'success'
       | 'danger'
       | 'contrast'
-      | 'yellow'
-    };
+      | 'yellow';
+  };
 
   sortState!: { [key: string]: string };
 
@@ -75,31 +85,33 @@ export class AllOrdersTableComponent {
 
   constructor(
     private orderService: OrderService,
-    private contextService: ContextService
+    private contextService: ContextService,
+    public imageService: ImageService,
+    public orderUtils: OrderUtils
   ) {
-    this.setDefoultSorts()
+    this.setDefoultSorts();
   }
 
-    ngOnInit(): void {
-      this.searchSubject
-        .pipe(
-          debounceTime(400), // Delay of 300ms
-          takeUntil(this.destroy$) // Automatically unsubscribes on destroy
-        )
-        .subscribe((searchTerm) => {
-          this.onFilterChange();
-        });
-    }
+  ngOnInit(): void {
+    this.searchSubject
+      .pipe(
+        debounceTime(400), // Delay of 300ms
+        takeUntil(this.destroy$) // Automatically unsubscribes on destroy
+      )
+      .subscribe((searchTerm) => {
+        this.onFilterChange();
+      });
+  }
 
-  setDefoultSorts(){
+  setDefoultSorts() {
     const sort: Sort = {
       direction: 'DESC',
-      field: 'createdDate'
-    }
-    this.sorts = [sort]
+      field: 'createdDate',
+    };
+    this.sorts = [sort];
     this.sortState = {
-      'createdDate': 'DESC'
-    }
+      createdDate: 'DESC',
+    };
   }
 
   loadOrders() {
@@ -226,8 +238,7 @@ export class AllOrdersTableComponent {
     | 'warning'
     | 'danger'
     | 'contrast'
-    | 'yellow'
- {
+    | 'yellow' {
     return this.statusSeverityMap?.[status];
   }
 
@@ -263,15 +274,9 @@ export class AllOrdersTableComponent {
           field,
         },
       ];
-    }
-    else{
-      this.setDefoultSorts()
+    } else {
+      this.setDefoultSorts();
     }
     this.loadOrders();
-  }
-
-  onRowClicked(event: any) {
-    console.log('Row clicked:', event.data); // event.data contains clicked row data
-    // Add your logic here
   }
 }

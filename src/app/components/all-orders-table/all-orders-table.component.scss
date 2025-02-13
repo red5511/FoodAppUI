@@ -1,8 +1,8 @@
 :host {
-  width: 98%; // Take the full width of the parent container
+  width: 100%; // Take the full width of the parent container
   max-width: 1500px;
   // box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-  padding: 2rem;
+  padding: 1rem;
 }
 
 :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
@@ -115,4 +115,22 @@ h2 {
 
 .sortable {
   cursor: pointer; /* Changes the cursor to a hand when hovering */
+}
+
+.small-product {
+  border-radius: 15px;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+}
+
+.wrap-text {
+  /* Make sure it takes the full width of its container */
+  width: 100%;
+  /* Allow the text to wrap */
+  white-space: normal;
+  /* Break long words if necessary */
+  overflow-wrap: break-word;
+  /* Some browsers may need this too */
+  word-break: break-all;
 }

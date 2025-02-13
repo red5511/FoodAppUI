@@ -9,7 +9,7 @@
       class="custom-card"
       *ngFor="let product of productsByCategory[category]"
       (click)="startAddingToCart(product)"
-      [ngStyle]="{ 'background-image': 'url(' + product.imgUrl + ')' }"
+      [ngStyle]="{ 'background-image': 'url(' + imageService.getProductImageUrl(product.imgUrl) + ')' }"
       pRipple
     >
       <div class="overlay">
@@ -34,6 +34,12 @@
   (onHide)="onHide()"
   [style]="{ width: '500px' }"
 >
+  <ng-template style="margin-bottom: 2rem" pTemplate="header">
+    <div class="header-custom">
+      <span class="title"><h4>Podaj szczegóły</h4></span>
+    </div>
+  </ng-template>
+
   <form
     *ngIf="isChoosePropertiesDialogVisible"
     [formGroup]="productForm"
@@ -41,16 +47,6 @@
   >
     <div *ngFor="let property of selectedProduct?.productPropertiesList">
       <p-divider></p-divider>
-      <small
-        *ngIf="
-          (productForm.get('property_' + property.id)?.dirty ||
-            formSubmitted) &&
-          productForm.get('property_' + property.id)?.invalid
-        "
-        class="p-error"
-      >
-        Ta sekcja jest wymagana!
-      </small>
       <p style="font-weight: bold">{{ property.name }}</p>
       <div *ngIf="property.required; else optionalTemplate">
         <!-- Radio buttons for required properties -->
@@ -66,6 +62,21 @@
           </label>
         </div>
       </div>
+      @if ( (productForm.get('property_' + property.id)?.dirty || formSubmitted)
+      && productForm.get('property_' + property.id)?.invalid) {
+      <small
+        *ngIf="
+          (productForm.get('property_' + property.id)?.dirty ||
+            formSubmitted) &&
+          productForm.get('property_' + property.id)?.invalid
+        "
+        class="p-error"
+      >
+        Ta sekcja jest wymagana!
+      </small>
+      } @else {
+        <div style="height: 25px;"></div>
+       }
 
       <ng-template #optionalTemplate>
         <div *ngFor="let option of property.propertyList" class="option">

@@ -3,7 +3,22 @@
   ::ng-deep .p-dialog-draggable .p-dialog-header{
     padding-bottom: 0;
   }
+
   
+.title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  text-align: center;
+}
+  
+.container{
+  margin-top: 2rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
   .p-calendar {
     margin-top: 1.2rem; // Add some spacing if needed
   }
@@ -13,6 +28,7 @@
     flex-wrap: wrap;
     gap: 1rem; // Adjust spacing between buttons
     justify-content: center; // Center the buttons
+    margin-bottom: 2rem;
   }
 
   .custom-float-label{
@@ -24,9 +40,6 @@
     flex-direction: column;
     align-items: center;
     width: 100%;
+    margin-top: 1rem;
+    gap: 2rem;
   }
-
-  h5{
-    margin-top: 0.5rem; // Add some spacing if needed
-  }
-  

@@ -10,5 +10,6 @@ export interface CartSummaryModel {
   whatToDoCodes?: WHAT_TO_DO_CODES[];
   paymentMethod?: 'Gotówka' | 'Karta';
   isTakeaway?: string;
+  desctiption?: string;
   executionDateTime?: Date;
 }
