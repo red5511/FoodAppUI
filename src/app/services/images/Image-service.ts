@@ -8,6 +8,6 @@ export class ImageService {
   constructor(private contextService: ContextService) {}
 
   getProductImageUrl(imgUrl: string | undefined): string | undefined {
-    return imgUrl ? imgUrl : this.contextService.getDefaultProductImgUrl();
+    return imgUrl && imgUrl !== 'OWN' ? imgUrl : this.contextService.getDefaultProductImgUrl();
   }
 }

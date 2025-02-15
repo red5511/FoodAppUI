@@ -9,46 +9,55 @@
   <ul>
     <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS')">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/restaurant-order' : null"
+        [routerLink]="'/restaurant-order'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: isExactForRestOrdering() }"
         (click)="openCollapsedSideNavToggle()"
       >
-        <span class="menu-icon pi pi-building-columns"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Nowe zamówienie</span>
+        <span class="menu-icon pi pi-plus-circle"></span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+          >Nowe zamówienie</span
+        >
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('ONLINE_ORDERS')">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/dashboard2' : null"
+        [routerLink]="'/dashboard2'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-play-circle"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Obsługa zamówień</span>
+        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+          >Obsługa zamówień</span
+        >
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('MENU_PANEL') && !isHolding">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/menu' : null"
+        [routerLink]="'/menu'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-tablet"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Zarządzaj menu</span>
-        <span
-        *ngIf="isSideNavVisible"
-        class="sub-menu-icon"
-        [ngClass]="{ 'sub-menu-open': isSubmenuOpen }"
-      >
-        <mat-icon
-          *ngIf="!this.isSideNavCollapsed"
-          class="sidebar-menu-element-icon"
-          (click)="toggleSubmenu()"
-          >{{
-            isSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
-          }}</mat-icon
+        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+          >Zarządzaj menu</span
         >
-      </span>
+        <span
+          *ngIf="isSideNavVisible"
+          class="sub-menu-icon"
+          [ngClass]="{ 'sub-menu-open': isSubmenuOpen }"
+        >
+          <mat-icon
+            *ngIf="!this.isSideNavCollapsed"
+            class="sidebar-menu-element-icon"
+            (click)="toggleSubmenu()"
+            >{{
+              isSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
+            }}</mat-icon
+          >
+        </span>
       </a>
       <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
         <li *ngIf="hasPermissionToModule('MENU_PANEL')">
@@ -61,8 +70,9 @@
     </li>
     <li *ngIf="hasPermissionToModule('STATISTICS')">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/statistics' : null"
+        [routerLink]="'/statistics'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon material-icons">assessment</span>
@@ -71,8 +81,9 @@
     </li>
     <li *ngIf="hasPermissionToModule('ORDERS_HISTORY')">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/orders' : null"
+        [routerLink]="'/orders'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon material-icons">list_alt</span>
@@ -83,8 +94,9 @@
     </li>
     <li *ngIf="hasPermissionToModule('ADMIN_PANEL')">
       <a
-        [routerLink]="!isSideNavCollapsed ? '/admin-panel' : null"
+        [routerLink]="'/admin-panel'"
         routerLinkActive="active"
+        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-crown"></span>

@@ -180,7 +180,7 @@
         />
       </td>
       <td class="custom-td">
-        <div>{{ order.isTakeaway ? "Tak" : "Nie" }}</div>
+        <div>{{ order.takeaway ? "Tak" : "Nie" }}</div>
       </td>
       <td>
         <div>{{ order.executionTime | formattedDateTime }}</div>
@@ -198,7 +198,7 @@
       <td colspan="7">
         <div class="p-3">
           <p class="wrap-text">
-            <b>Opis do zamówienia: </b>{{ order.description ?? "" }}
+            <b>Opis do zamówienia: </b>{{ order.description ?? " - " }}
           </p>
           <p-table [value]="order.orderProducts" dataKey="id">
             <ng-template pTemplate="header">

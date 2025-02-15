@@ -106,6 +106,7 @@ import { DataViewModule } from 'primeng/dataview';
 import { CartFinalSummaryComponent } from './components/cart-final-summary/cart-final-summary.component';
 import { CartFinalSummaryFirstPanelComponent } from './components/cart-final-summary-first-panel/cart-final-summary-first-panel.component';
 import { CartFinalSummarySecondPanelComponent } from './components/cart-final-summary-second-panel/cart-final-summary-second-panel.component';
+import { CashierFinalSummaryComponent } from './components/cashier-final-summary/cashier-final-summary.component';
 
 
 @NgModule({
@@ -160,6 +161,7 @@ import { CartFinalSummarySecondPanelComponent } from './components/cart-final-su
     CartFinalSummaryComponent,
     CartFinalSummaryFirstPanelComponent,
     CartFinalSummarySecondPanelComponent,
+    CashierFinalSummaryComponent,
   ],
   imports: [
     RouterModule,

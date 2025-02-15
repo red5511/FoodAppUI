@@ -1,11 +1,9 @@
 import { Component, Input } from '@angular/core';
-import { CartSummaryModel, WHAT_TO_DO_CODES } from '../../common/commonModels';
-
-interface OrderProcessOption {
-  name: string;
-  active: boolean;
-  code: WHAT_TO_DO_CODES;
-}
+import {
+  CartSummaryModel,
+  OrderProcessOption,
+  WHAT_TO_DO_CODES,
+} from '../../common/commonModels';
 
 @Component({
   selector: 'app-cart-final-summary-second-panel',
@@ -70,10 +68,6 @@ export class CartFinalSummarySecondPanelComponent {
   }
 
   selectedTimeChange(date: Date) {
-    // this.executionTime = date.toLocaleTimeString([], {
-    //   hour: '2-digit',
-    //   minute: '2-digit',
-    // });
     this.cartSummaryModel.executionDateTime = date;
   }
 }

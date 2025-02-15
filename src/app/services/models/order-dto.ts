@@ -15,9 +15,10 @@ export interface OrderDto {
   executionTime?: string;
   id?: number;
   orderProducts?: Array<OrderProductDto>;
-  orderType?: 'GLOVO' | 'PYSZNE_PL';
+  orderType?: 'OWN' | 'GLOVO' | 'PYSZNE_PL';
+  paidWhenOrdered?: boolean;
   paymentMethod?: 'CASH' | 'CARD';
   price?: number;
-  status?: 'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED' | 'READY_FOR_PICK_UP' | 'NOT_ACCEPTED';
+  status?: 'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED' | 'READY_FOR_PICK_UP' | 'NOT_ACCEPTED' | 'MODIFIED';
   takeaway?: boolean;
 }

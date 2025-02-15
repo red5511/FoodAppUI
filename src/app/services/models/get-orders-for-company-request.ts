@@ -11,6 +11,6 @@ export interface GetOrdersForCompanyRequest {
   price?: number;
   size?: number;
   sorts?: Array<Sort>;
-  statuses?: Array<'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED' | 'READY_FOR_PICK_UP' | 'NOT_ACCEPTED'>;
+  statuses?: Array<'WAITING_FOR_ACCEPTANCE' | 'IN_EXECUTION' | 'EXECUTED' | 'REJECTED' | 'READY_FOR_PICK_UP' | 'NOT_ACCEPTED' | 'MODIFIED'>;
   validatableCompanyId?: number;
 }

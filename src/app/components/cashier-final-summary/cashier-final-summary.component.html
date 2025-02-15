@@ -1,0 +1,105 @@
+<p-dialog
+  header="Sfinalizuj zamówienie"
+  [(visible)]="isSummaryCashierPanelVisible"
+  [modal]="true"
+  [styleClass]="'full-screen-dialog'"
+  [contentStyle]="{ height: '100%' }"
+  [draggable]="false"
+  [resizable]="false"
+  (onHide)="closeDialog()"
+>
+  <ng-template pTemplate="header">
+    <div>
+      <span class="title"><h4>Sfinalizuj zamówienie</h4></span>
+    </div>
+  </ng-template>
+
+  <div *ngIf="isSummaryCashierPanelVisible" class="section">
+    <h6 style="margin-top: 2rem; margin-bottom: 2rem">Co robimy?</h6>
+  </div>
+
+  <p-dataView [value]="items" layout="list">
+    <ng-template let-items pTemplate="list">
+      <div class="col-12" *ngFor="let item of items">
+        <div
+          [ngClass]="{ active: item.active }"
+          pRipple
+          (click)="onSelectItem(item)"
+          class="item"
+        >
+          {{ item.name }}
+          <div *ngIf="!item.active" class="plus-icon">
+            <i class="pi pi-plus"></i>
+          </div>
+          <div
+            [ngClass]="{ active: item.active }"
+            *ngIf="item.active"
+            class="plus-icon"
+          >
+            <i class="pi pi-check"></i>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+  </p-dataView>
+
+  <p-divider />
+  <div class="section">
+    <div class="section-payment-method">
+      <h6 style="margin-top: 1rem">Forma płatności</h6>
+      <div class="payment-method-radio-buttons">
+        <p-radioButton
+          name="cash"
+          value="Gotówka"
+          [(ngModel)]="summaryModel.paymentMethod"
+          inputId="paymentMethod1"
+        />
+        <label style="margin-right: 2rem" for="paymentMethod1" class="ml-2">
+          Gotówka
+        </label>
+        <p-radioButton
+          name="card"
+          value="Karta"
+          [(ngModel)]="summaryModel.paymentMethod"
+          inputId="paymentMethod2"
+        />
+        <label for="paymentMethod2" class="ml-2"> Karta </label>
+      </div>
+    </div>
+  </div>
+
+  <p-divider />
+  <div class="section">
+    <div class="section-payment-method">
+      <h6 style="margin-top: 1rem">Na wynos?</h6>
+      <div class="takeaway-radio-buttons">
+        <p-radioButton
+          name="yes"
+          value="Tak"
+          [(ngModel)]="summaryModel.isTakeaway"
+          inputId="takeaway1"
+        />
+        <label style="margin-right: 2rem" for="takeaway1" class="ml-2">
+          Tak
+        </label>
+        <p-radioButton
+          name="no"
+          value="Nie"
+          [(ngModel)]="summaryModel.isTakeaway"
+          inputId="takeaway2"
+        />
+        <label for="takeaway2" class="ml-2"> Nie </label>
+      </div>
+    </div>
+  </div>
+
+  <ng-template pTemplate="footer">
+    <button
+      pButton
+      severity="success"
+      icon="pi pi-check"
+      label="Zatwierdź"
+      (click)="onApprove()"
+    ></button>
+  </ng-template>
+</p-dialog>

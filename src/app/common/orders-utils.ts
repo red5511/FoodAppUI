@@ -43,9 +43,17 @@ export class OrderUtils {
   }
 
   getImage(imgUrl: string | undefined) {
-    if (imgUrl) {
+    if (imgUrl && imgUrl !== 'OWN') {
       return 'images/' + imgUrl + '.png';
     }
     return this.imageService.getProductImageUrl(imgUrl);
+  }
+
+  getPaymentMethodFromCheckbox(paymentMethod: 'Gotówka' | 'Karta' | undefined): 'CASH' | 'CARD' | undefined {
+    return paymentMethod === 'Gotówka'
+      ? 'CASH'
+      : paymentMethod === 'Karta'
+      ? 'CARD'
+      : undefined;
   }
 }

@@ -6,10 +6,16 @@ export type WHAT_TO_DO_CODES =
   | 'MARK_ORDER_AS_EXECUTED';
 
 export interface CartSummaryModel {
-  orderProducts: OrderProductDto[];
+  orderProducts?: OrderProductDto[];
   whatToDoCodes?: WHAT_TO_DO_CODES[];
   paymentMethod?: 'Gotówka' | 'Karta';
   isTakeaway?: string;
   desctiption?: string;
   executionDateTime?: Date;
+}
+
+export interface OrderProcessOption {
+  name: string;
+  active: boolean;
+  code: WHAT_TO_DO_CODES;
 }

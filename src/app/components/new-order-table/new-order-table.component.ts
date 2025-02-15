@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, EventEmitter, Input, Output } from '@angular/core';
 import { TableRowCollapseEvent, TableRowExpandEvent } from 'primeng/table';
 import {
   DashboardGetOrdersResponse,
@@ -24,6 +24,8 @@ export class NewOrderTableComponent {
   isHolding: boolean = true;
   @Input({ required: true })
   expandedRows: { [s: string]: boolean } = {};
+  @Output()
+  onRefreshOrders = new EventEmitter<boolean>();
   translations: { [key: string]: string } = {
     WAITING_FOR_ACCEPTANCE: 'W akceptacji',
     IN_EXECUTION: 'W realizacji',

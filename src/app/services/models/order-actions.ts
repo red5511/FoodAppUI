@@ -2,8 +2,11 @@
 /* eslint-disable */
 export interface OrderActions {
   showApprove?: boolean;
+  showCancel?: boolean;
+  showModify?: boolean;
   showPrint?: boolean;
   showReadyToPickUp?: boolean;
   showReject?: boolean;
-  showSetDeliveryTime?: boolean;
+  showSetExecutionTime?: boolean;
+  showToTheCashier?: boolean;
 }

@@ -1,29 +1,17 @@
 <button
-  *ngIf="showReject"
+  *ngIf="showPrint"
   pButton
+  pRipple
   type="button"
-  label="Odrzuć"
-  icon="pi pi-times"
-  severity="danger"
+  label="Drukuj"
   [raised]="true"
-  (click)="rejectOrder()"
-  [disabled]="approvalTimeLeft"
-></button>
-<button
-  *ngIf="showApprove"
-  pButton
-  type="button"
-  [label]="approveButtonText"
-  icon="pi pi-check"
-  severity="success"
-  [raised]="true"
-  (click)="approveOrder()"
-  [disabled]="approvalTimeLeft"
+  icon="pi pi-print"
 ></button>
 
 <button
   *ngIf="showSetExecutionTime"
   pButton
+  pRipple
   type="button"
   [raised]="true"
   [label]="executionTimeButtonText"
@@ -36,6 +24,7 @@
 <button
   *ngIf="showReadyToPickUp"
   pButton
+  pRipple
   type="button"
   label="Gotowe do odbioru"
   icon="pi pi-check"
@@ -44,12 +33,52 @@
 ></button>
 
 <button
-  *ngIf="showPrint"
+  *ngIf="showReject"
   pButton
+  pRipple
   type="button"
-  label="Drukuj"
+  label="Odrzuć"
+  icon="pi pi-times"
+  severity="danger"
   [raised]="true"
-  icon="pi pi-print"
+  (click)="rejectOrder()"
+  [disabled]="approvalTimeLeft"
+></button>
+<button
+  *ngIf="showApprove"
+  pButton
+  pRipple
+  type="button"
+  [label]="approveButtonText"
+  icon="pi pi-check"
+  severity="success"
+  [raised]="true"
+  (click)="approveOrder()"
+  [disabled]="approvalTimeLeft"
+></button>
+
+<button
+  *ngIf="showModify"
+  pButton
+  pRipple
+  type="button"
+  label="Modyfikuj"
+  icon="pi pi-check"
+  severity="info"
+  [raised]="true"
+  (click)="modify()"
+></button>
+
+<button
+  *ngIf="showToTheCashier"
+  pButton
+  pRipple
+  type="button"
+  label="Do kasy"
+  icon="pi pi-check"
+  severity="success"
+  [raised]="true"
+  (click)="goToTheCashier()"
 ></button>
 
 <app-delivey-time-dialog
@@ -58,3 +87,9 @@
   [userDeliveryIsBiggerThat1Hour]="userDeliveryIsBiggerThat1Hour()"
   (selectedTimeChange)="onTimeSelected($event)"
 ></app-delivey-time-dialog>
+
+<app-cashier-final-summary
+  [isSummaryCashierPanelVisible]="isSummaryCashierPanelVisible"
+  (summaryCashierPanelVisibleChange)="onSummaryCashierPanelVisible($event)"
+  [order]="order"
+></app-cashier-final-summary>

@@ -64,6 +64,11 @@ export class MenuComponent {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadProductsLazy(event: TableLazyLoadEvent) {
     this.contextService
       .getCompanyIdObservable()

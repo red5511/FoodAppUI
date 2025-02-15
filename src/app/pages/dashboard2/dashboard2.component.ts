@@ -64,8 +64,8 @@ export class Dashboard2Component {
   }
 
   getActiveOrdersForCompany(companyId: number) {
-    const direction = 'ASC'
-      // this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE' ? 'ASC' : 'DESC';
+    const direction = 'ASC';
+    // this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE' ? 'ASC' : 'DESC';
     const field =
       this.stateOptionsValue === 'TO_WAITING_FOR_ACCEPTANCE'
         ? 'createdDate'
@@ -99,18 +99,27 @@ export class Dashboard2Component {
 
   handleOrdersResponse(response: DashboardGetOrdersResponse) {
     this.orders = response.orderList ?? [];
-    this.expandFirst()
+    this.expandFirst();
   }
 
   expandFirst() {
-    console.log('expandFirst')
-    console.log(this.orders)
+    console.log('expandFirst');
+    console.log(this.orders);
     if (this.orders.length > 0) {
       const firstOrder = this.orders[0];
-      this.expandedRows = {}
+      this.expandedRows = {};
       this.expandedRows[firstOrder.id!] = true;
-      console.log(this.expandedRows)
-
+      console.log(this.expandedRows);
     }
+  }
+
+  onRefreshOrders() {
+    console.log('onRefreshOrders');
+
+    this.getActiveOrdersForCompany(
+      this.contextService.getCompanyId() ?? -999
+    ).subscribe({
+      next: (response) => this.handleOrdersResponse(response),
+    });
   }
 }

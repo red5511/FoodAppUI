@@ -14,8 +14,8 @@ import { CreateOrderRequest, OrderDto } from '../../services/models';
 import { ToastrService } from 'ngx-toastr';
 import { CartSummaryModel } from '../../common/commonModels';
 import { ContextService } from '../../services/context/context.service';
-import { DatePipe } from '@angular/common';
 import { toNormalLocalDateTime } from '../../common/dateUtils';
+import { OrderUtils } from '../../common/orders-utils';
 
 @Component({
   selector: 'app-cart-final-summary',
@@ -57,7 +57,8 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     private cartService: CartService,
     private orderService: OrderService,
     private toastService: ToastrService,
-    private contextSerice: ContextService // private datePipe: DatePipe
+    private contextSerice: ContextService,
+    private orderUtils: OrderUtils
   ) {}
 
   ngOnInit(): void {
@@ -82,9 +83,6 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   }
 
   onExecuteOrder() {
-    console.log('onExecuteOrder');
-    console.log(this.cartSummaryModel);
-
     const body: CreateOrderRequest = {
       order: this.mapOrder(),
     };
@@ -106,24 +104,19 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
 
   mapOrder(): OrderDto {
     const status = this.isOrderExecuted() ? 'EXECUTED' : 'IN_EXECUTION';
-    const paymentMethod =
-      this.cartSummaryModel.paymentMethod === 'Gotówka'
-        ? 'CASH'
-        : this.cartSummaryModel.paymentMethod === 'Karta'
-        ? 'CARD'
-        : undefined;
+    const paymentMethod = this.orderUtils.getPaymentMethodFromCheckbox(this.cartSummaryModel.paymentMethod)
 
     return {
       executionTime: toNormalLocalDateTime(
         this.cartSummaryModel.executionDateTime!
       )?.toString(),
-      // executionTime: this.datePipe.transform(this.cartSummaryModel.executionDateTime, 'd.MM.yyyy HH:mm:ss') ?? undefined,
       description: this.cartSummaryModel.desctiption,
       orderProducts: this.cartSummaryModel.orderProducts,
       paymentMethod,
       price: this.totalPrice,
       takeaway: this.cartSummaryModel.isTakeaway === 'Tak' ? true : false,
       status,
+      paidWhenOrdered: this.isOrderExecuted()
     };
   }
 

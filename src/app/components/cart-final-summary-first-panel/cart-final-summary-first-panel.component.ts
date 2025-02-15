@@ -5,7 +5,6 @@ import { CartService } from '../../services/cart/cart-service';
 import { takeUntil } from 'rxjs';
 import {
   trigger,
-  state,
   style,
   transition,
   animate,

@@ -70,9 +70,17 @@ export class SidenavComponent implements OnInit {
     this.isSubmenuOpen = !this.isSubmenuOpen;
   }
 
+  routerLinkOptions() {
+    return this.isSideNavCollapsed ? { exact: true } : {};
+  }
+
   hasPermissionToModule(
     module: 'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS_HISTORY' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string,
   ): boolean {
     return this.permittedModules.includes(module);
+  }
+
+  isExactForRestOrdering(){
+    return !this.isSideNavCollapsed && '/restaurant-order/modify' === this.router.url
   }
 }

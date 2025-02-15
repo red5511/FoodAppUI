@@ -11,11 +11,15 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
 import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
+import { finalizeOrder } from '../fn/order/finalize-order';
+import { FinalizeOrder$Params } from '../fn/order/finalize-order';
 import { getOrdersConfig } from '../fn/order/get-orders-config';
 import { GetOrdersConfig$Params } from '../fn/order/get-orders-config';
 import { GetOrdersConfigResponse } from '../models/get-orders-config-response';
 import { getOrdersForCompany } from '../fn/order/get-orders-for-company';
 import { GetOrdersForCompany$Params } from '../fn/order/get-orders-for-company';
+import { modifyOrder } from '../fn/order/modify-order';
+import { ModifyOrder$Params } from '../fn/order/modify-order';
 import { PagedOrdersResponse } from '../models/paged-orders-response';
 import { rejectNewIncomingOrder } from '../fn/order/reject-new-incoming-order';
 import { RejectNewIncomingOrder$Params } from '../fn/order/reject-new-incoming-order';
@@ -100,6 +104,56 @@ export class OrderService extends BaseService {
   getOrdersForCompany(params: GetOrdersForCompany$Params, context?: HttpContext): Observable<PagedOrdersResponse> {
     return this.getOrdersForCompany$Response(params, context).pipe(
       map((r: StrictHttpResponse<PagedOrdersResponse>): PagedOrdersResponse => r.body)
+    );
+  }
+
+  /** Path part for operation `modifyOrder()` */
+  static readonly ModifyOrderPath = '/api/v1/order/modify/{companyId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `modifyOrder()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  modifyOrder$Response(params: ModifyOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return modifyOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `modifyOrder$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  modifyOrder(params: ModifyOrder$Params, context?: HttpContext): Observable<void> {
+    return this.modifyOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
+    );
+  }
+
+  /** Path part for operation `finalizeOrder()` */
+  static readonly FinalizeOrderPath = '/api/v1/order/finalize/{companyId}/{orderId}';
+
+  /**
+   * This method provides access to the full `HttpResponse`, allowing access to response headers.
+   * To access only the response body, use `finalizeOrder()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  finalizeOrder$Response(params: FinalizeOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+    return finalizeOrder(this.http, this.rootUrl, params, context);
+  }
+
+  /**
+   * This method provides access only to the response body.
+   * To access the full response (for headers, for example), `finalizeOrder$Response()` instead.
+   *
+   * This method sends `application/json` and handles request body of type `application/json`.
+   */
+  finalizeOrder(params: FinalizeOrder$Params, context?: HttpContext): Observable<void> {
+    return this.finalizeOrder$Response(params, context).pipe(
+      map((r: StrictHttpResponse<void>): void => r.body)
     );
   }
 

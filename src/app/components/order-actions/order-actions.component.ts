@@ -1,11 +1,10 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   ApproveNewIncomingOrderRequest,
   OrderDto,
   ProductDto,
   RejectNewIncomingOrderRequest,
 } from '../../services/models';
-import { ToastrService } from 'ngx-toastr';
 import { ContextService } from '../../services/context/context.service';
 import {} from '../../services/websocket/socket-service';
 import { OrderService } from '../../services/services';
@@ -34,11 +33,18 @@ export class OrderActionsComponent {
   @Input({ required: true })
   showReadyToPickUp!: boolean;
   @Input({ required: true })
+  showModify!: boolean;
+  @Input({ required: true })
+  showToTheCashier!: boolean;
+  @Input({ required: true })
   order!: OrderDto;
   @Input({ required: true })
   approvalTimeLeft!: boolean;
+  @Output()
+  refreshOrders = new EventEmitter<boolean>();
   time: Date[] | undefined;
   setTimeDialogvisible: boolean = false;
+  isSummaryCashierPanelVisible: boolean = false;
   executionTimeButtonText = 'Czas odbioru';
   deliveryDatePickedByUser: Date | undefined;
   approveButtonText: string = 'Akceptuj';
@@ -92,7 +98,7 @@ export class OrderActionsComponent {
     setTimeout(() => {
       // Kod, który ma zostać wykonany na pełnej minucie
       console.log('Wykonanie na pełnej minucie!');
-      
+
       this.intervalSubscriptionInMinutes = interval(60000).subscribe(() => {
         console.log('Wykonywane co pełną minutę!');
         this.updateButtonTextInMinutes();
@@ -101,7 +107,9 @@ export class OrderActionsComponent {
     }, millisecondsUntilNextDeadlineMinute);
 
     console.log(
-      `Timeout wystartuje za ${millisecondsUntilNextDeadlineMinute / 1000} sekund.`
+      `Timeout wystartuje za ${
+        millisecondsUntilNextDeadlineMinute / 1000
+      } sekund.`
     );
   }
 
@@ -188,5 +196,20 @@ export class OrderActionsComponent {
       return dateToCheck.isAfter(currentDate.add(1, 'hour'));
     }
     return false;
+  }
+
+  modify() {}
+
+  goToTheCashier() {
+    this.isSummaryCashierPanelVisible = true;
+  }
+
+  onSummaryCashierPanelVisible(refresh: boolean) {
+    console.log('onSummaryCashierPanelVisible');
+    console.log(refresh);
+    this.isSummaryCashierPanelVisible = false;
+    if (refresh) {
+      this.refreshOrders.emit(refresh);
+    }
   }
 }
