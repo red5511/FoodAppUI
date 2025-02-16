@@ -14,3 +14,5 @@
   [isSummaryPanelVisible]="isSummaryPanelVisible"
   (onSummaryPanelVisibleChange)="isSummaryPanelVisible = false"
 ></app-cart-final-summary>
+
+<app-cart-right-bar *ngIf="isBodyCartRightBar"></app-cart-right-bar>

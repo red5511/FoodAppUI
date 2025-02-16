@@ -1,13 +1,8 @@
-import {
-  Component,
-  EventEmitter,
-  Input,
-  OnInit,
-  Output,
-} from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ContextService } from '../../services/context/context.service';
 import { Subject, takeUntil } from 'rxjs';
 import { Router } from '@angular/router';
+import { NavigationService } from '../../services/navigation/navigation-service';
 
 @Component({
   selector: 'app-sidenav',
@@ -15,39 +10,49 @@ import { Router } from '@angular/router';
   styleUrl: './sidenav.component.scss',
 })
 export class SidenavComponent implements OnInit {
-  @Input() 
+  @Input()
   isSideNavVisible!: boolean;
-  @Input() 
+  @Input()
   isSideNavCollapsed!: boolean;
   @Input()
   isTabletView!: boolean;
-  @Output() 
+  @Input()
+  isBodyCartRightBar!: boolean;
+  @Output()
   onOpenCollapsedSideNavToggle: EventEmitter<any> = new EventEmitter();
   isSubmenuOpen: boolean;
-  permittedModules: Array<'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS_HISTORY' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string> = [];
-  isHolding: boolean = false
-  
-  private destroy$ = new Subject<void>();
+  permittedModules: Array<
+    | 'ONLINE_ORDERS'
+    | 'STATISTICS'
+    | 'ORDERS_HISTORY'
+    | 'RESTAURANT_ORDERS'
+    | 'ADMIN_PANEL'
+    | 'SUPER_ADMIN_PANEL'
+    | string
+  > = [];
+  isHolding: boolean = false;
 
+  private destroy$ = new Subject<void>();
 
   constructor(
     private contextService: ContextService,
-    private router: Router
+    private router: Router,
+    private navigationService: NavigationService
   ) {
-    this.isSubmenuOpen = false
+    this.isSubmenuOpen = false;
   }
 
   ngOnInit() {
     this.contextService.contextSubjectVisibility$
-    .pipe(takeUntil(this.destroy$))
-    .subscribe((context) => {
-      this.permittedModules = context?.permittedModules ?? [];
-      this.isHolding = this.contextService.isHolding() 
-    });
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((context) => {
+        this.permittedModules = context?.permittedModules ?? [];
+        this.isHolding = this.contextService.isHolding();
+      });
   }
 
   ngOnChanges(): void {
-    this.isSubmenuOpen = !this.isSideNavCollapsed && this.isSubmenuOpen
+    this.isSubmenuOpen = !this.isSideNavCollapsed && this.isSubmenuOpen;
   }
 
   isActive(path: string): boolean {
@@ -75,12 +80,38 @@ export class SidenavComponent implements OnInit {
   }
 
   hasPermissionToModule(
-    module: 'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS_HISTORY' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | 'SUPER_ADMIN_PANEL' | string,
+    module:
+      | 'ONLINE_ORDERS'
+      | 'STATISTICS'
+      | 'ORDERS_HISTORY'
+      | 'RESTAURANT_ORDERS'
+      | 'ADMIN_PANEL'
+      | 'SUPER_ADMIN_PANEL'
+      | string
   ): boolean {
     return this.permittedModules.includes(module);
   }
 
-  isExactForRestOrdering(){
-    return !this.isSideNavCollapsed && '/restaurant-order/modify' === this.router.url
+  isExactForRestOrdering() {
+    return (
+      !this.isSideNavCollapsed ||
+      this.router.url.includes('/restaurant-order/modify')
+    );
+  }
+
+  onMenuClick() {
+    console.log('onMenuClick');
+    console.log(this.navigationService.getPreviousUrl());
+    if (this.navigationService.getPreviousUrl()?.includes('/menu/products')) {
+      this.isSubmenuOpen = true
+    }else{
+      this.toggleSubmenu()
+    }
+    this.openCollapsedSideNavToggle();
+    this.router.navigate(['/menu/products']);
+  }
+
+  displayFullVersion(){
+    return !this.isSideNavCollapsed
   }
 }

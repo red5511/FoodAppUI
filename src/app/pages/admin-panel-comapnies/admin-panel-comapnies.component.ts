@@ -74,6 +74,11 @@ export class AdminPanelComapniesComponent {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadComapniesLazy(event: TableLazyLoadEvent) {
     this.loading = true;
     this.page = Math.floor(event.first! / event.rows!);

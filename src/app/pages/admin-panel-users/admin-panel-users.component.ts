@@ -103,6 +103,11 @@ export class AdminPanelUsersComponent {
       });
   }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadUsersLazy(event: TableLazyLoadEvent) {
     this.loading = true;
     this.page = Math.floor(event.first! / event.rows!);

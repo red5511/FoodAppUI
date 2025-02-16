@@ -1,24 +1,32 @@
-<div style="width: 400px">
-  <app-add-new-category
-    [productCategories]="categories"
-    [isNewCategoryButtonVisible]="!addNewCategoryButtonVisible"
-    [normalButton]="true"
-  ></app-add-new-category>
-    <br>
+<app-add-new-category
+  [productCategories]="categories"
+  [isNewCategoryButtonVisible]="!addNewCategoryButtonVisible"
+  [normalButton]="true"
+></app-add-new-category>
+<br />
+<p-messages 
+  [(value)]="messages" 
+  [closable]="false" 
+  [@.disabled]="true"> //musi byc tak bo prime ng rederuje dziwnie kolumny w tablue i jest flickergin xd
+</p-messages>
+<br>
+<div style="width: 550px">
   <p-table
     [value]="categories"
     [columns]="cols"
     [reorderableColumns]="true"
-    (onRowReorder)="onColumnReorder()"
+    (onRowReorder)="onRowReorder()"
   >
     <ng-template pTemplate="header" let-columns>
       <tr>
         <th style="width: 3rem"></th>
-        <th *ngFor="let col of columns" pReorderableColumn>
+        <th style="width: 3rem">#</th>
+        <th style="width: 15rem" *ngFor="let col of columns" pReorderableColumn>
           {{ col.header }}
         </th>
       </tr>
     </ng-template>
+
     <ng-template
       pTemplate="body"
       let-rowData
@@ -29,6 +37,7 @@
         <td>
           <span class="pi pi-bars" pReorderableRowHandle></span>
         </td>
+        <td>{{ index + 1 }}</td>
         <td *ngFor="let col of columns">
           {{ rowData[col.field] }}
         </td>
@@ -36,3 +45,5 @@
     </ng-template>
   </p-table>
 </div>
+<br>
+<br>

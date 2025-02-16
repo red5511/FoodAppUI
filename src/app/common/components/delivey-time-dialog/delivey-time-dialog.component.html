@@ -1,6 +1,7 @@
 <p-dialog
   [(visible)]="setTimeDialogvisible"
   (onHide)="closeDialog()"
+  [styleClass]="'custom-time-dialog'"
   header=""
   [modal]="true"
   closable="true"
@@ -69,7 +70,6 @@
     <button
       *ngIf="selectedTime != undefined || selectedDateTime24h != undefined"
       severity="success"
-      style="margin-top: 145px"
       pButton
       type="button"
       class="p-button-primary"

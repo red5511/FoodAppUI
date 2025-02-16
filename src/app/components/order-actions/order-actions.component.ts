@@ -15,6 +15,7 @@ import {
   countMinutesLeft,
 } from '../../common/dateUtils';
 import { interval, Subscription, timer } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'order-actions',
@@ -57,7 +58,8 @@ export class OrderActionsComponent {
 
   constructor(
     private contextService: ContextService,
-    private orderService: OrderService
+    private orderService: OrderService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -198,7 +200,11 @@ export class OrderActionsComponent {
     return false;
   }
 
-  modify() {}
+  modify() {
+    this.router.navigate(['/restaurant-order/modify'], {
+      queryParams: { order: JSON.stringify(this.order) },
+    });
+  }
 
   goToTheCashier() {
     this.isSummaryCashierPanelVisible = true;

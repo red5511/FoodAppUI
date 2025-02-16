@@ -19,3 +19,8 @@ export interface OrderProcessOption {
   active: boolean;
   code: WHAT_TO_DO_CODES;
 }
+
+export interface CartModel {
+  orderProducts: OrderProductDto[],
+  modifiedOrderId?: number
+}

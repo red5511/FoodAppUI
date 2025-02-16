@@ -1,8 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { Router } from '@angular/router';
 import { CartService } from '../../services/cart/cart-service';
 import { OrderProductDto } from '../../services/models';
 import { Subject, takeUntil } from 'rxjs';
+import { CartModel } from '../../common/commonModels';
 
 @Component({
   selector: 'app-cart-footer',
@@ -10,13 +11,15 @@ import { Subject, takeUntil } from 'rxjs';
   styleUrl: './cart-footer.component.scss',
 })
 export class CartFooterComponent {
+  @Input()
+  isBodyCartRightBar!: boolean;
   totalItems: number = 0;
   totalPrice: number = 0;
   isOrderingPage: boolean = false;
   isGlowing: boolean = false; // Flag to control the glow effect
   isGlowActive: boolean = false; // Flag to track if glow is currently active
   isSummaryPanelVisible: boolean = false;
-  cartItems: OrderProductDto[] = [];
+  cartModel?: CartModel;
   private destroy$ = new Subject<void>();
 
   constructor(private cartService: CartService, private router: Router) {}
@@ -25,15 +28,23 @@ export class CartFooterComponent {
     this.cartService.cartUpdated
       .pipe(takeUntil(this.destroy$))
       .subscribe((cart) => {
-        this.cartItems = cart;
-        this.totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        this.totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+        this.cartModel = cart;
+        this.totalItems =
+          this.cartModel?.orderProducts.reduce(
+            (sum, item) => sum + (item.quantity || 0),
+            0
+          ) ?? 0;
+        this.totalPrice =
+          this.cartModel?.orderProducts.reduce(
+            (sum, item) => sum + (item.price || 0),
+            0
+          ) ?? 0;
 
         this.triggerGlow();
       });
 
-    this.router.events.subscribe(() => {
-      this.isOrderingPage = this.router.url === '/restaurant-order';
+    this.router.events.pipe(takeUntil(this.destroy$)).subscribe(() => {
+      this.isOrderingPage = this.router.url.includes('/restaurant-order');
     });
   }
 
@@ -49,7 +60,7 @@ export class CartFooterComponent {
   onSummaryClick() {
     this.isSummaryPanelVisible = true;
     console.log('onSummaryClick');
-    console.log(this.cartItems);
+    console.log(this.cartModel);
   }
 
   isVisible() {

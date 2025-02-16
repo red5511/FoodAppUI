@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { ImageService } from '../services/images/Image-service';
+import { ProductPropertiesDto } from '../services/models';
 
 @Injectable({
   providedIn: 'root',
@@ -34,12 +35,26 @@ export class OrderUtils {
   }
 
   getProductPropertiesNames(
-    productPropertiesList: any[] | null | undefined
+    productPropertiesList: ProductPropertiesDto[]
   ): string {
     if (!productPropertiesList || productPropertiesList.length === 0) {
-      return 'Brak';
+      return ' - ';
     }
-    return productPropertiesList.map((prop) => prop.name).join(', ');
+    
+    // Flatten the property names from each group's propertyList.
+    const propertyNames = productPropertiesList.reduce((names: string[], group) => {
+      if (group.propertyList && group.propertyList.length > 0) {
+        // Push each property's name from the current group.
+        group.propertyList.forEach(prop => {
+          if(prop.name){
+            names.push(prop.name)
+          }
+        });
+      }
+      return names;
+    }, [] as string[]);
+  
+    return propertyNames.join(', ') || ' - ';
   }
 
   getImage(imgUrl: string | undefined) {

@@ -4,6 +4,10 @@
     padding-bottom: 0;
   }
 
+::ng-deep .custom-time-dialog .p-dialog-footer {
+  padding: 1.5rem;
+  box-shadow: none;
+}
   
 .title {
   position: absolute;

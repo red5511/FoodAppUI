@@ -15,7 +15,7 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-plus-circle"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+        <span *ngIf="displayFullVersion()" class="menu-text"
           >Nowe zamówienie</span
         >
       </a>
@@ -28,20 +28,22 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-play-circle"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+        <span *ngIf="displayFullVersion()" class="menu-text"
           >Obsługa zamówień</span
         >
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('MENU_PANEL') && !isHolding">
       <a
-        [routerLink]="'/menu'"
+        style="cursor: pointer"
         routerLinkActive="active"
-        [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
-        (click)="openCollapsedSideNavToggle()"
+        [routerLinkActiveOptions]="{
+          exact: !isSideNavCollapsed || isSubmenuOpen
+        }"
+        (click)="onMenuClick()"
       >
         <span class="menu-icon pi pi-tablet"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+        <span *ngIf="displayFullVersion()" class="menu-text"
           >Zarządzaj menu</span
         >
         <span
@@ -52,13 +54,20 @@
           <mat-icon
             *ngIf="!this.isSideNavCollapsed"
             class="sidebar-menu-element-icon"
-            (click)="toggleSubmenu()"
             >{{
               isSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
             }}</mat-icon
           >
         </span>
       </a>
+      <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
+        <li *ngIf="hasPermissionToModule('MENU_PANEL')">
+          <a routerLink="/menu/products" routerLinkActive="active">
+            <span class="menu-icon pi pi-tablet"></span>
+            <span class="menu-text">Produkty</span></a
+          >
+        </li>
+      </ul>
       <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
         <li *ngIf="hasPermissionToModule('MENU_PANEL')">
           <a routerLink="/menu/category" routerLinkActive="active">
@@ -76,7 +85,7 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon material-icons">assessment</span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Statystyki</span>
+        <span *ngIf="displayFullVersion()" class="menu-text">Statystyki</span>
       </a>
     </li>
     <li *ngIf="hasPermissionToModule('ORDERS_HISTORY')">
@@ -87,7 +96,7 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon material-icons">list_alt</span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text"
+        <span *ngIf="displayFullVersion()" class="menu-text"
           >Historia zamówień</span
         >
       </a>
@@ -100,7 +109,7 @@
         (click)="openCollapsedSideNavToggle()"
       >
         <span class="menu-icon pi pi-crown"></span>
-        <span *ngIf="!isSideNavCollapsed" class="menu-text">Panel admina</span>
+        <span *ngIf="displayFullVersion()" class="menu-text">Panel admina</span>
         <span
           *ngIf="isSideNavVisible"
           class="sub-menu-icon"

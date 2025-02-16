@@ -8,6 +8,8 @@ import {
   ChangeProductCategoriesSortOrderRequest,
   ProductCategoryDto,
 } from '../../services/models';
+import { Message } from 'primeng/api';
+import { ToastrService } from 'ngx-toastr';
 interface Column {
   field: string;
   header: string;
@@ -23,26 +25,38 @@ export class MenuCategoryComponent {
   categories: ProductCategoryDto[] = [];
   cols!: Column[];
   expandedRows: { [s: string]: boolean } = {};
-  loading: boolean = true;
   addNewCategoryButtonVisible: boolean = true;
+  messages: Message[] = [];
   private destroy$ = new Subject<void>();
 
   constructor(
     private contextService: ContextService,
-    private productCategoryService: ProductCategoryService
+    private productCategoryService: ProductCategoryService,
+    private toastService: ToastrService
   ) {}
 
   ngOnInit() {
+    this.messages = [
+      {
+        severity: 'info',
+        detail:
+          'Kategorie bedą prezentowane w tej kolejności w panelu tworzenia nowego zamówienia, aby zmienić kolejność przeciagnij wybraną kategorie',
+      },
+    ];
     this.contextService
       .getCompanyIdObservable()
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          this.loading = true;
           this.loadCategories();
         },
       });
     this.cols = [{ field: 'name', header: 'Nazwa' }];
+  }
+
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   loadCategories() {
@@ -59,7 +73,7 @@ export class MenuCategoryComponent {
       });
   }
 
-  onColumnReorder() {
+  onRowReorder() {
     const body: ChangeProductCategoriesSortOrderRequest = {
       categories: this.categories,
     };
@@ -68,7 +82,11 @@ export class MenuCategoryComponent {
         body,
         companyId: this.contextService.getCompanyId() ?? -999,
       })
-      .subscribe();
+      .subscribe({
+        next: () => {
+          this.toastService.success('Kolejność kategorii została zmieniona');
+        },
+      });
   }
 
   onAddNewCategoryButtonClick() {

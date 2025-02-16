@@ -17,6 +17,17 @@
     margin-left: 235px;
 }
 
+.bodyCartRightBar {
+    width: calc(100% - 235px);
+    margin-right: 235px;
+}
+
+.bodyCartRightBarDoubleTrimmed {
+    width: calc(100% - 2 * 235px);
+    margin-right: 235px;
+    margin-left: 235px;
+}
+
 .bodyCollapsedSideNav {
     width: calc(100% - 3.7rem);
     margin-left: 3.7rem;

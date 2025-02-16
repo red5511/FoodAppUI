@@ -42,23 +42,25 @@
 
   <ng-template pTemplate="footer">
     @if (currentStep === 1) {
-    <div class="total-price" [ngClass]="{ 'glow-span': isGlowing }">
-      <h3>Suma całkowita: {{ totalPrice | pricePln }}</h3>
+    <div class="footer-container">
+      <div class="total-price" [ngClass]="{ 'glow-span': isGlowing }">
+        <h3 style="margin: 0;">Suma całkowita: {{ totalPrice | pricePln }}</h3>
+      </div>
+      <button
+        pButton
+        severity="success"
+        icon="pi pi-arrow-right"
+        label="Dalej"
+        (click)="currentStep = 2"
+      ></button>
     </div>
-    <button
-      pButton
-      severity="success"
-      icon="pi pi-arrow-right"
-      label="Dalej"
-      (click)="currentStep = 2"
-    ></button>
-    } @else if (currentStep === 2) {
+    }@else if (currentStep === 2) {
     <button
       pButton
       severity="success"
       icon="pi pi-check"
       [label]="executeOrderLabel"
-      (click)="onExecuteOrder()"
+      (click)="onApproveOrder()"
     ></button>
     }
   </ng-template>

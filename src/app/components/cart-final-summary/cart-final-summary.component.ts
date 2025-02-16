@@ -10,9 +10,14 @@ import { CartService } from '../../services/cart/cart-service';
 import { Subject, takeUntil } from 'rxjs';
 import { trigger, transition, style, animate } from '@angular/animations';
 import { OrderService } from '../../services/services';
-import { CreateOrderRequest, OrderDto } from '../../services/models';
+import {
+  CreateOrderRequest,
+  ModifyOrderRequest,
+  OrderDto,
+  OrderProductDto,
+} from '../../services/models';
 import { ToastrService } from 'ngx-toastr';
-import { CartSummaryModel } from '../../common/commonModels';
+import { CartModel, CartSummaryModel } from '../../common/commonModels';
 import { ContextService } from '../../services/context/context.service';
 import { toNormalLocalDateTime } from '../../common/dateUtils';
 import { OrderUtils } from '../../common/orders-utils';
@@ -40,17 +45,14 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   @Input({ required: true }) isSummaryPanelVisible!: boolean;
   @Output() onSummaryPanelVisibleChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
-  cartSummaryModel: CartSummaryModel = {
-    isTakeaway: 'Nie',
-    orderProducts: [],
-    executionDateTime: new Date(),
-  };
+  cartSummaryModel: CartSummaryModel;
   totalItems: number = 0;
   totalPrice: number = 0;
   isGlowing: boolean = false;
   isGlowActive: boolean = false;
   currentStep: number = 1;
   executeOrderLabel = 'Zatwierdź ';
+  cartModel?: CartModel;
   private destroy$ = new Subject<void>();
 
   constructor(
@@ -59,22 +61,26 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     private toastService: ToastrService,
     private contextSerice: ContextService,
     private orderUtils: OrderUtils
-  ) {}
+  ) {
+    this.cartSummaryModel = this.getDefaultCartSummaryModel();
+  }
 
   ngOnInit(): void {
     this.cartService.cartUpdated
       .pipe(takeUntil(this.destroy$))
       .subscribe((cart) => {
-        this.totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        this.totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+        this.cartModel = cart;
+        this.totalItems = cart.orderProducts.reduce(
+          (sum: number, item: OrderProductDto) => sum + (item.quantity ?? 0),
+          0
+        );
+        this.totalPrice = cart.orderProducts.reduce(
+          (sum: number, item: OrderProductDto) => sum + (item.price ?? 0),
+          0
+        );
         this.executeOrderLabel =
           'Zatwierdź - ' + this.totalPrice.toFixed(2) + ' zł';
       });
-  }
-
-  closeDialog() {
-    this.onSummaryPanelVisibleChange.emit(this.isSummaryPanelVisible);
-    this.currentStep = 1;
   }
 
   ngOnDestroy(): void {
@@ -82,7 +88,28 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     this.destroy$.complete();
   }
 
-  onExecuteOrder() {
+  getDefaultCartSummaryModel(): CartSummaryModel {
+    return {
+      isTakeaway: 'Nie',
+      orderProducts: [],
+      executionDateTime: new Date(),
+    };
+  }
+  closeDialog() {
+    this.onSummaryPanelVisibleChange.emit(this.isSummaryPanelVisible);
+    this.currentStep = 1;
+    this.cartSummaryModel = this.getDefaultCartSummaryModel();
+  }
+
+  onApproveOrder() {
+    if (this.cartModel?.modifiedOrderId) {
+      this.modifyOrder();
+    } else {
+      this.createOrder();
+    }
+  }
+
+  createOrder() {
     const body: CreateOrderRequest = {
       order: this.mapOrder(),
     };
@@ -102,9 +129,35 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
       });
   }
 
+  modifyOrder() {
+    const body: ModifyOrderRequest = {
+      order: this.mapOrder(),
+      modifiedOrderIf: this.cartModel?.modifiedOrderId,
+    };
+
+    this.orderService
+      .modifyOrder({
+        body,
+        companyId: this.contextSerice.getCompanyId() ?? -999,
+      })
+      .subscribe({
+        next: () => {
+          this.isSummaryPanelVisible = false;
+          this.cartService.clearCart();
+          this.toastService.success(
+            this.isOrderExecuted()
+              ? 'Zamówienie zostało zmodyfikowane i zrealizowane'
+              : 'Zamówienie zostalo zmodyfikowane'
+          );
+        },
+      });
+  }
+
   mapOrder(): OrderDto {
     const status = this.isOrderExecuted() ? 'EXECUTED' : 'IN_EXECUTION';
-    const paymentMethod = this.orderUtils.getPaymentMethodFromCheckbox(this.cartSummaryModel.paymentMethod)
+    const paymentMethod = this.orderUtils.getPaymentMethodFromCheckbox(
+      this.cartSummaryModel.paymentMethod
+    );
 
     return {
       executionTime: toNormalLocalDateTime(
@@ -116,7 +169,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
       price: this.totalPrice,
       takeaway: this.cartSummaryModel.isTakeaway === 'Tak' ? true : false,
       status,
-      paidWhenOrdered: this.isOrderExecuted()
+      paidWhenOrdered: this.isOrderExecuted(),
     };
   }
 

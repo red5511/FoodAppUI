@@ -8,6 +8,7 @@ import {
 import { CartService } from '../../services/cart/cart-service';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ImageService } from '../../services/images/Image-service';
+import { cloneDeep } from 'lodash';
 
 @Component({
   selector: 'app-product-card',
@@ -90,6 +91,8 @@ export class ProductCardComponent {
         quantity: this.quantity,
         productPropertiesList: this.getSelectedProductProperties(),
       };
+      console.log('addToCart');
+      
       console.log(orderProduct);
 
       this.cartService.addToCart(orderProduct);
@@ -135,11 +138,13 @@ export class ProductCardComponent {
     return totalPrice;
   }
 
-  getSelectedProductProperties() {
-    let productPropertiesList: ProductPropertiesDto[] = [];
+  getSelectedProductProperties(): ProductPropertiesDto[]{
+    let result: ProductPropertiesDto[] = [];
 
     // Iterate over selected properties (radio buttons)
     this.selectedProduct.productPropertiesList?.forEach((property) => {
+      const clondedProperties: ProductPropertiesDto = cloneDeep(property)
+      clondedProperties.propertyList = []
       if (property.required) {
         const selectedOptionId = this.productForm.get(
           `property_${property.id}`
@@ -148,20 +153,23 @@ export class ProductCardComponent {
           (option) => option.id === selectedOptionId
         );
         if (selectedOption) {
-          productPropertiesList.push(selectedOption);
+          clondedProperties.propertyList.push(selectedOption);
         }
       } else {
         // Iterate over optional properties (checkboxes)
         property.propertyList?.forEach((option) => {
           const controlName = `optional_${property.id}_${option.id}`;
           if (this.productForm.get(controlName)?.value) {
-            productPropertiesList.push(option);
+            clondedProperties.propertyList!.push(option);
           }
         });
       }
+      if(clondedProperties.propertyList.length > 0){
+        result.push(clondedProperties)
+      }
     });
 
-    return productPropertiesList;
+    return result;
   }
 
   incrementQuantity() {

@@ -5,6 +5,7 @@ import { FilterService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { SocketService } from './services/websocket/socket-service';
 import { ContextService } from './services/context/context.service';
 import { isCaptureEventType } from '@angular/core/primitives/event-dispatch';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-root',
@@ -18,8 +19,10 @@ export class AppComponent {
   isLoggedIn = false;
   isSideNavCollapsed: boolean;
   isTabletView: boolean;
+  isBodyCartRightBar: boolean = false;
   tabletMinWith: number = 1000;
   tabletMaxWith: number = 1200;
+  activeRoute: string = '';
 
   constructor(
     private loginService: LoginService,
@@ -27,7 +30,8 @@ export class AppComponent {
     private filterService: FilterService,
     private webSocketService: SocketService,
     private contextService: ContextService,
-    private messageService: MessageService
+    private messageService: MessageService,
+    private router: Router
   ) {
     this.screenWidth = window.innerWidth;
     this.isSideNavVisible =
@@ -41,9 +45,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
-
     window.addEventListener('beforeunload', this.handleWindowClose);
-    this.primengConfig.ripple = true
+    this.primengConfig.ripple = true;
     this.primengConfig.setTranslation({
       selectionMessage: '{0} Zaznaczone',
       startsWith: 'Zaczyna się od',
@@ -112,6 +115,10 @@ export class AppComponent {
     this.loginService.isLoggedInVisibility$.subscribe((isLogged) => {
       this.isLoggedIn = isLogged;
     });
+    this.router.events.subscribe(() => {
+      this.activeRoute = this.router.url
+      this.isBodyCartRightBar = this.activeRoute.includes('/restaurant-order') && this.screenWidth > 1200;
+    });
   }
 
   ngOnDestroy() {
@@ -120,7 +127,6 @@ export class AppComponent {
 
   @HostListener('window:resize', ['$event'])
   onResize(event: Event) {
-    console.log('resize');
     this.screenWidth = window.innerWidth;
     this.isTabletView = this.screenWidth < this.tabletMinWith;
     if (this.screenWidth < this.tabletMinWith) {
@@ -135,13 +141,19 @@ export class AppComponent {
       this.isSideNavCollapsed = false;
       this.isSideNavVisible = true;
     }
+
+    if(this.activeRoute.includes('/restaurant-order') && this.screenWidth > 1200){
+      this.isBodyCartRightBar = true
+    }
+    else if(this.screenWidth < 1200){
+      this.isBodyCartRightBar = false
+    }
+    console.log('Visible ' + this.isSideNavVisible);
+    console.log('Collapsed ' + this.isSideNavCollapsed);
+    console.log('isBodyCartRightBar ' + this.isBodyCartRightBar);
   }
 
   onToggleSidnav() {
-    // if(!this.isSideNavCollapsed){
-    //   this.isSideNavVisible = !this.isSideNavVisible
-    // }
-
     if (this.screenWidth < this.tabletMinWith) {
       this.isSideNavVisible = !this.isSideNavVisible;
       this.isSideNavCollapsed = false;
@@ -155,14 +167,6 @@ export class AppComponent {
       this.isSideNavCollapsed = !this.isSideNavCollapsed;
       this.isSideNavVisible = true;
     }
-
-    // if (
-    //   this.screenWidth < this.tabletMaxWith &&
-    //   this.isSideNavVisible &&
-    //   this.screenWidth > this.tabletMinWith
-    // ) {
-    //   this.isSideNavCollapsed = !this.isSideNavCollapsed;
-    // }
   }
 
   private handleWindowClose = () => {
@@ -199,28 +203,8 @@ export class AppComponent {
     }
   };
 
-  // toggleSideNav() {
-  //   this.isSideNavVisible = event.isSidebarVisible;
-  //   this.screenWidth = event.screenWidth;
-  // }
-
   onOpenCollapsedSideNavToggle() {
     this.isSideNavVisible = true;
     this.isSideNavCollapsed = false;
   }
-
-  // handleWindow() {
-  //   if (this.screenWidth < this.tabletMinWith) {
-  //     this.isSideNavVisible = false;
-  //   } else if (
-  //     this.screenWidth < this.tabletMaxWith &&
-  //     this.isSideNavVisible &&
-  //     this.screenWidth > this.tabletMinWith
-  //   ) {
-  //     this.isSideNavVisible = true;
-  //     this.isSideNavCollapsed = true;
-  //   } else if (this.screenWidth > 1200 && !this.isSideNavVisible) {
-  //     this.isSideNavCollapsed = false;
-  //   }
-  // }
 }

@@ -3,12 +3,7 @@ import { OrderProductDto } from '../../services/models';
 import { Subject } from 'rxjs/internal/Subject';
 import { CartService } from '../../services/cart/cart-service';
 import { takeUntil } from 'rxjs';
-import {
-  trigger,
-  style,
-  transition,
-  animate,
-} from '@angular/animations';
+import { trigger, style, transition, animate } from '@angular/animations';
 import { CartSummaryModel } from '../../common/commonModels';
 import { ImageService } from '../../services/images/Image-service';
 
@@ -54,9 +49,15 @@ export class CartFinalSummaryFirstPanelComponent {
     this.cartService.cartUpdated
       .pipe(takeUntil(this.destroy$))
       .subscribe((cart) => {
-        this.cartSummaryModel.orderProducts = cart;
-        this.totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-        this.totalPrice = cart.reduce((sum, item) => sum + item.price, 0);
+        this.cartSummaryModel.orderProducts = cart.orderProducts;
+        this.totalItems = cart.orderProducts.reduce(
+          (sum: number, item: OrderProductDto) => sum + (item.quantity ?? 0),
+          0
+        );
+        this.totalPrice = cart.orderProducts.reduce(
+          (sum: number, item: OrderProductDto) => sum + (item.price ?? 0),
+          0
+        );
       });
   }
 
@@ -71,7 +72,12 @@ export class CartFinalSummaryFirstPanelComponent {
   }
 
   onQuantityChange(item: OrderProductDto) {
+    console.log('item');
+    console.log(item);
+    
     if (item.quantity === 0) {
+      console.log('true');
+      
       this.cartService.removeFromCart(item.id!);
     } else {
       const updatedItem = this.updateOrderProductPrice(item);
@@ -87,10 +93,19 @@ export class CartFinalSummaryFirstPanelComponent {
   updateOrderProductPrice(orderProduct: OrderProductDto): OrderProductDto {
     const basePrice = orderProduct.product?.price || 0;
     let extraPrice = 0;
+    console.log('xd');
+    console.log(orderProduct);
+
     if (orderProduct.productPropertiesList) {
+      console.log('in orderProduct.productPropertiesList');
+
       for (const propGroup of orderProduct.productPropertiesList) {
+        console.log('propGroup' + propGroup);
+        console.log(propGroup);
         if (propGroup.propertyList) {
           for (const prop of propGroup.propertyList) {
+            console.log('prop' + prop);
+            console.log('price' + prop.price);
             extraPrice += prop.price || 0;
           }
         }
@@ -98,6 +113,11 @@ export class CartFinalSummaryFirstPanelComponent {
     }
     const quantity = orderProduct.quantity || 1;
     const totalPrice = (basePrice + extraPrice) * quantity;
+    console.log('updateOrderProductPrice');
+    console.log(quantity);
+    console.log(totalPrice);
+    console.log(extraPrice);
+
     return { ...orderProduct, price: totalPrice };
   }
 }

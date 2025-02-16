@@ -71,7 +71,7 @@ const routes: Routes = [
     canActivate: [authGuard],
   },
   {
-    path: 'menu',
+    path: 'menu/products',
     component: MenuComponent,
     canActivate: [authGuard],
   },
