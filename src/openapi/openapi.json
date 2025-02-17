@@ -1713,7 +1713,8 @@
           "productPropertiesList": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
-          }
+          },
+          "note": { "maxLength": 510, "minLength": 0, "type": "string" }
         }
       },
       "RejectNewIncomingOrderRequest": {

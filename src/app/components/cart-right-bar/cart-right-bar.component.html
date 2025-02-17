@@ -1,1 +1,115 @@
-<p>cart-right-bar works!</p>
+<div class="cart-container">
+  <!-- Scrollable Product List -->
+  <div class="cart-content">
+    <p-dataView
+      [style]="{ 'margin-top': '2px', width: '100%' }"
+      [value]="cartModel.orderProducts"
+      layout="list"
+    >
+      <ng-template let-cartItems pTemplate="list">
+        <div
+          class="col-12"
+          *ngFor="let item of cartItems; trackBy: trackById"
+          [@itemAnim]
+        >
+          <div class="cart-item">
+            <div class="item-header">
+              <div class="big-product-name" *ngIf="item.product?.name">
+                <b>{{ item.product.name }}</b>
+              </div>
+              <p>{{ item.price | pricePln }}</p>
+            </div>
+            <div class="product-info-strings">
+              <div class="options-container">
+                @for (group of item.productPropertiesList; track group.name) {
+                <div
+                  class="property-item"
+                  *ngFor="let prop of group.propertyList"
+                >
+                  {{ prop.name }}
+                  <span *ngIf="prop.price">(+{{ prop.price | pricePln }})</span>
+                </div>
+                }
+              </div>
+            </div>
+            <div class="item-footer">
+              <div class="quantity-selector">
+                <p-inputNumber
+                  id="quantity"
+                  [(ngModel)]="item.quantity"
+                  [min]="0"
+                  [max]="99"
+                  (onInput)="orderUtils.onQuantityChange(item)"
+                  mode="decimal"
+                  showButtons
+                  buttonLayout="horizontal"
+                  incrementButtonIcon="pi pi-plus"
+                  decrementButtonIcon="pi pi-minus"
+                ></p-inputNumber>
+              </div>
+              <p-button
+                *ngIf="item.note === undefined || item.note === null"
+                [severity]="'success'"
+                class="custom-text-button"
+                label="Dodaj notatke"
+                [text]="true"
+                (onClick)="toggleNote(item)"
+              ></p-button>
+              <p-button
+                *ngIf="item.note !== undefined && item.note !== null"
+                [severity]="'success'"
+                class="custom-text-button"
+                label="Skasuj"
+                [text]="true"
+                (onClick)="toggleNote(item)"
+              ></p-button>
+            </div>
+            <textarea
+              *ngIf="item.note !== undefined && item.note !== null"
+              style="margin-top: 1rem"
+              [(ngModel)]="item.note"
+              class="custom-textarea"
+              id="float-input"
+              rows="6"
+              pInputTextarea
+              [maxLength]="510"
+            ></textarea>
+          </div>
+        </div>
+      </ng-template>
+      <ng-template class="empty-template" pTemplate="empty">
+        <div *ngIf="showEmpty" class="empty-container" @fade>
+          <div class="cenetred-div">
+            <i
+              style="font-size: 3rem; margin-bottom: 1rem"
+              class="pi pi-cart-arrow-down"
+            ></i>
+          </div>
+          <div class="cenetred-div">
+            <h6>Koszyk jest pusty</h6>
+          </div>
+          <div class="cenetred-div">
+            <p>Dodaj produkty i stwórz zamówienie</p>
+          </div>
+        </div>
+      </ng-template>
+    </p-dataView>
+  </div>
+  <!-- Fixed Summary Section -->
+  <div class="cart-summary">
+    <!-- Display summary details -->
+    <div class="summary-info">
+      <b>Produktów: {{ totalItems }}</b>
+      <b>Suma: {{ totalPrice | pricePln }}</b>
+    </div>
+    <!-- Checkout button -->
+    <button
+      [disabled]="totalItems < 1"
+      pRipple
+      class="checkout-btn"
+      (click)="onSummaryPanelVisibleChange.emit(true)"
+    >
+      Podsumowanie
+    </button>
+  </div>
+</div>

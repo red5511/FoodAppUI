@@ -6,6 +6,7 @@ import { takeUntil } from 'rxjs';
 import { trigger, style, transition, animate } from '@angular/animations';
 import { CartSummaryModel } from '../../common/commonModels';
 import { ImageService } from '../../services/images/Image-service';
+import { OrderUtils } from '../../common/orders-utils';
 
 @Component({
   selector: 'app-cart-final-summary-first-panel',
@@ -42,7 +43,8 @@ export class CartFinalSummaryFirstPanelComponent {
 
   constructor(
     private cartService: CartService,
-    public imageService: ImageService
+    public imageService: ImageService,
+    public orderUtils: OrderUtils,
   ) {}
 
   ngOnInit(): void {
@@ -72,21 +74,9 @@ export class CartFinalSummaryFirstPanelComponent {
   }
 
   onQuantityChange(item: OrderProductDto) {
-    console.log('item');
-    console.log(item);
-    
-    if (item.quantity === 0) {
-      console.log('true');
-      
-      this.cartService.removeFromCart(item.id!);
-    } else {
-      const updatedItem = this.updateOrderProductPrice(item);
-      this.cartService.updateItem(updatedItem);
-
-      // Use the glowingStates map to trigger the glow effect
-      if (item.id) {
-        this.onQuantityChangeNoneZero.emit(true);
-      }
+    this.orderUtils.onQuantityChange(item)
+    if (item.id) {
+      this.onQuantityChangeNoneZero.emit(true);
     }
   }
 

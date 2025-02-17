@@ -1,9 +1,11 @@
 <div
   class="body"
   [ngClass]="{
-  bodyTrimmed: isSideNavVisible && !isSideNavCollapsed && !isTabletView,
-  bodyCollapsedSideNav: isSideNavVisible && isSideNavCollapsed,
-  bodyNormal: !isSideNavVisible || !isLoggedIn,
+bodyTrimmed: !isBodyCartRightBar && (isSideNavVisible && !isSideNavCollapsed),
+bodyCollapsedSideNav: !isBodyCartRightBar && (isSideNavVisible && isSideNavCollapsed),
+bodyNormal: !isSideNavVisible || !isLoggedIn,
+bodyCartRightBar: isBodyCartRightBar && (isSideNavVisible && !isSideNavCollapsed),
+bodyCartRightBarDoubleTrimmed: isBodyCartRightBar && (isSideNavVisible && isSideNavCollapsed),
 }"
 >
   <app-header-logged-in2
@@ -12,6 +14,5 @@
   >
   </app-header-logged-in2>
   <router-outlet></router-outlet>
-  <app-cart-footer [isBodyCartRightBar]="isBodyCartRightBar"></app-cart-footer>
-
+  <app-cart [isBodyCartRightBar]="isBodyCartRightBar"></app-cart>
 </div>

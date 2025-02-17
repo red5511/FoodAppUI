@@ -1,12 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ImageService } from '../services/images/Image-service';
-import { ProductPropertiesDto } from '../services/models';
+import { OrderProductDto, ProductPropertiesDto } from '../services/models';
+import { CartService } from '../services/cart/cart-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderUtils {
-  constructor(private imageService: ImageService) {}
+  constructor(private imageService: ImageService, private cartService: CartService) {}
   getStatusSeverity(
     status: string
   ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
@@ -71,4 +72,32 @@ export class OrderUtils {
       ? 'CARD'
       : undefined;
   }
+
+    onQuantityChange(item: OrderProductDto) {
+      
+      if (item.quantity === 0) {
+        this.cartService.removeFromCart(item.id!);
+      } else {
+        const updatedItem = this.updateOrderProductPrice(item);
+        this.cartService.updateItem(updatedItem);
+      }
+    }
+
+    updateOrderProductPrice(orderProduct: OrderProductDto): OrderProductDto {
+      const basePrice = orderProduct.product?.price || 0;
+      let extraPrice = 0;
+  
+      if (orderProduct.productPropertiesList) {
+        for (const propGroup of orderProduct.productPropertiesList) {
+          if (propGroup.propertyList) {
+            for (const prop of propGroup.propertyList) {
+              extraPrice += prop.price || 0;
+            }
+          }
+        }
+      }
+      const quantity = orderProduct.quantity || 1;
+      const totalPrice = (basePrice + extraPrice) * quantity;
+      return { ...orderProduct, price: totalPrice };
+    }
 }

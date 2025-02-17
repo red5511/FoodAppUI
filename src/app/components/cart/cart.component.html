@@ -1,0 +1,21 @@
+<app-cart-right-bar
+  *ngIf="isBodyCartRightBar"
+  [isBodyCartRightBar]="isBodyCartRightBar"
+  [totalItems]="totalItems"
+  [totalPrice]="totalPrice"
+  [cartModel]="cartModel"
+  (onSummaryPanelVisibleChange)="onSummaryClick()"
+></app-cart-right-bar>
+
+<app-cart-footer
+  *ngIf="isFooterCartVisible()"
+  [isBodyCartRightBar]="isBodyCartRightBar"
+  [totalItems]="totalItems"
+  [totalPrice]="totalPrice"
+  (onSummaryPanelVisibleChange)="onSummaryClick()"
+></app-cart-footer>
+
+<app-cart-final-summary
+  [isSummaryPanelVisible]="isSummaryPanelVisible"
+  (onSummaryPanelVisibleChange)="isSummaryPanelVisible = false"
+></app-cart-final-summary>

@@ -1,18 +1,14 @@
-<div class="cart-footer" *ngIf="isVisible()">
+<div class="cart-footer">
   <div class="cart-info">
     <span>💰 {{ totalPrice | pricePln }}</span>
     <span [ngClass]="{ 'glow-span': isGlowing }">🥙 {{ totalItems }}</span>
     <button class="clear-cart-btn" (click)="clearCart()">🗑️ Wyczyść</button>
   </div>
-  <button pRipple class="checkout-btn" (click)="onSummaryClick()">
+  <button
+    pRipple
+    class="checkout-btn"
+    (click)="onSummaryPanelVisibleChange.emit(true)"
+  >
     Podsumowanie
   </button>
 </div>
-
-<!-- Add this to your component template -->
-<app-cart-final-summary
-  [isSummaryPanelVisible]="isSummaryPanelVisible"
-  (onSummaryPanelVisibleChange)="isSummaryPanelVisible = false"
-></app-cart-final-summary>
-
-<app-cart-right-bar *ngIf="isBodyCartRightBar"></app-cart-right-bar>

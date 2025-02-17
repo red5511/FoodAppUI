@@ -1,0 +1,136 @@
+:host {
+  position: fixed;
+  top: 64px; /* Adjust if you have a header */
+  right: 0;
+  width: 315px; // jest wiekszy niz w body i dzieki temu zasłania scrolla i troche bardziej clean to tyglada
+  height: calc(100vh - 64px); /* Full viewport height minus header */
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+.cart-container {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* The scrollable container for the product list */
+.cart-content {
+  flex: 1 1 auto; /* Takes up the remaining space */
+  overflow-y: auto; /* Enables vertical scrolling when needed */
+  overflow-x: hidden; /* Enables vertical scrolling when needed */
+}
+
+/* Fixed summary section at the bottom */
+.cart-summary {
+  padding: 1rem;
+  border-top: 1px solid #ddd;
+  background-color: #fff;
+}
+
+/* Ensure the Buy button spans the full width */
+.buy-button {
+  width: 100%;
+}
+
+/* Other existing styles... */
+::ng-deep .custom-text-button .p-button {
+  padding: 8px;
+  font-size: 15px;
+  margin-bottom: 3px;
+}
+
+.cart-item {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+}
+
+.item-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.5rem;
+}
+
+.big-product-name {
+  flex: 1;
+  margin-right: 1rem;
+}
+
+.item-header p {
+  flex-shrink: 0;
+  white-space: nowrap;
+  margin: 0;
+}
+
+.product-info-strings {
+  margin-left: 1rem;
+}
+
+.property-item {
+  border-radius: 3px;
+  background: #fff;
+  font-size: 13px;
+  border-bottom: 1px dotted #ddddddde;
+}
+
+.quantity-selector {
+}
+
+.item-footer {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 1.5rem;
+  align-items: center;
+}
+
+.cenetred-div {
+  display: flex;
+  justify-content: center;
+}
+
+.note-actions {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 0.5rem;
+}
+
+.checkout-btn,
+.clear-cart-btn {
+  border: none;
+  width: 100%;
+  padding: 0.75rem 1.5rem;
+  font-size: 1.1rem;
+  font-weight: bold;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: all 0.3s ease-in-out;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+// Checkout Button
+.checkout-btn {
+  color: white;
+  background: #ff5722;
+}
+
+.summary-info {
+  display: flex;
+  justify-content: space-evenly;
+  // font-size: 1rem;
+  font-family: "Inter var", sans-serif;
+  color: #4b5563;
+  margin-bottom: 8px;
+}
+
+.checkout-btn:disabled {
+  background-color: rgba(204, 204, 204, 0.384) 722; /* Gray background for disabled state */
+  color: white; /* Lighter text color */
+  cursor: default;
+  opacity: 0.7;
+}

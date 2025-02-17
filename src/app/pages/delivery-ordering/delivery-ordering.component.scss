@@ -1,0 +1,11 @@
+:host {
+    width: 98%; // Take the full width of the parent container
+    max-width: 1500px;
+    margin-bottom: 100px;
+    padding-top: 4%;
+  }
+
+  .card-header{
+    display: flex;
+    justify-content: center;
+  }

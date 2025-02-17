@@ -112,6 +112,6 @@ export class SidenavComponent implements OnInit {
   }
 
   displayFullVersion(){
-    return !this.isSideNavCollapsed
+    return !this.isSideNavCollapsed || this.isBodyCartRightBar
   }
 }

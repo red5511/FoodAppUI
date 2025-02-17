@@ -1,5 +1,17 @@
-    <p-tabView [style]="{padding: '0'}" [(activeIndex)]="activeIndex" [scrollable]="true">
-        <p-tabPanel *ngFor="let tab of productTabs" [header]="tab.categoryTabTitle!" style="padding: 0;">
-            <app-product-card *ngFor="let productsByCategory of tab.productsByCategoryList" [productsByCategory]="productsByCategory"></app-product-card>
-        </p-tabPanel>
-    </p-tabView>
+<p-tabView
+  [style]="{ padding: '0', 'margin-bottom': '50px' }"
+  [(activeIndex)]="activeIndex"
+  [scrollable]="true"
+>
+  <p-tabPanel
+    *ngFor="let tab of productTabs"
+    [header]="tab.categoryTabTitle!"
+    style="padding: 0"
+    @fade
+  >
+    <app-product-card
+      *ngFor="let productsByCategory of tab.productsByCategoryList"
+      [productsByCategory]="productsByCategory"
+    ></app-product-card>
+  </p-tabPanel>
+</p-tabView>

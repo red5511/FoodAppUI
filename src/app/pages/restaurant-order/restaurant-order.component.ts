@@ -5,11 +5,25 @@ import { ContextService } from '../../services/context/context.service';
 import { Subject, takeUntil } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
 import { CartService } from '../../services/cart/cart-service';
+import { trigger, transition, style, animate } from '@angular/animations';
 
 @Component({
   selector: 'app-restaurant-order',
   templateUrl: './restaurant-order.component.html',
   styleUrl: './restaurant-order.component.scss',
+  animations: [
+    trigger('fade', [
+      transition(':enter', [
+        // When the element enters, start with opacity 0 and animate to 1.
+        style({ opacity: 0 }),
+        animate('300ms ease-in', style({ opacity: 1 })),
+      ]),
+      transition(':leave', [
+        // When the element leaves, animate from full opacity to 0.
+        animate('300ms ease-out', style({ opacity: 0 })),
+      ]),
+    ]),
+  ],
 })
 export class RestaurantOrderComponent {
   activeIndex: number = 0;

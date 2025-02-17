@@ -108,6 +108,8 @@ import { CartFinalSummaryFirstPanelComponent } from './components/cart-final-sum
 import { CartFinalSummarySecondPanelComponent } from './components/cart-final-summary-second-panel/cart-final-summary-second-panel.component';
 import { CashierFinalSummaryComponent } from './components/cashier-final-summary/cashier-final-summary.component';
 import { CartRightBarComponent } from './components/cart-right-bar/cart-right-bar.component';
+import { CartComponent } from './components/cart/cart.component';
+import { DeliveryOrderingComponent } from './pages/delivery-ordering/delivery-ordering.component';
 
 
 @NgModule({
@@ -164,6 +166,8 @@ import { CartRightBarComponent } from './components/cart-right-bar/cart-right-ba
     CartFinalSummarySecondPanelComponent,
     CashierFinalSummaryComponent,
     CartRightBarComponent,
+    CartComponent,
+    DeliveryOrderingComponent,
   ],
   imports: [
     RouterModule,
