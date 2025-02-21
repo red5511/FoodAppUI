@@ -110,6 +110,9 @@ import { CashierFinalSummaryComponent } from './components/cashier-final-summary
 import { CartRightBarComponent } from './components/cart-right-bar/cart-right-bar.component';
 import { CartComponent } from './components/cart/cart.component';
 import { DeliveryOrderingComponent } from './pages/delivery-ordering/delivery-ordering.component';
+import { BluetoothService } from './services/bluetooth/bluetooth-service';
+import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
+import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 
 
 @NgModule({
@@ -228,6 +231,9 @@ import { DeliveryOrderingComponent } from './pages/delivery-ordering/delivery-or
   providers: [
     SocketService,
     HttpClient,
+    BluetoothService, //mozliwe ze usles
+    BluetoothSerial,
+    AndroidPermissions,
     provideCharts(withDefaultRegisterables()),
     MessageService,
     ConfirmationService,

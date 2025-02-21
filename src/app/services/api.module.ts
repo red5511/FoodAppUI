@@ -16,6 +16,7 @@ import { OrderService } from './services/order.service';
 import { DevelopmentService } from './services/development.service';
 import { DashboardService } from './services/dashboard.service';
 import { UserAdministrationService } from './services/user-administration.service';
+import { BluetoothController2Service } from './services/bluetooth-controller-2.service';
 import { DemoControllerService } from './services/demo-controller.service';
 
 /**
@@ -38,6 +39,7 @@ import { DemoControllerService } from './services/demo-controller.service';
     DevelopmentService,
     DashboardService,
     UserAdministrationService,
+    BluetoothController2Service,
     DemoControllerService,
     ApiConfiguration
   ],

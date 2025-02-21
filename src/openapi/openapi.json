@@ -903,6 +903,33 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/scan": {
+      "get": {
+        "tags": ["bluetooth-controller-2"],
+        "operationId": "scanDevices",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "authenticated": { "type": "boolean" },
+                      "encrypted": { "type": "boolean" },
+                      "trustedDevice": { "type": "boolean" },
+                      "bluetoothAddress": { "type": "string" }
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
     "/demo": {
       "get": {
         "tags": ["demo-controller"],
@@ -917,6 +944,28 @@
           }
         },
         "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/connect": {
+      "get": {
+        "tags": ["bluetooth-controller-2"],
+        "operationId": "connectToDevice",
+        "parameters": [
+          {
+            "name": "bluetoothAddress",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
       }
     },
     "/api/v1/product/menu-ordering/{companyId}": {
