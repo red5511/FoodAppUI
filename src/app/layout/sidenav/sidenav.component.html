@@ -157,5 +157,41 @@
         </li>
       </ul>
     </li>
+    <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS') || hasPermissionToModule('ONLINE_ORDERS')">
+      <a
+        style="cursor: pointer"
+        routerLinkActive="active"
+        [routerLinkActiveOptions]="{
+          exact: !isSideNavCollapsed || isSubmenuOpen
+        }"
+        (click)="onSettingsClick()"
+      >
+        <span class="menu-icon pi pi-cog"></span>
+        <span *ngIf="displayFullVersion()" class="menu-text"
+          >Ustawienia</span
+        >
+        <span
+          *ngIf="isSideNavVisible"
+          class="sub-menu-icon"
+          [ngClass]="{ 'sub-menu-open': isSettingsSubmenuOpen }"
+        >
+          <mat-icon
+            *ngIf="displayFullVersion()"
+            class="sidebar-menu-element-icon"
+            >{{
+              isSettingsSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
+            }}</mat-icon
+          >
+        </span>
+      </a>
+      <ul *ngIf="isSettingsSubmenuOpen && isSideNavVisible" class="sub-menu">
+        <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS') || hasPermissionToModule('ONLINE_ORDERS')">
+          <a routerLink="/settings/bluetooth" routerLinkActive="active">
+            <span class="menu-icon pi pi-print"></span>
+            <span class="menu-text">Drukarka bluetooth</span></a
+          >
+        </li>
+      </ul>
+    </li>
   </ul>
 </div>

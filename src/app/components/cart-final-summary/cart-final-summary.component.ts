@@ -17,10 +17,16 @@ import {
   OrderProductDto,
 } from '../../services/models';
 import { ToastrService } from 'ngx-toastr';
-import { CartModel, CartSummaryModel } from '../../common/commonModels';
+import {
+  CartModel,
+  CartSummaryModel,
+  WHAT_TO_DO_CODES,
+} from '../../common/commonModels';
 import { ContextService } from '../../services/context/context.service';
 import { toNormalLocalDateTime } from '../../common/dateUtils';
 import { OrderUtils } from '../../common/orders-utils';
+import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
+import { decodeListOfBase64 } from '../../common/common-utils';
 
 @Component({
   selector: 'app-cart-final-summary',
@@ -60,7 +66,8 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     private orderService: OrderService,
     private toastService: ToastrService,
     private contextSerice: ContextService,
-    private orderUtils: OrderUtils
+    private orderUtils: OrderUtils,
+    private bluetoothService: BluetoothService
   ) {
     this.cartSummaryModel = this.getDefaultCartSummaryModel();
   }
@@ -102,6 +109,17 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   }
 
   onApproveOrder() {
+    if (
+      this.cartSummaryModel.whatToDoCodes &&
+      this.isThermalPrint(this.cartSummaryModel.whatToDoCodes) &&
+      !this.bluetoothService.getConnectedDeviceId()
+    ) {
+      this.toastService.error(
+        'Wybrałeś opcje z wydrukiem, jednak nie masz podpietaj drukarki. Udaj sie do ustawień i dokonaj konfiguracji. Jesli chcesz utworzyć zamówienie bez wydruku odznacz opcje "Drukuj"'
+      );
+      return;
+    }
+
     if (this.cartModel?.modifiedOrderId) {
       this.modifyOrder();
     } else {
@@ -110,21 +128,38 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   }
 
   createOrder() {
+    const isThermalPrint = this.isThermalPrint(
+      this.cartSummaryModel.whatToDoCodes
+    );
+    const order = this.mapOrder();
     const body: CreateOrderRequest = {
-      order: this.mapOrder(),
+      order,
+      printViaBluetooth: isThermalPrint,
     };
 
     this.orderService
       .saveOrder({ body, companyId: this.contextSerice.getCompanyId() ?? -999 })
       .subscribe({
-        next: () => {
-          this.isSummaryPanelVisible = false;
+        next: (response) => {
           this.cartService.clearCart();
           this.toastService.success(
             this.isOrderExecuted()
               ? 'Zamówienie zostało utworzone i zrealizowane'
-              : 'Zamówienie zostalo utworzone i jest w realizacji'
+              : 'Zamówienie #' +
+                  response.orderId +
+                  'zostalo utworzone i jest w realizacji'
           );
+          if (this.cartSummaryModel.whatToDoCodes && isThermalPrint) {
+            order.id = response.orderId!;
+            const dataListToSend = decodeListOfBase64(
+              response.encodedTextForBluetoothPrinterList
+            );
+            dataListToSend.forEach((data) =>
+              this.bluetoothService.sendPrintDataRaw(data)
+            );
+            // this.bluetoothService.printOrderDetails(order);
+          }
+          this.isSummaryPanelVisible = false;
         },
       });
   }
@@ -191,5 +226,9 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
       this.isGlowing = false; // Stop the glow effect after 1.5 seconds
       this.isGlowActive = false; // Mark glow as inactive
     }, 1500); // Match the duration of the CSS animation
+  }
+
+  isThermalPrint(codes: WHAT_TO_DO_CODES[] | undefined) {
+    return codes?.includes('BON_PRINT');
   }
 }

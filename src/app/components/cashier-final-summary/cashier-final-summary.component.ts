@@ -10,6 +10,7 @@ import { OrderService } from '../../services/services';
 import { FinalizeOrder$Params } from '../../services/fn/order/finalize-order';
 import { ContextService } from '../../services/context/context.service';
 import { ToastrService } from 'ngx-toastr';
+import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
 
 @Component({
   selector: 'app-cashier-final-summary',
@@ -37,7 +38,8 @@ export class CashierFinalSummaryComponent {
     private orderUtils: OrderUtils,
     private orderService: OrderService,
     private contextService: ContextService,
-    private toastService: ToastrService
+    private toastService: ToastrService,
+    private bluetoothService: BluetoothService,
   ) {}
   onSelectItem(item: OrderProcessOption): void {
     // Toggle the active state

@@ -1,0 +1,102 @@
+<p-messages
+  *ngIf="defaultBluetoothDeviceId !== null"
+  [(value)]="messages2"
+  [closable]="false"
+  [@.disabled]="true"
+>
+</p-messages>
+<p-card>
+  @if (!isWeb) {
+  <!-- //musi byc tak bo prime ng rederuje dziwnie kolumny w tablue i jest flickergin xd -->
+
+  <div class="container">
+    <div class="devices-list-header">
+      <h2 style="margin: 0">
+        {{
+          devices.length === 0
+            ? "Brak zparowanych urządzeń"
+            : "Zparowne urządzenia"
+        }}
+      </h2>
+      <button style="margin-left: 2rem" pButton (click)="listDevices()">
+        {{ devices.length === 0 ? "Wyszukaj" : "Odśwież" }}
+        <ng-container *ngIf="isRefreshLoading">
+          <i
+            class="pi pi-spin pi-spinner"
+            style="font-size: 1rem; margin-left: 1rem"
+          ></i>
+        </ng-container>
+      </button>
+    </div>
+    <div style="margin-top: 2rem" *ngIf="devices.length > 0">
+      <p-table [value]="devices" [(selection)]="selectedDevice" dataKey="id">
+        <ng-template pTemplate="header">
+          <tr>
+            <th style="width: 4rem"></th>
+            <th>Nazwa</th>
+            <th>Id</th>
+          </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-device>
+          <tr>
+            <td>
+              <p-tableRadioButton [value]="device" />
+            </td>
+            <td>{{ device.name || "Nieznane urządzenie" }}</td>
+            <td>{{ device.id || "..." }}</td>
+          </tr>
+        </ng-template>
+      </p-table>
+
+      <div style="text-align: left">
+        <p-checkbox
+          [disabled]="selectedDevice === undefined"
+          class="custom-checkbox"
+          binary="true"
+          [(ngModel)]="checked"
+          inputId="cb1"
+        >
+        </p-checkbox>
+        <label for="cb1">
+          Zapamiętaj i łącz się autmatycznie przy starcie aplikacji</label
+        >
+      </div>
+      <!-- Connection Status -->
+      <p style="color: green; margin-top: 1.5rem" *ngIf="connectedDevice">
+        Jesteś obecnie połączony z: {{ connectedDevice }}
+      </p>
+      <p style="color: red; margin-top: 1.5rem" *ngIf="!connectedDevice">
+        Nie jesteś połączony do żadnego urządzenia
+      </p>
+
+      <div class="footer">
+        <button pButton *ngIf="connectedDevice" (click)="print()">
+          Wydruk testowy
+        </button>
+        <button
+          style="margin-left: 2rem"
+          severity="success"
+          [disabled]="selectedDevice === undefined || isConnectLoading"
+          pButton
+          pRipple
+          (click)="connectToDevice(selectedDevice.id)"
+        >
+          Zatwierdź
+          <ng-container *ngIf="isConnectLoading">
+            <i
+              class="pi pi-spin pi-spinner"
+              style="font-size: 1rem; margin-left: 1rem"
+            ></i>
+          </ng-container>
+        </button>
+
+        <ng-template #loadingTemplate>
+          <i class="pi pi-spin pi-spinner" style="font-size: 1rem"></i>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+  }@else {
+  <p-messages [(value)]="messages" [closable]="false"> </p-messages>
+  }
+</p-card>

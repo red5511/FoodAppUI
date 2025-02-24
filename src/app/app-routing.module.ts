@@ -18,6 +18,7 @@ import { AddCompanyComponent } from './pages/add-company/add-company.component';
 import { MenuComponent } from './pages/menu/menu.component';
 import { MenuCategoryComponent } from './pages/menu-category/menu-category.component';
 import { DeliveryOrderingComponent } from './pages/delivery-ordering/delivery-ordering.component';
+import { SettingsBluetoothComponent } from './pages/settings-bluetooth/settings-bluetooth.component';
 
 const routes: Routes = [
   { path: '', redirectTo: 'welcome', pathMatch: 'full' },
@@ -84,6 +85,11 @@ const routes: Routes = [
   {
     path: 'menu/category',
     component: MenuCategoryComponent,
+    canActivate: [authGuard],
+  },
+  {
+    path: 'settings/bluetooth',
+    component: SettingsBluetoothComponent,
     canActivate: [authGuard],
   },
   {

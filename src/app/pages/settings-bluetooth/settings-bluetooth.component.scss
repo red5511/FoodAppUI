@@ -1,0 +1,26 @@
+:host {
+  width: 98%; // Take the full width of the parent container
+  max-width: 1500px;
+  margin-bottom: 100px;
+  padding: 1rem;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+}
+
+.devices-list-header {
+  display: flex;
+  align-items: center;
+}
+
+.custom-checkbox{
+    margin-top: 2rem;
+    margin-left: 1rem;
+}
+
+.footer{
+    text-align: right;
+}

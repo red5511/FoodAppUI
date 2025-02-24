@@ -4,12 +4,21 @@
   <ng-template let-items pTemplate="list">
     <div class="col-12" *ngFor="let item of items">
       <div
-        [ngClass]="{ active: item.active }"
+        [ngClass]="{ active: item.active, disabled: item.disabled }"
         pRipple
-        (click)="onSelectItem(item)"
+        (click)="onSelectItem(item, item.disabled)"
         class="item"
       >
-        {{ item.name }}
+        <div>
+          {{ item.name }}
+          <i
+            *ngIf="item.warning"
+            class="pi pi-exclamation-triangle"
+            style="font-size: 1.1rem; color: #ffa500; cursor: pointer"
+          >
+            <small *ngIf="item.warning">{{ item.warningText }}</small>
+          </i>
+        </div>
         <div *ngIf="!item.active" class="plus-icon">
           <i class="pi pi-plus"></i>
         </div>

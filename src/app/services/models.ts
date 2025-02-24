@@ -15,6 +15,7 @@ export { ChangeProductCategoriesSortOrderRequest } from './models/change-product
 export { CompaniesPagedResult } from './models/companies-paged-result';
 export { CompanyDto } from './models/company-dto';
 export { CreateOrderRequest } from './models/create-order-request';
+export { CreateOrderRequestResponse } from './models/create-order-request-response';
 export { CreateProductCategoryRequest } from './models/create-product-category-request';
 export { CreateProductCategoryResponse } from './models/create-product-category-response';
 export { CreateProductPropertiesRequest } from './models/create-product-properties-request';

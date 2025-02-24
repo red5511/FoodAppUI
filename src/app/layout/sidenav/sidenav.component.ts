@@ -21,6 +21,7 @@ export class SidenavComponent implements OnInit {
   @Output()
   onOpenCollapsedSideNavToggle: EventEmitter<any> = new EventEmitter();
   isSubmenuOpen: boolean;
+  isSettingsSubmenuOpen: boolean = false;
   permittedModules: Array<
     | 'ONLINE_ORDERS'
     | 'STATISTICS'
@@ -55,18 +56,19 @@ export class SidenavComponent implements OnInit {
     this.isSubmenuOpen = !this.isSideNavCollapsed && this.isSubmenuOpen;
   }
 
-  isActive(path: string): boolean {
-    return this.router.url === path;
-  }
-
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
   }
 
+  isActive(path: string): boolean {
+    return this.router.url === path;
+  }
+
   openCollapsedSideNavToggle() {
     if (this.isSideNavCollapsed == true) {
       this.isSubmenuOpen = false;
+      this.isSettingsSubmenuOpen = false;
       this.onOpenCollapsedSideNavToggle.emit();
     }
   }
@@ -103,15 +105,33 @@ export class SidenavComponent implements OnInit {
     console.log('onMenuClick');
     console.log(this.navigationService.getPreviousUrl());
     if (this.navigationService.getPreviousUrl()?.includes('/menu/products')) {
-      this.isSubmenuOpen = true
-    }else{
-      this.toggleSubmenu()
+      this.isSubmenuOpen = true;
+    } else {
+      this.toggleSubmenu();
     }
     this.openCollapsedSideNavToggle();
     this.router.navigate(['/menu/products']);
   }
 
-  displayFullVersion(){
-    return !this.isSideNavCollapsed || this.isBodyCartRightBar
+  onSettingsClick() {
+    console.log('onSettingsClick');
+    console.log(this.navigationService.getPreviousUrl());
+    if (
+      this.navigationService.getPreviousUrl()?.includes('/settings/bluetooth')
+    ) {
+      this.isSettingsSubmenuOpen = true;
+    } else {
+      this.toggleSettingsSubmenu();
+    }
+    this.openCollapsedSideNavToggle();
+    this.router.navigate(['/settings/bluetooth']);
+  }
+
+  toggleSettingsSubmenu() {
+    this.isSettingsSubmenuOpen = !this.isSettingsSubmenuOpen;
+  }
+
+  displayFullVersion() {
+    return !this.isSideNavCollapsed || this.isBodyCartRightBar;
   }
 }

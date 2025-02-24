@@ -11,31 +11,3 @@
     </p-floatLabel>
   </div>
 </p-card>
-
-
-<div class="container">
-  <h1>Bluetooth Printer</h1>
-
-  <!-- List Devices -->
-  <button (click)="listDevices()">List Bluetooth Devices</button>
-
-  <!-- Show available devices -->
-  <div *ngIf="devices.length > 0">
-    <h3>Available Devices:</h3>
-    <ul>
-      <li *ngFor="let device of devices">
-        {{ device.name || 'Unknown Device' }} ({{ device.id }})
-        <button (click)="connectToDevice(device.id)">Connect</button>
-      </li>
-    </ul>
-  </div>
-
-  <!-- Connection Status -->
-  <p *ngIf="connectedDevice">Connected to: {{ connectedDevice }}</p>
-
-  <!-- Input field to enter text -->
-  <input type="text" [(ngModel)]="printData" placeholder="Enter text to print" />
-
-  <!-- Print Button -->
-  <button (click)="print()">Print</button>
-</div>

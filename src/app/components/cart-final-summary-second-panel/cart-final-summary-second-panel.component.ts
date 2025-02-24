@@ -4,6 +4,9 @@ import {
   OrderProcessOption,
   WHAT_TO_DO_CODES,
 } from '../../common/commonModels';
+import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
+import { Capacitor } from '@capacitor/core';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-cart-final-summary-second-panel',
@@ -14,29 +17,67 @@ export class CartFinalSummarySecondPanelComponent {
   @Input()
   cartSummaryModel!: CartSummaryModel;
   setTimeDialogvisible: boolean = false;
-  items: OrderProcessOption[] = [
-    {
-      name: 'Wydruk bonowy',
-      code: 'BON_PRINT',
-      active: false,
-    },
-    {
-      name: 'Nabij na kase fiskalną',
-      code: 'KASA_FISKALNA',
-      active: false,
-    },
-    {
-      name: 'Oznacz zamówienie jako zakończone',
-      code: 'MARK_ORDER_AS_EXECUTED',
-      active: false,
-    },
-  ];
+  items: OrderProcessOption[] = [];
+  isWeb: boolean = Capacitor.getPlatform() === 'web';
+  private destroy$ = new Subject<void>();
+
+  constructor(private bluetoothService: BluetoothService) {}
 
   ngOnInit(): void {
+    this.bluetoothService.bluetoothSubjectVisibility$
+      .pipe(takeUntil(this.destroy$))
+      .subscribe((isConnected) => {
+        this.createItemsToDo();
+      });
     this.cartSummaryModel.executionDateTime = new Date();
+    console.log('EHHHHHHHHH');
+    console.log(Capacitor.getPlatform());
+    console.log(!this.isWeb);
+    console.log(this.bluetoothService.getConnectedDeviceId() === null);
+
+    this.createItemsToDo();
   }
 
-  onSelectItem(item: OrderProcessOption): void {
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  createItemsToDo() {
+    this.items = [
+      {
+        name: 'Drukuj',
+        code: 'BON_PRINT',
+        active: false,
+        warning:
+          this.isWeb || this.bluetoothService.getConnectedDeviceId() === null,
+        warningText: ' (Brak drukarki)',
+        disabled:
+          this.isWeb || this.bluetoothService.getConnectedDeviceId() === null,
+      },
+      {
+        name: 'Fiskalizuj',
+        code: 'KASA_FISKALNA',
+        active: false,
+        warningText: ' (Brak kasy fiskalnej)',
+        disabled: true,
+        warning: true,
+      },
+      {
+        name: 'Oznacz zamówienie jako zakończone',
+        code: 'MARK_ORDER_AS_EXECUTED',
+        active: false,
+      },
+    ];
+  }
+
+  onSelectItem(
+    item: OrderProcessOption,
+    isDisabled: undefined | boolean
+  ): void {
+    if (isDisabled && isDisabled === true) {
+      return;
+    }
     // Toggle the active state
     item.active = !item.active;
 

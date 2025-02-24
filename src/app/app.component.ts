@@ -4,7 +4,6 @@ import { SideNavToggle } from './components/side-nav-toggle.interface';
 import { FilterService, MessageService, PrimeNGConfig } from 'primeng/api';
 import { SocketService } from './services/websocket/socket-service';
 import { ContextService } from './services/context/context.service';
-import { isCaptureEventType } from '@angular/core/primitives/event-dispatch';
 import { Router } from '@angular/router';
 
 @Component({

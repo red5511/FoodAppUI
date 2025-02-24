@@ -352,7 +352,18 @@
           },
           "required": true
         },
-        "responses": { "200": { "description": "OK" } },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrderRequestResponse"
+                }
+              }
+            }
+          }
+        },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -903,33 +914,6 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
-    "/scan": {
-      "get": {
-        "tags": ["bluetooth-controller-2"],
-        "operationId": "scanDevices",
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "authenticated": { "type": "boolean" },
-                      "encrypted": { "type": "boolean" },
-                      "trustedDevice": { "type": "boolean" },
-                      "bluetoothAddress": { "type": "string" }
-                    }
-                  }
-                }
-              }
-            }
-          }
-        }
-      }
-    },
     "/demo": {
       "get": {
         "tags": ["demo-controller"],
@@ -944,28 +928,6 @@
           }
         },
         "security": [{ "bearerAuth": [] }]
-      }
-    },
-    "/connect": {
-      "get": {
-        "tags": ["bluetooth-controller-2"],
-        "operationId": "connectToDevice",
-        "parameters": [
-          {
-            "name": "bluetoothAddress",
-            "in": "query",
-            "required": true,
-            "schema": { "type": "string" }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": { "schema": { "type": "string" } }
-            }
-          }
-        }
       }
     },
     "/api/v1/product/menu-ordering/{companyId}": {
@@ -1696,7 +1658,10 @@
       },
       "CreateOrderRequest": {
         "type": "object",
-        "properties": { "order": { "$ref": "#/components/schemas/OrderDto" } }
+        "properties": {
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "printViaBluetooth": { "type": "boolean" }
+        }
       },
       "OrderActions": {
         "type": "object",
@@ -1764,6 +1729,17 @@
             "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
           },
           "note": { "maxLength": 510, "minLength": 0, "type": "string" }
+        }
+      },
+      "CreateOrderRequestResponse": {
+        "required": ["encodedTextForBluetoothPrinterList", "orderId"],
+        "type": "object",
+        "properties": {
+          "orderId": { "type": "integer", "format": "int64" },
+          "encodedTextForBluetoothPrinterList": {
+            "type": "array",
+            "items": { "type": "string" }
+          }
         }
       },
       "RejectNewIncomingOrderRequest": {

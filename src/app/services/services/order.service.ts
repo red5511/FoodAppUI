@@ -11,6 +11,7 @@ import { StrictHttpResponse } from '../strict-http-response';
 
 import { approveNewIncomingOrder } from '../fn/order/approve-new-incoming-order';
 import { ApproveNewIncomingOrder$Params } from '../fn/order/approve-new-incoming-order';
+import { CreateOrderRequestResponse } from '../models/create-order-request-response';
 import { finalizeOrder } from '../fn/order/finalize-order';
 import { FinalizeOrder$Params } from '../fn/order/finalize-order';
 import { getOrdersConfig } from '../fn/order/get-orders-config';
@@ -41,7 +42,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveOrder$Response(params: SaveOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  saveOrder$Response(params: SaveOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<CreateOrderRequestResponse>> {
     return saveOrder(this.http, this.rootUrl, params, context);
   }
 
@@ -51,9 +52,9 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  saveOrder(params: SaveOrder$Params, context?: HttpContext): Observable<void> {
+  saveOrder(params: SaveOrder$Params, context?: HttpContext): Observable<CreateOrderRequestResponse> {
     return this.saveOrder$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<CreateOrderRequestResponse>): CreateOrderRequestResponse => r.body)
     );
   }
 

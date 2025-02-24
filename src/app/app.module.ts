@@ -113,6 +113,8 @@ import { DeliveryOrderingComponent } from './pages/delivery-ordering/delivery-or
 import { BluetoothService } from './services/bluetooth/bluetooth-service';
 import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
+import { SettingsBluetoothComponent } from './pages/settings-bluetooth/settings-bluetooth.component';
+import { TooltipModule } from 'primeng/tooltip';
 
 
 @NgModule({
@@ -171,6 +173,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
     CartRightBarComponent,
     CartComponent,
     DeliveryOrderingComponent,
+    SettingsBluetoothComponent,
   ],
   imports: [
     RouterModule,
@@ -193,6 +196,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
     RippleModule,
     CommonModule,
     DropdownModule,
+    TooltipModule,
     RadioButtonModule,
     MatToolbarModule,
     CheckboxModule,

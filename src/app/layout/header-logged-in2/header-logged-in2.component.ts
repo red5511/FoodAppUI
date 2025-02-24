@@ -6,6 +6,8 @@ import { SocketService } from '../../services/websocket/socket-service';
 import { TokenService } from '../../services/token/token.service';
 import { LoginService } from '../../services/login/login.service';
 import { Router } from '@angular/router';
+import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-header-logged-in2',
@@ -29,13 +31,16 @@ export class HeaderLoggedIn2Component {
   isHolding!: boolean;
   receivingCompanies: CompanyDto[] = [];
   companiesPossibleToReceiving!: CompanyDto[];
+  isWeb: boolean = Capacitor.getPlatform() === 'web';
+
   constructor(
     private dashboardService: DashboardService,
     private contextService: ContextService,
     private webSocketService: SocketService,
     private tokenService: TokenService,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
+    private bluetoothService: BluetoothService
   ) {}
 
   ngOnInit(): void {
@@ -59,6 +64,11 @@ export class HeaderLoggedIn2Component {
         console.error('Error loading data:', error);
       }
     );
+    if (!this.isWeb) {
+      setTimeout(() => {
+        this.bluetoothService.connectOnAppStart();
+      }, 3500);
+    }
   }
 
   checkIfRecivingOrdersShouldBeTurnOn() {
@@ -91,7 +101,16 @@ export class HeaderLoggedIn2Component {
   }
 
   updateContext(
-    permittedModules: Array<'ONLINE_ORDERS' | 'STATISTICS' | 'ORDERS' | 'RESTAURANT_ORDERS' | 'ADMIN_PANEL' | string > | undefined
+    permittedModules:
+      | Array<
+          | 'ONLINE_ORDERS'
+          | 'STATISTICS'
+          | 'ORDERS'
+          | 'RESTAURANT_ORDERS'
+          | 'ADMIN_PANEL'
+          | string
+        >
+      | undefined
   ) {
     if (this.selectedCompany !== null) {
       if (!permittedModules) {

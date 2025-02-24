@@ -29,6 +29,7 @@
     "chart.js": "^4.4.6",
     "cordova-plugin-android-permissions": "^1.1.5",
     "cordova-plugin-bluetooth-serial": "^0.4.7",
+    "gbk.js": "^0.3.0",
     "jwt-decode": "^4.0.0",
     "lodash": "^4.17.21",
     "moment": "^2.30.1",

@@ -18,9 +18,12 @@ export interface OrderProcessOption {
   name: string;
   active: boolean;
   code: WHAT_TO_DO_CODES;
+  warningText?: string;
+  warning?: boolean;
+  disabled?: boolean;
 }
 
 export interface CartModel {
-  orderProducts: OrderProductDto[],
-  modifiedOrderId?: number
+  orderProducts: OrderProductDto[];
+  modifiedOrderId?: number;
 }
