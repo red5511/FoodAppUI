@@ -115,6 +115,7 @@ import { BluetoothSerial } from '@awesome-cordova-plugins/bluetooth-serial/ngx';
 import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions/ngx';
 import { SettingsBluetoothComponent } from './pages/settings-bluetooth/settings-bluetooth.component';
 import { TooltipModule } from 'primeng/tooltip';
+import { AutoCompleteModule } from 'primeng/autocomplete';
 
 
 @NgModule({
@@ -185,6 +186,7 @@ import { TooltipModule } from 'primeng/tooltip';
     CardModule,
     MessagesModule,
     PickListModule,
+    AutoCompleteModule,
     FormsModule,
     MatIconModule,
     ReactiveFormsModule,

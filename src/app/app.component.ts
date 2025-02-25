@@ -105,6 +105,7 @@ export class AppComponent {
       ],
       today: 'Dziś',
       clear: 'Wyczyść',
+
       apply: 'Zastosuj',
       weekHeader: 'Tydz',
       firstDayOfWeek: 1, // 0 for Sunday, 1 for Monday

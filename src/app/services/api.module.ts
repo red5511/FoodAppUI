@@ -17,6 +17,7 @@ import { DevelopmentService } from './services/development.service';
 import { DashboardService } from './services/dashboard.service';
 import { UserAdministrationService } from './services/user-administration.service';
 import { DemoControllerService } from './services/demo-controller.service';
+import { MapsService } from './services/maps.service';
 
 /**
  * Module that provides all services and configuration.
@@ -39,6 +40,7 @@ import { DemoControllerService } from './services/demo-controller.service';
     DashboardService,
     UserAdministrationService,
     DemoControllerService,
+    MapsService,
     ApiConfiguration
   ],
 })

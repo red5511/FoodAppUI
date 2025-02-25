@@ -1,13 +1,13 @@
 <p-card>
-  <ng-template pTemplate="header">
-    <div class="card-header">
-      <h3>Podaj adres dostawy</h3>
-    </div>
-  </ng-template>
-  <div class="card-header">
+  <div class="container">
     <p-floatLabel>
-      <input pInputText id="address" [(ngModel)]="address" />
-      <label for="address">Adres</label>
+
+      <p-autoComplete [(ngModel)]="address" [suggestions]="suggestions" (completeMethod)="onAddressInput($event)" field="description"
+        (onSelect)="onSelectSuggestion($event)" emptyMessage="Brak wyników" inputId="float-label">
+      </p-autoComplete>
+      <label for="float-label">Podaj adres dostawy</label>
     </p-floatLabel>
+
+    <div #mapContainer id="map" style="width: 100%; height: 500px; margin-top: 10px;"></div>
   </div>
 </p-card>
