@@ -1,0 +1,85 @@
+<div class="container">  
+    <p-button
+      *ngIf="!isNewDeliveryOptionButtonVisible"
+      [severity]="'success'"
+      class="custom-text-button"
+      label="Dodaj nową opcję"
+      icon="pi pi-plus-circle"
+      [autofocus]="false"
+      (onClick)="onNewDeliveryOptionClick()"
+    ></p-button>
+  
+    <form
+      [formGroup]="deliveryOpitionForm"
+      *ngIf="isNewDeliveryOptionButtonVisible"
+      class="delivery-option-form"
+    >
+      <div class="input-wrapper">
+        <p-floatLabel>
+          <input
+            [ngClass]="{
+              'ng-invalid':  isOptionDeliveryFieldInvalid('newDeliveryOptionRadius'),
+              'ng-dirty': isOptionDeliveryFieldInvalid('newDeliveryOptionRadius')
+            }"
+            class="delivery-option-input"
+            pInputText
+            type="text"
+            autocomplete="off"
+            formControlName="newDeliveryOptionRadius"
+          />
+          <label for="newDeliveryOptionRadius">Nowy promień</label>
+        </p-floatLabel>
+      </div>
+      <div class="input-wrapper">
+        <p-floatLabel>
+            <p-inputNumber
+            [ngClass]="{
+                'ng-invalid': isOptionDeliveryFieldInvalid('newDeliveryOptionPrice'),
+                'ng-dirty': isOptionDeliveryFieldInvalid('newDeliveryOptionPrice')
+              }"
+              mode="currency"
+              currency="PLN"
+              class="delivery-option-input"
+              autocomplete="off"
+              [min]="0"
+              [max]="99999.99"
+              formControlName="newDeliveryOptionPrice"
+            ></p-inputNumber>
+            <label for="newDeliveryOptionPrice">Kwota</label>
+          </p-floatLabel>
+      </div>
+      <button
+        pButton
+        type="button"
+        [severity]="'success'"
+        label="Dodaj"
+        icon="pi pi-check"
+        (click)="onNewDeliveryOption()"
+      ></button>
+    </form>
+  </div>
+  <small
+    class="custom-error"
+    *ngIf="
+      deliveryOpitionForm.get('newDeliveryOptionRadius')?.hasError('required') &&
+      deliveryOpitionForm.get('newDeliveryOptionRadius')?.touched
+    "
+  >
+    Promień jest wymagany
+  </small>
+  <small
+    class="custom-error"
+    *ngIf="
+      deliveryOpitionForm.get('newDeliveryOptionPrice')?.hasError('required') &&
+      deliveryOpitionForm.get('newDeliveryOptionPrice')?.touched
+    "
+  >
+    Kwota jest wymagany
+  </small>
+  <small
+    class="custom-error"
+    *ngIf="deliveryOpitionForm.get('newDeliveryOptionRadius')?.hasError('notUnique')"
+  >
+    Podany promień już istnieje
+  </small>
+  

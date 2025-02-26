@@ -117,6 +117,7 @@ import { SettingsBluetoothComponent } from './pages/settings-bluetooth/settings-
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuDeliveryOptionComponent } from './pages/menu-delivery-option/menu-delivery-option.component';
+import { AddNewDeliveryOptionComponent } from './components/add-new-delivery-option/add-new-delivery-option.component';
 
 
 @NgModule({
@@ -177,6 +178,7 @@ import { MenuDeliveryOptionComponent } from './pages/menu-delivery-option/menu-d
     DeliveryOrderingComponent,
     SettingsBluetoothComponent,
     MenuDeliveryOptionComponent,
+    AddNewDeliveryOptionComponent,
   ],
   imports: [
     RouterModule,
