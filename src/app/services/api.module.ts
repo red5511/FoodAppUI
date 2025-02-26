@@ -6,6 +6,7 @@ import { ApiConfiguration, ApiConfigurationParams } from './api-configuration';
 
 import { ProductService } from './services/product.service';
 import { ProductCategoryService } from './services/product-category.service';
+import { DeliveryOptionService } from './services/delivery-option.service';
 import { AuthenticationService } from './services/authentication.service';
 import { AdministrationService } from './services/administration.service';
 import { CompanyAdministrationService } from './services/company-administration.service';
@@ -17,7 +18,6 @@ import { DevelopmentService } from './services/development.service';
 import { DashboardService } from './services/dashboard.service';
 import { UserAdministrationService } from './services/user-administration.service';
 import { DemoControllerService } from './services/demo-controller.service';
-import { MapsService } from './services/maps.service';
 
 /**
  * Module that provides all services and configuration.
@@ -29,6 +29,7 @@ import { MapsService } from './services/maps.service';
   providers: [
     ProductService,
     ProductCategoryService,
+    DeliveryOptionService,
     AuthenticationService,
     AdministrationService,
     CompanyAdministrationService,
@@ -40,7 +41,6 @@ import { MapsService } from './services/maps.service';
     DashboardService,
     UserAdministrationService,
     DemoControllerService,
-    MapsService,
     ApiConfiguration
   ],
 })

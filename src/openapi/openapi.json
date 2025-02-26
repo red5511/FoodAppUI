@@ -6,60 +6,36 @@
     "version": "1.0"
   },
   "servers": [
-    {
-      "url": "http://localhost:8080",
-      "description": "Generated server url"
-    }
+    { "url": "http://localhost:8080", "description": "Generated server url" }
   ],
-  "security": [
-    {
-      "bearerAuth": []
-    }
-  ],
+  "security": [{ "bearerAuth": [] }],
   "paths": {
     "/api/v1/product/modify": {
       "put": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "operationId": "modifyProduct",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ModifyProductRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/ModifyProductRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product-category/menu/category/{companyId}/change-order": {
       "put": {
-        "tags": [
-          "ProductCategory"
-        ],
+        "tags": ["ProductCategory"],
         "operationId": "changeProductCategoriesSortOrder",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "requestBody": {
@@ -72,153 +48,27 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
-    "/api/v1/auth/unblock-user/{userId}": {
+    "/api/v1/delivery-option/modify/{companyId}": {
       "put": {
-        "tags": [
-          "Authentication"
-        ],
-        "operationId": "unblockUser",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/auth/password/change/confirm": {
-      "put": {
-        "tags": [
-          "Authentication"
-        ],
-        "operationId": "changePassword",
-        "parameters": [
-          {
-            "name": "token",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          },
-          {
-            "name": "newPassword",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
-            }
-          }
-        }
-      }
-    },
-    "/api/v1/auth/block-user/{userId}": {
-      "put": {
-        "tags": [
-          "Authentication"
-        ],
-        "operationId": "blockUser",
-        "parameters": [
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
-      }
-    },
-    "/api/v1/administration/company/{companyId}/user/{userId}": {
-      "put": {
-        "tags": [
-          "Administration"
-        ],
-        "operationId": "addUserToCompany",
+        "tags": ["DeliveryOption"],
+        "operationId": "modifyDeliveryOption",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
-          },
-          {
-            "name": "userId",
-            "in": "path",
-            "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/admin-panel/companies/modify": {
-      "put": {
-        "tags": [
-          "CompanyAdministration"
-        ],
-        "operationId": "modifyCompany",
         "requestBody": {
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/ModifyCompanyRequest"
+                "$ref": "#/components/schemas/ModifyDeliveryOptionRequest"
               }
             }
           },
@@ -230,24 +80,121 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "string"
+                  "$ref": "#/components/schemas/ModifyDeliveryOptionResponse"
                 }
               }
             }
           }
         },
-        "security": [
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/auth/unblock-user/{userId}": {
+      "put": {
+        "tags": ["Authentication"],
+        "operationId": "unblockUser",
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
           }
-        ]
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/auth/password/change/confirm": {
+      "put": {
+        "tags": ["Authentication"],
+        "operationId": "changePassword",
+        "parameters": [
+          {
+            "name": "token",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          },
+          {
+            "name": "newPassword",
+            "in": "query",
+            "required": true,
+            "schema": { "type": "string" }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/auth/block-user/{userId}": {
+      "put": {
+        "tags": ["Authentication"],
+        "operationId": "blockUser",
+        "parameters": [
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } }
+      }
+    },
+    "/api/v1/administration/company/{companyId}/user/{userId}": {
+      "put": {
+        "tags": ["Administration"],
+        "operationId": "addUserToCompany",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "userId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/admin-panel/companies/modify": {
+      "put": {
+        "tags": ["CompanyAdministration"],
+        "operationId": "modifyCompany",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": { "$ref": "#/components/schemas/ModifyCompanyRequest" }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": { "schema": { "type": "string" } }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/websocket/init-main-topic": {
       "post": {
-        "tags": [
-          "WebSocket"
-        ],
+        "tags": ["WebSocket"],
         "operationId": "initOrderWebSocketTopic",
         "requestBody": {
           "content": {
@@ -259,23 +206,13 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/statistics/config": {
       "post": {
-        "tags": [
-          "Statistics"
-        ],
+        "tags": ["Statistics"],
         "operationId": "getStatisticsConfig",
         "requestBody": {
           "content": {
@@ -299,18 +236,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/statistics/chart": {
       "post": {
-        "tags": [
-          "Statistics"
-        ],
+        "tags": ["Statistics"],
         "operationId": "getStatisticsChart",
         "requestBody": {
           "content": {
@@ -334,53 +265,33 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product/save": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "operationId": "saveProduct",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateProductRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateProductRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product/pages": {
       "post": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "operationId": "getPagedProducts",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/GetProductsRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/GetProductsRequest" }
             }
           },
           "required": true
@@ -397,18 +308,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product-properties/save": {
       "post": {
-        "tags": [
-          "ProductProperties"
-        ],
+        "tags": ["ProductProperties"],
         "operationId": "saveProductProperties",
         "requestBody": {
           "content": {
@@ -432,18 +337,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product-category/save": {
       "post": {
-        "tags": [
-          "ProductCategory"
-        ],
+        "tags": ["ProductCategory"],
         "operationId": "saveProductCategory",
         "requestBody": {
           "content": {
@@ -467,36 +366,25 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/save/{companyId}": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "saveOrder",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/CreateOrderRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/CreateOrderRequest" }
             }
           },
           "required": true
@@ -513,18 +401,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/reject": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "rejectNewIncomingOrder",
         "requestBody": {
           "content": {
@@ -536,23 +418,13 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/orders": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "getOrdersForCompany",
         "requestBody": {
           "content": {
@@ -569,112 +441,71 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/PagedOrdersResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/PagedOrdersResponse" }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/modify/{companyId}": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "modifyOrder",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/ModifyOrderRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/ModifyOrderRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/finalize/{companyId}/{orderId}": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "finalizeOrder",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           },
           {
             "name": "orderId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/FinalizeOrderRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/FinalizeOrderRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/config": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "getOrdersConfig",
         "requestBody": {
           "content": {
@@ -698,18 +529,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/order/approve": {
       "post": {
-        "tags": [
-          "Order"
-        ],
+        "tags": ["Order"],
         "operationId": "approveNewIncomingOrder",
         "requestBody": {
           "content": {
@@ -721,30 +546,18 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/development/forGeneratingApi": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "initOrderWebSocketTopic_1",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebSocketEvent"
-              }
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
             }
           },
           "required": true
@@ -765,9 +578,7 @@
     },
     "/api/v1/development/forGeneratingApi7": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "ehh3",
         "requestBody": {
           "content": {
@@ -779,18 +590,12 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/v1/development/forGeneratingApi6": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "ehh3_1",
         "requestBody": {
           "content": {
@@ -802,18 +607,12 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/v1/development/forGeneratingApi5": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "ehh2",
         "requestBody": {
           "content": {
@@ -825,25 +624,17 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/v1/development/forGeneratingApi4": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "ehh",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebSocketEvent"
-              }
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
             }
           },
           "required": true
@@ -864,16 +655,12 @@
     },
     "/api/v1/development/forGeneratingApi3": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "disconnectionWebSocketEvent",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebSocketEvent"
-              }
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
             }
           },
           "required": true
@@ -894,16 +681,12 @@
     },
     "/api/v1/development/forGeneratingApi2": {
       "post": {
-        "tags": [
-          "Development"
-        ],
+        "tags": ["Development"],
         "operationId": "heartbeatWebSocketEvent",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/WebSocketEvent"
-              }
+              "schema": { "$ref": "#/components/schemas/WebSocketEvent" }
             }
           },
           "required": true
@@ -922,11 +705,46 @@
         }
       }
     },
+    "/api/v1/delivery-option/save/{companyId}": {
+      "post": {
+        "tags": ["DeliveryOption"],
+        "operationId": "saveDeliveryOption",
+        "parameters": [
+          {
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateDeliveryOptionRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateDeliveryOptionResponse"
+                }
+              }
+            }
+          }
+        },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/dashboard/orders/{companyId}": {
       "post": {
-        "tags": [
-          "Dashboard"
-        ],
+        "tags": ["Dashboard"],
         "operationId": "getActiveOrders",
         "requestBody": {
           "content": {
@@ -950,25 +768,17 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/auth/register/init": {
       "post": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "register",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/RegisterRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/RegisterRequest" }
             }
           },
           "required": true
@@ -989,9 +799,7 @@
     },
     "/api/v1/auth/password/change/init": {
       "post": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "initPasswordChange",
         "requestBody": {
           "content": {
@@ -1019,16 +827,12 @@
     },
     "/api/v1/auth/authenticate": {
       "post": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "authenticate",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/AuthenticationRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/AuthenticationRequest" }
             }
           },
           "required": true
@@ -1049,9 +853,7 @@
     },
     "/api/v1/admin-panel/users/pages": {
       "post": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "getPagedUsers",
         "requestBody": {
           "content": {
@@ -1075,18 +877,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/users/add-or-remove-users-permissions": {
       "post": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "addOrRemoveUsersPermissions",
         "requestBody": {
           "content": {
@@ -1098,23 +894,13 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/users/add-or-remove-companies-users": {
       "post": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "addOrRemoveCompaniesUsers",
         "requestBody": {
           "content": {
@@ -1126,30 +912,18 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/save": {
       "post": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "saveCompany",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/SaveCompanyRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/SaveCompanyRequest" }
             }
           },
           "required": true
@@ -1159,25 +933,17 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/SaveCompanyResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/SaveCompanyResponse" }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/pages": {
       "post": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "getPagedCompanies",
         "requestBody": {
           "content": {
@@ -1201,18 +967,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/add-or-remove-users-companies": {
       "post": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "addOrRemoveUsersCompanies",
         "requestBody": {
           "content": {
@@ -1224,59 +984,36 @@
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/demo": {
       "get": {
-        "tags": [
-          "demo-controller"
-        ],
+        "tags": ["demo-controller"],
         "summary": "say Hello",
         "operationId": "sayHello",
         "responses": {
           "200": {
             "description": "User has been created",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
+              "application/json": { "schema": { "type": "string" } }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product/menu-ordering/{companyId}": {
       "get": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "operationId": "getProductsByCategories",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1291,28 +1028,19 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product-category/menu/category/{companyId}": {
       "get": {
-        "tags": [
-          "ProductCategory"
-        ],
+        "tags": ["ProductCategory"],
         "operationId": "getAllCategories",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1327,27 +1055,19 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
-    "/api/v1/maps/details": {
+    "/api/v1/delivery-option/get-all/{companyId}": {
       "get": {
-        "tags": [
-          "Maps"
-        ],
-        "operationId": "placeDetails",
+        "tags": ["DeliveryOption"],
+        "operationId": "getAllDeliveryOptions",
         "parameters": [
           {
-            "name": "placeId",
-            "in": "query",
+            "name": "companyId",
+            "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1356,59 +1076,18 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "type": "object"
+                  "$ref": "#/components/schemas/GetAllDeliveryOptionsResponse"
                 }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/maps/autocomplete": {
-      "get": {
-        "tags": [
-          "Maps"
-        ],
-        "operationId": "autocomplete",
-        "parameters": [
-          {
-            "name": "input",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string"
-            }
-          }
-        ],
-        "responses": {
-          "200": {
-            "description": "OK",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "type": "object"
-                }
-              }
-            }
-          }
-        },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/dashboard/config/": {
       "get": {
-        "tags": [
-          "Dashboard"
-        ],
+        "tags": ["Dashboard"],
         "operationId": "getConfig",
         "responses": {
           "200": {
@@ -1422,28 +1101,19 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/dashboard/company/{companyId}": {
       "get": {
-        "tags": [
-          "Dashboard"
-        ],
+        "tags": ["Dashboard"],
         "operationId": "getCompany",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1458,61 +1128,41 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/auth/resend-activation-email/{email}": {
       "get": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "resendActivationEmail",
         "parameters": [
           {
             "name": "email",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        }
+        "responses": { "200": { "description": "OK" } }
       }
     },
     "/api/v1/auth/register/confirm/{token}": {
       "get": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "activateUser",
         "parameters": [
           {
             "name": "token",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
+              "application/json": { "schema": { "type": "string" } }
             }
           }
         }
@@ -1520,29 +1170,21 @@
     },
     "/api/v1/auth/password/change/confirm/{token}": {
       "get": {
-        "tags": [
-          "Authentication"
-        ],
+        "tags": ["Authentication"],
         "operationId": "changePassword_1",
         "parameters": [
           {
             "name": "token",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "string"
-            }
+            "schema": { "type": "string" }
           }
         ],
         "responses": {
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
+              "application/json": { "schema": { "type": "string" } }
             }
           }
         }
@@ -1550,19 +1192,14 @@
     },
     "/api/v1/admin-panel/users/{companyId}/users": {
       "get": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "getCompanyUsers",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1570,35 +1207,24 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUsersResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/users/{companyId}/users-to-add": {
       "get": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "getUsersNotBelongToCompany",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1606,50 +1232,34 @@
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUsersResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/users/users": {
       "get": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "getAllUsers",
         "responses": {
           "200": {
             "description": "OK",
             "content": {
               "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/GetUsersResponse"
-                }
+                "schema": { "$ref": "#/components/schemas/GetUsersResponse" }
               }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/users/permissions": {
       "get": {
-        "tags": [
-          "UserAdministration"
-        ],
+        "tags": ["UserAdministration"],
         "operationId": "getAllPermissions",
         "responses": {
           "200": {
@@ -1663,28 +1273,19 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/{companyId}/details": {
       "get": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "getCompanyDetails",
         "parameters": [
           {
             "name": "companyId",
             "in": "path",
             "required": true,
-            "schema": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "schema": { "type": "integer", "format": "int64" }
           }
         ],
         "responses": {
@@ -1699,18 +1300,12 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/companies": {
       "get": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "getAllCompanies",
         "responses": {
           "200": {
@@ -1724,53 +1319,55 @@
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/product/delete": {
       "delete": {
-        "tags": [
-          "Product"
-        ],
+        "tags": ["Product"],
         "operationId": "deleteProduct",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteProductRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/DeleteProductRequest" }
             }
           },
           "required": true
         },
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/delivery-option/delete/{companyId}/{deliveryOptionId}": {
+      "delete": {
+        "tags": ["DeliveryOption"],
+        "operationId": "deleteDeliveryOption",
+        "parameters": [
           {
-            "bearerAuth": []
+            "name": "companyId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
+          },
+          {
+            "name": "deliveryOptionId",
+            "in": "path",
+            "required": true,
+            "schema": { "type": "integer", "format": "int64" }
           }
-        ]
+        ],
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
       }
     },
     "/api/v1/admin-panel/companies/delete": {
       "delete": {
-        "tags": [
-          "CompanyAdministration"
-        ],
+        "tags": ["CompanyAdministration"],
         "operationId": "deleteCompany",
         "requestBody": {
           "content": {
             "application/json": {
-              "schema": {
-                "$ref": "#/components/schemas/DeleteCompanyRequest"
-              }
+              "schema": { "$ref": "#/components/schemas/DeleteCompanyRequest" }
             }
           },
           "required": true
@@ -1779,19 +1376,11 @@
           "200": {
             "description": "OK",
             "content": {
-              "application/json": {
-                "schema": {
-                  "type": "string"
-                }
-              }
+              "application/json": { "schema": { "type": "string" } }
             }
           }
         },
-        "security": [
-          {
-            "bearerAuth": []
-          }
-        ]
+        "security": [{ "bearerAuth": [] }]
       }
     }
   },
@@ -1800,159 +1389,106 @@
       "ModifyProductRequest": {
         "type": "object",
         "properties": {
-          "modifiedId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "product": {
-            "$ref": "#/components/schemas/ProductDto"
-          }
+          "modifiedId": { "type": "integer", "format": "int64" },
+          "product": { "$ref": "#/components/schemas/ProductDto" }
         }
       },
       "ProductCategoryDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          }
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" }
         }
       },
       "ProductDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "imgUrl": {
-            "type": "string"
-          },
-          "description": {
-            "type": "string"
-          },
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "imgUrl": { "type": "string" },
+          "description": { "type": "string" },
           "productStatus": {
             "type": "string",
-            "enum": [
-              "ACTIVE",
-              "DELETED",
-              "MODIFIED"
-            ]
+            "enum": ["ACTIVE", "DELETED", "MODIFIED"]
           },
-          "soldOut": {
-            "type": "boolean"
-          },
+          "soldOut": { "type": "boolean" },
           "productCategory": {
             "$ref": "#/components/schemas/ProductCategoryDto"
           },
           "productPropertiesList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductPropertiesDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
           }
         }
       },
       "ProductPropertiesDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "id": { "type": "integer", "format": "int64" },
           "productIds": {
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
+          "companyId": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
           "propertyList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductPropertyDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductPropertyDto" }
           },
-          "required": {
-            "type": "boolean"
-          }
+          "required": { "type": "boolean" }
         }
       },
       "ProductPropertyDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "productPropertiesId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "price": { "type": "number" },
+          "productPropertiesId": { "type": "integer", "format": "int64" }
         }
       },
       "ChangeProductCategoriesSortOrderRequest": {
-        "required": [
-          "categories"
-        ],
+        "required": ["categories"],
         "type": "object",
         "properties": {
           "categories": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductCategoryDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductCategoryDto" }
           }
+        }
+      },
+      "DeliveryOptionDto": {
+        "type": "object",
+        "properties": {
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "deliveryPrice": { "type": "number" },
+          "distance": { "type": "number", "format": "float" }
+        }
+      },
+      "ModifyDeliveryOptionRequest": {
+        "type": "object",
+        "properties": {
+          "deliveryOption": { "$ref": "#/components/schemas/DeliveryOptionDto" }
+        }
+      },
+      "ModifyDeliveryOptionResponse": {
+        "type": "object",
+        "properties": {
+          "deliveryOption": { "$ref": "#/components/schemas/DeliveryOptionDto" }
         }
       },
       "Address": {
         "type": "object",
         "properties": {
-          "street": {
-            "type": "string"
-          },
-          "streetNumber": {
-            "type": "string"
-          },
-          "city": {
-            "type": "string"
-          },
-          "postalCode": {
-            "type": "string"
-          },
-          "country": {
-            "type": "string"
-          }
+          "street": { "type": "string" },
+          "streetNumber": { "type": "string" },
+          "city": { "type": "string" },
+          "postalCode": { "type": "string" },
+          "country": { "type": "string" }
         }
       },
       "CompanyDto": {
@@ -1966,114 +1502,52 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "name": {
-            "type": "string"
-          },
-          "openHours": {
-            "$ref": "#/components/schemas/OpenHours"
-          },
-          "address": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "webSocketTopicName": {
-            "type": "string"
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time"
-          },
+          "id": { "type": "integer", "format": "int64" },
+          "name": { "type": "string" },
+          "openHours": { "$ref": "#/components/schemas/OpenHours" },
+          "address": { "$ref": "#/components/schemas/Address" },
+          "webSocketTopicName": { "type": "string" },
+          "createdDate": { "type": "string", "format": "date-time" },
           "users": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserDto"
-            }
+            "items": { "$ref": "#/components/schemas/UserDto" }
           },
-          "defaultProductImgUrl": {
-            "type": "string"
-          },
-          "holding": {
-            "type": "boolean"
-          }
+          "defaultProductImgUrl": { "type": "string" },
+          "holding": { "type": "boolean" }
         }
       },
       "LocalTime": {
         "type": "object",
         "properties": {
-          "hour": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "minute": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "second": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "nano": {
-            "type": "integer",
-            "format": "int32"
-          }
+          "hour": { "type": "integer", "format": "int32" },
+          "minute": { "type": "integer", "format": "int32" },
+          "second": { "type": "integer", "format": "int32" },
+          "nano": { "type": "integer", "format": "int32" }
         }
       },
       "ModifyCompanyRequest": {
         "type": "object",
         "properties": {
-          "companyDto": {
-            "$ref": "#/components/schemas/CompanyDto"
-          }
+          "companyDto": { "$ref": "#/components/schemas/CompanyDto" }
         }
       },
       "OpenHours": {
         "type": "object",
         "properties": {
-          "mondayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "mondayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "tuesdayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "tuesdayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "wednesdayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "wednesdayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "thursdayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "thursdayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "fridayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "fridayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "saturdayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "saturdayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "sundayStart": {
-            "$ref": "#/components/schemas/LocalTime"
-          },
-          "sundayEnd": {
-            "$ref": "#/components/schemas/LocalTime"
-          }
+          "mondayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "mondayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "tuesdayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "tuesdayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "wednesdayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "wednesdayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "thursdayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "thursdayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "fridayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "fridayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "saturdayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "saturdayEnd": { "$ref": "#/components/schemas/LocalTime" },
+          "sundayStart": { "$ref": "#/components/schemas/LocalTime" },
+          "sundayEnd": { "$ref": "#/components/schemas/LocalTime" }
         }
       },
       "UserDto": {
@@ -2091,39 +1565,19 @@
         ],
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
-          "phoneNumber": {
-            "type": "string"
-          },
+          "id": { "type": "integer", "format": "int64" },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
+          "phoneNumber": { "type": "string" },
           "companies": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompanyDto"
-            }
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
           },
-          "enabled": {
-            "type": "boolean"
-          },
-          "locked": {
-            "type": "boolean"
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time"
-          },
+          "enabled": { "type": "boolean" },
+          "locked": { "type": "boolean" },
+          "createdDate": { "type": "string", "format": "date-time" },
           "permissions": {
             "uniqueItems": true,
             "type": "array",
@@ -2143,10 +1597,7 @@
         }
       },
       "InitOrderWebSocketTopicRequest": {
-        "required": [
-          "companyIdsToAdd",
-          "companyIdsToRemove"
-        ],
+        "required": ["companyIdsToAdd", "companyIdsToRemove"],
         "type": "object",
         "properties": {
           "companyIdsToAdd": {
@@ -2173,27 +1624,13 @@
       },
       "GetStatisticsConfigRequest": {
         "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
+        "properties": { "companyId": { "type": "integer", "format": "int64" } }
       },
       "DatePeriodModel": {
         "type": "object",
         "properties": {
-          "datePeriod": {
-            "type": "string",
-            "enum": [
-              "DAY",
-              "WEEK",
-              "MONTH"
-            ]
-          },
-          "translatedValue": {
-            "type": "string"
-          }
+          "datePeriod": { "type": "string", "enum": ["DAY", "WEEK", "MONTH"] },
+          "translatedValue": { "type": "string" }
         },
         "description": "List of date period models"
       },
@@ -2209,40 +1646,28 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "translatedValue": {
-            "type": "string"
-          }
+          "translatedValue": { "type": "string" }
         },
         "description": "List of date range models"
       },
       "GetStatisticsConfigResponse": {
-        "required": [
-          "dataRangeModels",
-          "datePeriodModels",
-          "products"
-        ],
+        "required": ["dataRangeModels", "datePeriodModels", "products"],
         "type": "object",
         "properties": {
           "dataRangeModels": {
             "type": "array",
             "description": "List of date range models",
-            "items": {
-              "$ref": "#/components/schemas/DateRangeModel"
-            }
+            "items": { "$ref": "#/components/schemas/DateRangeModel" }
           },
           "products": {
             "type": "array",
             "description": "List of products",
-            "items": {
-              "$ref": "#/components/schemas/ProductDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductDto" }
           },
           "datePeriodModels": {
             "type": "array",
             "description": "List of date period models",
-            "items": {
-              "$ref": "#/components/schemas/DatePeriodModel"
-            }
+            "items": { "$ref": "#/components/schemas/DatePeriodModel" }
           }
         }
       },
@@ -2251,10 +1676,7 @@
         "properties": {
           "companyIds": {
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
           "dateRange": {
             "type": "string",
@@ -2265,29 +1687,11 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "dateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "dateTo": {
-            "type": "string",
-            "format": "date"
-          },
-          "datePeriod": {
-            "type": "string",
-            "enum": [
-              "DAY",
-              "WEEK",
-              "MONTH"
-            ]
-          },
-          "productId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "showEarnings": {
-            "type": "boolean"
-          }
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
+          "datePeriod": { "type": "string", "enum": ["DAY", "WEEK", "MONTH"] },
+          "productId": { "type": "integer", "format": "int64" },
+          "showEarnings": { "type": "boolean" }
         }
       },
       "GetStatisticsChartResponse": {
@@ -2295,65 +1699,31 @@
         "properties": {
           "ordersCount": {
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
-          "labels": {
-            "type": "array",
-            "items": {
-              "type": "string"
-            }
-          },
-          "earnings": {
-            "type": "array",
-            "items": {
-              "type": "number"
-            }
-          },
-          "ordersCountTotal": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "earningsTotal": {
-            "type": "number"
-          }
+          "labels": { "type": "array", "items": { "type": "string" } },
+          "earnings": { "type": "array", "items": { "type": "number" } },
+          "ordersCountTotal": { "type": "integer", "format": "int64" },
+          "earningsTotal": { "type": "number" }
         }
       },
       "CreateProductRequest": {
         "type": "object",
         "properties": {
-          "product": {
-            "$ref": "#/components/schemas/ProductDto"
-          }
+          "product": { "$ref": "#/components/schemas/ProductDto" }
         }
       },
       "GetProductsRequest": {
         "type": "object",
         "properties": {
-          "dateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "dateTo": {
-            "type": "string",
-            "format": "date"
-          },
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
           "sorts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sort"
-            }
+            "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
           "dateRange": {
             "type": "string",
             "enum": [
@@ -2363,47 +1733,28 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "globalSearch": {
-            "type": "string"
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "globalSearch": { "type": "string" },
+          "companyId": { "type": "integer", "format": "int64" }
         }
       },
       "Sort": {
         "type": "object",
         "properties": {
-          "field": {
-            "type": "string"
-          },
-          "direction": {
-            "type": "string",
-            "enum": [
-              "ASC",
-              "DESC"
-            ]
-          }
+          "field": { "type": "string" },
+          "direction": { "type": "string", "enum": ["ASC", "DESC"] }
         }
       },
       "GetPagedProductsResponse": {
         "type": "object",
         "properties": {
-          "pagedResult": {
-            "$ref": "#/components/schemas/ProductsPagedResult"
-          },
+          "pagedResult": { "$ref": "#/components/schemas/ProductsPagedResult" },
           "productCategories": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductCategoryDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductCategoryDto" }
           },
           "productPropertiesList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductPropertiesDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
           }
         }
       },
@@ -2412,14 +1763,9 @@
         "properties": {
           "products": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductDto" }
           },
-          "totalRecords": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "totalRecords": { "type": "integer", "format": "int64" }
         }
       },
       "CreateProductPropertiesRequest": {
@@ -2457,75 +1803,35 @@
       "CreateOrderRequest": {
         "type": "object",
         "properties": {
-          "order": {
-            "$ref": "#/components/schemas/OrderDto"
-          },
-          "printViaBluetooth": {
-            "type": "boolean"
-          }
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "printViaBluetooth": { "type": "boolean" }
         }
       },
       "OrderActions": {
         "type": "object",
         "properties": {
-          "showApprove": {
-            "type": "boolean"
-          },
-          "showReject": {
-            "type": "boolean"
-          },
-          "showSetExecutionTime": {
-            "type": "boolean"
-          },
-          "showPrint": {
-            "type": "boolean"
-          },
-          "showReadyToPickUp": {
-            "type": "boolean"
-          },
-          "showCancel": {
-            "type": "boolean"
-          },
-          "showToTheCashier": {
-            "type": "boolean"
-          },
-          "showModify": {
-            "type": "boolean"
-          }
+          "showApprove": { "type": "boolean" },
+          "showReject": { "type": "boolean" },
+          "showSetExecutionTime": { "type": "boolean" },
+          "showPrint": { "type": "boolean" },
+          "showReadyToPickUp": { "type": "boolean" },
+          "showCancel": { "type": "boolean" },
+          "showToTheCashier": { "type": "boolean" },
+          "showModify": { "type": "boolean" }
         }
       },
       "OrderDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "deliveryCode": {
-            "type": "string"
-          },
-          "companyName": {
-            "type": "string"
-          },
-          "price": {
-            "type": "number"
-          },
-          "description": {
-            "maxLength": 510,
-            "minLength": 0,
-            "type": "string"
-          },
+          "id": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" },
+          "deliveryCode": { "type": "string" },
+          "companyName": { "type": "string" },
+          "price": { "type": "number" },
+          "description": { "maxLength": 510, "minLength": 0, "type": "string" },
           "orderType": {
             "type": "string",
-            "enum": [
-              "OWN",
-              "GLOVO",
-              "PYSZNE_PL"
-            ]
+            "enum": ["OWN", "GLOVO", "PYSZNE_PL"]
           },
           "status": {
             "type": "string",
@@ -2539,142 +1845,66 @@
               "MODIFIED"
             ]
           },
-          "deliveryAddress": {
-            "type": "string"
-          },
-          "customerName": {
-            "type": "string"
-          },
-          "executionTime": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "createdDate": {
-            "type": "string",
-            "format": "date-time"
-          },
+          "deliveryAddress": { "type": "string" },
+          "customerName": { "type": "string" },
+          "executionTime": { "type": "string", "format": "date-time" },
+          "createdDate": { "type": "string", "format": "date-time" },
           "orderProducts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderProductDto"
-            }
+            "items": { "$ref": "#/components/schemas/OrderProductDto" }
           },
-          "approvalDeadline": {
-            "type": "string",
-            "format": "date-time"
-          },
-          "actions": {
-            "$ref": "#/components/schemas/OrderActions"
-          },
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "CASH",
-              "CARD"
-            ]
-          },
-          "takeaway": {
-            "type": "boolean"
-          },
-          "paidWhenOrdered": {
-            "type": "boolean"
-          }
+          "approvalDeadline": { "type": "string", "format": "date-time" },
+          "actions": { "$ref": "#/components/schemas/OrderActions" },
+          "paymentMethod": { "type": "string", "enum": ["CASH", "CARD"] },
+          "takeaway": { "type": "boolean" },
+          "paidWhenOrdered": { "type": "boolean" }
         }
       },
       "OrderProductDto": {
         "type": "object",
         "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "order": {
-            "$ref": "#/components/schemas/OrderDto"
-          },
-          "product": {
-            "$ref": "#/components/schemas/ProductDto"
-          },
-          "quantity": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "price": {
-            "type": "number"
-          },
+          "id": { "type": "integer", "format": "int64" },
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "product": { "$ref": "#/components/schemas/ProductDto" },
+          "quantity": { "type": "integer", "format": "int32" },
+          "price": { "type": "number" },
           "productPropertiesList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductPropertiesDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
           },
-          "note": {
-            "maxLength": 510,
-            "minLength": 0,
-            "type": "string"
-          }
+          "note": { "maxLength": 510, "minLength": 0, "type": "string" }
         }
       },
       "CreateOrderRequestResponse": {
-        "required": [
-          "encodedTextForBluetoothPrinterList",
-          "orderId"
-        ],
+        "required": ["encodedTextForBluetoothPrinterList", "orderId"],
         "type": "object",
         "properties": {
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "orderId": { "type": "integer", "format": "int64" },
           "encodedTextForBluetoothPrinterList": {
             "type": "array",
-            "items": {
-              "type": "string"
-            }
+            "items": { "type": "string" }
           }
         }
       },
       "RejectNewIncomingOrderRequest": {
-        "required": [
-          "companyId",
-          "orderId"
-        ],
+        "required": ["companyId", "orderId"],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "companyId": { "type": "integer", "format": "int64" },
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "GetOrdersForCompanyRequest": {
         "type": "object",
         "properties": {
-          "dateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "dateTo": {
-            "type": "string",
-            "format": "date"
-          },
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
           "sorts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sort"
-            }
+            "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
           "dateRange": {
             "type": "string",
             "enum": [
@@ -2684,16 +1914,10 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "validatableCompanyId": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "validatableCompanyId": { "type": "integer", "format": "int64" },
           "companyIds": {
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
           "statuses": {
             "type": "array",
@@ -2710,12 +1934,8 @@
               ]
             }
           },
-          "price": {
-            "type": "number"
-          },
-          "globalSearch": {
-            "type": "string"
-          }
+          "price": { "type": "number" },
+          "globalSearch": { "type": "string" }
         }
       },
       "OrdersPagedResult": {
@@ -2723,59 +1943,34 @@
         "properties": {
           "orderList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDto"
-            }
+            "items": { "$ref": "#/components/schemas/OrderDto" }
           },
-          "totalRecords": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "totalRecords": { "type": "integer", "format": "int64" }
         }
       },
       "PagedOrdersResponse": {
         "type": "object",
         "properties": {
-          "pagedResult": {
-            "$ref": "#/components/schemas/OrdersPagedResult"
-          }
+          "pagedResult": { "$ref": "#/components/schemas/OrdersPagedResult" }
         }
       },
       "ModifyOrderRequest": {
         "type": "object",
         "properties": {
-          "order": {
-            "$ref": "#/components/schemas/OrderDto"
-          },
-          "modifiedOrderIf": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "order": { "$ref": "#/components/schemas/OrderDto" },
+          "modifiedOrderIf": { "type": "integer", "format": "int64" }
         }
       },
       "FinalizeOrderRequest": {
         "type": "object",
         "properties": {
-          "paymentMethod": {
-            "type": "string",
-            "enum": [
-              "CASH",
-              "CARD"
-            ]
-          },
-          "takeaway": {
-            "type": "boolean"
-          }
+          "paymentMethod": { "type": "string", "enum": ["CASH", "CARD"] },
+          "takeaway": { "type": "boolean" }
         }
       },
       "GetOrdersConfigRequest": {
         "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
+        "properties": { "companyId": { "type": "integer", "format": "int64" } }
       },
       "GetOrdersConfigResponse": {
         "required": [
@@ -2788,9 +1983,7 @@
           "orderStatusModels": {
             "type": "array",
             "description": "List of status models",
-            "items": {
-              "$ref": "#/components/schemas/OrderStatusModel"
-            }
+            "items": { "$ref": "#/components/schemas/OrderStatusModel" }
           },
           "statusSeverityMap": {
             "type": "object",
@@ -2811,17 +2004,12 @@
           "dataRangeModels": {
             "type": "array",
             "description": "List of date range models",
-            "items": {
-              "$ref": "#/components/schemas/DateRangeModel"
-            }
+            "items": { "$ref": "#/components/schemas/DateRangeModel" }
           }
         }
       },
       "OrderStatusModel": {
-        "required": [
-          "orderStatus",
-          "translatedValue"
-        ],
+        "required": ["orderStatus", "translatedValue"],
         "type": "object",
         "properties": {
           "orderStatus": {
@@ -2836,33 +2024,20 @@
               "MODIFIED"
             ]
           },
-          "translatedValue": {
-            "type": "string"
-          }
+          "translatedValue": { "type": "string" }
         },
         "description": "List of status models"
       },
       "ApproveNewIncomingOrderRequest": {
-        "required": [
-          "companyId",
-          "orderId"
-        ],
+        "required": ["companyId", "orderId"],
         "type": "object",
         "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "companyId": { "type": "integer", "format": "int64" },
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "WebSocketEvent": {
-        "required": [
-          "eventType"
-        ],
+        "required": ["eventType"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -2882,10 +2057,7 @@
         "description": "Base class for WebSocket events"
       },
       "NewOrderWebSocketEvent": {
-        "required": [
-          "eventType",
-          "order"
-        ],
+        "required": ["eventType", "order"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -2901,17 +2073,12 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "order": {
-            "$ref": "#/components/schemas/OrderDto"
-          }
+          "order": { "$ref": "#/components/schemas/OrderDto" }
         },
         "description": "Event for a new order created via WebSocket"
       },
       "ApprovalDeadlinePassed": {
-        "required": [
-          "eventType",
-          "orderId"
-        ],
+        "required": ["eventType", "orderId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -2927,17 +2094,11 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "ApprovedOrderWebSocketEvent": {
-        "required": [
-          "eventType",
-          "orderId"
-        ],
+        "required": ["eventType", "orderId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -2953,17 +2114,11 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "RejectedOrderWebSocketEvent": {
-        "required": [
-          "eventType",
-          "orderId"
-        ],
+        "required": ["eventType", "orderId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -2979,23 +2134,14 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "orderId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "orderId": { "type": "integer", "format": "int64" }
         }
       },
       "ServerSideDisconnectionWebSocketEvent": {
-        "required": [
-          "eventType",
-          "userId"
-        ],
+        "required": ["eventType", "userId"],
         "type": "object",
         "properties": {
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "userId": { "type": "integer", "format": "int64" },
           "eventType": {
             "type": "string",
             "description": "Event types for WebSocket events",
@@ -3012,11 +2158,7 @@
         }
       },
       "DisconnectionWebSocketEvent": {
-        "required": [
-          "companyIds",
-          "eventType",
-          "userId"
-        ],
+        "required": ["companyIds", "eventType", "userId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -3032,36 +2174,23 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "userId": { "type": "integer", "format": "int64" },
           "companyId": {
             "uniqueItems": true,
             "type": "array",
             "writeOnly": true,
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           }
         },
         "description": "Disconnection event via WebSocket"
       },
       "HeartbeatWebSocketEvent": {
-        "required": [
-          "companyIds",
-          "eventType",
-          "userId"
-        ],
+        "required": ["companyIds", "eventType", "userId"],
         "type": "object",
         "properties": {
           "eventType": {
@@ -3077,44 +2206,40 @@
               "APPROVAL_DEADLINE_PASSED"
             ]
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
+          "userId": { "type": "integer", "format": "int64" },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           }
         },
         "description": "Heartbeat event via WebSocket"
       },
+      "CreateDeliveryOptionRequest": {
+        "type": "object",
+        "properties": {
+          "deliveryOption": { "$ref": "#/components/schemas/DeliveryOptionDto" }
+        }
+      },
+      "CreateDeliveryOptionResponse": {
+        "type": "object",
+        "properties": {
+          "deliveryOption": { "$ref": "#/components/schemas/DeliveryOptionDto" }
+        }
+      },
       "GetActiveOrdersRequest": {
-        "required": [
-          "companyIds",
-          "isWaitingToAcceptanceSection"
-        ],
+        "required": ["companyIds", "isWaitingToAcceptanceSection"],
         "type": "object",
         "properties": {
           "sorts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sort"
-            }
+            "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "isWaitingToAcceptanceSection": {
-            "type": "boolean"
-          },
+          "isWaitingToAcceptanceSection": { "type": "boolean" },
           "companyIds": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           }
         }
       },
@@ -3123,9 +2248,7 @@
         "properties": {
           "orderList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/OrderDto"
-            }
+            "items": { "$ref": "#/components/schemas/OrderDto" }
           }
         }
       },
@@ -3139,60 +2262,34 @@
         ],
         "type": "object",
         "properties": {
-          "firstName": {
-            "type": "string"
-          },
-          "lastName": {
-            "type": "string"
-          },
-          "email": {
-            "type": "string"
-          },
+          "firstName": { "type": "string" },
+          "lastName": { "type": "string" },
+          "email": { "type": "string" },
           "password": {
             "maxLength": 2147483647,
             "minLength": 8,
             "type": "string"
           },
-          "phoneNumber": {
-            "pattern": "(\\+48)?\\d{9}",
-            "type": "string"
-          }
+          "phoneNumber": { "pattern": "(\\+48)?\\d{9}", "type": "string" }
         }
       },
       "AuthenticationResponse": {
         "type": "object",
-        "properties": {
-          "token": {
-            "type": "string"
-          }
-        }
+        "properties": { "token": { "type": "string" } }
       },
       "ChangeInitPasswordRequest": {
         "type": "object",
-        "properties": {
-          "email": {
-            "type": "string"
-          }
-        }
+        "properties": { "email": { "type": "string" } }
       },
       "ChangeInitPasswordResponse": {
         "type": "object",
-        "properties": {
-          "success": {
-            "type": "boolean"
-          }
-        }
+        "properties": { "success": { "type": "boolean" } }
       },
       "AuthenticationRequest": {
-        "required": [
-          "email",
-          "password"
-        ],
+        "required": ["email", "password"],
         "type": "object",
         "properties": {
-          "email": {
-            "type": "string"
-          },
+          "email": { "type": "string" },
           "password": {
             "maxLength": 2147483647,
             "minLength": 8,
@@ -3203,28 +2300,14 @@
       "GetUsersAdministrationRequest": {
         "type": "object",
         "properties": {
-          "dateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "dateTo": {
-            "type": "string",
-            "format": "date"
-          },
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
           "sorts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sort"
-            }
+            "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
           "dateRange": {
             "type": "string",
             "enum": [
@@ -3234,17 +2317,13 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "globalSearch": {
-            "type": "string"
-          }
+          "globalSearch": { "type": "string" }
         }
       },
       "GetPagedUsersResponse": {
         "type": "object",
         "properties": {
-          "pagedResult": {
-            "$ref": "#/components/schemas/UsersPagedResult"
-          }
+          "pagedResult": { "$ref": "#/components/schemas/UsersPagedResult" }
         }
       },
       "UsersPagedResult": {
@@ -3252,22 +2331,13 @@
         "properties": {
           "users": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserDto"
-            }
+            "items": { "$ref": "#/components/schemas/UserDto" }
           },
-          "totalRecords": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "totalRecords": { "type": "integer", "format": "int64" }
         }
       },
       "AddOrDeleteUsersPermissionsAdministrationRequest": {
-        "required": [
-          "permissionToAdd",
-          "permissionToRemove",
-          "userId"
-        ],
+        "required": ["permissionToAdd", "permissionToRemove", "userId"],
         "type": "object",
         "properties": {
           "permissionToAdd": {
@@ -3302,84 +2372,47 @@
               ]
             }
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "userId": { "type": "integer", "format": "int64" }
         }
       },
       "AddOrDeleteCompaniesUsersAdministrationRequest": {
-        "required": [
-          "companyId",
-          "usersIdsToAdd",
-          "usersIdsToRemove"
-        ],
+        "required": ["companyId", "usersIdsToAdd", "usersIdsToRemove"],
         "type": "object",
         "properties": {
           "usersIdsToAdd": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
           "usersIdsToRemove": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "companyId": { "type": "integer", "format": "int64" }
         }
       },
       "SaveCompanyRequest": {
         "type": "object",
         "properties": {
-          "company": {
-            "$ref": "#/components/schemas/CompanyDto"
-          }
+          "company": { "$ref": "#/components/schemas/CompanyDto" }
         }
       },
       "SaveCompanyResponse": {
         "type": "object",
-        "properties": {
-          "id": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
+        "properties": { "id": { "type": "integer", "format": "int64" } }
       },
       "GetCompanyAdministrationRequest": {
         "type": "object",
         "properties": {
-          "dateFrom": {
-            "type": "string",
-            "format": "date"
-          },
-          "dateTo": {
-            "type": "string",
-            "format": "date"
-          },
+          "dateFrom": { "type": "string", "format": "date" },
+          "dateTo": { "type": "string", "format": "date" },
           "sorts": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/Sort"
-            }
+            "items": { "$ref": "#/components/schemas/Sort" }
           },
-          "page": {
-            "type": "integer",
-            "format": "int32"
-          },
-          "size": {
-            "type": "integer",
-            "format": "int32"
-          },
+          "page": { "type": "integer", "format": "int32" },
+          "size": { "type": "integer", "format": "int32" },
           "dateRange": {
             "type": "string",
             "enum": [
@@ -3389,9 +2422,7 @@
               "CUSTOM_DATE_RANGE"
             ]
           },
-          "globalSearch": {
-            "type": "string"
-          }
+          "globalSearch": { "type": "string" }
         }
       },
       "CompaniesPagedResult": {
@@ -3399,52 +2430,32 @@
         "properties": {
           "companies": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompanyDto"
-            }
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
           },
-          "totalRecords": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "totalRecords": { "type": "integer", "format": "int64" }
         }
       },
       "GetPagedCompaniesResponse": {
         "type": "object",
         "properties": {
-          "pagedResult": {
-            "$ref": "#/components/schemas/CompaniesPagedResult"
-          }
+          "pagedResult": { "$ref": "#/components/schemas/CompaniesPagedResult" }
         }
       },
       "AddOrDeleteUsersCompaniesAdministrationRequest": {
-        "required": [
-          "companyIdsToAdd",
-          "companyIdsToRemove",
-          "userId"
-        ],
+        "required": ["companyIdsToAdd", "companyIdsToRemove", "userId"],
         "type": "object",
         "properties": {
           "companyIdsToAdd": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
           "companyIdsToRemove": {
             "uniqueItems": true,
             "type": "array",
-            "items": {
-              "type": "integer",
-              "format": "int64"
-            }
+            "items": { "type": "integer", "format": "int64" }
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "userId": { "type": "integer", "format": "int64" }
         }
       },
       "GetProductsByCategoriesResponse": {
@@ -3461,18 +2472,14 @@
       "ProductsByCategoryTabView": {
         "type": "object",
         "properties": {
-          "categoryTabTitle": {
-            "type": "string"
-          },
+          "categoryTabTitle": { "type": "string" },
           "productsByCategoryList": {
             "type": "array",
             "items": {
               "type": "object",
               "additionalProperties": {
                 "type": "array",
-                "items": {
-                  "$ref": "#/components/schemas/ProductDto"
-                }
+                "items": { "$ref": "#/components/schemas/ProductDto" }
               }
             }
           }
@@ -3483,25 +2490,26 @@
         "properties": {
           "categories": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/ProductCategoryDto"
-            }
+            "items": { "$ref": "#/components/schemas/ProductCategoryDto" }
+          }
+        }
+      },
+      "GetAllDeliveryOptionsResponse": {
+        "type": "object",
+        "properties": {
+          "deliveryOptions": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/DeliveryOptionDto" }
           }
         }
       },
       "DashboardGetInitConfigResponse": {
-        "required": [
-          "companyDataList",
-          "permittedModules",
-          "userId"
-        ],
+        "required": ["companyDataList", "permittedModules", "userId"],
         "type": "object",
         "properties": {
           "companyDataList": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompanyDto"
-            }
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
           },
           "permittedModules": {
             "uniqueItems": true,
@@ -3519,27 +2527,16 @@
               ]
             }
           },
-          "userId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "receivingOrdersActive": {
-            "type": "boolean"
-          }
+          "userId": { "type": "integer", "format": "int64" },
+          "receivingOrdersActive": { "type": "boolean" }
         }
       },
       "DashboardGetCompanyResponse": {
         "type": "object",
         "properties": {
-          "companyName": {
-            "type": "string"
-          },
-          "companyAddress": {
-            "$ref": "#/components/schemas/Address"
-          },
-          "openHours": {
-            "$ref": "#/components/schemas/OpenHours"
-          }
+          "companyName": { "type": "string" },
+          "companyAddress": { "$ref": "#/components/schemas/Address" },
+          "openHours": { "$ref": "#/components/schemas/OpenHours" }
         }
       },
       "GetUsersResponse": {
@@ -3547,16 +2544,12 @@
         "properties": {
           "users": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/UserDto"
-            }
+            "items": { "$ref": "#/components/schemas/UserDto" }
           }
         }
       },
       "GetAllPermissionsResponse": {
-        "required": [
-          "permissions"
-        ],
+        "required": ["permissions"],
         "type": "object",
         "properties": {
           "permissions": {
@@ -3580,9 +2573,7 @@
       "GetCompanyDetailsResponse": {
         "type": "object",
         "properties": {
-          "company": {
-            "$ref": "#/components/schemas/CompanyDto"
-          }
+          "company": { "$ref": "#/components/schemas/CompanyDto" }
         }
       },
       "GetAllCompaniesResponse": {
@@ -3590,33 +2581,20 @@
         "properties": {
           "companies": {
             "type": "array",
-            "items": {
-              "$ref": "#/components/schemas/CompanyDto"
-            }
+            "items": { "$ref": "#/components/schemas/CompanyDto" }
           }
         }
       },
       "DeleteProductRequest": {
         "type": "object",
         "properties": {
-          "productId": {
-            "type": "integer",
-            "format": "int64"
-          },
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
+          "productId": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" }
         }
       },
       "DeleteCompanyRequest": {
         "type": "object",
-        "properties": {
-          "companyId": {
-            "type": "integer",
-            "format": "int64"
-          }
-        }
+        "properties": { "companyId": { "type": "integer", "format": "int64" } }
       }
     },
     "securitySchemes": {

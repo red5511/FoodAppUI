@@ -1,5 +1,6 @@
 export { ProductService } from './services/product.service';
 export { ProductCategoryService } from './services/product-category.service';
+export { DeliveryOptionService } from './services/delivery-option.service';
 export { AuthenticationService } from './services/authentication.service';
 export { AdministrationService } from './services/administration.service';
 export { CompanyAdministrationService } from './services/company-administration.service';
@@ -11,4 +12,3 @@ export { DevelopmentService } from './services/development.service';
 export { DashboardService } from './services/dashboard.service';
 export { UserAdministrationService } from './services/user-administration.service';
 export { DemoControllerService } from './services/demo-controller.service';
-export { MapsService } from './services/maps.service';

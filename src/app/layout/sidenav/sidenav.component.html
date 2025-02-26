@@ -27,7 +27,7 @@
         [routerLinkActiveOptions]="{ exact: isExactForRestOrdering() }"
         (click)="openCollapsedSideNavToggle()"
       >
-        <span class="menu-icon pi pi-truck"></span>
+        <span class="menu-icon pi pi-car"></span>
         <span *ngIf="displayFullVersion()" class="menu-text">Na dowóz</span>
       </a>
     </li>
@@ -53,10 +53,8 @@
         }"
         (click)="onMenuClick()"
       >
-        <span class="menu-icon pi pi-tablet"></span>
-        <span *ngIf="displayFullVersion()" class="menu-text"
-          >Zarządzaj menu</span
-        >
+        <span class="menu-icon pi pi-objects-column"></span>
+        <span *ngIf="displayFullVersion()" class="menu-text">Zarządzanie</span>
         <span
           *ngIf="isSideNavVisible"
           class="sub-menu-icon"
@@ -74,7 +72,7 @@
       <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
         <li *ngIf="hasPermissionToModule('MENU_PANEL')">
           <a routerLink="/menu/products" routerLinkActive="active">
-            <span class="menu-icon pi pi-tablet"></span>
+            <span class="menu-icon pi pi-book"></span>
             <span class="menu-text">Produkty</span></a
           >
         </li>
@@ -84,6 +82,14 @@
           <a routerLink="/menu/category" routerLinkActive="active">
             <span class="menu-icon pi pi-sitemap"></span>
             <span class="menu-text">Kategorie</span></a
+          >
+        </li>
+      </ul>
+      <ul *ngIf="isSubmenuOpen && isSideNavVisible" class="sub-menu">
+        <li *ngIf="hasPermissionToModule('MENU_PANEL')">
+          <a routerLink="/menu/delivery-options" routerLinkActive="active">
+            <span class="menu-icon pi pi-car"></span>
+            <span class="menu-text">Opcje dastawy</span></a
           >
         </li>
       </ul>
@@ -157,7 +163,12 @@
         </li>
       </ul>
     </li>
-    <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS') || hasPermissionToModule('ONLINE_ORDERS')">
+    <li
+      *ngIf="
+        hasPermissionToModule('RESTAURANT_ORDERS') ||
+        hasPermissionToModule('ONLINE_ORDERS')
+      "
+    >
       <a
         style="cursor: pointer"
         routerLinkActive="active"
@@ -167,9 +178,7 @@
         (click)="onSettingsClick()"
       >
         <span class="menu-icon pi pi-cog"></span>
-        <span *ngIf="displayFullVersion()" class="menu-text"
-          >Ustawienia</span
-        >
+        <span *ngIf="displayFullVersion()" class="menu-text">Ustawienia</span>
         <span
           *ngIf="isSideNavVisible"
           class="sub-menu-icon"
@@ -179,13 +188,20 @@
             *ngIf="displayFullVersion()"
             class="sidebar-menu-element-icon"
             >{{
-              isSettingsSubmenuOpen ? "keyboard_arrow_down" : "keyboard_arrow_right"
+              isSettingsSubmenuOpen
+                ? "keyboard_arrow_down"
+                : "keyboard_arrow_right"
             }}</mat-icon
           >
         </span>
       </a>
       <ul *ngIf="isSettingsSubmenuOpen && isSideNavVisible" class="sub-menu">
-        <li *ngIf="hasPermissionToModule('RESTAURANT_ORDERS') || hasPermissionToModule('ONLINE_ORDERS')">
+        <li
+          *ngIf="
+            hasPermissionToModule('RESTAURANT_ORDERS') ||
+            hasPermissionToModule('ONLINE_ORDERS')
+          "
+        >
           <a routerLink="/settings/bluetooth" routerLinkActive="active">
             <span class="menu-icon pi pi-print"></span>
             <span class="menu-text">Drukarka bluetooth</span></a

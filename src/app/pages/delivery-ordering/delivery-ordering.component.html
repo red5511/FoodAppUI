@@ -1,13 +1,30 @@
 <p-card>
   <div class="container">
-    <p-floatLabel>
+    <div class="header">
+      <p-floatLabel>
+        <p-autoComplete
+          class="custom-auto-complete"
+          [(ngModel)]="address"
+          [suggestions]="suggestions"
+          (completeMethod)="onAddressInput($event)"
+          field="description"
+          (onSelect)="onSelectSuggestion($event)"
+          emptyMessage="Brak wyników"
+          inputId="float-label"
+        >
+        </p-autoComplete>
+        <label for="float-label">Podaj adres dostawy</label>
+      </p-floatLabel>
+    </div>
 
-      <p-autoComplete [(ngModel)]="address" [suggestions]="suggestions" (completeMethod)="onAddressInput($event)" field="description"
-        (onSelect)="onSelectSuggestion($event)" emptyMessage="Brak wyników" inputId="float-label">
-      </p-autoComplete>
-      <label for="float-label">Podaj adres dostawy</label>
-    </p-floatLabel>
-
-    <div #mapContainer id="map" style="width: 100%; height: 500px; margin-top: 10px;"></div>
+    <div
+      #mapContainer
+      id="map"
+      style="width: 100%; height: 500px; margin-top: 10px"
+    ></div>
   </div>
 </p-card>
+
+
+<h1 style="color: #00ffaa"> {{distanceInKilometers}}</h1>
+<h1 style="color: #FF0000"> xdd</h1>

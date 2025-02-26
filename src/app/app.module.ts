@@ -116,6 +116,7 @@ import { AndroidPermissions } from '@awesome-cordova-plugins/android-permissions
 import { SettingsBluetoothComponent } from './pages/settings-bluetooth/settings-bluetooth.component';
 import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
+import { MenuDeliveryOptionComponent } from './pages/menu-delivery-option/menu-delivery-option.component';
 
 
 @NgModule({
@@ -175,6 +176,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
     CartComponent,
     DeliveryOrderingComponent,
     SettingsBluetoothComponent,
+    MenuDeliveryOptionComponent,
   ],
   imports: [
     RouterModule,

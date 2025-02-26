@@ -1,0 +1,35 @@
+<p-card>
+  <!-- <app-add-new-category
+      [productCategories]="categories"
+      [isNewCategoryButtonVisible]="!addNewCategoryButtonVisible"
+      [normalButton]="true"
+    ></app-add-new-category> -->
+  <br />
+  <div style="width: 550px">
+    <p-table [value]="deliveryOptions" dataKey="id" editMode="row">
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th style="width: 3rem">Promień</th>
+          <th style="width: 3rem">Kwota dostawy</th>
+        </tr>
+      </ng-template>
+
+      <ng-template
+        pTemplate="body"
+        let-deliveryOption
+        let-editing="editing"
+        let-ri="rowIndex"
+      >
+        <tr [pEditableRow]="deliveryOption">
+          <td>{{ deliveryOption.distance }}</td>
+          <td>{{ deliveryOption.deliveryPrice | pricePln }}</td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">Brak ustawień dostawy</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
+</p-card>
