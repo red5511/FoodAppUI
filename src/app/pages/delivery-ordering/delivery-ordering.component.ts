@@ -4,6 +4,11 @@ import {
   ElementRef,
   ViewChild,
 } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
+import { ContextService } from '../../services/context/context.service';
+import { DeliveryOptionService } from '../../services/services';
+import { DeliveryOptionDto } from '../../services/models';
+import { Message } from 'primeng/api';
 
 declare var google: any; // make sure google maps script is loaded
 
@@ -18,16 +23,110 @@ export class DeliveryOrderingComponent implements AfterViewInit {
   // For PrimeNG p-autoComplete (two-way binding with ngModel)
   address: string = '';
   suggestions: any[] = [];
+  deliveryOptions: DeliveryOptionDto[] = [];
   distanceInKilometers: number | undefined;
+  summaryMapping: any[] = []
+  messages: Message[] = [];
+  private destroy$ = new Subject<void>();
+  colors: string[] = [
+    '#581845', 
+    '#C70039', 
+    '#FFC300', 
+    '#9afa62', 
+    '#003554', 
+    '#006494', 
+    '#0582ca', 
+    '#00a6fb', 
+  ];  
 
   map: any;
   // Fixed shop location (e.g., Kraków)
-  shopLocation = { lat: 50.0647, lng: 19.945 };
+  shopLocation!: google.maps.LatLngLiteral;
   shopMarker: any;
   deliveryMarker: any;
+  showErrorMessage: boolean = false
+
+  constructor(private contextService: ContextService,
+    private deliveryOptionService: DeliveryOptionService
+  ){}
+  
+  ngOnInit() {
+    this.setErrorMessage()
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          // User granted permission: use their location
+          this.shopLocation = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          this.initMap();
+        },
+        (error) => {
+          // Geolocation error or permission denied: show error message
+          this.showErrorMessage = true;
+        }
+      );
+    } else {
+      // Browser doesn't support Geolocation: show error message
+      this.showErrorMessage = true;
+    }
+  }
 
   ngAfterViewInit(): void {
-    this.initMap();
+    this.contextService
+    .getCompanyIdObservable()
+    .pipe(takeUntil(this.destroy$))
+    .subscribe({
+      next: () => {
+        this.loadDeliveryOptions();
+      },
+    });
+  }
+  
+    ngOnDestroy(): void {
+      this.destroy$.next();
+      this.destroy$.complete();
+    }
+
+    setErrorMessage(){
+      this.messages = [
+        {
+          severity: 'error',
+          detail:
+            'Strona wymaga danych geolokalizacyjnych do uruchomienia'        
+          },
+      ];
+    }
+  
+    loadDeliveryOptions() {
+      this.deliveryOptionService
+        .getAllDeliveryOptions({
+          companyId: this.contextService.getCompanyId() ?? -999,
+        })
+        .subscribe({
+          next: (response) => {
+            if (response.deliveryOptions) {
+              this.deliveryOptions = response.deliveryOptions;
+            }
+            this.initMap();
+            this.getSummaryMapping()
+          },
+          error: () => {
+            this.initMap();
+          }
+        });
+    }
+    getSummaryMapping(){
+    this.summaryMapping = this.deliveryOptions.map((option, index, arr) => {
+      // Reverse index: for a 3-element array, indices would be 2,1,0
+      const reverseIndex = arr.length - 1 - index;
+      return {
+        color: this.colors[reverseIndex % this.colors.length],
+        deliveryPrice: option.deliveryPrice,
+        distance: option.distance
+      };
+    });
   }
 
   // Initialize the map centered on the shop location
@@ -46,29 +145,31 @@ export class DeliveryOrderingComponent implements AfterViewInit {
       title: 'Restauracja',
     });
 
-    const radiusCircle = new google.maps.Circle({
-      strokeColor: '#FF0000',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#FF0000',
-      fillOpacity: 0.35,
-      map: this.map,
-      center: this.shopLocation,
-      radius: 5000, // 5 km radius
-    });
-    const radiusCircle2 = new google.maps.Circle({
-      strokeColor: '#00ffaa',
-      strokeOpacity: 0.8,
-      strokeWeight: 2,
-      fillColor: '#00ffaa',
-      fillOpacity: 0.35,
-      map: this.map,
-      center: this.shopLocation,
-      radius: 2000, // 5 km radius
-    });
+      const reversedOptions = [...this.deliveryOptions].reverse();
 
-    // Fit the map bounds to include the entire circle
-    this.map.fitBounds(radiusCircle.getBounds());
+    // Loop over sorted delivery options and create circles
+    reversedOptions.forEach((option, index) => {
+      new google.maps.Circle({
+        strokeColor: this.colors[index % this.colors.length], // Use colors cyclically
+        strokeOpacity: 0.8,
+        strokeWeight: 2,
+        fillColor: this.colors[index % this.colors.length],
+        fillOpacity: 0.3,
+        map: this.map,
+        center: this.shopLocation,
+        radius: (option.distance ?? 0) * 1000, // convert km to meters
+      });
+    });
+  
+    // Fit the map bounds to include all circles
+    if (this.deliveryOptions.length > 0) {
+      this.map.fitBounds(
+        new google.maps.Circle({
+          center: this.shopLocation,
+          radius: (this.deliveryOptions[this.deliveryOptions.length - 1].distance ?? 0) * 1000,
+        }).getBounds()
+      );
+    }
   }
 
   // This method is called as the user types

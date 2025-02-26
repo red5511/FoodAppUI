@@ -121,16 +121,16 @@
                 severity="info"
                 type="button"
                 label="Modyfiuj"
-                [raised]="true"
+                [outlined]="true"
                 icon="pi pi-file-edit"
                 (click)="onModifyProductButtonClick(product)"
               ></button>
               <button
                 pButton
-                severity="warning"
+                severity="danger"
                 type="button"
                 label="Usuń"
-                [raised]="true"
+                [outlined]="true"
                 icon="pi pi-trash"
                 (click)="onDeleteProductButtonClick(product.id)"
               ></button>

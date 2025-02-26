@@ -1,30 +1,27 @@
 <p-card>
+  @if (showErrorMessage) {
+  <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
+  }@else {
+
   <div class="container">
     <div class="header">
       <p-floatLabel>
-        <p-autoComplete
-          class="custom-auto-complete"
-          [(ngModel)]="address"
-          [suggestions]="suggestions"
-          (completeMethod)="onAddressInput($event)"
-          field="description"
-          (onSelect)="onSelectSuggestion($event)"
-          emptyMessage="Brak wyników"
-          inputId="float-label"
-        >
+        <p-autoComplete class="custom-auto-complete" [(ngModel)]="address" [suggestions]="suggestions"
+          (completeMethod)="onAddressInput($event)" field="description" (onSelect)="onSelectSuggestion($event)"
+          emptyMessage="Brak wyników" inputId="float-label">
         </p-autoComplete>
         <label for="float-label">Podaj adres dostawy</label>
       </p-floatLabel>
     </div>
-
-    <div
-      #mapContainer
-      id="map"
-      style="width: 100%; height: 500px; margin-top: 10px"
-    ></div>
+    <div class="summary">
+      <div *ngFor="let summary of summaryMapping" class="summary-item">
+        <span class="color-box" [style.background]="summary.color"></span>
+        <span>
+          {{ summary.distance }} km - {{ summary.deliveryPrice | pricePln }}
+        </span>
+      </div>
+    </div>
+    <div #mapContainer id="map" style="width: 100%; height: 650px; margin-top: 10px"></div>
   </div>
+  }
 </p-card>
-
-
-<h1 style="color: #00ffaa"> {{distanceInKilometers}}</h1>
-<h1 style="color: #FF0000"> xdd</h1>

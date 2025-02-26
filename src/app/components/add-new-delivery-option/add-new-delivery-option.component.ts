@@ -19,7 +19,7 @@ export class AddNewDeliveryOptionComponent {
   constructor(
     private fb: FormBuilder,
     private contextService: ContextService,
-      private deliveryOptionService: DeliveryOptionService,
+    private deliveryOptionService: DeliveryOptionService,
     private toastService: ToastrService
   ) {}
 
@@ -30,7 +30,7 @@ export class AddNewDeliveryOptionComponent {
   setDefaultDeliveryOptionFromValidations() {
     this.deliveryOpitionForm = this.fb.group({
       newDeliveryOptionRadius: [
-        '',
+        ,
         [Validators.required, this.validatRadiusUniqueness.bind(this)],
       ],
       newDeliveryOptionPrice: [
@@ -51,6 +51,7 @@ export class AddNewDeliveryOptionComponent {
     if (this.deliveryOpitionForm.valid) {
       const deliveryOption: DeliveryOptionDto = {
         distance: this.deliveryOpitionForm.get('newDeliveryOptionRadius')?.getRawValue(),
+        deliveryPrice: this.deliveryOpitionForm.get('newDeliveryOptionPrice')?.getRawValue(),
       };
       const body: CreateDeliveryOptionRequest = {
         deliveryOption: deliveryOption
@@ -65,6 +66,7 @@ export class AddNewDeliveryOptionComponent {
           if (response.deliveryOption) {
             this.toastService.success('Dodanie przebiegło poprawnie');
             this.deliveryOptions.push(response.deliveryOption);
+            this.deliveryOptions.sort((a, b) => (a.distance ?? 0) - (b.distance ?? 0));
             this.isNewDeliveryOptionButtonVisible = false;
             this.setDefaultDeliveryOptionFromValidations()
           }

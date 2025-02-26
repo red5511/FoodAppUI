@@ -7,3 +7,30 @@
     margin-top: 2%;
 
   }
+
+  ::ng-deep .p-datatable th {
+    text-align: center;
+  }
+  
+  ::ng-deep .p-datatable td {
+    text-align: center;
+  }
+  
+  :host ::ng-deep .p-datatable .p-datatable-tbody > tr > td {
+    padding: 1rem 5px;
+  }
+  
+  :host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    padding: 1rem 5px;
+  }
+  
+  :host ::ng-deep .expansion-table .p-datatable .p-datatable-tbody > tr > td {
+    padding: 4px 5px;
+  }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+  }

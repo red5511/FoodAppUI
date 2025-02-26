@@ -1,31 +1,61 @@
 <p-card>
-  <app-add-new-delivery-option
-      [deliveryOptions]="deliveryOptions"
-    ></app-add-new-delivery-option>
+  <app-add-new-delivery-option [deliveryOptions]="deliveryOptions"></app-add-new-delivery-option>
   <br />
-  <div style="width: 550px">
+  <div>
     <p-table [value]="deliveryOptions" dataKey="id" editMode="row">
       <ng-template pTemplate="header" let-columns>
         <tr>
           <th style="width: 3rem">Promień</th>
           <th style="width: 3rem">Kwota dostawy</th>
+          <th style="width: 33%;"></th>
         </tr>
       </ng-template>ł
 
-      <ng-template
-        pTemplate="body"
-        let-deliveryOption
-        let-editing="editing"
-        let-ri="rowIndex"
-      >
+      <ng-template pTemplate="body" let-deliveryOption let-editing="editing" let-ri="rowIndex">
         <tr [pEditableRow]="deliveryOption">
-          <td>{{ deliveryOption.distance }}</td>
-          <td>{{ deliveryOption.deliveryPrice | pricePln }}</td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [(ngModel)]="deliveryOption.distance" class="delivery-option-input" mode="decimal"
+                  [maxFractionDigits]="2" />
+                <!-- <input pInputText type="text" [(ngModel)]="deliveryOption.distance" /> -->
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ deliveryOption.distance }} km
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <p-inputNumber [(ngModel)]="deliveryOption.deliveryPrice" mode="currency" currency="PLN"
+                  autocomplete="off" [min]="0" [max]="99999.99"></p-inputNumber>
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ deliveryOption.deliveryPrice | pricePln }}
+              </ng-template>
+            </p-cellEditor>
+          </td>
+          <td>
+            <div class="buttons">
+              <button *ngIf="!editing" pInitEditableRow pRipple pButton size="small" severity="info"[outlined]="true"
+                label="Modyfiuj" icon="pi pi-file-edit"
+                (click)="onRowEditInit(deliveryOption)"></button>
+              <button *ngIf="editing" pButton pRipple type="button" size="large" pSaveEditableRow icon="pi pi-check"
+                (click)="onRowEditSave(deliveryOption)" class="p-button-rounded p-button-text p-button-success mr-2">
+              </button>
+              <button *ngIf="editing" pButton pRipple type="button" size="large" pCancelEditableRow icon="pi pi-times"
+                (click)="onRowEditCancel(deliveryOption, ri)" class="p-button-rounded p-button-text p-button-danger">
+              </button>
+              <button pRipple pButton size="small" severity="danger" type="button" label="Usuń" [outlined]="true"
+                icon="pi pi-trash" (click)="onDelteDeliveryOption(deliveryOption)"></button>
+            </div>
+          </td>
         </tr>
       </ng-template>
       <ng-template pTemplate="emptymessage">
         <tr>
-          <td colspan="6">Brak danych do wyświeltenia</td>
+          <td colspan="6">Brak danych do wyświetlenia</td>
         </tr>
       </ng-template>
     </p-table>
