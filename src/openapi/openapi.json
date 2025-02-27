@@ -1488,7 +1488,8 @@
           "streetNumber": { "type": "string" },
           "city": { "type": "string" },
           "postalCode": { "type": "string" },
-          "country": { "type": "string" }
+          "country": { "type": "string" },
+          "unstructuredAddress": { "type": "string" }
         }
       },
       "CompanyDto": {
@@ -1845,7 +1846,7 @@
               "MODIFIED"
             ]
           },
-          "deliveryAddress": { "type": "string" },
+          "deliveryAddress": { "$ref": "#/components/schemas/Address" },
           "customerName": { "type": "string" },
           "executionTime": { "type": "string", "format": "date-time" },
           "createdDate": { "type": "string", "format": "date-time" },

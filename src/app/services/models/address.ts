@@ -6,4 +6,5 @@ export interface Address {
   postalCode?: string;
   street?: string;
   streetNumber?: string;
+  unstructuredAddress?: string;
 }

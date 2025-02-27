@@ -1,5 +1,6 @@
 /* tslint:disable */
 /* eslint-disable */
+import { Address } from '../models/address';
 import { OrderActions } from '../models/order-actions';
 import { OrderProductDto } from '../models/order-product-dto';
 export interface OrderDto {
@@ -9,7 +10,7 @@ export interface OrderDto {
   companyName?: string;
   createdDate?: string;
   customerName?: string;
-  deliveryAddress?: string;
+  deliveryAddress?: Address;
   deliveryCode?: string;
   description?: string;
   executionTime?: string;

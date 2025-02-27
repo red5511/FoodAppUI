@@ -1,256 +1,272 @@
 <p-card>
-<div class="filters">
-  <span class="p-float-label">
-    <p-multiSelect
-      [style]="{ width: '9rem' }"
-      [maxSelectedLabels]="1"
-      [(ngModel)]="selectedStatusOptions"
-      [options]="statusOptions"
-      (onChange)="onFilterChange()"
-      optionLabel="translatedValue"
-    />
-    <label for="over_label">Statusy</label>
-  </span>
+  <div class="filters">
+    <span class="p-float-label">
+      <p-multiSelect
+        [style]="{ width: '9rem' }"
+        [maxSelectedLabels]="1"
+        [(ngModel)]="selectedStatusOptions"
+        [options]="statusOptions"
+        (onChange)="onFilterChange()"
+        optionLabel="translatedValue"
+      />
+      <label for="over_label">Statusy</label>
+    </span>
 
-  <p-floatLabel>
-    <p-inputNumber
-      [style]="{ width: '8rem', height: '50px' }"
-      [inputStyle]="{ 'min-width': '5rem' }"
-      inputId="integeronly"
-      [(ngModel)]="price"
-      mode="currency"
-      currency="PLN"
-      min="0"
-      max="999999"
-      (ngModelChange)="onInputChange($event)"
-    />
-    <label for="over_label">Kwota</label>
-  </p-floatLabel>
+    <p-floatLabel>
+      <p-inputNumber
+        [style]="{ width: '8rem', height: '50px' }"
+        [inputStyle]="{ 'min-width': '5rem' }"
+        inputId="integeronly"
+        [(ngModel)]="price"
+        mode="currency"
+        currency="PLN"
+        min="0"
+        max="999999"
+        (ngModelChange)="onInputChange($event)"
+      />
+      <label for="over_label">Kwota</label>
+    </p-floatLabel>
 
-  <app-calendar-with-dialog
-    [dateRangeOptions]="dateRangeOptions"
-    [selectedDateRangeValue]="selectedDateRangeValue"
-    [lastSelectedDateRangeValue]="selectedDateRangeValue"
-    (onDateChange)="onDateChange($event)"
-  ></app-calendar-with-dialog>
+    <app-calendar-with-dialog
+      [dateRangeOptions]="dateRangeOptions"
+      [selectedDateRangeValue]="selectedDateRangeValue"
+      [lastSelectedDateRangeValue]="selectedDateRangeValue"
+      (onDateChange)="onDateChange($event)"
+    ></app-calendar-with-dialog>
 
-  <p-floatLabel>
-    <input
-      pInputText
-      [style]="{ width: '14rem', height: '50px' }"
-      id="over_label"
-      [(ngModel)]="globalSearch"
-      autocomplete="off"
-      (ngModelChange)="onInputChange($event)"
-    />
-    <label for="over_label">Wyszkuwianie globalne</label>
-  </p-floatLabel>
+    <p-floatLabel>
+      <input
+        pInputText
+        [style]="{ width: '14rem', height: '50px' }"
+        id="over_label"
+        [(ngModel)]="globalSearch"
+        autocomplete="off"
+        (ngModelChange)="onInputChange($event)"
+      />
+      <label for="over_label">Wyszkuwianie globalne</label>
+    </p-floatLabel>
 
-  <p-floatLabel *ngIf="isHolding">
-    <p-multiSelect
-      [style]="{ width: '18rem' }"
-      [maxSelectedLabels]="1"
-      [(ngModel)]="selectedCompanyOptions"
-      [options]="companyOptions"
-      (onChange)="onFilterChange()"
-      optionLabel="name"
-    />
-    <label for="over_label">Firmy</label>
-  </p-floatLabel>
-</div>
+    <p-floatLabel *ngIf="isHolding">
+      <p-multiSelect
+        [style]="{ width: '18rem' }"
+        [maxSelectedLabels]="1"
+        [(ngModel)]="selectedCompanyOptions"
+        [options]="companyOptions"
+        (onChange)="onFilterChange()"
+        optionLabel="name"
+      />
+      <label for="over_label">Firmy</label>
+    </p-floatLabel>
+  </div>
 
-<p-table
-  #dt2
-  [value]="orders"
-  dataKey="id"
-  [rows]="10"
-  [rowsPerPageOptions]="[10, 25, 50]"
-  [loading]="loading"
-  [pageLinks]="5"
-  [totalRecords]="totalRecords"
-  [lazy]="true"
-  (onLazyLoad)="loadOrdersLazy($event)"
-  [paginator]="true"
-  [tableStyle]="{ 'min-width': '20rem' }"
-  [expandedRowKeys]="expandedRows"
-  (onRowExpand)="onRowExpand($event)"
-  (onRowCollapse)="onRowCollapse($event)"
-  [(selection)]="selectedRow"
->
-  <ng-template pTemplate="header">
-    <tr>
-      <th style="margin-left: -22px; width: 1%"></th>
-      <th style="width: 1%"></th>
-      <th [style.width]="isHolding ? '17%' : '20%'">
-        <app-sortable-column
-          field="price"
-          label="Kwota"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-        <app-sortable-column
-          field="status"
-          label="Status"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-      </th>
-      <th style="width: 1%">
-        <div>Na wynos</div>
-      </th>
-      <th style="width: 26%">
-        <app-sortable-column
-          field="executionTime"
-          label="Data realizacji"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-        <app-sortable-column
-          field="createdDate"
-          label="Data utworzenia"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-      </th>
-      <th>
-        Kod zamówienia
-        <br />
-        <app-sortable-column
-          field="deliveryAddress"
-          label="Adres dostawy"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-      </th>
-      <th *ngIf="isHolding">
-        <app-sortable-column
-          field="company"
-          label="Frima"
-          [sortState]="sortState"
-          (sortChanged)="onSortChanged($event)"
-        ></app-sortable-column>
-      </th>
-    </tr>
-  </ng-template>
+  <p-table
+    #dt2
+    [value]="orders"
+    dataKey="id"
+    [rows]="10"
+    [rowsPerPageOptions]="[10, 25, 50]"
+    [loading]="loading"
+    [pageLinks]="5"
+    [totalRecords]="totalRecords"
+    [lazy]="true"
+    (onLazyLoad)="loadOrdersLazy($event)"
+    [paginator]="true"
+    [tableStyle]="{ 'min-width': '20rem' }"
+    [expandedRowKeys]="expandedRows"
+    (onRowExpand)="onRowExpand($event)"
+    (onRowCollapse)="onRowCollapse($event)"
+    [(selection)]="selectedRow"
+  >
+    <ng-template pTemplate="header">
+      <tr>
+        <th style="margin-left: -22px; width: 1%"></th>
+        <th style="width: 1%"></th>
+        <th [style.width]="isHolding ? '17%' : '20%'">
+          <app-sortable-column
+            field="price"
+            label="Kwota"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+            field="status"
+            label="Status"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th style="width: 1%">
+          <div>Na wynos</div>
+        </th>
+        <th style="width: 26%">
+          <app-sortable-column
+            field="executionTime"
+            label="Data realizacji"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+          <app-sortable-column
+            field="createdDate"
+            label="Data utworzenia"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th>
+          Kod zamówienia
+          <br />
+          <app-sortable-column
+            field="deliveryAddress"
+            label="Adres dostawy"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+        <th *ngIf="isHolding">
+          <app-sortable-column
+            field="company"
+            label="Frima"
+            [sortState]="sortState"
+            (sortChanged)="onSortChanged($event)"
+          ></app-sortable-column>
+        </th>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="body" let-order let-expanded="expanded">
-    <tr>
-      <td>
-        <p-button
-          type="button"
-          pRipple
-          [pRowToggler]="order"
-          [text]="true"
-          [rounded]="true"
-          [plain]="true"
-          [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
-        />
-      </td>
-      <td>
-        <div>#{{ order.id }}</div>
-        <div>
-          <img
-            *ngIf="orderUtils.getImage(order.orderType)"
-            [src]="orderUtils.getImage(order.orderType)"
-            style="
-              border-radius: 15px;
-              width: 28px;
-              height: 28px;
-              object-fit: cover;
-            "
+    <ng-template pTemplate="body" let-order let-expanded="expanded">
+      <tr>
+        <td>
+          <p-button
+            type="button"
+            pRipple
+            [pRowToggler]="order"
+            [text]="true"
+            [rounded]="true"
+            [plain]="true"
+            [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
           />
-        </div>
-      </td>
-      <td>
-        <div>
-          {{ order.price | pricePln }}
-          <i
-            *ngIf="orderUtils.isCashPayment(order.paymentMethod)"
-            class="pi pi-money-bill"
-            style="color: rgb(0, 95, 0); font-size: 1rem"
-          ></i>
-          <i
-            *ngIf="orderUtils.isCardPayment(order.paymentMethod)"
-            class="pi pi-credit-card"
-            style="font-size: 1rem"
-          ></i>
-        </div>
-        <p-tag
-          [value]="statusesTranslations[order.status]"
-          [severity]="getStatusSeverity(order.status)"
-        />
-      </td>
-      <td class="custom-td">
-        <div>{{ order.takeaway ? "Tak" : "Nie" }}</div>
-      </td>
-      <td>
-        <div>{{ order.executionTime | formattedDateTime }}</div>
-        <div>{{ order.createdDate | formattedDateTime }}</div>
-      </td>
-      <td>
-        <div>{{ order.deliveryCode }}</div>
-        <div>{{ order.deliveryAddress }}</div>
-      </td>
-      <td *ngIf="isHolding">{{ order.companyName }}</td>
-    </tr>
-  </ng-template>
-  <ng-template pTemplate="rowexpansion" let-order>
-    <tr>
-      <td colspan="7">
-        <div class="p-3">
-          <p class="wrap-text">
-            <b>Opis do zamówienia: </b>{{ order.description ?? " - " }}
-          </p>
-          <p-table [value]="order.orderProducts" dataKey="id">
-            <ng-template pTemplate="header">
-              <tr>
-                <th></th>
-                <th>Nazwa</th>
-                <th>Kwota</th>
-                <th>Ilość</th>
-                <th style="max-width: 50%">Opcje</th>
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="body" let-orderProduct>
-              <tr>
-                <td>
-                  <img
-                    *ngIf="
-                      imageService.getProductImageUrl(
-                        orderProduct.product.imgUrl
+        </td>
+        <td>
+          <div>#{{ order.id }}</div>
+          <div>
+            <img
+              *ngIf="orderUtils.getImage(order.orderType)"
+              [src]="orderUtils.getImage(order.orderType)"
+              style="
+                border-radius: 15px;
+                width: 28px;
+                height: 28px;
+                object-fit: cover;
+              "
+            />
+          </div>
+        </td>
+        <td>
+          <div>
+            {{ order.price | pricePln }}
+            <i
+              *ngIf="orderUtils.isCashPayment(order.paymentMethod)"
+              class="pi pi-money-bill"
+              style="color: rgb(0, 95, 0); font-size: 1rem"
+            ></i>
+            <i
+              *ngIf="orderUtils.isCardPayment(order.paymentMethod)"
+              class="pi pi-credit-card"
+              style="font-size: 1rem"
+            ></i>
+          </div>
+          <p-tag
+            [value]="statusesTranslations[order.status]"
+            [severity]="getStatusSeverity(order.status)"
+          />
+        </td>
+        <td class="custom-td">
+          <div>{{ order.takeaway ? "Tak" : "Nie" }}</div>
+        </td>
+        <td>
+          <div>{{ order.executionTime | formattedDateTime }}</div>
+          <div>{{ order.createdDate | formattedDateTime }}</div>
+        </td>
+        <td>
+          <div>{{ order.deliveryCode }}</div>
+          <div>
+            {{
+              order.deliveryAddress.street +
+                " " +
+                order.deliveryAddress.streetNumber +
+                " " +
+                order.deliveryAddress.city +
+                " " +
+                order.deliveryAddress.postalCode
+            }}
+          </div>
+        </td>
+        <td *ngIf="isHolding">{{ order.companyName }}</td>
+      </tr>
+    </ng-template>
+    <ng-template pTemplate="rowexpansion" let-order>
+      <tr>
+        <td colspan="7">
+          <div class="p-3">
+            <p class="wrap-text">
+              <b>Opis do zamówienia: </b>{{ order.description ?? " - " }}
+            </p>
+            <p-table [value]="order.orderProducts" dataKey="id">
+              <ng-template pTemplate="header">
+                <tr>
+                  <th></th>
+                  <th>Nazwa</th>
+                  <th>Kwota</th>
+                  <th>Ilość</th>
+                  <th style="max-width: 50%">Opcje</th>
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="body" let-orderProduct>
+                <tr>
+                  <td>
+                    <img
+                      *ngIf="
+                        imageService.getProductImageUrl(
+                          orderProduct.product.imgUrl
+                        )
+                      "
+                      [src]="
+                        imageService.getProductImageUrl(
+                          orderProduct.product.imgUrl
+                        )
+                      "
+                      class="small-product"
+                    />
+                  </td>
+                  <td>{{ orderProduct.product.name }}</td>
+                  <td>{{ orderProduct.price | pricePln }}</td>
+                  <td>{{ orderProduct.quantity }}</td>
+                  <td>
+                    {{
+                      orderUtils.getProductPropertiesNames(
+                        orderProduct.productPropertiesList
                       )
-                    "
-                    [src]="
-                      imageService.getProductImageUrl(
-                        orderProduct.product.imgUrl
-                      )
-                    "
-                    class="small-product"
-                  />
-                </td>
-                <td>{{ orderProduct.product.name }}</td>
-                <td>{{ orderProduct.price | pricePln }}</td>
-                <td>{{ orderProduct.quantity }}</td>
-                <td>{{ orderUtils.getProductPropertiesNames(orderProduct.productPropertiesList) }}</td>
-                <!-- Accessing quantity from the map -->
-              </tr>
-            </ng-template>
-            <ng-template pTemplate="emptymessage">
-              <tr>
-                <td colspan="6">Brak produktów</td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </div>
-      </td>
-    </tr>
-  </ng-template>
+                    }}
+                  </td>
+                  <!-- Accessing quantity from the map -->
+                </tr>
+              </ng-template>
+              <ng-template pTemplate="emptymessage">
+                <tr>
+                  <td colspan="6">Brak produktów</td>
+                </tr>
+              </ng-template>
+            </p-table>
+          </div>
+        </td>
+      </tr>
+    </ng-template>
 
-  <ng-template pTemplate="emptymessage">
-    <tr>
-      <td></td>
-      <td colspan="5">Brak zamówień</td>
-    </tr>
-  </ng-template>
-</p-table>
+    <ng-template pTemplate="emptymessage">
+      <tr>
+        <td></td>
+        <td colspan="5">Brak zamówień</td>
+      </tr>
+    </ng-template>
+  </p-table>
 </p-card>

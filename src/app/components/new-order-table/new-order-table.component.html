@@ -89,7 +89,17 @@
       </td>
       <td class="custom-td">
         <div>{{ order.deliveryCode }}</div>
-        <div>{{ order.deliveryAddress }}</div>
+        <div>
+          {{
+            order.deliveryAddress.street +
+              " " +
+              order.deliveryAddress.streetNumber +
+              " " +
+              order.deliveryAddress.city +
+              " " +
+              order.deliveryAddress.postalCode
+          }}
+        </div>
       </td>
       <td *ngIf="isHolding" class="custom-td">
         <div>{{ order.companyName }}</div>

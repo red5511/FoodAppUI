@@ -1,17 +1,31 @@
 <p-card>
   @if (showErrorMessage) {
   <p-messages [(value)]="messages" [enableService]="false" [closable]="false" />
-  }@else {
+  }
 
   <div class="container">
-    <div class="header">
+    <div *ngIf="!showErrorMessage" class="header">
       <p-floatLabel>
-        <p-autoComplete class="custom-auto-complete" [(ngModel)]="address" [suggestions]="suggestions"
-          (completeMethod)="onAddressInput($event)" field="description" (onSelect)="onSelectSuggestion($event)"
-          emptyMessage="Brak wyników" inputId="float-label">
+        <p-autoComplete
+          class="custom-auto-complete"
+          [(ngModel)]="address"
+          [suggestions]="suggestions"
+          (completeMethod)="onAddressInput($event)"
+          field="description"
+          (onSelect)="onSelectSuggestion($event)"
+          emptyMessage="Brak wyników"
+          inputId="float-label"
+        >
         </p-autoComplete>
         <label for="float-label">Podaj adres dostawy</label>
       </p-floatLabel>
+      <button
+        pButton
+        severity="success"
+        icon="pi pi-check"
+        [label]="approveButtonLabel"
+        (click)="onApprove()"
+      ></button>
     </div>
     <div class="summary">
       <div *ngFor="let summary of summaryMapping" class="summary-item">
@@ -21,7 +35,10 @@
         </span>
       </div>
     </div>
-    <div #mapContainer id="map" style="width: 100%; height: 650px; margin-top: 10px"></div>
+    <div
+      #mapContainer
+      id="map"
+      style="width: 100%; height: 650px; margin-top: 10px"
+    ></div>
   </div>
-  }
 </p-card>

@@ -1,13 +1,8 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  ViewChild,
-} from '@angular/core';
+import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
 import { DeliveryOptionService } from '../../services/services';
-import { DeliveryOptionDto } from '../../services/models';
+import { Address, DeliveryOptionDto } from '../../services/models';
 import { Message } from 'primeng/api';
 
 declare var google: any; // make sure google maps script is loaded
@@ -22,44 +17,59 @@ export class DeliveryOrderingComponent implements AfterViewInit {
 
   // For PrimeNG p-autoComplete (two-way binding with ngModel)
   address: string = '';
+  deliveryAddress: Address = {};
+  approveButtonLabel: string = 'Zatwierdź';
   suggestions: any[] = [];
   deliveryOptions: DeliveryOptionDto[] = [];
   distanceInKilometers: number | undefined;
-  summaryMapping: any[] = []
+  summaryMapping: any[] = [];
+  deliveryPrice: number | undefined;
   messages: Message[] = [];
+  event: any | undefined;
   private destroy$ = new Subject<void>();
   colors: string[] = [
-    '#581845', 
-    '#C70039', 
-    '#FFC300', 
-    '#9afa62', 
-    '#003554', 
-    '#006494', 
-    '#0582ca', 
-    '#00a6fb', 
-  ];  
+    '#581845',
+    '#C70039',
+    '#FFC300',
+    '#9afa62',
+    '#003554',
+    '#006494',
+    '#0582ca',
+    '#00a6fb',
+  ];
 
   map: any;
   // Fixed shop location (e.g., Kraków)
   shopLocation!: google.maps.LatLngLiteral;
   shopMarker: any;
   deliveryMarker: any;
-  showErrorMessage: boolean = false
+  showErrorMessage: boolean = false;
 
-  constructor(private contextService: ContextService,
+  constructor(
+    private contextService: ContextService,
     private deliveryOptionService: DeliveryOptionService
-  ){}
-  
+  ) {}
+
   ngOnInit() {
-    this.setErrorMessage()
+    this.setErrorMessage();
+  }
+
+  ngAfterViewInit(): void {
+    console.log('navigator');
+    console.log(navigator);
+
     if (navigator.geolocation) {
+      console.log(navigator.geolocation);
+
       navigator.geolocation.getCurrentPosition(
         (position) => {
           // User granted permission: use their location
           this.shopLocation = {
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           };
+          console.log(this.shopLocation);
+
           this.initMap();
         },
         (error) => {
@@ -71,60 +81,57 @@ export class DeliveryOrderingComponent implements AfterViewInit {
       // Browser doesn't support Geolocation: show error message
       this.showErrorMessage = true;
     }
-  }
 
-  ngAfterViewInit(): void {
     this.contextService
-    .getCompanyIdObservable()
-    .pipe(takeUntil(this.destroy$))
-    .subscribe({
-      next: () => {
-        this.loadDeliveryOptions();
-      },
-    });
+      .getCompanyIdObservable()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadDeliveryOptions();
+        },
+      });
   }
-  
-    ngOnDestroy(): void {
-      this.destroy$.next();
-      this.destroy$.complete();
-    }
 
-    setErrorMessage(){
-      this.messages = [
-        {
-          severity: 'error',
-          detail:
-            'Strona wymaga danych geolokalizacyjnych do uruchomienia'        
-          },
-      ];
-    }
-  
-    loadDeliveryOptions() {
-      this.deliveryOptionService
-        .getAllDeliveryOptions({
-          companyId: this.contextService.getCompanyId() ?? -999,
-        })
-        .subscribe({
-          next: (response) => {
-            if (response.deliveryOptions) {
-              this.deliveryOptions = response.deliveryOptions;
-            }
-            this.initMap();
-            this.getSummaryMapping()
-          },
-          error: () => {
-            this.initMap();
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  setErrorMessage() {
+    this.messages = [
+      {
+        severity: 'error',
+        detail: 'Strona wymaga danych geolokalizacyjnych do uruchomienia',
+      },
+    ];
+  }
+
+  loadDeliveryOptions() {
+    this.deliveryOptionService
+      .getAllDeliveryOptions({
+        companyId: this.contextService.getCompanyId() ?? -999,
+      })
+      .subscribe({
+        next: (response) => {
+          if (response.deliveryOptions) {
+            this.deliveryOptions = response.deliveryOptions;
           }
-        });
-    }
-    getSummaryMapping(){
+          this.initMap();
+          this.getSummaryMapping();
+        },
+        error: () => {
+          this.initMap();
+        },
+      });
+  }
+  getSummaryMapping() {
     this.summaryMapping = this.deliveryOptions.map((option, index, arr) => {
       // Reverse index: for a 3-element array, indices would be 2,1,0
       const reverseIndex = arr.length - 1 - index;
       return {
         color: this.colors[reverseIndex % this.colors.length],
         deliveryPrice: option.deliveryPrice,
-        distance: option.distance
+        distance: option.distance,
       };
     });
   }
@@ -145,10 +152,11 @@ export class DeliveryOrderingComponent implements AfterViewInit {
       title: 'Restauracja',
     });
 
-      const reversedOptions = [...this.deliveryOptions].reverse();
+    const reversedOptions = [...this.deliveryOptions].reverse();
 
     // Loop over sorted delivery options and create circles
     reversedOptions.forEach((option, index) => {
+      var radius = (option.distance ?? 0) * 1000;
       new google.maps.Circle({
         strokeColor: this.colors[index % this.colors.length], // Use colors cyclically
         strokeOpacity: 0.8,
@@ -157,16 +165,18 @@ export class DeliveryOrderingComponent implements AfterViewInit {
         fillOpacity: 0.3,
         map: this.map,
         center: this.shopLocation,
-        radius: (option.distance ?? 0) * 1000, // convert km to meters
+        radius,
       });
     });
-  
+
     // Fit the map bounds to include all circles
     if (this.deliveryOptions.length > 0) {
       this.map.fitBounds(
         new google.maps.Circle({
           center: this.shopLocation,
-          radius: (this.deliveryOptions[this.deliveryOptions.length - 1].distance ?? 0) * 1000,
+          radius:
+            (this.deliveryOptions[this.deliveryOptions.length - 1].distance ??
+              0) * 1000,
         }).getBounds()
       );
     }
@@ -174,6 +184,7 @@ export class DeliveryOrderingComponent implements AfterViewInit {
 
   // This method is called as the user types
   onAddressInput(event: any): void {
+    this.deliveryAddress = {};
     if (!event.query) {
       this.suggestions = [];
       return;
@@ -199,6 +210,7 @@ export class DeliveryOrderingComponent implements AfterViewInit {
   }
 
   onSelectSuggestion(event: any): void {
+    this.deliveryAddress = {};
     if (!event || !event.value.place_id) {
       console.error('Selected place does not have a place_id.');
       return;
@@ -206,6 +218,7 @@ export class DeliveryOrderingComponent implements AfterViewInit {
 
     // Set the basic address description
     this.address = event.value.description;
+    this.event = event.value;
 
     const placesService = new google.maps.places.PlacesService(this.map);
     placesService.getDetails(
@@ -227,15 +240,19 @@ export class DeliveryOrderingComponent implements AfterViewInit {
           postalComponent && postalComponent.long_name?.includes('-')
             ? postalComponent.long_name
             : '';
-
+        this.deliveryAddress.postalCode = zipCode;
         this.address = `${event.value.description} ${zipCode}`;
+
+        console.log('place');
+        console.log(place);
 
         const deliveryLocation = {
           lat: place.geometry.location.lat(),
           lng: place.geometry.location.lng(),
         };
 
-        // Remove existing delivery marker if present
+        this.mapGoogleAddress(place);
+
         if (this.deliveryMarker) {
           this.deliveryMarker.setMap(null);
         }
@@ -269,7 +286,62 @@ export class DeliveryOrderingComponent implements AfterViewInit {
           );
         this.distanceInKilometers =
           Math.round((distanceInMeters / 1000) * 100) / 100;
+
+        const applicableOption = this.deliveryOptions.find(
+          (option) => this.distanceInKilometers! <= (option.distance ?? 0)
+        );
+        this.deliveryPrice = applicableOption?.deliveryPrice;
+        this.approveButtonLabel = this.deliveryPrice
+          ? 'Zatwierdź - ' + this.deliveryPrice + 'zł'
+          : 'Zatwierdź - ?zł';
       }
     );
+  }
+
+  onApprove() {
+    if (this.isEmptyAddress(this.deliveryAddress)) {
+      this.deliveryAddress.unstructuredAddress = this.address;
+    }
+    console.log('onApprove');
+    console.log(this.address);
+    console.log(this.event);
+    console.log(this.deliveryAddress);
+  }
+
+  isEmptyAddress(address: Address): boolean {
+    // Option 1: If the object has no own properties at all:
+    if (Object.keys(address).length === 0) {
+      return true;
+    }
+    return false;
+  }
+
+  mapGoogleAddress(place: any) {
+    if (place.address_components && Array.isArray(place.address_components)) {
+      place.address_components.forEach((component: any) => {
+        const types: string[] = component.types;
+
+        // Check for street number (e.g., "107")
+        if (types.includes('street_number')) {
+          this.deliveryAddress.streetNumber = component.long_name;
+        }
+        // Check for street name (e.g., "Chorzowska")
+        else if (types.includes('route') || types.includes('neighborhood')) {
+          this.deliveryAddress.street = component.long_name;
+        }
+        // Check for locality/city (e.g., "Katowice")
+        else if (types.includes('locality')) {
+          this.deliveryAddress.city = component.long_name;
+        }
+        // Check for postal code (e.g., "40-101")
+        else if (types.includes('postal_code')) {
+          this.deliveryAddress.postalCode = component.long_name;
+        }
+        // Check for country (e.g., "Polska")
+        else if (types.includes('country')) {
+          this.deliveryAddress.country = component.long_name;
+        }
+      });
+    }
   }
 }
