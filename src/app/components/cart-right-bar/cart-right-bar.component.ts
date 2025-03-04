@@ -60,11 +60,11 @@ export class CartRightBarComponent {
     new EventEmitter<boolean>();
   showEmpty: boolean = false;
   animationDuration: number = 300; // ms, should match your animation timing
+  selectedOrderProductNoteId: number | undefined;
 
   constructor(public orderUtils: OrderUtils) {}
 
-  ngOnInit(): void {
-  }
+  ngOnInit(): void {}
   ngOnChanges(changes: SimpleChanges): void {
     if (this.cartModel.orderProducts.length === 0) {
       setTimeout(() => {
@@ -74,6 +74,15 @@ export class CartRightBarComponent {
       // Hide the empty state immediately when items are present
       this.showEmpty = false;
     }
+  }
+
+  onAddNote(item: OrderProductDto) {
+    this.selectedOrderProductNoteId = item.id;
+  }
+
+  onDeleteNote(item: OrderProductDto) {
+    this.selectedOrderProductNoteId = undefined;
+    item.note = undefined;
   }
 
   toggleNote(item: OrderProductDto): void {

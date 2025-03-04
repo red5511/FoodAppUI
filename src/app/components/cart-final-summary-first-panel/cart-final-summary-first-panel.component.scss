@@ -19,8 +19,8 @@
   
   /* Bigger product image styling */
   .big-product-image {
-    width: 100px; /* Increase the size as needed */
-    height: 100px;
+    width: 110px; /* Increase the size as needed */
+    height: 110px;
     margin-right: 1rem;
     object-fit: cover;
     border-radius: 4px;
@@ -52,7 +52,9 @@
     // height: 100px;
     padding-right: 1rem;
     align-items: center;
-    justify-content: center;
+    justify-content: space-between;
+    flex-direction: column;
+
   }
 
   .options-container {
@@ -60,4 +62,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     gap: 0.4rem;
+  }
+
+  .custom-text-button{
+    border: none;
   }

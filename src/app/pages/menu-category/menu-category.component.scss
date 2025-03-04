@@ -3,7 +3,7 @@
     max-width: 1500px;
     // box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
     padding: 1rem;
-    margin-bottom: 100px;
+    margin-bottom: 50px;
     margin-top: 2%;
 
   }
@@ -20,3 +20,18 @@
   :host ::ng-deep .p-button {
     transition: none !important;
   }
+
+  .buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  
+.small-product {
+  border-radius: 15px;
+  width: 3.5rem;
+  height: 3.5rem;
+  object-fit: cover;
+}

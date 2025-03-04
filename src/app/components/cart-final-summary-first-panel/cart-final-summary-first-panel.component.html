@@ -20,6 +20,24 @@
               incrementButtonIcon="pi pi-plus"
               decrementButtonIcon="pi pi-minus"
             ></p-inputNumber>
+            @if (selectedNoteOrderProductId !== item.id) { @if (item.note ===
+            undefined || item.note === null || item.note === '') {
+            <p-button
+              [severity]="'success'"
+              class="custom-text-button"
+              label="Dodaj notatkę"
+              [text]="true"
+              (onClick)="onNoteButtonClick(item)"
+            ></p-button>
+            }@else {
+            <p-button
+              [severity]="'success'"
+              class="custom-text-button"
+              label="Edytuj notatke"
+              [text]="true"
+              (onClick)="onNoteButtonClick(item)"
+            ></p-button>
+            } }
           </div>
           <img
             *ngIf="imageService.getProductImageUrl(item.product.imgUrl)"
@@ -41,7 +59,7 @@
               }}
             </p>
             } @else{
-            <p>
+            <p style="margin-bottom: 4px">
               {{ item.price | pricePln }}
             </p>
             }
@@ -57,6 +75,46 @@
               </div>
               }
             </div>
+            <div
+              style="display: flex; margin-top: 6px"
+              *ngIf="item.note && selectedNoteOrderProductId !== item.id"
+            >
+              <b style="margin-right: 2px;"> Notatka: </b>
+              <p style="margin-bottom: 0">
+                {{ " " + item.note }}
+              </p>
+            </div>
+          </div>
+        </div>
+        <div
+          *ngIf="selectedNoteOrderProductId === item.id"
+          style="display: flex"
+        >
+          <textarea
+            style="margin-top: 1.5rem; width: 100%; height: 5rem"
+            [(ngModel)]="item.note"
+            class="custom-textarea"
+            id="float-input"
+            pInputTextarea
+            [maxLength]="510"
+          ></textarea>
+          <div style="display: flex; justify-content: center; margin-top: 1.5rem">
+            <p-button
+              [outlined]="true"
+              class="custom-text-button"
+              pButton
+              severity="success"
+              label="Dodaj"
+              (onClick)="selectedNoteOrderProductId = undefined"
+            ></p-button>
+            <p-button
+              [outlined]="true"
+              class="custom-text-button"
+              pButton
+              severity="danger"
+              label="Usuń"
+              (onClick)="onDelteNote(item)"
+            ></p-button>
           </div>
         </div>
       </div>

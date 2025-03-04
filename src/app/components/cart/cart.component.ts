@@ -4,6 +4,7 @@ import { takeUntil } from 'rxjs';
 import { Subject } from 'rxjs/internal/Subject';
 import { CartService } from '../../services/cart/cart-service';
 import { CartModel } from '../../common/commonModels';
+import { OrderUtils } from '../../common/orders-utils';
 
 @Component({
   selector: 'app-cart',
@@ -20,7 +21,7 @@ export class CartComponent {
   foodPrice: number = 0;
   private destroy$ = new Subject<void>();
 
-  constructor(private cartService: CartService, private router: Router) {}
+  constructor(private cartService: CartService, private router: Router, public orderUtils: OrderUtils) {}
 
   ngOnInit(): void {
     this.cartService.cartUpdated

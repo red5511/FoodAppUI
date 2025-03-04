@@ -17,7 +17,9 @@
               <div class="big-product-name" *ngIf="item.product?.name">
                 <b>{{ item.product.name }}</b>
               </div>
-              <p *ngIf="!isDelivery && !cartModel.isTakeawayOption">{{ item.price | pricePln }}</p>
+              <p *ngIf="!isDelivery && !cartModel.isTakeawayOption">
+                {{ item.price | pricePln }}
+              </p>
               <p *ngIf="isDelivery && !cartModel.isTakeawayOption">
                 {{ item.price + item.extraDeliveryPrice | pricePln }}
               </p>
@@ -41,6 +43,15 @@
                 }
               </div>
             </div>
+            <div
+              *ngIf="item.note && !selectedOrderProductNoteId"
+              style="display: flex; margin-top: 1rem"
+            >
+              <b style="margin-bottom: 0">Notatka:</b>
+              <p style="margin-bottom: 0; font-size: 13px; margin-left: 3px">
+                {{ item.note }}
+              </p>
+            </div>
             <div class="item-footer">
               <div class="quantity-selector">
                 <p-inputNumber
@@ -57,32 +68,51 @@
                 ></p-inputNumber>
               </div>
               <p-button
-                *ngIf="item.note === undefined || item.note === null"
+                *ngIf="!selectedOrderProductNoteId"
                 [severity]="'success'"
                 class="custom-text-button"
-                label="Dodaj notatkę"
+                [label]="
+                  item.note === undefined || item.note === null
+                    ? 'Dodaj notatkę'
+                    : 'Edytuj notatkę'
+                "
                 [text]="true"
-                (onClick)="toggleNote(item)"
-              ></p-button>
-              <p-button
-                *ngIf="item.note !== undefined && item.note !== null"
-                [severity]="'success'"
-                class="custom-text-button"
-                label="Skasuj"
-                [text]="true"
-                (onClick)="toggleNote(item)"
+                (onClick)="onAddNote(item)"
               ></p-button>
             </div>
-            <textarea
-              *ngIf="item.note !== undefined && item.note !== null"
-              style="margin-top: 1rem"
-              [(ngModel)]="item.note"
-              class="custom-textarea"
-              id="float-input"
-              rows="6"
-              pInputTextarea
-              [maxLength]="510"
-            ></textarea>
+            <div *ngIf="selectedOrderProductNoteId === item.id">
+              <textarea
+                style="margin-top: 1rem; width: 100%"
+                [(ngModel)]="item.note"
+                class="custom-textarea"
+                id="float-input"
+                rows="6"
+                pInputTextarea
+                [maxLength]="510"
+              ></textarea>
+              <div
+                style="
+                  display: flex;
+                  justify-content: space-between;
+                  align-items: center;
+                "
+              >
+                <p-button
+                  [severity]="'danger'"
+                  class="custom-text-button"
+                  label="Skasuj"
+                  [text]="true"
+                  (onClick)="onDeleteNote(item)"
+                ></p-button>
+                <p-button
+                  [severity]="'success'"
+                  class="custom-text-button"
+                  label="Dodaj"
+                  [text]="true"
+                  (onClick)="selectedOrderProductNoteId = undefined"
+                ></p-button>
+              </div>
+            </div>
           </div>
         </div>
       </ng-template>
@@ -128,10 +158,10 @@
       <b
         >Suma:
         {{
-          (foodPrice +
+          foodPrice +
             (cartModel.isTakeawayOption
               ? orderUtils.calculateTakeawayPrice(cartModel.orderProducts)
-              : 0)) | pricePln
+              : 0) | pricePln
         }}</b
       >
       }
@@ -143,7 +173,7 @@
       class="checkout-btn"
       (click)="onSummaryPanelVisibleChange.emit(true)"
     >
-      Podsumowanie
+      Podsumowanie {{ foodPrice + (deliveryPrice ?? 0) | pricePln }}
     </button>
   </div>
 </div>

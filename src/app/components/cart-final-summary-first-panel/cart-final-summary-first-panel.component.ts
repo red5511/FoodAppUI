@@ -33,30 +33,27 @@ import { OrderUtils } from '../../common/orders-utils';
 export class CartFinalSummaryFirstPanelComponent {
   @Input()
   cartSummaryModel!: CartSummaryModel;
-  @Input({required: true})
+  @Input({ required: true })
   isDelivery!: boolean | undefined;
   @Output()
   onQuantityChangeNoneZero: EventEmitter<boolean> = new EventEmitter<boolean>();
-
-  // totalItems: number = 0;
-  // totalPrice: number = 0;
+  selectedNoteOrderProductId: number | undefined;
 
   private destroy$ = new Subject<void>();
 
   constructor(
     public cartService: CartService,
     public imageService: ImageService,
-    public orderUtils: OrderUtils,
+    public orderUtils: OrderUtils
   ) {}
 
   ngOnInit(): void {
     console.log('init');
     console.log(this.cartSummaryModel);
-    
+
     this.cartService.cartUpdated
       .pipe(takeUntil(this.destroy$))
       .subscribe((cart) => {
-        
         this.cartSummaryModel.orderProducts = cart.orderProducts;
       });
   }
@@ -72,40 +69,18 @@ export class CartFinalSummaryFirstPanelComponent {
   }
 
   onQuantityChange(item: OrderProductDto) {
-    this.orderUtils.onQuantityChange(item, this.isDelivery)
+    this.orderUtils.onQuantityChange(item, this.isDelivery);
     if (item.id) {
       this.onQuantityChangeNoneZero.emit(true);
     }
   }
 
-  // updateOrderProductPrice(orderProduct: OrderProductDto): OrderProductDto {
-  //   const basePrice = orderProduct.product?.price || 0;
-  //   let extraPrice = 0;
-  //   console.log('xd');
-  //   console.log(orderProduct);
+  onNoteButtonClick(orderProduct: OrderProductDto) {
+    this.selectedNoteOrderProductId = orderProduct.id;
+  }
 
-  //   if (orderProduct.productPropertiesList) {
-  //     console.log('in orderProduct.productPropertiesList');
-
-  //     for (const propGroup of orderProduct.productPropertiesList) {
-  //       console.log('propGroup' + propGroup);
-  //       console.log(propGroup);
-  //       if (propGroup.propertyList) {
-  //         for (const prop of propGroup.propertyList) {
-  //           console.log('prop' + prop);
-  //           console.log('price' + prop.price);
-  //           extraPrice += prop.price || 0;
-  //         }
-  //       }
-  //     }
-  //   }
-  //   const quantity = orderProduct.quantity || 1;
-  //   const totalPrice = (basePrice + extraPrice) * quantity;
-  //   console.log('updateOrderProductPrice');
-  //   console.log(quantity);
-  //   console.log(totalPrice);
-  //   console.log(extraPrice);
-
-  //   return { ...orderProduct, price: totalPrice };
-  // }
+  onDelteNote(orderProduct: OrderProductDto) {
+    this.selectedNoteOrderProductId = undefined;
+    orderProduct.note = undefined;
+  }
 }

@@ -1,6 +1,7 @@
 <div class="cart-footer">
   <div class="cart-info">
     <span>💰 {{ foodPrice | pricePln }}</span>
+    <span *ngIf="deliveryPrice">🚚 {{ deliveryPrice | pricePln }}</span>
     <span [ngClass]="{ 'glow-span': isGlowing }">🥙 {{ totalItems }}</span>
     <button class="clear-cart-btn" (click)="clearCart()">🗑️ Wyczyść</button>
   </div>
@@ -9,6 +10,6 @@
     class="checkout-btn"
     (click)="onSummaryPanelVisibleChange.emit(true)"
   >
-    Podsumowanie
+    Podsumowanie {{ (foodPrice + (deliveryPrice ?? 0)) | pricePln }}
   </button>
 </div>

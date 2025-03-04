@@ -224,7 +224,10 @@
                   <th>Nazwa</th>
                   <th>Kwota</th>
                   <th>Ilość</th>
-                  <th style="max-width: 50%">Opcje</th>
+                  <th style="max-width: 50%">
+                    <div>Opcje</div>
+                    <div>Notatka</div>
+                  </th>
                 </tr>
               </ng-template>
               <ng-template pTemplate="body" let-orderProduct>
@@ -255,15 +258,22 @@
                     }}
                   </td>
                   <td *ngIf="!order.delivery && order.takeaway">
-                    {{ (orderProduct.price + orderUtils.calculateTakeawayPrice([orderProduct])) | pricePln }}
+                    {{
+                      orderProduct.price +
+                        orderUtils.calculateTakeawayPrice([orderProduct])
+                        | pricePln
+                    }}
                   </td>
                   <td>{{ orderProduct.quantity }}</td>
                   <td>
-                    {{
-                      orderUtils.getProductPropertiesNames(
-                        orderProduct.productPropertiesList
-                      )
-                    }}
+                    <div>
+                      {{
+                        orderUtils.getProductPropertiesNames(
+                          orderProduct.productPropertiesList
+                        )
+                      }}
+                    </div>
+                    <div>{{ orderProduct.note }}</div>
                   </td>
                   <!-- Accessing quantity from the map -->
                 </tr>

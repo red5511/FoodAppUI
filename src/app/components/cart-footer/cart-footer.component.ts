@@ -14,6 +14,8 @@ export class CartFooterComponent {
   totalItems: number = 0;
   @Input({required: true})
   foodPrice: number = 0;
+  @Input({required: true})
+  deliveryPrice: number | undefined;
   @Output() onSummaryPanelVisibleChange: EventEmitter<boolean> =
   new EventEmitter<boolean>();
   isOrderingPage: boolean = false;

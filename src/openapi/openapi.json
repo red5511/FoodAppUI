@@ -369,6 +369,24 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/product-category/modify": {
+      "post": {
+        "tags": ["ProductCategory"],
+        "operationId": "modifyProductCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ModifyProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/order/save/{companyId}": {
       "post": {
         "tags": ["Order"],
@@ -1347,6 +1365,42 @@
         "security": [{ "bearerAuth": [] }]
       }
     },
+    "/api/v1/product-category/delete": {
+      "delete": {
+        "tags": ["ProductCategory"],
+        "operationId": "deleteProductCategory",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
+    "/api/v1/product-category/delete-with-products": {
+      "delete": {
+        "tags": ["ProductCategory"],
+        "operationId": "deleteProductCategoryWithProducts",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeleteProductCategoryRequest"
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": { "200": { "description": "OK" } },
+        "security": [{ "bearerAuth": [] }]
+      }
+    },
     "/api/v1/delivery-option/delete/{companyId}/{deliveryOptionId}": {
       "delete": {
         "tags": ["DeliveryOption"],
@@ -1407,7 +1461,11 @@
         "properties": {
           "id": { "type": "integer", "format": "int64" },
           "companyId": { "type": "integer", "format": "int64" },
-          "name": { "type": "string" }
+          "name": { "type": "string" },
+          "products": {
+            "type": "array",
+            "items": { "$ref": "#/components/schemas/ProductDto" }
+          }
         }
       },
       "ProductDto": {
@@ -1812,6 +1870,13 @@
           "productCategory": {
             "$ref": "#/components/schemas/ProductCategoryDto"
           }
+        }
+      },
+      "ModifyProductCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "modifiedId": { "type": "integer", "format": "int64" },
+          "category": { "$ref": "#/components/schemas/ProductCategoryDto" }
         }
       },
       "CreateOrderRequest": {
@@ -2620,6 +2685,13 @@
         "type": "object",
         "properties": {
           "productId": { "type": "integer", "format": "int64" },
+          "companyId": { "type": "integer", "format": "int64" }
+        }
+      },
+      "DeleteProductCategoryRequest": {
+        "type": "object",
+        "properties": {
+          "productCategoryId": { "type": "integer", "format": "int64" },
           "companyId": { "type": "integer", "format": "int64" }
         }
       },

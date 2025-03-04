@@ -1,55 +1,181 @@
 <p-card>
-<app-add-new-category
-  [productCategories]="categories"
-  [isNewCategoryButtonVisible]="!addNewCategoryButtonVisible"
-  [normalButton]="true"
-></app-add-new-category>
-<br />
-<p-messages 
-  [(value)]="messages" 
-  [closable]="false" 
-  [@.disabled]="true"> 
-  <!-- //musi byc tak bo prime ng rederuje dziwnie kolumny w tablue i jest flickergin xd -->
-</p-messages>
-<br>
-<div style="width: 550px">
-  <p-table
-    [value]="categories"
-    [columns]="cols"
-    [reorderableColumns]="true"
-    (onRowReorder)="onRowReorder()"
-  >
-    <ng-template pTemplate="header" let-columns>
-      <tr>
-        <th style="width: 3rem"></th>
-        <th style="width: 3rem">#</th>
-        <th style="width: 15rem" *ngFor="let col of columns" pReorderableColumn>
-          {{ col.header }}
-        </th>
-      </tr>
-    </ng-template>
-
-    <ng-template
-      pTemplate="body"
-      let-rowData
-      let-columns="columns"
-      let-index="rowIndex"
+  <app-add-new-category
+    [productCategories]="categories"
+    [isNewCategoryButtonVisible]="!addNewCategoryButtonVisible"
+    [normalButton]="true"
+  ></app-add-new-category>
+  <br />
+  <p-messages [(value)]="messages" [closable]="false" [@.disabled]="true">
+    <!-- //musi byc tak bo prime ng rederuje dziwnie kolumny w tablue i jest flickergin xd -->
+  </p-messages>
+  <br />
+  <div>
+    <p-table
+      [value]="categories"
+      [columns]="cols"
+      [reorderableColumns]="true"
+      [expandedRowKeys]="expandedRows"
+      (onRowExpand)="onRowExpand($event)"
+      (onRowCollapse)="onRowCollapse($event)"
+      (onRowReorder)="onRowReorder()"
+      dataKey="id"
+      editMode="row"
     >
-      <tr [pReorderableRow]="index">
-        <td>
-          <span class="pi pi-bars" pReorderableRowHandle></span>
-        </td>
-        <td>{{ index + 1 }}</td>
-        <td *ngFor="let col of columns">
-          {{ rowData[col.field] }}
-        </td>
-      </tr>
-    </ng-template>
-    <ng-template pTemplate="emptymessage">
-      <tr>
-        <td colspan="6">Brak kategorii</td>
-      </tr>
-    </ng-template>
-  </p-table>
-</div>
+      <ng-template pTemplate="header" let-columns>
+        <tr>
+          <th></th>
+          <th style="width: 5%"></th>
+          <th style="width: 10%">#</th>
+          <th style="width: 17%" *ngFor="let col of columns" pReorderableColumn>
+            {{ col.header }}
+          </th>
+          <th style="width: 63%"></th>
+        </tr>
+      </ng-template>
+
+      <ng-template
+        pTemplate="body"
+        let-rowData
+        let-columns="columns"
+        let-index="rowIndex"
+        let-editing="editing"
+        let-expanded="expanded"
+      >
+        <tr [pReorderableRow]="index" [pEditableRow]="rowData">
+          <td>
+            <p-button
+              type="button"
+              pRipple
+              [pRowToggler]="rowData"
+              [text]="true"
+              [rounded]="true"
+              [plain]="true"
+              [icon]="expanded ? 'pi pi-chevron-down' : 'pi pi-chevron-right'"
+            />
+          </td>
+          <td>
+            <span class="pi pi-bars" pReorderableRowHandle></span>
+          </td>
+          <td>{{ index + 1 }}</td>
+          <td *ngFor="let col of columns">
+            <p-cellEditor>
+              <ng-template pTemplate="input">
+                <input
+                  pInputText
+                  type="text"
+                  [(ngModel)]="rowData[col.field]"
+                />
+              </ng-template>
+              <ng-template pTemplate="output">
+                {{ rowData[col.field] }}
+              </ng-template>
+            </p-cellEditor>
+            <!-- {{ rowData[col.field] }} -->
+          </td>
+          <td>
+            <div class="buttons">
+              <button
+                *ngIf="!editing"
+                pInitEditableRow
+                pRipple
+                pButton
+                size="small"
+                severity="info"
+                [outlined]="true"
+                label="Modyfiuj"
+                icon="pi pi-file-edit"
+                (click)="onRowEditInit(rowData)"
+              ></button>
+              <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                size="large"
+                pSaveEditableRow
+                icon="pi pi-check"
+                (click)="onRowEditSave(rowData)"
+                class="p-button-rounded p-button-text p-button-success mr-2"
+              ></button>
+              <button
+                *ngIf="editing"
+                pButton
+                pRipple
+                type="button"
+                size="large"
+                pCancelEditableRow
+                icon="pi pi-times"
+                (click)="onRowEditCancel(rowData, index)"
+                class="p-button-rounded p-button-text p-button-danger"
+              ></button>
+              <button
+                pRipple
+                pButton
+                size="small"
+                severity="danger"
+                type="button"
+                label="Usuń"
+                [outlined]="true"
+                icon="pi pi-trash"
+                (click)="onDeleteCategory(rowData)"
+              ></button>
+              <button
+                pRipple
+                pButton
+                size="small"
+                severity="danger"
+                type="button"
+                label="Usuń z produktami"
+                [outlined]="true"
+                icon="pi pi-trash"
+                (click)="onDeleteCategoryWithProducts(rowData)"
+              ></button>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="rowexpansion" let-category>
+        <tr>
+          <td colspan="7">
+            <div class="p-3">
+              <p-table [value]="category.products" dataKey="id">
+                <ng-template pTemplate="header">
+                  <tr>
+                    <th></th>
+                    <th>Nazwa</th>
+                    <th>Kwota</th>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="body" let-product>
+                  <tr>
+                    <td>
+                      <img
+                        *ngIf="imageService.getProductImageUrl(product.imgUrl)"
+                        [src]="imageService.getProductImageUrl(product.imgUrl)"
+                        class="small-product"
+                      />
+                    </td>
+                    <td>{{ product.name }}</td>
+                    <td>
+                      {{ product.price | pricePln }}
+                    </td>
+                  </tr>
+                </ng-template>
+                <ng-template pTemplate="emptymessage">
+                  <tr>
+                    <td colspan="6">Brak produktów</td>
+                  </tr>
+                </ng-template>
+              </p-table>
+            </div>
+          </td>
+        </tr>
+      </ng-template>
+      <ng-template pTemplate="emptymessage">
+        <tr>
+          <td colspan="6">Brak kategorii</td>
+        </tr>
+      </ng-template>
+    </p-table>
+  </div>
 </p-card>

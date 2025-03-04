@@ -29,6 +29,7 @@ export { DashboardGetOrdersResponse } from './models/dashboard-get-orders-respon
 export { DatePeriodModel } from './models/date-period-model';
 export { DateRangeModel } from './models/date-range-model';
 export { DeleteCompanyRequest } from './models/delete-company-request';
+export { DeleteProductCategoryRequest } from './models/delete-product-category-request';
 export { DeleteProductRequest } from './models/delete-product-request';
 export { DeliveryOptionDto } from './models/delivery-option-dto';
 export { DisconnectionWebSocketEvent } from './models/disconnection-web-socket-event';
@@ -62,6 +63,7 @@ export { ModifyDeliveryOptionRequest } from './models/modify-delivery-option-req
 export { ModifyDeliveryOptionResponse } from './models/modify-delivery-option-response';
 export { ModifyOrderRequest } from './models/modify-order-request';
 export { ModifyOrderResponse } from './models/modify-order-response';
+export { ModifyProductCategoryRequest } from './models/modify-product-category-request';
 export { ModifyProductRequest } from './models/modify-product-request';
 export { NewOrderWebSocketEvent } from './models/new-order-web-socket-event';
 export { OpenHours } from './models/open-hours';
