@@ -75,6 +75,8 @@ export class NewProductTwoPagePanelComponent {
     const formName = this.modifiedProduct?.name;
     const formPrice = this.modifiedProduct?.price;
     const formDescription = this.modifiedProduct?.description;
+    const formDeliveryPrice = this.modifiedProduct?.deliveryPrice;
+    const formTakeawayPrice = this.modifiedProduct?.takeawayPrice;
     this.selectedProductCategory = this.modifiedProduct?.productCategory;
 
     this.productForm = this.fb.group({
@@ -85,6 +87,8 @@ export class NewProductTwoPagePanelComponent {
       name: [formName, [Validators.required, Validators.minLength(1)]],
       price: [formPrice, [Validators.required, Validators.min(0)]],
       description: [formDescription], // Optional field
+      deliveryPrice: [formDeliveryPrice], // Optional field
+      takeawayPrice: [formTakeawayPrice], // Optional field
     });
   }
 
@@ -177,6 +181,8 @@ export class NewProductTwoPagePanelComponent {
         companyId: this.contextService.getCompanyId() ?? -999,
         name: this.productForm.get('name')?.getRawValue(),
         price: this.productForm.get('price')?.getRawValue(),
+        deliveryPrice: this.productForm.get('deliveryPrice')?.getRawValue(),
+        takeawayPrice: this.productForm.get('takeawayPrice')?.getRawValue(),
         description: this.productForm.get('description')?.getRawValue(),
         productCategory: this.selectedProductCategory,
         productPropertiesList: this.checkedCheckBoxProductProperties,
@@ -199,6 +205,8 @@ export class NewProductTwoPagePanelComponent {
         companyId: this.contextService.getCompanyId() ?? -999,
         name: this.productForm.get('name')?.getRawValue(),
         price: this.productForm.get('price')?.getRawValue(),
+        deliveryPrice: this.productForm.get('deliveryPrice')?.getRawValue(),
+        takeawayPrice: this.productForm.get('takeawayPrice')?.getRawValue(),
         description: this.productForm.get('description')?.getRawValue(),
         productCategory: this.selectedProductCategory,
         productPropertiesList: this.checkedCheckBoxProductProperties,

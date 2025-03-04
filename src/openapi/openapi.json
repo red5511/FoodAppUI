@@ -469,7 +469,16 @@
           },
           "required": true
         },
-        "responses": { "200": { "description": "OK" } },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "application/json": {
+                "schema": { "$ref": "#/components/schemas/ModifyOrderResponse" }
+              }
+            }
+          }
+        },
         "security": [{ "bearerAuth": [] }]
       }
     },
@@ -1408,6 +1417,8 @@
           "companyId": { "type": "integer", "format": "int64" },
           "name": { "type": "string" },
           "price": { "type": "number" },
+          "deliveryPrice": { "type": "number" },
+          "takeawayPrice": { "type": "number" },
           "imgUrl": { "type": "string" },
           "description": { "type": "string" },
           "productStatus": {
@@ -1489,6 +1500,8 @@
           "city": { "type": "string" },
           "postalCode": { "type": "string" },
           "country": { "type": "string" },
+          "floor": { "type": "string" },
+          "apartmentNumber": { "type": "string" },
           "unstructuredAddress": { "type": "string" }
         }
       },
@@ -1825,10 +1838,11 @@
         "type": "object",
         "properties": {
           "id": { "type": "integer", "format": "int64" },
+          "displayableId": { "type": "integer", "format": "int64" },
           "companyId": { "type": "integer", "format": "int64" },
           "deliveryCode": { "type": "string" },
           "companyName": { "type": "string" },
-          "price": { "type": "number" },
+          "totalPrice": { "type": "number" },
           "description": { "maxLength": 510, "minLength": 0, "type": "string" },
           "orderType": {
             "type": "string",
@@ -1858,7 +1872,11 @@
           "actions": { "$ref": "#/components/schemas/OrderActions" },
           "paymentMethod": { "type": "string", "enum": ["CASH", "CARD"] },
           "takeaway": { "type": "boolean" },
-          "paidWhenOrdered": { "type": "boolean" }
+          "paidWhenOrdered": { "type": "boolean" },
+          "delivery": { "type": "boolean" },
+          "deliveryPrice": { "type": "number" },
+          "foodPrice": { "type": "number" },
+          "deliveryNote": { "type": "string" }
         }
       },
       "OrderProductDto": {
@@ -1869,6 +1887,8 @@
           "product": { "$ref": "#/components/schemas/ProductDto" },
           "quantity": { "type": "integer", "format": "int32" },
           "price": { "type": "number" },
+          "extraDeliveryPrice": { "type": "number" },
+          "takeawayPrice": { "type": "number" },
           "productPropertiesList": {
             "type": "array",
             "items": { "$ref": "#/components/schemas/ProductPropertiesDto" }
@@ -1877,10 +1897,13 @@
         }
       },
       "CreateOrderRequestResponse": {
-        "required": ["encodedTextForBluetoothPrinterList", "orderId"],
+        "required": [
+          "displayableOrderId",
+          "encodedTextForBluetoothPrinterList"
+        ],
         "type": "object",
         "properties": {
-          "orderId": { "type": "integer", "format": "int64" },
+          "displayableOrderId": { "type": "integer", "format": "int64" },
           "encodedTextForBluetoothPrinterList": {
             "type": "array",
             "items": { "type": "string" }
@@ -1960,6 +1983,13 @@
         "properties": {
           "order": { "$ref": "#/components/schemas/OrderDto" },
           "modifiedOrderIf": { "type": "integer", "format": "int64" }
+        }
+      },
+      "ModifyOrderResponse": {
+        "required": ["displayableOrderId"],
+        "type": "object",
+        "properties": {
+          "displayableOrderId": { "type": "integer", "format": "int64" }
         }
       },
       "FinalizeOrderRequest": {

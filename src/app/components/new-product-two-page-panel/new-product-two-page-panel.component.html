@@ -116,6 +116,36 @@
               />
               <label for="description">Opis (opcjonalne)</label>
             </p-floatLabel>
+
+            <p-floatLabel>
+              <p-inputNumber
+                formControlName="deliveryPrice"
+                inputId="deliveryPriceId"
+                mode="currency"
+                currency="PLN"
+                class="input-full-width"
+                autocomplete="off"
+                [min]="0"
+                [max]="99999.99"
+                [style]="{ width: '100%' }"
+              ></p-inputNumber>
+              <label for="deliveryPriceId">Dodatkowa kwota przy dostawie (opcjonalne)</label>
+            </p-floatLabel>
+
+            <p-floatLabel>
+              <p-inputNumber
+                formControlName="takeawayPrice"
+                inputId="takeawayPriceId"
+                mode="currency"
+                currency="PLN"
+                class="input-full-width"
+                autocomplete="off"
+                [min]="0"
+                [max]="99999.99"
+                [style]="{ width: '100%' }"
+              ></p-inputNumber>
+              <label for="takeawayPriceId">Dodatkowa kwota przy opcji na wynos (opcjonalne)</label>
+            </p-floatLabel>
           </form>
         </div>
       </div>

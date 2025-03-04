@@ -304,7 +304,7 @@ export class BluetoothService {
     if (this.connectedDeviceId !== null) {
       const formattedExecutionTime = order.executionTime?.replace('T', ' ');
       const orderId = order.id;
-      const totalPrice = order.price;
+      const totalPrice = order.totalPrice;
       var stringToPrint = `Zamówienie #${orderId}\n${formattedExecutionTime}\n\n`;
 
       if (order.orderProducts && order.orderProducts.length > 0) {

@@ -155,6 +155,13 @@
   -webkit-box-orient: vertical; /* Ensures vertical orientation */
 }
 
+.price-p {
+  .delivery-price {
+    font-size: 0.8em; // Adjust to your desired smaller size
+    margin-left: 0.3em; // Optional: Add a little space between the prices
+  }
+}
+
 .plus-icon {
   position: absolute;
   top: 8px; /* Distance from the top */

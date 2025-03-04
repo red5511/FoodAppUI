@@ -4,6 +4,7 @@ import { ProductCategoryDto } from '../models/product-category-dto';
 import { ProductPropertiesDto } from '../models/product-properties-dto';
 export interface ProductDto {
   companyId?: number;
+  deliveryPrice?: number;
   description?: string;
   id?: number;
   imgUrl?: string;
@@ -13,4 +14,5 @@ export interface ProductDto {
   productPropertiesList?: Array<ProductPropertiesDto>;
   productStatus?: 'ACTIVE' | 'DELETED' | 'MODIFIED';
   soldOut?: boolean;
+  takeawayPrice?: number;
 }

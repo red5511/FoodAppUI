@@ -2,8 +2,10 @@
   *ngIf="isBodyCartRightBar"
   [isBodyCartRightBar]="isBodyCartRightBar"
   [totalItems]="totalItems"
-  [totalPrice]="totalPrice"
+  [foodPrice]="foodPrice"
   [cartModel]="cartModel"
+  [deliveryPrice]="cartModel.deliveryPrice"
+  [isDelivery]="cartModel.isDelivery"
   (onSummaryPanelVisibleChange)="onSummaryClick()"
 ></app-cart-right-bar>
 
@@ -11,7 +13,7 @@
   *ngIf="isFooterCartVisible()"
   [isBodyCartRightBar]="isBodyCartRightBar"
   [totalItems]="totalItems"
-  [totalPrice]="totalPrice"
+  [foodPrice]="foodPrice"
   (onSummaryPanelVisibleChange)="onSummaryClick()"
 ></app-cart-footer>
 

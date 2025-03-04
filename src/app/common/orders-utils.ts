@@ -1,13 +1,20 @@
 import { Injectable } from '@angular/core';
 import { ImageService } from '../services/images/Image-service';
-import { OrderProductDto, ProductPropertiesDto } from '../services/models';
+import {
+  OrderDto,
+  OrderProductDto,
+  ProductPropertiesDto,
+} from '../services/models';
 import { CartService } from '../services/cart/cart-service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class OrderUtils {
-  constructor(private imageService: ImageService, private cartService: CartService) {}
+  constructor(
+    private imageService: ImageService,
+    private cartService: CartService
+  ) {}
   getStatusSeverity(
     status: string
   ): 'success' | 'secondary' | 'info' | 'warning' | 'danger' | 'contrast' {
@@ -41,31 +48,39 @@ export class OrderUtils {
     if (!productPropertiesList || productPropertiesList.length === 0) {
       return ' - ';
     }
-    
+
     // Flatten the property names from each group's propertyList.
-    const propertyNames = productPropertiesList.reduce((names: string[], group) => {
-      if (group.propertyList && group.propertyList.length > 0) {
-        // Push each property's name from the current group.
-        group.propertyList.forEach(prop => {
-          if(prop.name){
-            names.push(prop.name)
-          }
-        });
-      }
-      return names;
-    }, [] as string[]);
-  
+    const propertyNames = productPropertiesList.reduce(
+      (names: string[], group) => {
+        if (group.propertyList && group.propertyList.length > 0) {
+          // Push each property's name from the current group.
+          group.propertyList.forEach((prop) => {
+            if (prop.name) {
+              names.push(prop.name);
+            }
+          });
+        }
+        return names;
+      },
+      [] as string[]
+    );
+
     return propertyNames.join(', ') || ' - ';
   }
 
   getImage(imgUrl: string | undefined) {
+    if (imgUrl === null) {
+      return undefined;
+    }
     if (imgUrl && imgUrl !== 'OWN') {
       return 'images/' + imgUrl + '.png';
     }
     return this.imageService.getProductImageUrl(imgUrl);
   }
 
-  getPaymentMethodFromCheckbox(paymentMethod: 'Gotówka' | 'Karta' | undefined): 'CASH' | 'CARD' | undefined {
+  getPaymentMethodFromCheckbox(
+    paymentMethod: 'Gotówka' | 'Karta' | undefined
+  ): 'CASH' | 'CARD' | undefined {
     return paymentMethod === 'Gotówka'
       ? 'CASH'
       : paymentMethod === 'Karta'
@@ -73,31 +88,70 @@ export class OrderUtils {
       : undefined;
   }
 
-    onQuantityChange(item: OrderProductDto) {
-      
-      if (item.quantity === 0) {
-        this.cartService.removeFromCart(item.id!);
-      } else {
-        const updatedItem = this.updateOrderProductPrice(item);
-        this.cartService.updateItem(updatedItem);
-      }
+  onQuantityChange(item: OrderProductDto, isDelivery: boolean | undefined) {
+    if (item.quantity === 0) {
+      this.cartService.removeFromCart(item.id!);
+    } else {
+      const updatedItem = this.updateOrderProductPrice(item, isDelivery);
+      this.cartService.updateItem(updatedItem);
     }
+  }
 
-    updateOrderProductPrice(orderProduct: OrderProductDto): OrderProductDto {
-      const basePrice = orderProduct.product?.price || 0;
-      let extraPrice = 0;
-  
-      if (orderProduct.productPropertiesList) {
-        for (const propGroup of orderProduct.productPropertiesList) {
-          if (propGroup.propertyList) {
-            for (const prop of propGroup.propertyList) {
-              extraPrice += prop.price || 0;
-            }
+  updateOrderProductPrice(
+    orderProduct: OrderProductDto,
+    isDelivery: boolean | undefined
+  ): OrderProductDto {
+    const basePrice = orderProduct.product?.price || 0;
+    let extraPrice = 0;
+
+    if (orderProduct.productPropertiesList) {
+      for (const propGroup of orderProduct.productPropertiesList) {
+        if (propGroup.propertyList) {
+          for (const prop of propGroup.propertyList) {
+            extraPrice += prop.price || 0;
           }
         }
       }
-      const quantity = orderProduct.quantity || 1;
-      const totalPrice = (basePrice + extraPrice) * quantity;
-      return { ...orderProduct, price: totalPrice };
     }
+    const quantity = orderProduct.quantity || 1;
+    var totalPrice = (basePrice + extraPrice) * quantity;
+    console.log('updateOrderProductPrice');
+    console.log(isDelivery);
+    console.log(orderProduct);
+
+    var tempDeliverPrice = undefined;
+    if (isDelivery && orderProduct.product?.deliveryPrice) {
+      tempDeliverPrice = orderProduct.product?.deliveryPrice * quantity;
+    }
+    return {
+      ...orderProduct,
+      price: totalPrice,
+      extraDeliveryPrice: tempDeliverPrice,
+    };
+  }
+  getApartmentNumberAndFloor(order: OrderDto) {
+    var result = order?.deliveryAddress?.apartmentNumber
+      ? '/m' + order.deliveryAddress.apartmentNumber
+      : '';
+    result += order.deliveryAddress?.floor
+      ? ' p' + order.deliveryAddress?.floor
+      : '';
+    return result;
+  }
+
+  calculateExtraDeliveryPrice(orderProducts: OrderProductDto[]): number {
+    return orderProducts.reduce(
+      (sum: number, item: OrderProductDto) =>
+        sum + (item.extraDeliveryPrice ?? 0),
+      0
+    );
+  }
+
+  calculateTakeawayPrice(orderProducts: OrderProductDto[]): number {
+    return orderProducts.reduce(
+      (sum: number, item: OrderProductDto) =>
+        sum + ((item.product?.takeawayPrice ?? 0) * item.quantity! ),
+      0
+    );
+  }
 }

@@ -7,13 +7,14 @@ import { StrictHttpResponse } from '../../strict-http-response';
 import { RequestBuilder } from '../../request-builder';
 
 import { ModifyOrderRequest } from '../../models/modify-order-request';
+import { ModifyOrderResponse } from '../../models/modify-order-response';
 
 export interface ModifyOrder$Params {
   companyId: number;
       body: ModifyOrderRequest
 }
 
-export function modifyOrder(http: HttpClient, rootUrl: string, params: ModifyOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+export function modifyOrder(http: HttpClient, rootUrl: string, params: ModifyOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<ModifyOrderResponse>> {
   const rb = new RequestBuilder(rootUrl, modifyOrder.PATH, 'post');
   if (params) {
     rb.path('companyId', params.companyId, {});
@@ -21,11 +22,11 @@ export function modifyOrder(http: HttpClient, rootUrl: string, params: ModifyOrd
   }
 
   return http.request(
-    rb.build({ responseType: 'text', accept: '*/*', context })
+    rb.build({ responseType: 'json', accept: 'application/json', context })
   ).pipe(
     filter((r: any): r is HttpResponse<any> => r instanceof HttpResponse),
     map((r: HttpResponse<any>) => {
-      return (r as HttpResponse<any>).clone({ body: undefined }) as StrictHttpResponse<void>;
+      return r as StrictHttpResponse<ModifyOrderResponse>;
     })
   );
 }

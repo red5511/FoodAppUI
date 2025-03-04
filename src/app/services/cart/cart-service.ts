@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
 import {
+  OrderDto,
   OrderProductDto,
   ProductPropertiesDto,
   ProductPropertyDto,
@@ -14,17 +15,30 @@ export class CartService {
   private cart = new BehaviorSubject<CartModel>({ orderProducts: [] });
   cartUpdated = this.cart.asObservable();
 
+  addToCartForDelivery(partiallOrder: OrderDto) {
+    var newCart: CartModel = {
+      deliveryPrice: partiallOrder.deliveryPrice,
+      isDelivery: partiallOrder.delivery,
+      orderProducts: partiallOrder.orderProducts ?? [],
+      isModification: !!partiallOrder.id,
+      deliveryAddress: partiallOrder.deliveryAddress,
+      modifiedOrderId: partiallOrder.id
+    };
+    console.log(newCart);
+
+    this.cart.next(newCart);
+  }
+
   addToCart(
     orderProduct: OrderProductDto,
-    modifiedOrderId: number | undefined = undefined
+    partiallOrder: OrderDto | undefined = undefined
   ) {
     const currentCart = this.cart.value;
-    console.log('addToCart');
-    console.log(orderProduct);
 
+    currentCart.isTakeawayOption = partiallOrder?.takeaway;
     // If cart is empty, set the modifiedOrderId for the first item
     if (currentCart.orderProducts.length === 0) {
-      currentCart.modifiedOrderId = modifiedOrderId;
+      currentCart.modifiedOrderId = partiallOrder?.id;
     }
 
     // Check if the item already exists based on product ID & selected properties
@@ -122,5 +136,25 @@ export class CartService {
       );
 
     return areEqual;
+  }
+
+  setTakeawayOption(enableTakeawayOption: boolean) {
+    const updatedCart = {
+      ...this.cart.value,
+      isTakeawayOption: enableTakeawayOption,
+    };
+    this.cart.next(updatedCart);
+  }
+
+  isTakeaway(): boolean {
+    return this.cart.value.isTakeawayOption ?? false;
+  }
+
+  markCartAsModification() {
+    const updatedCart = {
+      ...this.cart.value,
+      isModification: true,
+    };
+    this.cart.next(updatedCart);
   }
 }

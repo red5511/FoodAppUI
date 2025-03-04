@@ -4,6 +4,7 @@ import { OrderDto } from '../models/order-dto';
 import { ProductDto } from '../models/product-dto';
 import { ProductPropertiesDto } from '../models/product-properties-dto';
 export interface OrderProductDto {
+  extraDeliveryPrice?: number;
   id?: number;
   note?: string;
   order?: OrderDto;
@@ -11,4 +12,5 @@ export interface OrderProductDto {
   product?: ProductDto;
   productPropertiesList?: Array<ProductPropertiesDto>;
   quantity?: number;
+  takeawayPrice?: number;
 }

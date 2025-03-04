@@ -12,6 +12,7 @@
     <app-product-card
       *ngFor="let productsByCategory of tab.productsByCategoryList"
       [productsByCategory]="productsByCategory"
+      [isDelivery]="this.partiallyReadyOrder?.delivery"
     ></app-product-card>
   </p-tabPanel>
 </p-tabView>

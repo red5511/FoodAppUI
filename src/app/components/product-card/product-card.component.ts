@@ -18,6 +18,8 @@ import { cloneDeep } from 'lodash';
 export class ProductCardComponent {
   @Input({ required: true })
   productsByCategory!: { [key: string]: Array<ProductDto> };
+  @Input()
+  isDelivery: undefined | null | boolean = false;
   isChoosePropertiesDialogVisible: boolean = false;
   selectedProduct!: ProductDto;
   selectedProperties: { [key: number]: ProductPropertyDto } = {}; // Stores selected radio button values
@@ -28,9 +30,9 @@ export class ProductCardComponent {
   quantity: number = 1; // Default quantity
 
   constructor(
-    private cartService: CartService,
+    public cartService: CartService,
     private fb: FormBuilder,
-    public  imageService: ImageService
+    public imageService: ImageService
   ) {}
 
   initializeOptionalProperties() {
@@ -84,17 +86,16 @@ export class ProductCardComponent {
 
     if (this.productForm.valid) {
       this.isChoosePropertiesDialogVisible = false;
+
       const orderProduct: OrderProductDto = {
         id: Math.floor(Math.random() * 100000000000), // generuje fakowe id na potrzeby dzialania koszyka, backend je nadpisze
         price: this.calculateTotalPrice(),
         product: this.selectedProduct,
         quantity: this.quantity,
         productPropertiesList: this.getSelectedProductProperties(),
+        extraDeliveryPrice:
+          (this.selectedProduct.deliveryPrice ?? 0) * this.quantity,
       };
-      console.log('addToCart');
-      
-      console.log(orderProduct);
-
       this.cartService.addToCart(orderProduct);
       this.formSubmitted = false;
     } else {
@@ -128,23 +129,18 @@ export class ProductCardComponent {
       }
     });
 
-    console.log('calculateTotalPrice');
-    console.log(totalPrice);
-    console.log(this.quantity);
-    console.log(totalPrice);
-
     totalPrice *= this.quantity;
 
     return totalPrice;
   }
 
-  getSelectedProductProperties(): ProductPropertiesDto[]{
+  getSelectedProductProperties(): ProductPropertiesDto[] {
     let result: ProductPropertiesDto[] = [];
 
     // Iterate over selected properties (radio buttons)
     this.selectedProduct.productPropertiesList?.forEach((property) => {
-      const clondedProperties: ProductPropertiesDto = cloneDeep(property)
-      clondedProperties.propertyList = []
+      const clondedProperties: ProductPropertiesDto = cloneDeep(property);
+      clondedProperties.propertyList = [];
       if (property.required) {
         const selectedOptionId = this.productForm.get(
           `property_${property.id}`
@@ -164,8 +160,8 @@ export class ProductCardComponent {
           }
         });
       }
-      if(clondedProperties.propertyList.length > 0){
-        result.push(clondedProperties)
+      if (clondedProperties.propertyList.length > 0) {
+        result.push(clondedProperties);
       }
     });
 

@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import {
   CartSummaryModel,
   OrderProcessOption,
@@ -7,6 +7,8 @@ import {
 import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
 import { Capacitor } from '@capacitor/core';
 import { Subject, takeUntil } from 'rxjs';
+import { OrderUtils } from '../../common/orders-utils';
+import { CartService } from '../../services/cart/cart-service';
 
 @Component({
   selector: 'app-cart-final-summary-second-panel',
@@ -16,12 +18,24 @@ import { Subject, takeUntil } from 'rxjs';
 export class CartFinalSummarySecondPanelComponent {
   @Input()
   cartSummaryModel!: CartSummaryModel;
+  @Input()
+  isDelivery: undefined | boolean;
+  @Input()
+  isModification: undefined | boolean;
+  @Input()
+  isPaymentMethodInvalid: undefined | boolean;
+  @Output()
+  onPaymentMethodChanged: EventEmitter<boolean> = new EventEmitter<boolean>();
   setTimeDialogvisible: boolean = false;
   items: OrderProcessOption[] = [];
   isWeb: boolean = Capacitor.getPlatform() === 'web';
   private destroy$ = new Subject<void>();
 
-  constructor(private bluetoothService: BluetoothService) {}
+  constructor(
+    private bluetoothService: BluetoothService,
+    public orderUtils: OrderUtils,
+    private cartService: CartService
+  ) {}
 
   ngOnInit(): void {
     this.bluetoothService.bluetoothSubjectVisibility$
@@ -30,12 +44,14 @@ export class CartFinalSummarySecondPanelComponent {
         this.createItemsToDo();
       });
     this.cartSummaryModel.executionDateTime = new Date();
-    console.log('EHHHHHHHHH');
-    console.log(Capacitor.getPlatform());
-    console.log(!this.isWeb);
-    console.log(this.bluetoothService.getConnectedDeviceId() === null);
 
     this.createItemsToDo();
+  }
+
+  ngOnChanges(): void {
+    if (this.isModification) {
+      this.cartSummaryModel.whatToDoCodes.push('MARK_ORDER_AS_ACTIVE');
+    }
   }
 
   ngOnDestroy() {
@@ -48,25 +64,33 @@ export class CartFinalSummarySecondPanelComponent {
       {
         name: 'Drukuj',
         code: 'BON_PRINT',
-        active: false,
+        active:
+          this.cartSummaryModel.whatToDoCodes?.includes('BON_PRINT') ?? false,
         warning:
           this.isWeb || this.bluetoothService.getConnectedDeviceId() === null,
         warningText: ' (Brak drukarki)',
-        disabled:
+        ownDisabled:
           this.isWeb || this.bluetoothService.getConnectedDeviceId() === null,
       },
       {
         name: 'Fiskalizuj',
         code: 'KASA_FISKALNA',
-        active: false,
+        active:
+          this.cartSummaryModel.whatToDoCodes?.includes('KASA_FISKALNA') ??
+          false,
         warningText: ' (Brak kasy fiskalnej)',
-        disabled: true,
+        ownDisabled: true,
         warning: true,
       },
       {
-        name: 'Oznacz zamówienie jako zakończone',
-        code: 'MARK_ORDER_AS_EXECUTED',
-        active: false,
+        name: 'Przenieś zamówienie na listę aktywnych zamówień',
+        code: 'MARK_ORDER_AS_ACTIVE',
+        active:
+          (this.cartSummaryModel.whatToDoCodes?.includes(
+            'MARK_ORDER_AS_ACTIVE'
+          ) ??
+            false) ||
+          (this.isModification ?? false),
       },
     ];
   }
@@ -80,11 +104,6 @@ export class CartFinalSummarySecondPanelComponent {
     }
     // Toggle the active state
     item.active = !item.active;
-
-    // Ensure whatToDoCodes is initialized
-    if (!this.cartSummaryModel.whatToDoCodes) {
-      this.cartSummaryModel.whatToDoCodes = [];
-    }
 
     if (item.active) {
       // Add the code if it isn't already in the list
@@ -110,5 +129,28 @@ export class CartFinalSummarySecondPanelComponent {
 
   selectedTimeChange(date: Date) {
     this.cartSummaryModel.executionDateTime = date;
+  }
+
+  calculateExtraDeliveryPrice(): number {
+    return this.orderUtils.calculateExtraDeliveryPrice(
+      this.cartSummaryModel.orderProducts ?? []
+    );
+  }
+
+  calculateTakeawayPrice(): number {
+    return this.orderUtils.calculateTakeawayPrice(
+      this.cartSummaryModel.orderProducts ?? []
+    );
+  }
+
+  onTakeawayRadioClick() {
+    this.cartService.setTakeawayOption(
+      this.cartSummaryModel.isTakeaway === 'Tak'
+    );
+    if (this.cartSummaryModel.isTakeaway) {
+      var takeawayPrice = this.orderUtils.calculateTakeawayPrice(
+        this.cartSummaryModel.orderProducts ?? []
+      );
+    }
   }
 }

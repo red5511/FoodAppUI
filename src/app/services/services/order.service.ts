@@ -21,6 +21,7 @@ import { getOrdersForCompany } from '../fn/order/get-orders-for-company';
 import { GetOrdersForCompany$Params } from '../fn/order/get-orders-for-company';
 import { modifyOrder } from '../fn/order/modify-order';
 import { ModifyOrder$Params } from '../fn/order/modify-order';
+import { ModifyOrderResponse } from '../models/modify-order-response';
 import { PagedOrdersResponse } from '../models/paged-orders-response';
 import { rejectNewIncomingOrder } from '../fn/order/reject-new-incoming-order';
 import { RejectNewIncomingOrder$Params } from '../fn/order/reject-new-incoming-order';
@@ -117,7 +118,7 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  modifyOrder$Response(params: ModifyOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<void>> {
+  modifyOrder$Response(params: ModifyOrder$Params, context?: HttpContext): Observable<StrictHttpResponse<ModifyOrderResponse>> {
     return modifyOrder(this.http, this.rootUrl, params, context);
   }
 
@@ -127,9 +128,9 @@ export class OrderService extends BaseService {
    *
    * This method sends `application/json` and handles request body of type `application/json`.
    */
-  modifyOrder(params: ModifyOrder$Params, context?: HttpContext): Observable<void> {
+  modifyOrder(params: ModifyOrder$Params, context?: HttpContext): Observable<ModifyOrderResponse> {
     return this.modifyOrder$Response(params, context).pipe(
-      map((r: StrictHttpResponse<void>): void => r.body)
+      map((r: StrictHttpResponse<ModifyOrderResponse>): ModifyOrderResponse => r.body)
     );
   }
 

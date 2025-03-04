@@ -17,7 +17,16 @@
               <div class="big-product-name" *ngIf="item.product?.name">
                 <b>{{ item.product.name }}</b>
               </div>
-              <p>{{ item.price | pricePln }}</p>
+              <p *ngIf="!isDelivery && !cartModel.isTakeawayOption">{{ item.price | pricePln }}</p>
+              <p *ngIf="isDelivery && !cartModel.isTakeawayOption">
+                {{ item.price + item.extraDeliveryPrice | pricePln }}
+              </p>
+              <p *ngIf="!isDelivery && cartModel.isTakeawayOption">
+                {{
+                  item.price + orderUtils.calculateTakeawayPrice([item])
+                    | pricePln
+                }}
+              </p>
             </div>
             <div class="product-info-strings">
               <div class="options-container">
@@ -39,7 +48,7 @@
                   [(ngModel)]="item.quantity"
                   [min]="0"
                   [max]="99"
-                  (onInput)="orderUtils.onQuantityChange(item)"
+                  (onInput)="orderUtils.onQuantityChange(item, isDelivery)"
                   mode="decimal"
                   showButtons
                   buttonLayout="horizontal"
@@ -51,7 +60,7 @@
                 *ngIf="item.note === undefined || item.note === null"
                 [severity]="'success'"
                 class="custom-text-button"
-                label="Dodaj notatke"
+                label="Dodaj notatkę"
                 [text]="true"
                 (onClick)="toggleNote(item)"
               ></p-button>
@@ -99,8 +108,33 @@
   <div class="cart-summary">
     <!-- Display summary details -->
     <div class="summary-info">
-      <b>Produktów: {{ totalItems }}</b>
-      <b>Suma: {{ totalPrice | pricePln }}</b>
+      <b style="font-size: 1.2rem">Ilość: {{ totalItems }}</b>
+      @if (isDelivery) {
+      <div class="summary-price">
+        @if (deliveryPrice) {
+        <b style="font-size: 1.2rem"
+          >Suma: {{ foodPrice + deliveryPrice | pricePln }}</b
+        >
+        <small> Zamówienie: {{ foodPrice | pricePln }}</small>
+        <small> Dostawa: {{ deliveryPrice | pricePln }}</small>
+        }@else {
+        <b style="font-size: 1.2rem">Suma: {{ foodPrice | pricePln }}</b>
+        <small> Zamówienie: {{ foodPrice | pricePln }}</small>
+        <small *ngIf="deliveryPrice === undefined"> Dostawa: ? zł</small>
+        }
+      </div>
+      <div></div>
+      } @else {
+      <b
+        >Suma:
+        {{
+          (foodPrice +
+            (cartModel.isTakeawayOption
+              ? orderUtils.calculateTakeawayPrice(cartModel.orderProducts)
+              : 0)) | pricePln
+        }}</b
+      >
+      }
     </div>
     <!-- Checkout button -->
     <button

@@ -10,12 +10,13 @@
     <tr>
       <th style="margin-left: -22px; width: 1%"></th>
       <th style="width: 1%"></th>
-      <th [style.width]="isHolding ? '17%' : '20%'">
+      <th [style.width]="isHolding ? '14%' : '16%'">
         <div>Kwota</div>
         <div>Status</div>
       </th>
-      <th style="width: 1%">
+      <th style="width: 12%">
         <div>Na wynos</div>
+        <div>Dostawa</div>
       </th>
       <th [style.width]="isHolding ? '15%' : '20%'">
         <div class="table-header-content">Odbiór za</div>
@@ -44,7 +45,7 @@
         />
       </td>
       <td class="custom-td">
-        #{{ order.id }}
+        #{{ order.displayableId }}
         <br />
         <div>
           <img
@@ -61,7 +62,7 @@
       </td>
       <td class="custom-td">
         <div>
-          {{ order.price | pricePln }}
+          {{ order.totalPrice | pricePln }}
           <i
             *ngIf="orderUtils.isCashPayment(order.paymentMethod)"
             class="pi pi-money-bill"
@@ -80,6 +81,7 @@
       </td>
       <td class="custom-td">
         <div>{{ order.takeaway ? "Tak" : "Nie" }}</div>
+        <div>{{ order.delivery ? "Tak" : "Nie" }}</div>
       </td>
       <td class="custom-td">
         <div>{{ calcTimeDifference(order.executionTime) | minuteFormat }}</div>
@@ -89,11 +91,12 @@
       </td>
       <td class="custom-td">
         <div>{{ order.deliveryCode }}</div>
-        <div>
+        <div *ngIf="order.deliveryAddress">
           {{
             order.deliveryAddress.street +
               " " +
               order.deliveryAddress.streetNumber +
+              orderUtils.getApartmentNumberAndFloor(order) +
               " " +
               order.deliveryAddress.city +
               " " +
@@ -141,7 +144,22 @@
                   />
                 </td>
                 <td>{{ orderProduct.product.name }}</td>
-                <td>{{ orderProduct.price | pricePln }}</td>
+                <td *ngIf="!order.delivery && !order.takeaway">
+                  {{ orderProduct.price | pricePln }}
+                </td>
+                <td *ngIf="order.delivery">
+                  {{
+                    orderProduct.price + orderProduct.extraDeliveryPrice
+                      | pricePln
+                  }}
+                </td>
+                <td *ngIf="!order.delivery && order.takeaway">
+                  {{
+                    orderProduct.price +
+                      orderUtils.calculateTakeawayPrice([orderProduct])
+                      | pricePln
+                  }}
+                </td>
                 <td>{{ orderProduct.quantity }}</td>
                 <td>
                   {{

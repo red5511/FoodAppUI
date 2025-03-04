@@ -118,6 +118,7 @@ import { TooltipModule } from 'primeng/tooltip';
 import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuDeliveryOptionComponent } from './pages/menu-delivery-option/menu-delivery-option.component';
 import { AddNewDeliveryOptionComponent } from './components/add-new-delivery-option/add-new-delivery-option.component';
+import { CartFinalSummaryThirdPanelComponent } from './component/cart-final-summary-third-panel/cart-final-summary-third-panel.component';
 
 
 @NgModule({
@@ -179,6 +180,7 @@ import { AddNewDeliveryOptionComponent } from './components/add-new-delivery-opt
     SettingsBluetoothComponent,
     MenuDeliveryOptionComponent,
     AddNewDeliveryOptionComponent,
+    CartFinalSummaryThirdPanelComponent,
   ],
   imports: [
     RouterModule,

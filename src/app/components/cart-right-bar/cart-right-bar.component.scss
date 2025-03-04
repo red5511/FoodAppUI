@@ -134,3 +134,9 @@
   cursor: default;
   opacity: 0.7;
 }
+
+.summary-price{
+  display: flex;
+  flex-direction: column;
+  text-align: right;
+}

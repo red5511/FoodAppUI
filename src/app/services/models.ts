@@ -61,6 +61,7 @@ export { ModifyCompanyRequest } from './models/modify-company-request';
 export { ModifyDeliveryOptionRequest } from './models/modify-delivery-option-request';
 export { ModifyDeliveryOptionResponse } from './models/modify-delivery-option-response';
 export { ModifyOrderRequest } from './models/modify-order-request';
+export { ModifyOrderResponse } from './models/modify-order-response';
 export { ModifyProductRequest } from './models/modify-product-request';
 export { NewOrderWebSocketEvent } from './models/new-order-web-socket-event';
 export { OpenHours } from './models/open-hours';

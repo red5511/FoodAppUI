@@ -1,0 +1,146 @@
+<h6>Adres dostawy</h6>
+<div class="one-line-fields">
+  <p-floatLabel>
+    <input
+      pInputText
+      id="email"
+      [(ngModel)]="cartSummaryModel.deliveryAddress!.city"
+      name="Miasto"
+      required
+      type="text"
+      #email="ngModel"
+    />
+    <label for="email">Miasto</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="postalCode"
+      [(ngModel)]="cartSummaryModel.deliveryAddress!.postalCode"
+      name="Kod pocztowy"
+      required
+      type="text"
+      #postalCode="ngModel"
+    />
+    <label for="postalCode">Kod pocztowy</label>
+  </p-floatLabel>
+</div>
+
+<p-floatLabel>
+  <input
+    [ngClass]="{
+      'ng-invalid': isFormInValid && !cartSummaryModel.deliveryAddress!.street,
+      'ng-dirty': isFormInValid && !cartSummaryModel.deliveryAddress!.street
+    }"
+    pInputText
+    id="street"
+    [(ngModel)]="cartSummaryModel.deliveryAddress!.street"
+    name="Ulica"
+    required
+    type="text"
+    class="input-full-width"
+    #street="ngModel"
+  />
+  <label for="street">Ulica</label>
+</p-floatLabel>
+<small
+  class="custom-error"
+  *ngIf="isFormInValid && !cartSummaryModel.deliveryAddress!.street"
+>
+  Ulica jest obowiązkowa
+</small>
+
+<div class="one-line-fields">
+  <p-floatLabel>
+    <input
+      [ngClass]="{
+        'ng-invalid':
+          isFormInValid && !cartSummaryModel.deliveryAddress!.streetNumber,
+        'ng-dirty':
+          isFormInValid && !cartSummaryModel.deliveryAddress!.streetNumber
+      }"
+      pInputText
+      id="email"
+      [(ngModel)]="cartSummaryModel.deliveryAddress!.streetNumber"
+      name="Numer budynku"
+      required
+      type="text"
+      #streetNumber="ngModel"
+    />
+    <label for="streetNumber">Numer budynku</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="apartmentNumber"
+      [(ngModel)]="cartSummaryModel.deliveryAddress!.apartmentNumber"
+      name="Numer mieszkania"
+      required
+      type="text"
+      #apartmentNumber="ngModel"
+    />
+    <label for="apartmentNumber">Numer mieszkania</label>
+  </p-floatLabel>
+
+  <p-floatLabel>
+    <input
+      pInputText
+      id="floor"
+      [(ngModel)]="cartSummaryModel.deliveryAddress!.floor"
+      name="Piętro"
+      required
+      type="text"
+      #floor="ngModel"
+    />
+    <label for="floor">Piętro</label>
+  </p-floatLabel>
+</div>
+<small
+  class="custom-error"
+  *ngIf="isFormInValid && !cartSummaryModel.deliveryAddress!.streetNumber"
+>
+  Numer budynku jest obowiązkowy
+</small>
+
+<p-divider></p-divider>
+
+<h6 style="margin-bottom: 1.8rem">Kwota dostawy</h6>
+
+<p-floatLabel>
+  <p-inputNumber
+    [ngClass]="{
+      'ng-invalid': isFormInValid && !cartSummaryModel.deliveryPrice,
+      'ng-dirty': isFormInValid && !cartSummaryModel.deliveryPrice
+    }"
+    [(ngModel)]="cartSummaryModel.deliveryPrice"
+    (ngModelChange)="onDeliveryPriceChange($event)"
+    mode="currency"
+    id="deliveryPrice2"
+    currency="PLN"
+    class="delivery-price-input"
+    autocomplete="off"
+    [min]="0"
+    [max]="99999.99"
+  ></p-inputNumber>
+  <label for="deliveryPrice2">Kwota dostawy</label>
+</p-floatLabel>
+<small
+  class="custom-error"
+  *ngIf="isFormInValid && !cartSummaryModel.deliveryPrice"
+>
+  Kwota dostawy jest obowiązkowa
+</small>
+
+<p-divider></p-divider>
+
+<h6 style="margin-top: 0.5rem; margin-bottom: 0.5rem">Notatka dla kierowcy</h6>
+<textarea
+  [(ngModel)]="cartSummaryModel.deliveryNote"
+  class="custom-textarea"
+  id="float-input"
+  rows="3"
+  pInputTextarea
+  [maxLength]="510"
+></textarea>

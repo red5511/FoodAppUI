@@ -81,7 +81,7 @@
       <tr>
         <th style="margin-left: -22px; width: 1%"></th>
         <th style="width: 1%"></th>
-        <th [style.width]="isHolding ? '17%' : '20%'">
+        <th [style.width]="isHolding ? '14%' : '16%'">
           <app-sortable-column
             field="price"
             label="Kwota"
@@ -95,10 +95,11 @@
             (sortChanged)="onSortChanged($event)"
           ></app-sortable-column>
         </th>
-        <th style="width: 1%">
+        <th style="width: 12%">
           <div>Na wynos</div>
+          <div>Dostawa</div>
         </th>
-        <th style="width: 26%">
+        <th style="width: 24%">
           <app-sortable-column
             field="executionTime"
             label="Data realizacji"
@@ -147,7 +148,7 @@
           />
         </td>
         <td>
-          <div>#{{ order.id }}</div>
+          <div>#{{ order.displayableId }}</div>
           <div>
             <img
               *ngIf="orderUtils.getImage(order.orderType)"
@@ -163,7 +164,7 @@
         </td>
         <td>
           <div>
-            {{ order.price | pricePln }}
+            {{ order.totalPrice | pricePln }}
             <i
               *ngIf="orderUtils.isCashPayment(order.paymentMethod)"
               class="pi pi-money-bill"
@@ -182,6 +183,7 @@
         </td>
         <td class="custom-td">
           <div>{{ order.takeaway ? "Tak" : "Nie" }}</div>
+          <div>{{ order.delivery ? "Tak" : "Nie" }}</div>
         </td>
         <td>
           <div>{{ order.executionTime | formattedDateTime }}</div>
@@ -189,11 +191,12 @@
         </td>
         <td>
           <div>{{ order.deliveryCode }}</div>
-          <div>
+          <div *ngIf="order.deliveryAddress">
             {{
               order.deliveryAddress.street +
                 " " +
                 order.deliveryAddress.streetNumber +
+                orderUtils.getApartmentNumberAndFloor(order) +
                 " " +
                 order.deliveryAddress.city +
                 " " +
@@ -210,6 +213,9 @@
           <div class="p-3">
             <p class="wrap-text">
               <b>Opis do zamówienia: </b>{{ order.description ?? " - " }}
+            </p>
+            <p *ngIf="order.deliveryNote" class="wrap-text">
+              <b>Dla kuriera: </b>{{ order.deliveryNote }}
             </p>
             <p-table [value]="order.orderProducts" dataKey="id">
               <ng-template pTemplate="header">
@@ -239,7 +245,18 @@
                     />
                   </td>
                   <td>{{ orderProduct.product.name }}</td>
-                  <td>{{ orderProduct.price | pricePln }}</td>
+                  <td *ngIf="!order.delivery && !order.takeaway">
+                    {{ orderProduct.price | pricePln }}
+                  </td>
+                  <td *ngIf="order.delivery">
+                    {{
+                      orderProduct.price + orderProduct.extraDeliveryPrice
+                        | pricePln
+                    }}
+                  </td>
+                  <td *ngIf="!order.delivery && order.takeaway">
+                    {{ (orderProduct.price + orderUtils.calculateTakeawayPrice([orderProduct])) | pricePln }}
+                  </td>
                   <td>{{ orderProduct.quantity }}</td>
                   <td>
                     {{

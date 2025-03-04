@@ -28,28 +28,31 @@ import { trigger, transition, style, animate } from '@angular/animations';
 export class RestaurantOrderComponent {
   activeIndex: number = 0;
   productTabs: ProductsByCategoryTabView[] = [];
-  modifiedOrder: OrderDto | undefined;
+  partiallyReadyOrder: OrderDto | undefined;
   destroy$ = new Subject<void>();
 
   constructor(
     private productService: ProductService,
     private contextService: ContextService,
     private route: ActivatedRoute,
-    private cartService: CartService
+    public cartService: CartService
   ) {}
 
   ngOnInit() {
     this.route.queryParams.subscribe((params) => {
       if (params['order']) {
-        this.modifiedOrder = JSON.parse(params['order']);
+        this.partiallyReadyOrder = JSON.parse(params['order']);
         //todo walidacja ordera i redirect jak jest stary
         this.cartService.clearCart();
-        this.modifiedOrder?.orderProducts?.forEach((el) => {
-          el.id = Math.floor(Math.random() * 100000000000); // generuje fakowe id na potrzeby dzialania koszyka, backend je nadpisze
-          this.cartService.addToCart(el, this.modifiedOrder?.id);
-        });
-        console.log('modifiedOrder');
-        console.log(this.modifiedOrder);
+        if (this.partiallyReadyOrder?.delivery) {
+          this.cartService.addToCartForDelivery(this.partiallyReadyOrder);
+        } else {
+          this.partiallyReadyOrder?.orderProducts?.forEach((el) => {
+            el.id = Math.floor(Math.random() * 100000000000); // generuje fakowe id na potrzeby dzialania koszyka, backend je nadpisze
+            this.cartService.addToCart(el, this.partiallyReadyOrder);
+            this.cartService.markCartAsModification();
+          });
+        }
       }
     });
 
@@ -66,7 +69,7 @@ export class RestaurantOrderComponent {
   ngOnDestroy() {
     this.destroy$.next();
     this.destroy$.complete();
-    if (this.modifiedOrder) {
+    if (this.partiallyReadyOrder) {
       this.cartService.clearCart();
     }
   }

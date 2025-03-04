@@ -13,7 +13,7 @@ export class CartFooterComponent {
   @Input({required: true})
   totalItems: number = 0;
   @Input({required: true})
-  totalPrice: number = 0;
+  foodPrice: number = 0;
   @Output() onSummaryPanelVisibleChange: EventEmitter<boolean> =
   new EventEmitter<boolean>();
   isOrderingPage: boolean = false;

@@ -31,15 +31,30 @@
             <div class="big-product-name" *ngIf="item.product?.name">
               {{ item.product.name }}
             </div>
+            @if (isDelivery) {
+            <p>{{ item.price + (item.extraDeliveryPrice ?? 0) | pricePln }}</p>
+            }@else if (cartService.isTakeaway()) {
+            <p *ngIf="cartService.isTakeaway()">
+              {{
+                item.price + orderUtils.calculateTakeawayPrice([item])
+                  | pricePln
+              }}
+            </p>
+            } @else{
             <p>
               {{ item.price | pricePln }}
             </p>
+            }
+
             <div class="options-container">
               @for (group of item.productPropertiesList; track group.name) {
-                <div class="property-item" *ngFor="let prop of group.propertyList">
-                  {{ prop.name }}
-                  <span *ngIf="prop.price">(+{{ prop.price | pricePln }})</span>
-                </div>
+              <div
+                class="property-item"
+                *ngFor="let prop of group.propertyList"
+              >
+                {{ prop.name }}
+                <span *ngIf="prop.price">(+{{ prop.price | pricePln }})</span>
+              </div>
               }
             </div>
           </div>

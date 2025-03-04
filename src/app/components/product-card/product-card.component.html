@@ -9,7 +9,10 @@
       class="custom-card"
       *ngFor="let product of productsByCategory[category]"
       (click)="startAddingToCart(product)"
-      [ngStyle]="{ 'background-image': 'url(' + imageService.getProductImageUrl(product.imgUrl) + ')' }"
+      [ngStyle]="{
+        'background-image':
+          'url(' + imageService.getProductImageUrl(product.imgUrl) + ')'
+      }"
       pRipple
     >
       <div class="overlay">
@@ -17,7 +20,18 @@
           <i class="pi pi-plus"></i>
         </div>
         <h3>{{ product.name }}</h3>
-        <p class="price-p">{{ product.price | pricePln }}</p>
+        <p class="price-p">
+          {{ product.price | pricePln }}
+          <span
+            *ngIf="isDelivery && product.deliveryPrice"
+            class="delivery-price"
+          >
+            (+{{ product.deliveryPrice | pricePln }})
+          </span>
+          <span *ngIf="this.cartService.isTakeaway() && product.takeawayPrice">
+            (+{{ product.takeawayPrice | pricePln }})
+          </span>
+        </p>
         <p>{{ product.description }}</p>
       </div>
     </div>
@@ -75,8 +89,8 @@
         Ta sekcja jest wymagana!
       </small>
       } @else {
-        <div style="height: 25px;"></div>
-       }
+      <div style="height: 25px"></div>
+      }
 
       <ng-template #optionalTemplate>
         <div *ngFor="let option of property.propertyList" class="option">

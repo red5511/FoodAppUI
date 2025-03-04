@@ -2,8 +2,9 @@ import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { ContextService } from '../../services/context/context.service';
 import { DeliveryOptionService } from '../../services/services';
-import { Address, DeliveryOptionDto } from '../../services/models';
+import { Address, DeliveryOptionDto, OrderDto } from '../../services/models';
 import { Message } from 'primeng/api';
+import { Router } from '@angular/router';
 
 declare var google: any; // make sure google maps script is loaded
 
@@ -47,7 +48,8 @@ export class DeliveryOrderingComponent implements AfterViewInit {
 
   constructor(
     private contextService: ContextService,
-    private deliveryOptionService: DeliveryOptionService
+    private deliveryOptionService: DeliveryOptionService,
+    private router: Router
   ) {}
 
   ngOnInit() {
@@ -55,9 +57,22 @@ export class DeliveryOrderingComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    console.log('navigator');
-    console.log(navigator);
+    this.contextService
+      .getCompanyIdObservable()
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          this.loadDeliveryOptions();
+        },
+      });
+  }
 
+  ngOnDestroy(): void {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
+  enableGeoLocalization() {
     if (navigator.geolocation) {
       console.log(navigator.geolocation);
 
@@ -81,20 +96,6 @@ export class DeliveryOrderingComponent implements AfterViewInit {
       // Browser doesn't support Geolocation: show error message
       this.showErrorMessage = true;
     }
-
-    this.contextService
-      .getCompanyIdObservable()
-      .pipe(takeUntil(this.destroy$))
-      .subscribe({
-        next: () => {
-          this.loadDeliveryOptions();
-        },
-      });
-  }
-
-  ngOnDestroy(): void {
-    this.destroy$.next();
-    this.destroy$.complete();
   }
 
   setErrorMessage() {
@@ -116,11 +117,11 @@ export class DeliveryOrderingComponent implements AfterViewInit {
           if (response.deliveryOptions) {
             this.deliveryOptions = response.deliveryOptions;
           }
-          this.initMap();
+          this.enableGeoLocalization();
           this.getSummaryMapping();
         },
         error: () => {
-          this.initMap();
+          this.enableGeoLocalization();
         },
       });
   }
@@ -302,10 +303,14 @@ export class DeliveryOrderingComponent implements AfterViewInit {
     if (this.isEmptyAddress(this.deliveryAddress)) {
       this.deliveryAddress.unstructuredAddress = this.address;
     }
-    console.log('onApprove');
-    console.log(this.address);
-    console.log(this.event);
-    console.log(this.deliveryAddress);
+    const order: OrderDto = {
+      deliveryAddress: this.deliveryAddress,
+      deliveryPrice: this.deliveryPrice,
+      delivery: true,
+    };
+    this.router.navigate(['/restaurant-order/delivery'], {
+      queryParams: { order: JSON.stringify(order) },
+    });
   }
 
   isEmptyAddress(address: Address): boolean {
@@ -335,7 +340,12 @@ export class DeliveryOrderingComponent implements AfterViewInit {
         }
         // Check for postal code (e.g., "40-101")
         else if (types.includes('postal_code')) {
-          this.deliveryAddress.postalCode = component.long_name;
+          let postalCode = component.long_name;
+          // If the postal code doesn't include a hyphen, append one.
+          if (!postalCode.includes('-')) {
+            postalCode += '-';
+          }
+          this.deliveryAddress.postalCode = postalCode;
         }
         // Check for country (e.g., "Polska")
         else if (types.includes('country')) {

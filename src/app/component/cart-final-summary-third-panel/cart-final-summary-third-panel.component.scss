@@ -1,0 +1,53 @@
+::ng-deep .delivery-price-input .p-inputnumber {
+  width: 100%; /* Make input fill its container */
+  flex: 1; /* Ensures inputs take up available space */
+  display: flex;
+}
+
+::ng-deep .delivery-price-input .p-inputnumber-input {
+  width: 100%; /* Make input fill its container */
+  flex: 1; /* Ensures inputs take up available space */
+  display: flex;
+}
+
+::ng-deep .one-line-fields .p-inputtext {
+  width: 100%; /* Make input fill its container */
+  flex: 1; /* Ensures inputs take up available space */
+  display: flex;
+}
+
+.delivery-price-input {
+  width: 100%;
+}
+
+.input-full-width {
+  width: 100%;
+  height: 50px;
+  display: block;
+  margin-top: 2rem;
+}
+
+.custom-textarea {
+  width: 100%;
+  max-width: 100%;
+  font-size: 1.2rem;
+  padding: 10px;
+  font: var(--font-stack);
+  letter-spacing: 1px;
+}
+
+.one-line-fields {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+  width: 100%;
+  margin-top: 2rem;
+  p-floatLabel {
+    flex: 1; // Each child will grow equally
+  }
+}
+
+
+small.custom-error {
+  color: red;
+}

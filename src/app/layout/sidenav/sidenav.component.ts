@@ -97,7 +97,8 @@ export class SidenavComponent implements OnInit {
   isExactForRestOrdering() {
     return (
       !this.isSideNavCollapsed ||
-      this.router.url.includes('/restaurant-order/modify')
+      this.router.url.includes('/restaurant-order/modify') ||
+      this.router.url.includes('/restaurant-order/delivery')
     );
   }
 

@@ -17,7 +17,7 @@ export class CartComponent {
   isSummaryPanelVisible: boolean = false;
   isOrderingPage: boolean = false;
   totalItems: number = 0;
-  totalPrice: number = 0;
+  foodPrice: number = 0;
   private destroy$ = new Subject<void>();
 
   constructor(private cartService: CartService, private router: Router) {}
@@ -27,14 +27,20 @@ export class CartComponent {
       .pipe(takeUntil(this.destroy$))
       .subscribe((cart) => {
         this.cartModel = cart;
+        
         this.totalItems =
           this.cartModel?.orderProducts.reduce(
             (sum, item) => sum + (item.quantity || 0),
             0
           ) ?? 0;
-        this.totalPrice =
+        this.foodPrice =
           this.cartModel?.orderProducts.reduce(
-            (sum, item) => sum + (item.price || 0),
+            (sum, item) => {
+              if(cart.isDelivery){
+                return sum + (item.price || 0) + (item.extraDeliveryPrice || 0)
+              }
+              return sum + (item.price || 0)
+            },
             0
           ) ?? 0;
       });

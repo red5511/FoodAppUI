@@ -10,10 +10,10 @@
 >
   <ng-template pTemplate="header">
     <i
-      *ngIf="currentStep === 2"
+      *ngIf="currentStep === 2 || currentStep === 3"
       class="pi pi-arrow-left"
       style="font-size: 1.5rem; cursor: pointer; margin-left: 2rem"
-      (click)="currentStep = 1"
+      (click)="currentStep = currentStep - 1"
     ></i>
     <div>
       <span class="title"><h4>Podsumowanie zamówienia</h4></span>
@@ -26,6 +26,7 @@
     >
       <app-cart-final-summary-first-panel
         [cartSummaryModel]="cartSummaryModel"
+        [isDelivery]="isDelivery"
         [@slideAnimation]="'in'"
         [@.disabled]="!isSummaryPanelVisible"
         (onQuantityChangeNoneZero)="triggerGlow()"
@@ -35,32 +36,61 @@
     <div *ngIf="currentStep === 2" class="cart-summary-container">
       <app-cart-final-summary-second-panel
         [cartSummaryModel]="cartSummaryModel"
+        [isDelivery]="isDelivery"
+        [isPaymentMethodInvalid]="isPaymentMethodInvalid"
+        [isModification]="isModification"
         [@slideAnimation]="'in'"
+        (onPaymentMethodChanged)="onPaymentMethodChanged()"
       ></app-cart-final-summary-second-panel>
+    </div>
+
+    <div
+      *ngIf="isSummaryPanelVisible && currentStep === 3"
+      class="cart-summary-container"
+    >
+      <app-cart-final-summary-third-panel
+        [cartSummaryModel]="cartSummaryModel"
+        [@slideAnimation]="'in'"
+        [isFormInValid]="isThirdPanelFormInValid"
+        [@.disabled]="!isSummaryPanelVisible"
+        (onQuantityChangeNoneZero)="triggerGlow()"
+        (deliveryPriceChange)="onDeliveryPriceChange($event)"
+      ></app-cart-final-summary-third-panel>
     </div>
   </div>
 
   <ng-template pTemplate="footer">
     @if (currentStep === 1) {
-    <div class="footer-container">
-      <div class="total-price" [ngClass]="{ 'glow-span': isGlowing }">
-        <h3 style="margin: 0;">Suma całkowita: {{ totalPrice | pricePln }}</h3>
-      </div>
-      <button
-        pButton
-        severity="success"
-        icon="pi pi-arrow-right"
-        label="Dalej"
-        (click)="currentStep = 2"
-      ></button>
-    </div>
-    }@else if (currentStep === 2) {
+    <button
+      pButton
+      severity="success"
+      icon="pi pi-arrow-right"
+      label="Dalej {{ priceOrderLabel }}"
+      (click)="currentStep = 2"
+    ></button>
+    }@else if (currentStep === 2) { @if (isDelivery) {
+    <button
+      pButton
+      severity="success"
+      icon="pi pi-arrow-right"
+      label="Dalej {{ priceOrderLabel }}"
+      (click)="goToThridPanelWithValidation()"
+    ></button>
+    }@else {
     <button
       pButton
       severity="success"
       icon="pi pi-check"
-      [label]="executeOrderLabel"
-      (click)="onApproveOrder()"
+      label="Zatwierdź {{ priceOrderLabel }}"
+      (click)="onApproveOrder(2)"
+    ></button>
+    } } @else if (currentStep === 3) {
+    <button
+      pButton
+      severity="success"
+      icon="pi pi-check"
+      label="Zatwierdź {{ priceOrderLabel }}"
+      (click)="onApproveOrder(3)"
     ></button>
     }
   </ng-template>

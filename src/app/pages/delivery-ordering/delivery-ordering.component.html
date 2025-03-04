@@ -24,6 +24,7 @@
         severity="success"
         icon="pi pi-check"
         [label]="approveButtonLabel"
+        [disabled]="address == ''"
         (click)="onApprove()"
       ></button>
     </div>

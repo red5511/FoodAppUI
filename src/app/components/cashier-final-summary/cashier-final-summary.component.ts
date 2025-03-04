@@ -25,7 +25,7 @@ export class CashierFinalSummaryComponent {
   @Output()
   summaryCashierPanelVisibleChange = new EventEmitter<boolean>();
 
-  summaryModel: CartSummaryModel = {};
+  summaryModel: CartSummaryModel = { whatToDoCodes: []};
   items: OrderProcessOption[] = [
     {
       name: 'Nabij na kase fiskalną',

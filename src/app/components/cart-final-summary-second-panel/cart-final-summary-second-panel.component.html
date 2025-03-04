@@ -1,12 +1,12 @@
 <!-- <p-card class="custom-card"> -->
-<h6 style="margin-top: 2rem; margin-bottom: 2rem">Co robimy?</h6>
+<h6 style="margin-top: 1rem; margin-bottom: 1rem">Co robimy?</h6>
 <p-dataView [value]="items" layout="list">
   <ng-template let-items pTemplate="list">
     <div class="col-12" *ngFor="let item of items">
       <div
-        [ngClass]="{ active: item.active, disabled: item.disabled }"
+        [ngClass]="{ active: item.active, disabled: item.ownDisabled }"
         pRipple
-        (click)="onSelectItem(item, item.disabled)"
+        (click)="onSelectItem(item, item.ownDisabled)"
         class="item"
       >
         <div>
@@ -37,9 +37,14 @@
 
 <p-divider />
 <!-- <p-card class="custom-card"> -->
-<h6 style="margin-top: 2rem">Forma płatności</h6>
+<h6 style="margin-top: 1rem">Forma płatności</h6>
 <div class="payment-method-radio-buttons">
   <p-radioButton
+    [ngClass]="{
+      'ng-invalid': isPaymentMethodInvalid,
+      'ng-dirty': isPaymentMethodInvalid
+    }"
+    (onClick)="onPaymentMethodChanged.emit(true)"
     name="cash"
     value="Gotówka"
     [(ngModel)]="cartSummaryModel.paymentMethod"
@@ -49,26 +54,41 @@
     Gotówka
   </label>
   <p-radioButton
+    [ngClass]="{
+      'ng-invalid': isPaymentMethodInvalid,
+      'ng-dirty': isPaymentMethodInvalid
+    }"
     name="card"
+    (onClick)="onPaymentMethodChanged.emit(true)"
     value="Karta"
     [(ngModel)]="cartSummaryModel.paymentMethod"
     inputId="paymentMethod2"
   />
   <label for="paymentMethod2" class="ml-2"> Karta </label>
 </div>
+<small class="custom-error" *ngIf="isPaymentMethodInvalid">
+  Forma płatności jest obowiązkowa dla zamówień, które mają być zrealizowane
+</small>
 <!-- </p-card> -->
 <p-divider />
 <!-- <p-card class="custom-card"> -->
-<h6 style="margin-top: 2rem">Na wynos?</h6>
+<h6 style="margin-top: 0rem">Na wynos</h6>
 <div class="takeaway-radio-buttons">
   <p-radioButton
+    [disabled]="cartSummaryModel.delivery === 'Tak'"
+    (onClick)="onTakeawayRadioClick()"
     name="yes"
     value="Tak"
     [(ngModel)]="cartSummaryModel.isTakeaway"
     inputId="takeaway1"
   />
-  <label style="margin-right: 2rem" for="takeaway1" class="ml-2"> Tak </label>
+  <label style="margin-right: 2rem" for="takeaway1" class="ml-2">
+    Tak
+    {{ !isDelivery ? "(+" + (calculateTakeawayPrice() | pricePln) + ")" : "" }}
+  </label>
   <p-radioButton
+    [disabled]="cartSummaryModel.delivery === 'Tak'"
+    (onClick)="onTakeawayRadioClick()"
     name="no"
     value="Nie"
     [(ngModel)]="cartSummaryModel.isTakeaway"
@@ -79,7 +99,34 @@
 <!-- </p-card> -->
 <p-divider />
 
-<h6 style="margin-top: 2rem">Godzina realizacji</h6>
+<h6 style="margin-top: 0rem">Dostawa</h6>
+<div class="takeaway-radio-buttons">
+  <p-radioButton
+    disabled="true"
+    name="yes"
+    value="Tak"
+    [(ngModel)]="cartSummaryModel.delivery"
+    inputId="delivery1"
+  />
+  <label style="margin-right: 2rem" for="delivery1" class="ml-2">
+    Tak
+    {{
+      isDelivery ? "(+" + (calculateExtraDeliveryPrice() | pricePln) + ")" : ""
+    }}
+  </label>
+  <p-radioButton
+    disabled="true"
+    name="no"
+    value="Nie"
+    [(ngModel)]="cartSummaryModel.delivery"
+    inputId="delivery2"
+  />
+  <label for="delivery2" class="ml-2"> Nie </label>
+</div>
+
+<p-divider />
+
+<h6 style="margin-top: 0rem">Godzina realizacji</h6>
 <div class="execution-time-section">
   <span style="margin-right: 2rem; font-weight: bold; font-size: 1.2rem">{{
     cartSummaryModel.executionDateTime?.toISOString() | formattedOnlyTime
@@ -92,12 +139,12 @@
     (onClick)="onExecutionTimeButtonClick()"
   ></p-button>
 </div>
-<h6 style="margin-top: 2rem; margin-bottom: 2rem">Notatka do zamówienia</h6>
+<h6 style="margin-top: 0.5rem; margin-bottom: 0.5rem">Notatka do zamówienia</h6>
 <textarea
   [(ngModel)]="cartSummaryModel.desctiption"
   class="custom-textarea"
   id="float-input"
-  rows="6"
+  rows="3"
   pInputTextarea
   [maxLength]="510"
 ></textarea>

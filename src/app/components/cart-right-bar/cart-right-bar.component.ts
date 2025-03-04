@@ -49,9 +49,13 @@ export class CartRightBarComponent {
   @Input({ required: true })
   totalItems: number = 0;
   @Input({ required: true })
-  totalPrice: number = 0;
+  foodPrice: number = 0;
   @Input({ required: true })
   cartModel!: CartModel;
+  @Input({ required: true })
+  deliveryPrice: number | undefined;
+  @Input({ required: true })
+  isDelivery: boolean | undefined;
   @Output() onSummaryPanelVisibleChange: EventEmitter<boolean> =
     new EventEmitter<boolean>();
   showEmpty: boolean = false;
@@ -59,11 +63,10 @@ export class CartRightBarComponent {
 
   constructor(public orderUtils: OrderUtils) {}
 
+  ngOnInit(): void {
+  }
   ngOnChanges(changes: SimpleChanges): void {
-    console.log('ngOnChanges');
-
     if (this.cartModel.orderProducts.length === 0) {
-      // Delay showing the empty state until after the removal animations
       setTimeout(() => {
         this.showEmpty = true;
       }, this.animationDuration);

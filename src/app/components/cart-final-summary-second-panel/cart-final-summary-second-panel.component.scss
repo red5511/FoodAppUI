@@ -25,7 +25,7 @@
 
 .item {
   padding: 1rem;
-  margin: 1rem 0;
+  margin: 0.5rem 0;
   border: 1px solid #ddd;
   border-radius: 4px;
   display: flex;
@@ -82,4 +82,8 @@
   font: var(--font-stack);
   letter-spacing: 1px;
 
+}
+
+small.custom-error {
+  color: red;
 }
