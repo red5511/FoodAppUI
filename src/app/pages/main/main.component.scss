@@ -1,25 +1,25 @@
 :host {
-  width: 98%; // Take the full width of the parent container
+  width: 99%; // Take the full width of the parent container
   max-width: 1500px;
   margin-bottom: 100px;
-  padding-top: 4%;
+  padding-top: 2%;
 }
 
-.custom-card {
-  width: 100%;
-  margin-left: 15px;
-  margin-right: 15px;
-}
-.custom-card:hover {
-  box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
-  cursor: pointer;
-  width: 100%;
-}
+// .custom-card {
+//   width: 100%;
+//   margin-left: 15px;
+//   margin-right: 15px;
+// }
+// .custom-card:hover {
+//   box-shadow: 0 12px 24px rgba(0, 0, 0, 0.5);
+//   cursor: pointer;
+//   width: 100%;
+// }
 
-.card-container {
-  display: flex;
-  justify-content: space-between;
-}
+// .card-container {
+//   display: flex;
+//   justify-content: space-between;
+// }
 
 :host ::ng-deep .p-card .p-card-title {
   display: flex;
@@ -37,4 +37,57 @@
 
 :host ::ng-deep .p-card-content {
   padding: 0px;
+}
+
+.cards-container{
+  display: flex;
+  width: 100%;
+  justify-content: center;
+  gap: 1.5rem;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.custom-card {
+  width: 30%; /* Fixed width for the card */
+  min-width: 175px;
+  height: 200px; /* Fixed height for the card */
+  background-color: #fff; /* Card background color */
+  background-size: cover; /* Scale image to cover entire div */
+  background-position: center; /* Center image */
+  background-repeat: no-repeat; /* Prevent repetition */
+
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Card shadow for a nice effect */
+  border-radius: 8px; /* Rounded corners */
+  display: flex;
+  justify-content: center;
+  overflow: hidden; /* Hide overflowed content */
+  text-align: center; /* Center align text inside the card */
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+  border: 1px solid #10182083;
+  position: relative; // ✅ Required for ripple
+  
+}
+
+.overlay {
+  position: absolute;
+  bottom: 0;           /* Position at the bottom of the card */
+  left: 0;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.75);
+  display: flex;
+  align-items: flex-end; /* Align children to the bottom */
+  justify-content: center; /* Center horizontally */
+  text-align: center;
+  color: rgb(247, 247, 247);
+  padding-top: 0.5rem;
+}
+
+
+.custom-card h5 {
+  white-space: nowrap;
+  overflow: hidden;
+  /* Responsive font size between 12px and 24px */
+  font-size: clamp(20px, 2vw, 24px);
 }

@@ -33,7 +33,7 @@
     </li>
     <li *ngIf="hasPermissionToModule('ONLINE_ORDERS')">
       <a
-        [routerLink]="'/dashboard2'"
+        [routerLink]="'/active-orders'"
         routerLinkActive="active"
         [routerLinkActiveOptions]="{ exact: !isSideNavCollapsed }"
         (click)="openCollapsedSideNavToggle()"

@@ -8,7 +8,7 @@
     left: 0;
     overflow-x: hidden;
     margin-top: 48px;
-    transition: all 0.6s ease;
+    // transition: all 0.6s ease;
     overflow-y: auto; /* Add vertical scrolling for sidebar content */
 }
 
@@ -19,7 +19,7 @@
     align-items: center;
     padding: 4px;
     border-radius: 10px;
-    transition: all 0.3s;
+    // transition: all 0.3s;
     height: 45px;
 
     .menu-icon {
@@ -121,7 +121,7 @@
 
 .hiddenSidebar {
     z-index: 10;
-    transition: all 0.6s ease;
+    // transition: all 0.6s ease;
 }
 
 

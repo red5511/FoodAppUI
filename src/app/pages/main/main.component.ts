@@ -5,6 +5,12 @@ import { takeUntil } from 'rxjs/operators';
 import { Context, ContextService } from '../../services/context/context.service';
 import { Router } from '@angular/router';
 
+interface MainCard {
+  text: string,
+  imgUrl: string,
+  redirectUrl: string
+}
+
 @Component({
   selector: 'app-main',
   templateUrl: './main.component.html',
@@ -12,10 +18,13 @@ import { Router } from '@angular/router';
 })
 export class MainComponent {
   messages: Message[] = [];
+  cards: MainCard[] = []
   areCardsVisible: boolean = false
   private destroy$ = new Subject<void>();
 
-  constructor(private contextService: ContextService, private router: Router) {}
+  constructor(private contextService: ContextService, public router: Router) {
+    this.cards = this.getCards()
+  }
 
   ngOnInit(): void {
     this.contextService
@@ -63,31 +72,51 @@ export class MainComponent {
     this.messages = tempArr;
     console.log(this.messages)
     if (this.messages.length === 0) {
-      this.processRedirections(context)
+      // this.processRedirections(context)
       this.areCardsVisible = true
     }
   }
 
-  processRedirections(context: Context){
-    if(Array.isArray(context.permittedModules) && context.permittedModules.length > 0)
-    {
-      const includesLivePanel = context.permittedModules.includes('ONLINE_ORDERS')
-      const includesRestaurantOrdering = context.permittedModules.includes('STATISTICS')
-      if(includesLivePanel && !includesRestaurantOrdering){
-        this.router.navigate(['/dashboard2']);
-      }
-      else if (!includesLivePanel && includesRestaurantOrdering){
-        this.router.navigate(['/xd']); 
-      }
-    }
+  // processRedirections(context: Context){
+  //   if(Array.isArray(context.permittedModules) && context.permittedModules.length > 0)
+  //   {
+  //     const includesLivePanel = context.permittedModules.includes('ONLINE_ORDERS')
+  //     const includesRestaurantOrdering = context.permittedModules.includes('STATISTICS')
+  //     if(includesLivePanel && !includesRestaurantOrdering){
+  //       this.router.navigate(['/dashboard2']);
+  //     }
+  //     else if (!includesLivePanel && includesRestaurantOrdering){
+  //       this.router.navigate(['/xd']); 
+  //     }
+  //   }
 
-  }
+  // }
 
   onClickedLivePanel(){
-    this.router.navigate(['/dashboard2']); 
+    this.router.navigate(['/active-orders']); 
   }
 
   onClickedRestaurantOrder(){
     this.router.navigate(['/restaurant-order']); 
+  }
+
+  getCards(): MainCard[]{
+    var card1: MainCard = {
+      text: 'Nowe zamówienie',
+      imgUrl: 'images/NewOrder2.webp',
+      redirectUrl: '/restaurant-order'
+    }
+    var card2: MainCard = {
+      text: 'Na dowóz',
+      imgUrl: 'images/DeliveryOrder.webp',
+      redirectUrl: '/delivery-order'
+    }
+    
+    var card3: MainCard = {
+      text: 'Obsługa zamówień',
+      imgUrl: 'images/HandleActiveOrder2.webp',
+      redirectUrl: '/active-orders'
+    }
+    return [card1, card2, card3]
   }
 }

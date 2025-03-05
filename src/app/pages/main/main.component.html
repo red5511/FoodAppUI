@@ -1,15 +1,26 @@
 <p-messages [(value)]="messages" [enableService]="false" />
 
-    <div *ngIf="areCardsVisible" class="card-container">
-        <p-card (click)="onClickedLivePanel()" class="custom-card" header="Zamówienia online">
-            <ng-template pTemplate="header">
-              <img alt="Card 1" src="images/onlineOrdering.webp" />
-            </ng-template>
-          </p-card>
-        
-          <p-card (click)="onClickedRestaurantOrder()" class="custom-card" header="Zamówienia na miejscu">
-            <ng-template pTemplate="header">
-              <img alt="Card 2" src="images/inRestaurantOrdering.webp" />
-            </ng-template>
-          </p-card>
+<!-- <div *ngIf="areCardsVisible" class="card-container">
+  <p-card (click)="onClickedLivePanel()" class="custom-card" header="Zamówienia online">
+    <ng-template pTemplate="header">
+      <img alt="Card 1" src="images/onlineOrdering.webp" />
+    </ng-template>
+  </p-card>
+
+  <p-card (click)="onClickedRestaurantOrder()" class="custom-card" header="Zamówienia na miejscu">
+    <ng-template pTemplate="header">
+      <img alt="Card 2" src="images/inRestaurantOrdering.webp" />
+    </ng-template>
+  </p-card>
+</div> -->
+
+
+  <div *ngIf="areCardsVisible" class="cards-container">
+    <div class="custom-card" *ngFor="let card of cards" (click)="router.navigate([card.redirectUrl])" [ngStyle]="{
+      'background-image':'url(' + card.imgUrl + ')'
+    }" pRipple>
+      <div class="overlay">
+        <h5>{{ card.text }}</h5>
+      </div>
     </div>
+  </div>

@@ -44,7 +44,7 @@ const routes: Routes = [
     canActivate: [noneAuthPathsWhenJwtPresentGuard],
   },
   {
-    path: 'dashboard2',
+    path: 'active-orders',
     component: Dashboard2Component,
     canActivate: [authGuard],
   },

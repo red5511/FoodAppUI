@@ -27,6 +27,7 @@ import { toNormalLocalDateTime } from '../../common/dateUtils';
 import { OrderUtils } from '../../common/orders-utils';
 import { BluetoothService } from '../../services/bluetooth/bluetooth-service';
 import { decodeListOfBase64 } from '../../common/common-utils';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-cart-final-summary',
@@ -73,7 +74,8 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
     private toastService: ToastrService,
     private contextSerice: ContextService,
     private orderUtils: OrderUtils,
-    private bluetoothService: BluetoothService
+    private bluetoothService: BluetoothService,
+    private router: Router
   ) {
     this.setDefaultCartSummaryModel();
   }
@@ -237,6 +239,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
           }
           this.isSummaryPanelVisible = false;
           this.setDefaultCartSummaryModel();
+          this.router.navigate(['/main']); 
         },
       });
   }
@@ -266,6 +269,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
                   ' zostalo zmodyfikowane'
           );
           this.setDefaultCartSummaryModel();
+          this.router.navigate(['/main']); 
         },
       });
   }
