@@ -11,6 +11,9 @@ export class ImageService {
     if(imgUrl === null){
       return undefined
     }
+    console.log('kkkk');
+    console.log(imgUrl && imgUrl !== 'OWN' ? imgUrl : this.contextService.getDefaultProductImgUrl());
+    
     return imgUrl && imgUrl !== 'OWN' ? imgUrl : this.contextService.getDefaultProductImgUrl();
   }
 }

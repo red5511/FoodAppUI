@@ -218,3 +218,15 @@ body {
   border-bottom-left-radius: 6px !important;
   border-top-left-radius: 6px !important;
 }
+
+
+.company-p{
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: "Inter var", sans-serif;
+  text-decoration: underline;
+}

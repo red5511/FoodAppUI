@@ -965,6 +965,7 @@
     width: 3rem;
     border-top-right-radius: 6px;
     border-bottom-right-radius: 6px;
+    border-left: solid 1px;
   }
   .p-dropdown .p-dropdown-clear-icon {
     color: #6b7280;

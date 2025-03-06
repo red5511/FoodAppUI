@@ -18,8 +18,17 @@
     [companies]="companiesPossibleToReceiving" [receivingCompanies]="receivingCompanies"
     (onStartReceiving)="onStartReceiving($event)"></app-switch-with-dialog>
   &nbsp; &nbsp;
-  <p-dropdown *ngIf="selectedCompany !== undefined && selectedCompany !== null" [options]="companies" [(ngModel)]="selectedCompany"
-    (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
-  &nbsp; &nbsp;
+  @if (selectedCompany !== undefined && selectedCompany !== null) {
+    @if (companies.length > 1) {
+      <p-dropdown [options]="companies" [(ngModel)]="selectedCompany"
+        (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
+    }@else {
+      <div class="company-p">
+        {{ selectedCompany.name }}
+      </div>
+    }
+    &nbsp; &nbsp;
+
+  }
   <button pRipple pButton style="font-size: 0.9rem;" type="button" label="Wyloguj" (click)="logout()" icon="pi pi-sign-out" ></button>
 </mat-toolbar>
