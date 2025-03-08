@@ -6,7 +6,7 @@ import {
   ProductPropertyDto,
 } from '../../services/models';
 import { CartService } from '../../services/cart/cart-service';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { ImageService } from '../../services/images/Image-service';
 import { cloneDeep } from 'lodash';
 
@@ -53,21 +53,38 @@ export class ProductCardComponent {
   initializeForm() {
     if (this.selectedProduct) {
       this.productForm = this.fb.group({});
-
+  
       this.selectedProduct.productPropertiesList?.forEach((property: any) => {
         if (property.required && (property.maxChosenOptions ?? 0) < 1) {
+          // Required single selection (radio button)
           this.productForm.addControl(
             `property_${property.id}`,
-            this.fb.control(null, Validators.required) // Use null instead of ''
+            this.fb.control(null, Validators.required)
           );
         } else {
+          // Create a FormGroup for required checkbox selection
+          const group = this.fb.group({});
           property.propertyList?.forEach((option: any) => {
             const controlName = `optional_${property.id}_${option.id}`;
-            this.productForm.addControl(controlName, this.fb.control(false));
+            group.addControl(controlName, this.fb.control(false));
           });
+  
+          // Add custom validator for required checkbox group
+          if (property.required) {
+            group.setValidators([this.atLeastOneCheckboxSelected()]);
+          }
+  
+          this.productForm.addControl(`optionalGroup_${property.id}`, group);
         }
       });
     }
+  }
+
+  atLeastOneCheckboxSelected(): ValidatorFn {
+    return (group: AbstractControl): ValidationErrors | null => {
+      const values = Object.values(group.value);
+      return values.includes(true) ? null : { required: true };
+    };
   }
 
   getCategoryKeys(productsByCategory: {
@@ -107,68 +124,72 @@ export class ProductCardComponent {
 
   calculateTotalPrice() {
     let totalPrice = this.selectedProduct.price!;
-
-    // Iterate over selected properties (radio buttons)
+  
+    // Iterate over each property
     this.selectedProduct.productPropertiesList?.forEach((property) => {
       if (property.required) {
-        const selectedOptionId = this.productForm.get(
-          `property_${property.id}`
-        )?.value;
+        // For radio buttons (required, single selection)
+        const selectedOptionId = this.productForm.get(`property_${property.id}`)?.value;
         const selectedOption = property.propertyList!.find(
           (option) => option.id === selectedOptionId
         );
         if (selectedOption) {
-          totalPrice += selectedOption.price!; // Add the price of the selected option
+          totalPrice += selectedOption.price!;
         }
       } else {
-        // Iterate over optional properties (checkboxes)
-        property.propertyList?.forEach((option) => {
-          const controlName = `optional_${property.id}_${option.id}`;
-          if (this.productForm.get(controlName)?.value) {
-            totalPrice += option.price!; // Add price if checkbox is checked
-          }
-        });
+        // For checkboxes (optional selections) inside a nested group
+        const group = this.productForm.get('optionalGroup_' + property.id) as FormGroup;
+        if (group) {
+          property.propertyList?.forEach((option) => {
+            const controlName = `optional_${property.id}_${option.id}`;
+            if (group.get(controlName)?.value) {
+              totalPrice += option.price!;
+            }
+          });
+        }
       }
     });
-
+  
     totalPrice *= this.quantity;
-
     return totalPrice;
   }
+  
 
   getSelectedProductProperties(): ProductPropertiesDto[] {
     let result: ProductPropertiesDto[] = [];
-
-    // Iterate over selected properties (radio buttons)
+  
     this.selectedProduct.productPropertiesList?.forEach((property) => {
-      const clondedProperties: ProductPropertiesDto = cloneDeep(property);
-      clondedProperties.propertyList = [];
+      const clonedProperties: ProductPropertiesDto = cloneDeep(property);
+      clonedProperties.propertyList = [];
+  
       if (property.required) {
-        const selectedOptionId = this.productForm.get(
-          `property_${property.id}`
-        )?.value;
+        const selectedOptionId = this.productForm.get(`property_${property.id}`)?.value;
         const selectedOption = property.propertyList!.find(
           (option) => option.id === selectedOptionId
         );
         if (selectedOption) {
-          clondedProperties.propertyList.push(selectedOption);
+          clonedProperties.propertyList.push(selectedOption);
         }
       } else {
-        // Iterate over optional properties (checkboxes)
-        property.propertyList?.forEach((option) => {
-          const controlName = `optional_${property.id}_${option.id}`;
-          if (this.productForm.get(controlName)?.value) {
-            clondedProperties.propertyList!.push(option);
-          }
-        });
+        // Accessing optional checkbox controls inside the group
+        const group = this.productForm.get('optionalGroup_' + property.id) as FormGroup;
+        if (group) {
+          property.propertyList?.forEach((option) => {
+            const controlName = `optional_${property.id}_${option.id}`;
+            if (group.get(controlName)?.value) {
+              clonedProperties.propertyList!.push(option);
+            }
+          });
+        }
       }
-      if (clondedProperties.propertyList.length > 0) {
-        result.push(clondedProperties);
+      if (clonedProperties.propertyList.length > 0) {
+        result.push(clonedProperties);
       }
     });
-
+  
     return result;
   }
+  
 
   onCheckboxChange(propertyId: number, optionId: number, maxAllowed: number, event: any) {
     const controlName = `optional_${propertyId}_${optionId}`;
