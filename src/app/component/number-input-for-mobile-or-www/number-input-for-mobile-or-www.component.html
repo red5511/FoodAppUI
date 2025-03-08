@@ -1,0 +1,13 @@
+<p-inputNumber
+class="cusstom-input-number"
+id="quantity"
+[(ngModel)]="value"
+[min]="min"
+[max]="max"
+(onInput)="onQuantityChange.emit(value)"
+mode="decimal"
+showButtons
+buttonLayout="horizontal"
+incrementButtonIcon="pi pi-plus"
+decrementButtonIcon="pi pi-minus"
+></p-inputNumber>

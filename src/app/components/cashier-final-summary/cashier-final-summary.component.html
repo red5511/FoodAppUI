@@ -1,5 +1,5 @@
 <p-dialog
-  header="Sfinalizuj zamówienie"
+  header="Zrealizuj zamówienie"
   [(visible)]="isSummaryCashierPanelVisible"
   [modal]="true"
   [styleClass]="'full-screen-dialog'"
@@ -10,12 +10,12 @@
 >
   <ng-template pTemplate="header">
     <div>
-      <span class="title"><h4>Sfinalizuj zamówienie</h4></span>
+      <span class="title"><h4>Zrealizuj zamówienie</h4></span>
     </div>
   </ng-template>
 
   <div *ngIf="isSummaryCashierPanelVisible" class="section">
-    <h6 style="margin-top: 2rem; margin-bottom: 2rem">Co robimy?</h6>
+    <h6 style="margin-top: 1rem; margin-bottom: 0">Co robimy?</h6>
   </div>
 
   <p-dataView [value]="items" layout="list">
@@ -46,7 +46,7 @@
   <p-divider />
   <div class="section">
     <div class="section-payment-method">
-      <h6 style="margin-top: 1rem">Forma płatności</h6>
+      <h6 style="margin-top: 0">Forma płatności</h6>
       <div class="payment-method-radio-buttons">
         <p-radioButton
           name="cash"
@@ -71,22 +71,24 @@
   <p-divider />
   <div class="section">
     <div class="section-payment-method">
-      <h6 style="margin-top: 1rem">Na wynos?</h6>
+      <h6 style="margin-top: 0">Na wynos</h6>
       <div class="takeaway-radio-buttons">
         <p-radioButton
           name="yes"
           value="Tak"
           [(ngModel)]="summaryModel.isTakeaway"
           inputId="takeaway1"
+          (onClick)="onTakeawayRadioClick()"
         />
         <label style="margin-right: 2rem" for="takeaway1" class="ml-2">
-          Tak
+          Tak {{ "(+" + (calculateTakeawayPrice() | pricePln) + ")"  }}
         </label>
         <p-radioButton
           name="no"
           value="Nie"
           [(ngModel)]="summaryModel.isTakeaway"
           inputId="takeaway2"
+          (onClick)="onTakeawayRadioClick()"
         />
         <label for="takeaway2" class="ml-2"> Nie </label>
       </div>
@@ -98,7 +100,7 @@
       pButton
       severity="success"
       icon="pi pi-check"
-      label="Zatwierdź"
+      label="Zatwierdź {{ priceOrderLabel }}"
       (click)="onApprove()"
     ></button>
   </ng-template>

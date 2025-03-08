@@ -8,10 +8,14 @@
   ></p-button>
 </div>
 <div *ngIf="isNewProductPropertiesButtonVisible" class="toggle-container">
-  <form #productForm="ngForm" (ngSubmit)="onAddNewProperties(productForm)" novalidate>
+  <form
+    #productForm="ngForm"
+    (ngSubmit)="onAddNewProperties(productForm)"
+    novalidate
+  >
     <div *ngIf="isNewProductPropertiesButtonVisible" class="toggle-container">
       <!-- First Row: Group Name and Required Checkbox -->
-      <div class="row">
+      <div class="row" style="margin-bottom: 1rem;">
         <span class="input-container">
           <p-floatLabel>
             <input
@@ -51,22 +55,23 @@
         </span>
 
         <div class="checkbox-div">
-          <p-checkbox
+          <app-number-input-for-mobile-or-www
+            [value]="productProperties.maxChosenOptions ?? 1"
+            (onQuantityChange)="onQuantityChange($event)"
+          ></app-number-input-for-mobile-or-www>
+          <small> Podaj max opcji, które można zaznaczyć</small>
+        </div>
+
+        <p-checkbox
+          class="custom-checkbox"
           [(ngModel)]="productProperties.required"
           [binary]="true"
           inputId="binary"
           label="Grupa obowiązkowa"
           name="required"
         ></p-checkbox>
-          <br />
-          <small
-            >Po zaznaczeniu jedna z opcji podczas zamawiania musi być
-            wybrana</small
-          >
-        </div>
       </div>
 
-      <!-- Second Row: Product List -->
       <div
         *ngFor="let property of productPropertyList; let i = index"
         class="row"
@@ -74,7 +79,7 @@
         <i
           class="pi pi-minus-circle custom-icon"
           (click)="removeProperty(i)"
-          [style]="{ color: 'red', cursor: 'pointer' }"
+          [style]="{ color: 'red', cursor: 'pointer', 'margin-top': '12px' }"
         ></i>
         <span class="input-container">
           <p-floatLabel>

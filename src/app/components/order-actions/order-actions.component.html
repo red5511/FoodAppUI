@@ -4,7 +4,7 @@
   pRipple
   type="button"
   label="Drukuj"
-  [raised]="true"
+  [outlined]="true"
   icon="pi pi-print"
 ></button>
 
@@ -13,7 +13,7 @@
   pButton
   pRipple
   type="button"
-  [raised]="true"
+  [outlined]="true"
   [label]="executionTimeButtonText"
   severity="info"
   icon="pi pi-calendar-clock"
@@ -28,7 +28,7 @@
   type="button"
   label="Gotowe do odbioru"
   icon="pi pi-check"
-  [raised]="true"
+  [outlined]="true"
   severity="success"
 ></button>
 
@@ -40,7 +40,7 @@
   label="Odrzuć"
   icon="pi pi-times"
   severity="danger"
-  [raised]="true"
+  [outlined]="true"
   (click)="rejectOrder()"
   [disabled]="approvalTimeLeft"
 ></button>
@@ -52,7 +52,7 @@
   [label]="approveButtonText"
   icon="pi pi-check"
   severity="success"
-  [raised]="true"
+  [outlined]="true"
   (click)="approveOrder()"
   [disabled]="approvalTimeLeft"
 ></button>
@@ -65,7 +65,7 @@
   label="Modyfikuj"
   icon="pi pi-check"
   severity="info"
-  [raised]="true"
+  [outlined]="true"
   (click)="modify()"
 ></button>
 
@@ -77,7 +77,7 @@
   label="Do kasy"
   icon="pi pi-check"
   severity="success"
-  [raised]="true"
+  [outlined]="true"
   (click)="goToTheCashier()"
 ></button>
 

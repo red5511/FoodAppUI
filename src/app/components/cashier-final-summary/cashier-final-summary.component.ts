@@ -24,8 +24,9 @@ export class CashierFinalSummaryComponent {
   order!: OrderDto;
   @Output()
   summaryCashierPanelVisibleChange = new EventEmitter<boolean>();
+  priceOrderLabel: string = '';
 
-  summaryModel: CartSummaryModel = { whatToDoCodes: []};
+  summaryModel: CartSummaryModel = { whatToDoCodes: [] };
   items: OrderProcessOption[] = [
     {
       name: 'Nabij na kase fiskalną',
@@ -39,8 +40,20 @@ export class CashierFinalSummaryComponent {
     private orderService: OrderService,
     private contextService: ContextService,
     private toastService: ToastrService,
-    private bluetoothService: BluetoothService,
+    private bluetoothService: BluetoothService
   ) {}
+
+  ngOnInit(): void {
+    this.priceOrderLabel = this.order.totalPrice!.toFixed(2) + ' zł';
+    if (this.order.takeaway) {
+      this.summaryModel.isTakeaway = this.order.takeaway ? 'Tak' : 'Nie';
+    }
+    if (this.order.paymentMethod) {
+      this.summaryModel.paymentMethod =
+        this.order.paymentMethod === 'CASH' ? 'Gotówka' : 'Karta';
+    }
+  }
+
   onSelectItem(item: OrderProcessOption): void {
     // Toggle the active state
     item.active = !item.active;
@@ -67,9 +80,7 @@ export class CashierFinalSummaryComponent {
 
   closeDialog(refreshOrders: boolean = false) {
     this.isSummaryCashierPanelVisible = false;
-    this.summaryCashierPanelVisibleChange.emit(
-      refreshOrders
-    );
+    this.summaryCashierPanelVisibleChange.emit(refreshOrders);
   }
 
   onApprove() {
@@ -83,13 +94,46 @@ export class CashierFinalSummaryComponent {
       body: {
         paymentMethod,
         takeaway,
+        newTotalPrice: this.calcNewTotalPrice(),
       },
     };
     this.orderService.finalizeOrder(params).subscribe({
       next: () => {
-        this.toastService.success('Zamówienie zostało sfinalizowane');
+        this.toastService.success('Zamówienie #' + this.order.displayableId  +' zostało zrealizowane');
         this.closeDialog(true);
       },
     });
+  }
+
+  calculateTakeawayPrice(): number {
+    return this.orderUtils.calculateTakeawayPrice(
+      this.order.orderProducts ?? []
+    );
+  }
+
+  onTakeawayRadioClick() {
+    this.priceOrderLabel = this.calcNewTotalPrice().toFixed(2) + ' zł';
+  }
+
+  calcNewTotalPrice(): number {
+    if (this.order.takeaway) {
+      if (this.summaryModel.isTakeaway === 'Tak') {
+        return this.order.totalPrice!;
+      } else {
+        var takeawayPrice = this.orderUtils.calculateTakeawayPrice(
+          this.order.orderProducts ?? []
+        );
+        return this.order.totalPrice! - takeawayPrice;
+      }
+    } else {
+      if (this.summaryModel.isTakeaway === 'Tak') {
+        var takeawayPrice = this.orderUtils.calculateTakeawayPrice(
+          this.order.orderProducts ?? []
+        );
+        return this.order.totalPrice! + takeawayPrice;
+      } else {
+        return this.order.totalPrice!;
+      }
+    }
   }
 }

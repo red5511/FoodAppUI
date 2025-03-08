@@ -119,6 +119,7 @@ import { AutoCompleteModule } from 'primeng/autocomplete';
 import { MenuDeliveryOptionComponent } from './pages/menu-delivery-option/menu-delivery-option.component';
 import { AddNewDeliveryOptionComponent } from './components/add-new-delivery-option/add-new-delivery-option.component';
 import { CartFinalSummaryThirdPanelComponent } from './component/cart-final-summary-third-panel/cart-final-summary-third-panel.component';
+import { NumberInputForMobileOrWwwComponent } from './component/number-input-for-mobile-or-www/number-input-for-mobile-or-www.component';
 
 
 @NgModule({
@@ -181,6 +182,7 @@ import { CartFinalSummaryThirdPanelComponent } from './component/cart-final-summ
     MenuDeliveryOptionComponent,
     AddNewDeliveryOptionComponent,
     CartFinalSummaryThirdPanelComponent,
+    NumberInputForMobileOrWwwComponent,
   ],
   imports: [
     RouterModule,

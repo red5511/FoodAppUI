@@ -76,10 +76,11 @@
 }
 
 .dialog-footer {
+  margin-top: 2rem;
   display: flex;
-  justify-content: flex-end; /* Aligns the button to the right */
-  gap: 2rem;
-  width: 100%; /* Optional: make the footer span the entire page width */
+  justify-content: space-between;
+  width: 100%; 
+  align-items: center;
 }
 
 ::ng-deep .p-inputnumber-input{

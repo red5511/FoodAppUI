@@ -11,7 +11,7 @@
   display: flex;
   flex-wrap: nowrap; /* Ensures elements in a row stay side by side */
   gap: 2rem; /* Adds space between items in the row */
-  align-items: center;
+  align-items: start;
 }
 
 .input-container {
@@ -77,6 +77,11 @@ small.red-small.show {
 }
 
 .checkbox-div {
-  display: "flex";
-  flex-direction: "column";
+  display: flex;
+  flex-direction: column;
+  width: 11rem;
+}
+
+.custom-checkbox{
+  margin-top: 10px;
 }

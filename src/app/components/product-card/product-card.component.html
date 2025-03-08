@@ -62,7 +62,12 @@
     <div *ngFor="let property of selectedProduct?.productPropertiesList">
       <p-divider></p-divider>
       <p style="font-weight: bold">{{ property.name }}</p>
-      <div *ngIf="property.required; else optionalTemplate">
+      <div
+        *ngIf="
+          property.required && (property.maxChosenOptions ?? 0) < 1;
+          else optionalTemplate
+        "
+      >
         <!-- Radio buttons for required properties -->
         <div *ngFor="let option of property.propertyList" class="option">
           <p-radioButton
@@ -72,7 +77,7 @@
             formControlName="property_{{ property.id }}"
           ></p-radioButton>
           <label [for]="'radio_' + option.id">
-            {{ option.name }} (+{{ option.price | pricePln }})
+            {{ option.name }} (+{{ (option.price ?? 0 ) | pricePln }})
           </label>
         </div>
       </div>
@@ -88,8 +93,6 @@
       >
         Ta sekcja jest wymagana!
       </small>
-      } @else {
-      <div style="height: 25px"></div>
       }
 
       <ng-template #optionalTemplate>
@@ -98,30 +101,35 @@
             [inputId]="'checkbox_' + option.id"
             [binary]="true"
             formControlName="optional_{{ property.id }}_{{ option.id }}"
+            (onChange)="
+              onCheckboxChange(
+                property.id!,
+                option.id!,
+                property.maxChosenOptions ?? 99,
+                $event
+              )
+            "
+            [disabled]="
+              selectedOptions[property.id!] >=
+                (property.maxChosenOptions ?? 999) &&
+              !productForm.get('optional_' + property.id + '_' + option.id)
+                ?.value
+            "
           ></p-checkbox>
-          <label [for]="'checkbox_' + option.id"
-            >{{ option.name }} (+{{ option.price | pricePln }})</label
-          >
+          <label [for]="'checkbox_' + option.id">
+            {{ option.name }} (+{{ (option.price ?? 0) | pricePln }})
+          </label>
         </div>
       </ng-template>
     </div>
-    <p-divider></p-divider>
-
     <div class="dialog-footer">
-      <div>
-        <p-inputNumber
-          id="quantity"
-          [(ngModel)]="quantity"
-          [ngModelOptions]="{ standalone: true }"
-          [min]="1"
-          [max]="99"
-          mode="decimal"
-          showButtons
-          buttonLayout="horizontal"
-          incrementButtonIcon="pi pi-plus"
-          decrementButtonIcon="pi pi-minus"
-        ></p-inputNumber>
-      </div>
+      <app-number-input-for-mobile-or-www
+        [value]="quantity"
+        [min]="1"
+        [max]="99"
+        (onQuantityChange)="quantity = $event"
+      >
+      </app-number-input-for-mobile-or-www>
       <button
         severity="warning"
         pButton

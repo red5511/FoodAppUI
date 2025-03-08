@@ -152,19 +152,24 @@ body {
 
 
 ::ng-deep .custom-dropdown .p-dropdown.p-focus {
-  // border-color: red !important; /* Change border color on focus/hover */
-  // outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 0px  var(--primary-color2) !important; /* Add custom focus effect with red color */
+  box-shadow: 0 0 0 0px  var(--primary-color2) !important;
+}
+
+::ng-deep .custom-dropdown .p-dropdown .p-dropdown-trigger {
+  border-left: 1px solid;
+
+}
+
+::ng-deep .custom-dropdown .p-dropdown .p-dropdown-label {
+  text-align: center;
 }
 
 ::ng-deep .custom-dropdown .p-dropdown {
-  // border-color: red !important; /* Change border color on focus/hover */
-  // outline: none; /* Remove default focus outline */
-  box-shadow: 0 0 0 0px   var(--primary-color2) !important; /* Add custom focus effect with red color */
+  box-shadow: 0 0 0 0px   var(--primary-color2) !important;
   min-width: 225px !important;
   max-width: 335px !important;
-  text-align: end !important;  /* Centers the text horizontally */
-  line-height: normal !important; /* Optional: Adjust line-height for vertical centering */
+  text-align: end !important;
+  line-height: normal !important;
 }
 
 ::ng-deep .custom-dropdown .p-dropdown:not(.p-disabled).p-focus {
@@ -228,5 +233,4 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   font-family: "Inter var", sans-serif;
-  text-decoration: underline;
 }

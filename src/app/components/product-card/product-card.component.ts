@@ -28,6 +28,8 @@ export class ProductCardComponent {
   productForm!: FormGroup;
   formSubmitted: boolean = false; // Custom property to track form submission
   quantity: number = 1; // Default quantity
+  selectedOptions: { [key: string]: number } = {};
+
 
   constructor(
     public cartService: CartService,
@@ -53,7 +55,7 @@ export class ProductCardComponent {
       this.productForm = this.fb.group({});
 
       this.selectedProduct.productPropertiesList?.forEach((property: any) => {
-        if (property.required) {
+        if (property.required && (property.maxChosenOptions ?? 0) < 1) {
           this.productForm.addControl(
             `property_${property.id}`,
             this.fb.control(null, Validators.required) // Use null instead of ''
@@ -166,6 +168,23 @@ export class ProductCardComponent {
     });
 
     return result;
+  }
+
+  onCheckboxChange(propertyId: number, optionId: number, maxAllowed: number, event: any) {
+    const controlName = `optional_${propertyId}_${optionId}`;
+    if (!this.selectedOptions[propertyId]) {
+      this.selectedOptions[propertyId] = 0;
+    }
+  
+    if (event.checked) {
+      if (this.selectedOptions[propertyId] < maxAllowed) {
+        this.selectedOptions[propertyId]++;
+      } else {
+        this.productForm.get(controlName)?.setValue(false);
+      }
+    } else {
+      this.selectedOptions[propertyId]--;
+    }
   }
 
   incrementQuantity() {

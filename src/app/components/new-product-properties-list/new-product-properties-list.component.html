@@ -11,7 +11,8 @@ dataKey="id"
   <tr>
     <th style="width: 4rem"><p-tableHeaderCheckbox /></th>
     <th>Nazwa</th>
-    <th>Wymagane wybranie jednej z opcji</th>
+    <th>Grupa obowiązkowa</th>
+    <th>Max do zaznaczonych</th>
     <th></th>
   </tr>
 </ng-template>
@@ -22,6 +23,7 @@ dataKey="id"
     </td>
     <td>{{ productProperties.name }}</td>
     <td>{{ productProperties.required ? 'Tak' : 'Nie'}}</td>
+    <td>{{ productProperties.required ? productProperties.maxChosenOptions ?? '1' : "Bez limitu"}}</td>
     <td>
       <p-button
         type="button"

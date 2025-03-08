@@ -48,6 +48,11 @@ export class NewProductAddNewPropertyComponent {
       this.productProperties.companyId =
         this.contextService.getCompanyId() ?? -999;
       this.productProperties.propertyList = this.productPropertyList;
+
+      console.log('xdddd');
+      console.log(this.productProperties);
+      
+
       const body: CreateProductPropertiesRequest = {
         productProperties: this.productProperties,
       };
@@ -105,5 +110,9 @@ export class NewProductAddNewPropertyComponent {
     } else {
       this.productPropertyList[index].name = value; // In case the value is empty
     }
+  }
+
+  onQuantityChange(newValue: number){
+    this.productProperties.maxChosenOptions = newValue
   }
 }

@@ -100,7 +100,8 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
           : 'Nie';
         this.cartSummaryModel.isTakeaway = this.cartModel?.isDelivery
           ? 'Tak'
-          : this.cartSummaryModel.isTakeaway ?? 'Nie';
+          : this.cartModel.isTakeawayOption ? 'Tak'
+          : 'Nie';
 
         this.totalPrice = this.foodPrice;
 
@@ -127,6 +128,7 @@ export class CartFinalSummaryComponent implements OnInit, OnDestroy {
   ngOnDestroy(): void {
     this.destroy$.next();
     this.destroy$.complete();
+    this.setDefaultCartSummaryModel();
   }
 
   onDeliveryPriceChange(newPrice: number): void {

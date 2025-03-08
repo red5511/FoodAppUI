@@ -1507,7 +1507,8 @@
             "type": "array",
             "items": { "$ref": "#/components/schemas/ProductPropertyDto" }
           },
-          "required": { "type": "boolean" }
+          "required": { "type": "boolean" },
+          "maxChosenOptions": { "type": "integer", "format": "int32" }
         }
       },
       "ProductPropertyDto": {
@@ -2061,7 +2062,8 @@
         "type": "object",
         "properties": {
           "paymentMethod": { "type": "string", "enum": ["CASH", "CARD"] },
-          "takeaway": { "type": "boolean" }
+          "takeaway": { "type": "boolean" },
+          "newTotalPrice": { "type": "number" }
         }
       },
       "GetOrdersConfigRequest": {

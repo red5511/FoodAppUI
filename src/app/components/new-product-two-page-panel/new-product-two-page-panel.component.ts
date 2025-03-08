@@ -69,6 +69,7 @@ export class NewProductTwoPagePanelComponent {
     this.setDefaultFromValidations();
     console.log('this.modifiedProduct?.productCategory');
     console.log(this.modifiedProduct?.productCategory);
+    this.checkedCheckBoxProductProperties = this.modifiedProduct?.productPropertiesList ?? []
   }
 
   setDefaultFromValidations() {
@@ -210,6 +211,7 @@ export class NewProductTwoPagePanelComponent {
         description: this.productForm.get('description')?.getRawValue(),
         productCategory: this.selectedProductCategory,
         productPropertiesList: this.checkedCheckBoxProductProperties,
+        imgUrl: this.modifiedProduct?.imgUrl
       },
     };
     this.productService.modifyProduct({ body }).subscribe({

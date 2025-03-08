@@ -20,7 +20,7 @@
   &nbsp; &nbsp;
   @if (selectedCompany !== undefined && selectedCompany !== null) {
     @if (companies.length > 1) {
-      <p-dropdown [options]="companies" [(ngModel)]="selectedCompany"
+      <p-dropdown cla [options]="companies" [(ngModel)]="selectedCompany"
         (onChange)="companyOnChange()" optionLabel="name" class="custom-dropdown"></p-dropdown>
     }@else {
       <div class="company-p">

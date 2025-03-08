@@ -16,7 +16,12 @@
       (click)="currentStep = 1"
     ></i>
     <div>
-      <span class="title"><h4>Stwórz nowy produkt</h4></span>
+      @if (modifiedProduct) {
+        <span class="title"><h4>Modifikuj produkt</h4></span>
+      }
+      @else {
+        <span class="title"><h4>Stwórz nowy produkt</h4></span>
+      }
     </div>
   </ng-template>
   <ng-template pTemplate="content">
@@ -159,9 +164,7 @@
           <h6>Grupy</h6>
           <app-new-product-properties-list
             [productPropertiesList]="productPropertiesList"
-            [selectedProductProperties]="
-              modifiedProduct?.productPropertiesList ?? []
-            "
+            [selectedProductProperties]="checkedCheckBoxProductProperties"
             (onChangeCheckedBoxes)="onChangeCheckedBoxes($event)"
           ></app-new-product-properties-list>
         </div>
