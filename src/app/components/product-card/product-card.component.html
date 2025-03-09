@@ -46,89 +46,90 @@
   draggable="false"
   [dismissableMask]="true"
   (onHide)="onHide()"
-  [style]="{ width: '500px' }"
+  [style]="{ width: '500px', 'min-height': '250px', position: 'relative' }"
 >
-  <ng-template style="margin-bottom: 2rem" pTemplate="header">
+  <!-- Header Template -->
+  <ng-template pTemplate="header">
     <div class="header-custom">
       <span class="title"><h4>Podaj szczegóły</h4></span>
     </div>
   </ng-template>
 
-  <form
-    *ngIf="isChoosePropertiesDialogVisible"
-    [formGroup]="productForm"
-    (ngSubmit)="addToCart()"
-  >
-    <div *ngFor="let property of selectedProduct?.productPropertiesList">
-      <p-divider></p-divider>
-      <p style="font-weight: bold">{{ property.name }}</p>
-      <div
-        *ngIf="
-          property.required && (property.maxChosenOptions ?? 0) < 1;
-          else optionalTemplate
-        "
-      >
-        <!-- Radio buttons for required properties -->
-        <div *ngFor="let option of property.propertyList" class="option">
-          <p-radioButton
-            [inputId]="'radio_' + option.id"
-            name="property_{{ property.id }}"
-            [value]="option.id"
-            formControlName="property_{{ property.id }}"
-          ></p-radioButton>
-          <label [for]="'radio_' + option.id">
-            {{ option.name }} (+{{ (option.price ?? 0) | pricePln }})
-          </label>
-        </div>
-      </div>
-      @if ( (productForm.get('property_' + property.id)?.dirty || formSubmitted)
-      && productForm.get('property_' + property.id)?.invalid) {
-      <small
-        *ngIf="
-          (productForm.get('property_' + property.id)?.dirty ||
-            formSubmitted) &&
-          productForm.get('property_' + property.id)?.invalid
-        "
-        class="p-error"
-      >
-        Ta sekcja jest wymagana!
-      </small>
-      }
-
-      <ng-template #optionalTemplate>
-        <div [formGroup]="$any(productForm.get('optionalGroup_' + property.id))" class="checkbox-group">
+  <!-- Form wrapping both content and footer -->
+  <form *ngIf="productForm" [formGroup]="productForm" (ngSubmit)="addToCart()">
+    <!-- Scrollable content -->
+    <div class="dialog-content">
+      <div *ngFor="let property of selectedProduct?.productPropertiesList">
+        <p-divider></p-divider>
+        <p style="font-weight: bold">{{ property.name }}</p>
+        <div
+          *ngIf="
+            property.required && (property.maxChosenOptions ?? 0) < 1;
+            else optionalTemplate
+          "
+        >
+          <!-- Radio buttons for required properties -->
           <div *ngFor="let option of property.propertyList" class="option">
-            <p-checkbox
-              [inputId]="'checkbox_' + option.id"
-              [binary]="true"
-              formControlName="optional_{{ property.id }}_{{ option.id }}"
-              (onChange)="onCheckboxChange(property.id!, option.id!, property.maxChosenOptions ?? 99, $event)"
-              [disabled]="
-                selectedOptions[property.id!] >= (property.maxChosenOptions ?? 999) &&
-                !$any(productForm.get('optionalGroup_' + property.id)).get('optional_' + property.id + '_' + option.id)?.value
-              "
-            ></p-checkbox>
-            <label [for]="'checkbox_' + option.id">
+            <p-radioButton
+              [inputId]="'radio_' + option.id"
+              name="property_{{ property.id }}"
+              [value]="option.id"
+              formControlName="property_{{ property.id }}"
+            ></p-radioButton>
+            <label [for]="'radio_' + option.id">
               {{ option.name }} (+{{ (option.price ?? 0) | pricePln }})
             </label>
           </div>
-          <div *ngIf="$any(productForm.get('optionalGroup_' + property.id)).dirty || formSubmitted">
-            <small *ngIf="$any(productForm.get('optionalGroup_' + property.id)).invalid" class="p-error">
-              Wybierz co najmniej jedną opcję!
-            </small>
-          </div>
         </div>
-      </ng-template>
-      
+        @if ((productForm.get('property_' + property.id)?.dirty || formSubmitted) &&
+          productForm.get('property_' + property.id)?.invalid) {
+        <small
+          *ngIf="
+            (productForm.get('property_' + property.id)?.dirty || formSubmitted) &&
+            productForm.get('property_' + property.id)?.invalid
+          "
+          class="p-error"
+        >
+          Ta sekcja jest wymagana!
+        </small>
+        }
+
+        <ng-template #optionalTemplate>
+          <div [formGroup]="$any(productForm.get('optionalGroup_' + property.id))" class="checkbox-group">
+            <div *ngFor="let option of property.propertyList" class="option">
+              <p-checkbox
+                [inputId]="'checkbox_' + option.id"
+                [binary]="true"
+                formControlName="optional_{{ property.id }}_{{ option.id }}"
+                (onChange)="onCheckboxChange(property.id!, option.id!, property.maxChosenOptions ?? 99, $event)"
+                [disabled]="
+                  selectedOptions[property.id!] >= (property.maxChosenOptions ?? 999) &&
+                  !$any(productForm.get('optionalGroup_' + property.id))
+                    .get('optional_' + property.id + '_' + option.id)?.value
+                "
+              ></p-checkbox>
+              <label [for]="'checkbox_' + option.id">
+                {{ option.name }} (+{{ (option.price ?? 0) | pricePln }})
+              </label>
+            </div>
+            <div *ngIf="$any(productForm.get('optionalGroup_' + property.id)).dirty || formSubmitted">
+              <small *ngIf="$any(productForm.get('optionalGroup_' + property.id)).invalid" class="p-error">
+                Wybierz co najmniej jedną opcję!
+              </small>
+            </div>
+          </div>
+        </ng-template>
+      </div>
     </div>
+
+    <!-- Fixed footer inside the form -->
     <div class="dialog-footer">
       <app-number-input-for-mobile-or-www
         [value]="quantity"
         [min]="1"
         [max]="99"
         (onQuantityChange)="quantity = $event"
-      >
-      </app-number-input-for-mobile-or-www>
+      ></app-number-input-for-mobile-or-www>
       <button
         severity="warning"
         pButton

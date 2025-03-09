@@ -67,11 +67,20 @@ body {
   color: white !important;
 }
 
-.logo-img {
+.my-logo-img {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
   width: 135px;
+
+}
+
+.company-logo-img {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 3.3rem;
+  height: 3.3rem;
 }
 
 .dropdown {
@@ -233,4 +242,12 @@ body {
   font-size: 0.9rem;
   font-weight: 700;
   font-family: "Inter var", sans-serif;
+}
+
+.x-symbol {
+  align-items: end;
+  font-size: 22px;
+  color: var(--primary-color2); /* you can change the color */
+  margin-right: 20px;
+  margin-top: 35px;
 }

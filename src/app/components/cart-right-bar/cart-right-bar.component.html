@@ -54,18 +54,12 @@
             </div>
             <div class="item-footer">
               <div class="quantity-selector">
-                <p-inputNumber
-                  id="quantity"
-                  [(ngModel)]="item.quantity"
-                  [min]="0"
-                  [max]="99"
-                  (onInput)="orderUtils.onQuantityChange(item, isDelivery)"
-                  mode="decimal"
-                  showButtons
-                  buttonLayout="horizontal"
-                  incrementButtonIcon="pi pi-plus"
-                  decrementButtonIcon="pi pi-minus"
-                ></p-inputNumber>
+                <app-number-input-for-mobile-or-www
+                [value]="item.quantity"
+                [min]="0"
+                [max]="99"
+                (onQuantityChange)="orderUtils.onQuantityChange(item, isDelivery, $event)"
+                ></app-number-input-for-mobile-or-www>
               </div>
               <p-button
                 *ngIf="!selectedOrderProductNoteId"

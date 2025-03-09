@@ -1,13 +1,34 @@
+@if (isWeb) {
+
 <p-inputNumber
-class="cusstom-input-number"
-id="quantity"
-[(ngModel)]="value"
-[min]="min"
-[max]="max"
-(onInput)="onQuantityChange.emit(value)"
-mode="decimal"
-showButtons
-buttonLayout="horizontal"
-incrementButtonIcon="pi pi-plus"
-decrementButtonIcon="pi pi-minus"
+  class="cusstom-input-number"
+  id="quantity"
+  [(ngModel)]="value"
+  [min]="min"
+  [max]="max"
+  (onInput)="onQuantityChange.emit(value)"
+  mode="decimal"
+  showButtons
+  buttonLayout="horizontal"
+  incrementButtonIcon="pi pi-plus"
+  decrementButtonIcon="pi pi-minus"
 ></p-inputNumber>
+}@else {
+
+<div class="number-stepper">
+  <button
+    pButton
+    icon="pi pi-minus"
+    (click)="decrease()"
+    [disabled]="value <= min"
+  ></button>
+  <span class="stepper-value">{{ value }}</span>
+  <button
+    pButton
+    icon="pi pi-plus"
+    (click)="increase()"
+    [disabled]="value >= max"
+  ></button>
+</div>
+
+}

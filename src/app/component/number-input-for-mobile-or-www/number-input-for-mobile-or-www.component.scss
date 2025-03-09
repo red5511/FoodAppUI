@@ -1,3 +1,18 @@
 ::ng-deep .cusstom-input-number .p-inputtext {
-    width: 3.5rem;
+    width: 3rem;
+  }
+
+  .number-stepper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    border: 1px solid;
+    border-radius: 10px;
+  }
+  
+  .stepper-value {
+    min-width: 30px;
+    text-align: center;
+    font-size: 1.2rem;
+    height: 100%;
   }

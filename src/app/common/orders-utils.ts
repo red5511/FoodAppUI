@@ -88,7 +88,12 @@ export class OrderUtils {
       : undefined;
   }
 
-  onQuantityChange(item: OrderProductDto, isDelivery: boolean | undefined) {
+  onQuantityChange(
+    item: OrderProductDto,
+    isDelivery: boolean | undefined,
+    newQuantity: number
+  ) {
+    item.quantity = newQuantity;
     if (item.quantity === 0) {
       this.cartService.removeFromCart(item.id!);
     } else {
@@ -150,7 +155,7 @@ export class OrderUtils {
   calculateTakeawayPrice(orderProducts: OrderProductDto[]): number {
     return orderProducts.reduce(
       (sum: number, item: OrderProductDto) =>
-        sum + ((item.product?.takeawayPrice ?? 0) * item.quantity! ),
+        sum + (item.product?.takeawayPrice ?? 0) * item.quantity!,
       0
     );
   }

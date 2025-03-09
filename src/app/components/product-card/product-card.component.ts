@@ -105,7 +105,9 @@ export class ProductCardComponent {
 
     if (this.productForm.valid) {
       this.isChoosePropertiesDialogVisible = false;
-
+      console.log('xddd');
+      console.log(this.getSelectedProductProperties());
+      
       const orderProduct: OrderProductDto = {
         id: Math.floor(Math.random() * 100000000000), // generuje fakowe id na potrzeby dzialania koszyka, backend je nadpisze
         price: this.calculateTotalPrice(),
@@ -162,26 +164,28 @@ export class ProductCardComponent {
       const clonedProperties: ProductPropertiesDto = cloneDeep(property);
       clonedProperties.propertyList = [];
   
-      if (property.required) {
+      if (property.required && (property.maxChosenOptions ?? 0) < 1) {
+        // Handle required properties (radio buttons)
         const selectedOptionId = this.productForm.get(`property_${property.id}`)?.value;
-        const selectedOption = property.propertyList!.find(
-          (option) => option.id === selectedOptionId
-        );
+        const selectedOption = property.propertyList?.find((option) => option.id === selectedOptionId);
         if (selectedOption) {
           clonedProperties.propertyList.push(selectedOption);
         }
       } else {
-        // Accessing optional checkbox controls inside the group
-        const group = this.productForm.get('optionalGroup_' + property.id) as FormGroup;
+        // Handle optional checkboxes (including required checkboxes inside optionalGroup)
+        const group = this.productForm.get(`optionalGroup_${property.id}`) as FormGroup;
         if (group) {
           property.propertyList?.forEach((option) => {
             const controlName = `optional_${property.id}_${option.id}`;
-            if (group.get(controlName)?.value) {
+            const controlValue = group.get(controlName)?.value;
+  
+            if (controlValue) {
               clonedProperties.propertyList!.push(option);
             }
           });
         }
       }
+  
       if (clonedProperties.propertyList.length > 0) {
         result.push(clonedProperties);
       }
@@ -190,18 +194,23 @@ export class ProductCardComponent {
     return result;
   }
   
+  
 
   onCheckboxChange(propertyId: number, optionId: number, maxAllowed: number, event: any) {
+    // Get the nested FormGroup for the property.
+    const group = this.productForm.get('optionalGroup_' + propertyId) as FormGroup;
     const controlName = `optional_${propertyId}_${optionId}`;
+    
     if (!this.selectedOptions[propertyId]) {
       this.selectedOptions[propertyId] = 0;
     }
-  
+    
     if (event.checked) {
       if (this.selectedOptions[propertyId] < maxAllowed) {
         this.selectedOptions[propertyId]++;
       } else {
-        this.productForm.get(controlName)?.setValue(false);
+        // Update the control within the group.
+        group.get(controlName)?.setValue(false);
       }
     } else {
       this.selectedOptions[propertyId]--;

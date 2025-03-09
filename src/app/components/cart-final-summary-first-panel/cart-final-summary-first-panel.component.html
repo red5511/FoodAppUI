@@ -8,18 +8,12 @@
       <div class="cart-item">
         <div class="product-info">
           <div class="quantity-selector">
-            <p-inputNumber
-              id="quantity"
-              [(ngModel)]="item.quantity"
+            <app-number-input-for-mobile-or-www
+              [value]="item.quantity"
               [min]="0"
               [max]="99"
-              (onInput)="onQuantityChange(item)"
-              mode="decimal"
-              showButtons
-              buttonLayout="horizontal"
-              incrementButtonIcon="pi pi-plus"
-              decrementButtonIcon="pi pi-minus"
-            ></p-inputNumber>
+              (onQuantityChange)="onQuantityChange(item, $event)"
+            ></app-number-input-for-mobile-or-www>
             @if (selectedNoteOrderProductId !== item.id) { @if (item.note ===
             undefined || item.note === null || item.note === '') {
             <p-button
@@ -79,7 +73,7 @@
               style="display: flex; margin-top: 6px"
               *ngIf="item.note && selectedNoteOrderProductId !== item.id"
             >
-              <b style="margin-right: 2px;"> Notatka: </b>
+              <b style="margin-right: 2px"> Notatka: </b>
               <p style="margin-bottom: 0">
                 {{ " " + item.note }}
               </p>
@@ -98,7 +92,9 @@
             pInputTextarea
             [maxLength]="510"
           ></textarea>
-          <div style="display: flex; justify-content: center; margin-top: 1.5rem">
+          <div
+            style="display: flex; justify-content: center; margin-top: 1.5rem"
+          >
             <p-button
               [outlined]="true"
               class="custom-text-button"

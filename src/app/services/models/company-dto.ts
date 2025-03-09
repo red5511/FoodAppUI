@@ -9,6 +9,7 @@ export interface CompanyDto {
   defaultProductImgUrl?: string;
   holding?: boolean;
   id: number;
+  logoUrl?: string;
   name: string;
   openHours?: OpenHours;
   users: Array<UserDto>;

@@ -9,9 +9,15 @@
       <mat-icon>menu</mat-icon>
     </button>
   </div>
+  
   <a routerLink="/welcome" class="logo">
-    <img src="images/logo-removebg.png" alt="MyLogo" class="logo-img" />
+    <img src="images/logo-removebg.png" alt="MyLogo" class="my-logo-img" />
   </a>
+  <span *ngIf="selectedCompany?.logoUrl" class="x-symbol">X</span>
+  <a *ngIf="selectedCompany?.logoUrl" routerLink="/welcome" class="logo">
+    <img [src]="selectedCompany?.logoUrl" alt="MyLogo" class="company-logo-img" />
+  </a>
+
   <span class="example-spacer"></span>
   &nbsp;
   <app-switch-with-dialog *ngIf="selectedCompany !== undefined && selectedCompany !== null" [isChecked]="isChecked" [isHolding]="isHolding"

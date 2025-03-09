@@ -68,8 +68,9 @@ export class CartFinalSummaryFirstPanelComponent {
     return item.id;
   }
 
-  onQuantityChange(item: OrderProductDto) {
-    this.orderUtils.onQuantityChange(item, this.isDelivery);
+  onQuantityChange(item: OrderProductDto, newQuantity: number) {
+    item.quantity = newQuantity;
+    this.orderUtils.onQuantityChange(item, this.isDelivery, newQuantity);
     if (item.id) {
       this.onQuantityChangeNoneZero.emit(true);
     }

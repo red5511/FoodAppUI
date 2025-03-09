@@ -1,31 +1,3 @@
-// ::ng-deep .custom-card .p-card .p-component {
-//     width: 9rem;
-//     height: 9rem;
-// }
-
-// ::ng-deep .custom-card .p-card {
-//     background-color: aqua;
-//     margin-right: 1rem;
-//     margin-bottom: 1rem;
-// }
-// .custom-card {
-//     display: flex;
-//     flex-direction: column;
-//     justify-content: space-between;
-//     width: 20%; /* Cards will take up 20% of the container width */
-//     height: 350px; /* Set a fixed height to ensure uniformity */
-//     margin-bottom: 1rem; /* Space between cards */
-//     margin-right: 1rem; /* Space between cards */
-//     box-sizing: border-box; /* Include padding in the height calculation */
-//     overflow: hidden; /* Hide overflow content */
-//   }
-
-//   ::ng-deep .p-card .p-card-header,
-//   .p-card .p-card-content {
-//     overflow: hidden; /* Prevent content from overflowing */
-//     text-overflow: ellipsis; /* Optional: Add ellipsis for overflowed text */
-//   }
-
 ::ng-deep .custom-fieldset .p-fieldset {
   margin-top: 2rem;
 }
@@ -38,6 +10,31 @@
   transition: none !important;
 }
 
+:host ::ng-deep .p-dialog {
+  position: relative;
+}
+
+/* Scrollable content area */
+:host ::ng-deep .dialog-content {
+  max-height: calc(100% - 70px); /* Adjust if your footer height differs */
+  overflow-y: auto;
+  padding-bottom: 70px; /* Provide extra space so content doesn't hide behind footer */
+}
+
+:host ::ng-deep .dialog-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  background: #fff; /* Adjust to match your dialog's design */
+  padding: 1.5rem;
+  border-top: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-shadow: 0 -2px 4px rgba(0, 0, 0, 0.1);
+}
+
 .cards-container {
   display: flex;
   flex-wrap: wrap;
@@ -48,6 +45,7 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 1.5rem;
+  margin-left: 0.5rem;
 }
 
 .custom-card {
